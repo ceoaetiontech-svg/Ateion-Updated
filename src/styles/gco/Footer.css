@@ -1,0 +1,38 @@
+.footer-container {
+  background-color: #F3EFE7;
+  padding: 64px 24px;
+  border-top: 1px solid #dcdcdc;
+  font-family: 'Inter', sans-serif;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 32px;
+  font-size: 14px;
+  color: #555;
+}
+
+.footer-company {
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.footer-address p, .footer-links p {
+  margin: 0 0 8px 0;
+}
+
+.footer-phone {
+  color: #1a1a1a;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
