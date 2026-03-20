@@ -1,0 +1,12 @@
+const fs = require('fs');
+const path = require('path');
+
+const files = [
+    '3aab4451afd875f66a83eb26e0ca2d6f58abce98.png',
+    'a440209918fa81a1c528e2e95290d4f1f12546e7.png',
+    'e985b07ea1f916546c05a06ca93558ef62ecc870.png',
+    'eba887f3bcae20b7a5611026256348307e65c2c4.png'
+];
+
+// Let's write an HTML file that includes these images, and I'll read its contents? No.
+// Let's use PowerShell to compute RGB variance. Wait, node is easier if I base64 them, but I can't look at base64.
