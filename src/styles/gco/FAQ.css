@@ -1,15 +1,13 @@
 .faq-container {
   padding: 5rem 5%;
   background-color: #F3EFE7;
-  font-family: 'Inter', sans-serif;
+  font-family: 'SF Pro Display', sans-serif;
 }
 
 .faq-title {
   text-align: center;
   font-size: clamp(1.5rem, 3vw, 2rem);
-  margin-bottom: 3rem;
-  font-family: 'OVSoge', serif;
-  color: #1a1a1a;
+  font-family: 'SF Pro Display', sans-serif;
 }
 
 .faq-list {
@@ -35,8 +33,7 @@
 .faq-question {
   font-size: clamp(0.875rem, 1.5vw, 1rem);
   color: #333;
-  font-weight: 500;
-  flex: 1;
+  font-family: 'SF Pro Display', sans-serif;
 }
 
 .faq-arrow {

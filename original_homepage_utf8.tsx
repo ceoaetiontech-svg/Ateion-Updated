@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+﻿import React, { useState, useEffect, useRef } from "react";
 import { motion, animate, useInView, AnimatePresence } from "framer-motion";
-import { ArrowUpRight } from 'lucide-react';
 import svgPaths from "./svg-1lr6hhp4h8";
 import logo from "../assets/logo.png";
 import imgRectangle9 from "../assets/e54e08242e5e8cea29c382ba6bc82218d425f28e.png";
@@ -325,7 +324,7 @@ function Frame9() {
       whileTap={{ scale: 0.95 }}
       className="bg-[rgba(235,235,235,0.8)] flex h-[34px] items-center justify-center px-[22px] relative rounded-full shrink-0 group cursor-pointer hover:bg-[rgba(215,215,215,0.95)] transition-colors"
     >
-      <p className="font-bold leading-none relative shrink-0 text-[#292929] text-[13px] whitespace-nowrap pt-[1px]" style={{ fontFamily: "'Manrope', sans-serif" }}>About Us</p>
+      <p className="font-['Manrope:Bold',sans-serif] font-bold leading-none relative shrink-0 text-[#292929] text-[13px] whitespace-nowrap pt-[1px]">About Us</p>
     </motion.div>
   );
 }
@@ -337,7 +336,7 @@ function Frame3() {
       whileTap={{ scale: 0.95 }}
       className="bg-[rgba(235,235,235,0.8)] flex gap-[6px] h-[34px] items-center justify-center px-[20px] relative rounded-full shrink-0 group cursor-pointer hover:bg-[rgba(215,215,215,0.95)] transition-colors"
     >
-      <p className="font-bold leading-none relative shrink-0 text-[#292929] text-[13px] whitespace-nowrap pt-[1px]" style={{ fontFamily: "'Manrope', sans-serif" }}>Workshops</p>
+      <p className="font-['Manrope:Bold',sans-serif] font-bold leading-none relative shrink-0 text-[#292929] text-[13px] whitespace-nowrap pt-[1px]">Workshops</p>
       <div className="flex items-center justify-center relative shrink-0 opacity-80 group-hover:translate-y-0.5 transition-transform">
         <div className="flex-none rotate-180">
           <div className="relative size-[8px]">
@@ -362,7 +361,7 @@ function Frame5() {
       onClick={() => navigate('/gco')}
       className="bg-[rgba(227,227,227,0.72)] content-stretch flex h-[32px] items-center justify-center px-[20px] relative rounded-full shrink-0 group cursor-pointer hover:bg-[rgba(200,200,200,0.85)] transition-colors"
     >
-      <p className="font-bold leading-none relative shrink-0 text-[#292929] text-[13px] whitespace-nowrap" style={{ fontFamily: "'Manrope', sans-serif" }}>Global Olympiad</p>
+      <p className="font-['Manrope:Bold',sans-serif] font-bold leading-none relative shrink-0 text-[#292929] text-[13px] whitespace-nowrap">Global Olympiad</p>
     </motion.div>
   );
 }
@@ -374,7 +373,7 @@ function Frame6() {
       whileTap={{ scale: 0.95 }}
       className="bg-[rgba(227,227,227,0.72)] content-stretch flex h-[32px] items-center justify-center px-[20px] relative rounded-full shrink-0 group cursor-pointer hover:bg-[rgba(200,200,200,0.85)] transition-colors"
     >
-      <p className="font-bold leading-none relative shrink-0 text-[#292929] text-[13px] whitespace-nowrap" style={{ fontFamily: "'Manrope', sans-serif" }}>Resources</p>
+      <p className="font-['Manrope:Bold',sans-serif] font-bold leading-none relative shrink-0 text-[#292929] text-[13px] whitespace-nowrap">Resources</p>
     </motion.div>
   );
 }
@@ -399,7 +398,7 @@ function NavActions() {
       whileTap={{ scale: 0.95 }}
       className="bg-[#fb4444] content-stretch flex h-[36px] items-center justify-center px-[20px] relative rounded-full shrink-0 group cursor-pointer hover:bg-[#ff5555] transition-all"
     >
-      <p className="font-bold leading-none relative shrink-0 text-[13px] text-white whitespace-nowrap" style={{ fontFamily: "'Manrope', sans-serif" }}>Get Connected</p>
+      <p className="font-['Manrope:Bold',sans-serif] font-bold leading-none relative shrink-0 text-[13px] text-white whitespace-nowrap">Get Connected</p>
     </motion.div>
   );
 }
@@ -441,7 +440,7 @@ function ExploreButton() {
       whileTap={{ scale: 0.95 }}
       className="bg-[#fb4444] flex items-center justify-center h-[52px] px-10 relative rounded-[154px] min-w-[190px] shrink-0 cursor-pointer shadow-lg shadow-[#fb444433] hover:bg-[#ff5a5a] transition-colors"
     >
-       <p className="font-bold leading-none text-[14px] text-white whitespace-nowrap" style={{ fontFamily: "'Manrope', sans-serif" }}>Explore more</p>
+       <p className="font-['Manrope:Bold',sans-serif] font-bold leading-none text-[14px] text-white whitespace-nowrap">Explore more</p>
     </motion.div>
   );
 }
@@ -449,7 +448,7 @@ function ExploreButton() {
 function HeroTextBlock() {
   return (
     <div className="flex flex-col items-start px-[64px] w-full">
-      <p className="leading-[normal] not-italic text-[72px] text-black w-full mb-6" style={{ fontFamily: "'OV Soge', sans-serif" }}>Reimagining Education</p>
+      <p className="font-['OV_Soge:Semi_Bold',sans-serif] leading-[normal] not-italic text-[72px] text-black w-full mb-6">Reimagining Education</p>
       <ExploreButton />
     </div>
   );
@@ -476,7 +475,7 @@ function PurpleCapabilityCardText() {
         <span className="leading-[normal] text-[24px]">{` `}</span>
         <span className="font-['IBM_Plex_Sans:Bold_Italic',sans-serif] italic leading-[normal] text-[24px]">measures the future.</span>
       </p>
-      <p className="font-['SF_Pro_Display:Regular',sans-serif] leading-[normal] relative shrink-0 text-[20px] w-[190px] whitespace-pre-wrap">{`Ateion is the world’s leading Capability-First Education ecosystem  integrating AI literacy, innovation, and measurable readiness into modern schooling.`}</p>
+      <p className="font-['SF_Pro_Display:Regular',sans-serif] leading-[normal] relative shrink-0 text-[20px] w-[190px] whitespace-pre-wrap">{`Ateion is the worldΓÇÖs leading Capability-First Education ecosystem  integrating AI literacy, innovation, and measurable readiness into modern schooling.`}</p>
     </div>
   );
 }
@@ -501,7 +500,7 @@ function PurpleCapabilityCardOuter() {
 function GlobalAlignedTitle() {
   return (
     <div className="content-stretch flex flex-col gap-[26px] items-start relative shrink-0 w-[262px]">
-      <p className="leading-[normal] min-w-full not-italic relative shrink-0 text-[36px] text-white tracking-[0.72px] w-[min-content]" style={{ fontFamily: "'OV Soge', sans-serif" }}>Globally Aligned with</p>
+      <p className="font-['OV_Soge:Medium',sans-serif] leading-[normal] min-w-full not-italic relative shrink-0 text-[36px] text-white tracking-[0.72px] w-[min-content]">Globally Aligned with</p>
       <div className="h-[186px] relative rounded-[16px] shrink-0 w-[251px]" data-name="image 9">
         <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none rounded-[16px] size-full" src={imgImage9} />
       </div>
@@ -531,7 +530,7 @@ function GlobalAlignedBlackCard() {
 function RedIntelligenceTitle() {
   return (
     <div className="h-[132px] relative shrink-0 w-[235px]">
-      <p className="absolute leading-[normal] left-0 not-italic text-[24px] text-black top-0 w-[235px]" style={{ fontFamily: "'OV Soge', sans-serif" }}>Education is not broken. Its measurement system is :</p>
+      <p className="absolute font-['OV_Soge:Semi_Bold',sans-serif] leading-[normal] left-0 not-italic text-[24px] text-black top-0 w-[235px]">Education is not broken. Its measurement system is :</p>
     </div>
   );
 }
@@ -586,7 +585,7 @@ function HeroFeatureCardsRow() {
 function PoweredByNumbersText() {
   return (
     <div className="flex items-center justify-center relative shrink-0 mb-8" data-name="text">
-      <p className="font-semibold not-italic opacity-90 relative text-[36px] text-center text-white tracking-wide whitespace-nowrap" style={{ fontFamily: "'OV Soge', sans-serif" }}>
+      <p className="font-['Outfit:Semi_Bold',sans-serif] font-semibold not-italic opacity-90 relative text-[36px] text-center text-white tracking-wide whitespace-nowrap">
         Powered by Proven Numbers
       </p>
     </div>
@@ -698,7 +697,7 @@ function GlobalPresenceMapBg() {
 function GlobalPresenceMainHeading() {
   return (
     <div className="w-full flex justify-center mb-10">
-      <p className="font-semibold leading-tight text-[48px] text-black text-center" style={{ fontFamily: "'OV Soge', sans-serif" }}>Global Presence</p>
+      <p className="font-['Outfit:Semi_Bold',sans-serif] font-semibold leading-tight text-[48px] text-black text-center">Global Presence</p>
     </div>
   );
 }
@@ -735,7 +734,7 @@ function HeroMetricsAndMap() {
 function EducationStatusHeader() {
   return (
     <div className="content-stretch flex items-center justify-between not-italic relative shrink-0 text-black w-full py-[48px] gap-[64px]">
-      <p className="leading-tight relative shrink-0 text-[48px] flex-1" style={{ fontFamily: "'OV Soge', sans-serif" }}>
+      <p className="font-['Outfit:Semi_Bold',sans-serif] leading-tight relative shrink-0 text-[48px] flex-1">
         Education is not broken.
       </p>
       <p className="font-['Inter:Regular',sans-serif] leading-relaxed relative shrink-0 text-[18px] text-[rgba(0,0,0,0.7)] flex-1">
@@ -846,7 +845,7 @@ function GcoFeatureTagsRow() {
 function GcoFeatureTitleContainer() {
   return (
     <div className="content-stretch flex flex-col gap-[24px] items-start relative shrink-0 w-full">
-      <p className="leading-[1.19] not-italic relative shrink-0 text-[48px] text-black tracking-[0.4px] w-full max-w-[500px]" style={{ fontFamily: "'OV Soge', sans-serif" }}>Global Capability Olympiad (GCO)</p>
+      <p className="font-['Outfit:Semi_Bold',sans-serif] leading-[1.19] not-italic relative shrink-0 text-[48px] text-black tracking-[0.4px] w-full max-w-[500px]">Global Capability Olympiad (GCO)</p>
       <div className="flex justify-start w-full">
         <GcoFeatureTagsRow />
       </div>
@@ -872,8 +871,10 @@ function GcoFeatureBadge() {
       <div className="flex items-center justify-between bg-[#161616] h-[54px] pl-7 pr-6 rounded-full w-[174px] cursor-pointer group hover:bg-[#222] transition-colors" data-name="view more">
         <p className="font-['Outfit:Medium',sans-serif] leading-none text-[17px] text-white tracking-[0.16px] whitespace-nowrap pt-0.5">View More</p>
         <div className="flex items-center justify-center">
-          <div className="flex items-center justify-center h-[26px] w-[26px] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform">
-            <ArrowUpRight color="white" size={24} strokeWidth={2} />
+          <div className="flex items-center justify-center h-[26px] w-[26px] rotate-[-45deg] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform">
+            <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 25.8037 25.3201">
+              <path d={svgPaths.p17967a28} id="Vector 3" stroke="white" strokeWidth="1.8" />
+            </svg>
           </div>
         </div>
       </div>
@@ -1012,7 +1013,7 @@ function EcosystemCluster() {
         </defs>
       </svg>
 
-      {/* Curved Arrows — all ml values shifted left by 223px from original Figma */}
+      {/* Curved Arrows ΓÇö all ml values shifted left by 223px from original Figma */}
       <div className="col-1 h-[336.118px] ml-[259.28px] mt-[79.07px] relative row-1 w-[212.218px]">
         <div className="absolute inset-[0_0_-0.13%_-0.19%] pointer-events-none opacity-20">
           <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 212.806 336.735">
@@ -1090,7 +1091,7 @@ function EcosystemCluster() {
 function FAQSectionTitle() {
   return (
     <div className="grid-cols-[max-content] grid-rows-[max-content] inline-grid leading-[0] place-items-start relative shrink-0">
-      <p className="col-1 leading-[1.19] ml-0 mt-0 not-italic relative row-1 text-[32px] text-black text-center whitespace-nowrap" style={{ fontFamily: "'SF Pro Display', sans-serif" }}>Your Common Questions Answered</p>
+      <p className="col-1 font-['Outfit:Semi_Bold',sans-serif] leading-[1.19] ml-0 mt-0 not-italic relative row-1 text-[32px] text-black text-center whitespace-nowrap">Your Common Questions Answered</p>
     </div>
   );
 }
@@ -1131,7 +1132,7 @@ function FAQItem({ question, answer, isOpen, toggle }: { question: string, answe
         onClick={toggle}
         className="w-full content-stretch flex items-center justify-between px-[32px] py-[28px] relative text-left group"
       >
-        <p className="flex-[1_0_0] font-semibold leading-[1.35] max-w-[700px] not-italic relative text-[#1a1a1a] text-[22px] transition-colors group-hover:text-[#fb4444]" style={{ fontFamily: "'SF Pro Display', sans-serif" }}>
+        <p className="flex-[1_0_0] font-['Outfit:Semi_Bold',sans-serif] font-semibold leading-[1.35] max-w-[700px] not-italic relative text-[#1a1a1a] text-[22px] transition-colors group-hover:text-[#fb4444]">
           {question}
         </p>
         <div className={`bg-[#e7e3dd] content-stretch flex items-center p-[7px] relative rounded-[100px] shadow-[0px_0.5px_1px_0px_rgba(25,33,61,0.07)] shrink-0 transition-transform duration-500 ${isOpen ? 'rotate-90' : ''}`}>
@@ -1160,7 +1161,7 @@ function FAQItem({ question, answer, isOpen, toggle }: { question: string, answe
             transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
           >
             <div className="px-[32px] pb-[32px] pt-[8px]">
-              <p className="leading-relaxed text-[17px] text-[rgba(0,0,0,0.7)] max-w-[750px]" style={{ fontFamily: "'SF Pro Display', sans-serif" }}>
+              <p className="font-['Inter:Regular',sans-serif] leading-relaxed text-[17px] text-[rgba(0,0,0,0.7)] max-w-[750px]">
                 {answer}
               </p>
             </div>
@@ -1387,7 +1388,7 @@ function FooterCopyrightBar() {
     <div className="bg-[#1e1632] h-[64px] relative shrink-0 w-full flex items-center justify-center px-[32px]">
       <div aria-hidden="true" className="absolute border-[#e4e4e4] border-solid border-t-[1px] inset-[0_0_auto_0] pointer-events-none opacity-20" />
       <p className="font-['Lato:Regular',sans-serif] leading-normal not-italic relative shrink-0 text-[14px] text-center text-white opacity-80">
-        Copyright ©Ateion 2026. All Rights Reserved.
+        Copyright ┬⌐Ateion 2026. All Rights Reserved.
       </p>
     </div>
   );

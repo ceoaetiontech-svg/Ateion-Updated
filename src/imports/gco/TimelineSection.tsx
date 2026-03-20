@@ -101,7 +101,7 @@ export default function TimelineSection() {
         const elementTop = rect.top;
         const elementHeight = rect.height;
 
-        const scrollProgress = Math.max(0, Math.min(1, (windowHeight - elementTop) / (elementHeight + windowHeight)));
+        const scrollProgress = Math.max(0, Math.min(1, (windowHeight * 0.8 - elementTop) / elementHeight));
         setLineHeight(scrollProgress * 100);
       }
     };
@@ -137,7 +137,7 @@ export default function TimelineSection() {
               height: `${(timelineSteps.length - 1) * 200}px`,
               scaleY: lineHeight / 100,
               transformOrigin: 'top',
-              backgroundColor: '#3b82f6'
+              backgroundColor: '#1E1632'
             }}
           />
 

@@ -2,7 +2,7 @@
   min-height: auto;
   background-color: #f5f1e8;
   padding: 6rem 0;
-  font-family: 'Manrope', sans-serif;
+  font-family: 'SF Pro Display', sans-serif;
 }
 
 .timeline-container {
@@ -16,7 +16,7 @@
   font-size: clamp(1.75rem, 4vw, 3rem);
   text-align: center;
   margin-bottom: 6.25rem;
-  font-family: 'OVSoge', sans-serif;
+  font-family: 'OV Soge', sans-serif;
   color: #1a1a1a;
 }
 

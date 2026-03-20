@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+/* Normalized Fonts */
 
 /* Scoped Reset for GCO */
 :where(#gco-root, #gco-root *) {
@@ -31,7 +31,7 @@
 
 .nav-item {
   text-decoration: none;
-  font-family: 'ov soge';
+  font-family: 'Manrope', sans-serif;
   font-size: 1rem;
   font-weight: 500;
   color: black;
@@ -46,6 +46,7 @@
 .nav-highlight {
   text-decoration: none;
   background-color: #e63946;
+  font-family: 'Manrope', sans-serif;
   color: white;
   font-weight: 600;
   border-radius: 25px;
@@ -61,7 +62,7 @@
   border: none;
   padding: 0.625rem 1.5rem;
   border-radius: 25px;
-  font-family: 'ov soge';
+  font-family: 'Manrope', sans-serif;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
@@ -94,7 +95,7 @@
 }
 
 .hero-title {
-  font-family: 'ov soge';
+  font-family: 'OV Soge', sans-serif;
   font-size: clamp(2rem, 5vw, 4.5rem);
   font-weight: 700;
   margin-bottom: 1.875rem;
@@ -102,7 +103,7 @@
 }
 
 .hero-subtitle {
-  font-family: 'Manrope';
+  font-family: 'SF Pro Display', sans-serif;
   font-size: clamp(1rem, 2vw, 1.4rem);
   line-height: 2;
   margin: 0 auto 2.5rem auto;
@@ -125,7 +126,7 @@
   border: 2px solid black;
   padding: 0.875rem 2rem;
   border-radius: 30px;
-  font-family: 'ov soge';
+  font-family: 'OV Soge', sans-serif;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
@@ -137,7 +138,7 @@
   border: none;
   padding: 0.875rem 2rem;
   border-radius: 30px;
-  font-family: 'ov soge';
+  font-family: 'OV Soge', sans-serif;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
@@ -146,7 +147,7 @@
 .aligned-with { margin-top: 2.5rem; }
 
 .aligned-title {
-  font-family: 'Manrope';
+  font-family: 'SF Pro Display', sans-serif;
   font-size: clamp(1.1rem, 2.5vw, 1.6rem);
   font-weight: 200;
   margin-bottom: 1.25rem;
