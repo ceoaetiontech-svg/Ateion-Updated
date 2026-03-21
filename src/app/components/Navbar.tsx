@@ -16,72 +16,53 @@ function LogoContainer() {
   );
 }
 
-function NavButtonAboutUs() {
+function NavButton({ children, onClick, className = "" }: { children: React.ReactNode; onClick?: () => void; className?: string }) {
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      className="bg-[rgba(235,235,235,0.8)] flex h-[34px] items-center justify-center px-[16px] md:px-[22px] relative rounded-full shrink-0 group cursor-pointer hover:bg-[rgba(215,215,215,0.95)] transition-colors"
+      onClick={onClick}
+      className={`bg-[rgba(235,235,235,0.8)] flex h-[36px] items-center justify-center px-[20px] relative rounded-full shrink-0 group cursor-pointer hover:bg-[rgba(215,215,215,0.95)] transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 ${className}`}
     >
-      <p className="font-bold leading-none relative shrink-0 text-[#292929] text-[11px] md:text-[13px] whitespace-nowrap pt-[1px]" style={{ fontFamily: "'Manrope', sans-serif" }}>About Us</p>
+      {children}
     </motion.div>
   );
 }
 
-function NavButtonWorkshops() {
+function NavButtonText({ text, hasDropdown = false }: { text: string; hasDropdown?: boolean }) {
   return (
-    <motion.div
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-      className="bg-[rgba(235,235,235,0.8)] flex gap-[4px] md:gap-[6px] h-[34px] items-center justify-center px-[14px] md:px-[20px] relative rounded-full shrink-0 group cursor-pointer hover:bg-[rgba(215,215,215,0.95)] transition-colors"
-    >
-      <p className="font-bold leading-none relative shrink-0 text-[#292929] text-[11px] md:text-[13px] whitespace-nowrap pt-[1px]" style={{ fontFamily: "'Manrope', sans-serif" }}>Workshops</p>
-      <div className="hidden md:flex items-center justify-center relative shrink-0 opacity-80 group-hover:translate-y-0.5 transition-transform">
-        <div className="flex-none rotate-180">
-          <div className="relative size-[8px]">
-            <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 8.06516 7.25">
-              <path d={svgPaths.p3367e500} fill="#292929" id="Polygon 1" />
-            </svg>
+    <div className="flex items-center gap-[6px]">
+      <p className="font-bold leading-none text-[#292929] text-[12px] md:text-[13px] whitespace-nowrap" style={{ fontFamily: "'Manrope', sans-serif" }}>{text}</p>
+      {hasDropdown && (
+        <div className="hidden md:flex items-center justify-center relative shrink-0 opacity-80">
+          <div className="flex-none">
+            <div className="relative size-[8px]">
+              <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 8.06516 7.25">
+                <path d={svgPaths.p3367e500} fill="#292929" id="Polygon 1" />
+              </svg>
+            </div>
           </div>
         </div>
-      </div>
-    </motion.div>
-  );
-}
-
-function NavButtonGlobalOlympiad() {
-  const navigate = useNavigate();
-  return (
-    <motion.div
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-      onClick={() => navigate('/gco')}
-      className="bg-[rgba(227,227,227,0.72)] flex h-[32px] items-center justify-center px-[14px] md:px-[20px] relative rounded-full shrink-0 group cursor-pointer hover:bg-[rgba(200,200,200,0.85)] transition-colors"
-    >
-      <p className="font-bold leading-none relative shrink-0 text-[#292929] text-[11px] md:text-[13px] whitespace-nowrap" style={{ fontFamily: "'Manrope', sans-serif" }}>Global Olympiad</p>
-    </motion.div>
-  );
-}
-
-function NavButtonResources() {
-  return (
-    <motion.div
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-      className="bg-[rgba(227,227,227,0.72)] flex h-[32px] items-center justify-center px-[14px] md:px-[20px] relative rounded-full shrink-0 group cursor-pointer hover:bg-[rgba(200,200,200,0.85)] transition-colors"
-    >
-      <p className="font-bold leading-none relative shrink-0 text-[#292929] text-[11px] md:text-[13px] whitespace-nowrap" style={{ fontFamily: "'Manrope', sans-serif" }}>Resources</p>
-    </motion.div>
+      )}
+    </div>
   );
 }
 
 function NavLinks() {
   return (
-    <div className="flex flex-wrap gap-[8px] md:gap-[16px] items-center justify-center relative shrink-0">
-      <NavButtonAboutUs />
-      <NavButtonWorkshops />
-      <NavButtonGlobalOlympiad />
-      <NavButtonResources />
+    <div className="flex gap-[12px] md:gap-[16px] items-center justify-center">
+      <NavButton>
+        <NavButtonText text="About Us" />
+      </NavButton>
+      <NavButton>
+        <NavButtonText text="Workshops" hasDropdown />
+      </NavButton>
+      <NavButton>
+        <NavButtonText text="Global Olympiad" />
+      </NavButton>
+      <NavButton>
+        <NavButtonText text="Resources" />
+      </NavButton>
     </div>
   );
 }
@@ -93,10 +74,9 @@ function NavActions() {
       whileHover={{ scale: 1.05, boxShadow: "0px 10px 20px rgba(251, 68, 68, 0.3)" }}
       whileTap={{ scale: 0.95 }}
       onClick={() => navigate('/contact')}
-      className="bg-[#fb4444] flex h-[36px] items-center justify-center px-[16px] md:px-[20px] relative rounded-full shrink-0 group cursor-pointer hover:bg-[#ff5555] transition-all"
-      style={{ pointerEvents: 'auto' }}
+      className="bg-[#fb4444] flex h-[36px] items-center justify-center px-[20px] relative rounded-full shrink-0 group cursor-pointer hover:bg-[#ff5555] transition-all focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
     >
-      <p className="font-bold leading-none relative shrink-0 text-[11px] md:text-[13px] text-white whitespace-nowrap" style={{ fontFamily: "'Manrope', sans-serif" }}>Get Connected</p>
+      <p className="font-bold leading-none text-[12px] md:text-[13px] text-white whitespace-nowrap" style={{ fontFamily: "'Manrope', sans-serif" }}>Get Connected</p>
     </motion.div>
   );
 }
@@ -113,7 +93,6 @@ function MobileMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Overlay */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -121,7 +100,6 @@ function MobileMenu({ isOpen, onClose }: { isOpen: boolean; onClose: () => void 
             onClick={onClose}
             className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden"
           />
-          {/* Menu */}
           <motion.div
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
@@ -184,25 +162,27 @@ export default function Navbar() {
   return (
     <>
       <div className="bg-transparent fixed top-0 left-0 right-0 z-50">
-        <div className="flex items-center justify-between px-[16px] md:px-[24px] py-[16px] md:py-[20px] relative shrink-0 w-full max-w-[1280px] mx-auto">
-          <div className="flex items-center justify-start">
+        <div className="flex items-center justify-center px-[16px] md:px-[24px] py-[16px] md:py-[20px] relative shrink-0 w-full max-w-[1280px] mx-auto">
+          {/* Logo - Left */}
+          <div className="absolute left-[16px] md:left-[24px] flex items-center">
             <button className="cursor-pointer" onClick={() => navigate('/')} aria-label="Go to homepage">
               <LogoContainer />
             </button>
           </div>
-          
-          {/* Desktop Nav - hidden on mobile */}
-          <div className="hidden md:flex flex-1 items-center justify-center">
+
+          {/* Center Nav Links */}
+          <div className="flex items-center justify-center">
             <NavLinks />
           </div>
-          
-          <div className="hidden md:flex flex-1 items-center justify-end">
+
+          {/* Right CTA */}
+          <div className="absolute right-[16px] md:right-[24px] flex items-center">
             <NavActions />
           </div>
-          
+
           {/* Mobile Menu Button */}
           <button
-            className="md:hidden flex flex-col gap-[5px] p-2 z-50 cursor-pointer"
+            className="md:hidden absolute right-[16px] md:right-[24px] flex flex-col gap-[5px] p-2 z-50 cursor-pointer"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileMenuOpen}
