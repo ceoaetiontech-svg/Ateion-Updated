@@ -301,6 +301,7 @@ function SliderImageThree() {
 function HeroSliderHeader() {
   return (
     <div className="h-[665px] relative shrink-0 w-full overflow-hidden">
+      <Navbar />
       <div className="flex flex-col gap-[16px] items-start w-full">
         <HeroSliderImages />
       </div>
