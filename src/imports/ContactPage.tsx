@@ -63,7 +63,7 @@ export default function ContactPage() {
   return (
     <div className="bg-[#f7f3eb] w-full min-h-screen overflow-x-hidden">
       <Navbar />
-      <div className="pt-0">
+      <div className="-mt-[80px]">
         {/* Main Content */}
         <main className="contact-main-content">
           <h1 className="contact-title">Contact Us</h1>

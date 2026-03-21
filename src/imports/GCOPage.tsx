@@ -18,7 +18,7 @@ const GCOPage = () => {
   return (
     <div className="bg-[#f7f3eb] w-full min-h-screen overflow-x-hidden">
       <Navbar />
-      <main className="pt-0">
+      <main className="-mt-[80px]">
         <HeroSection />
         <Slide />
         <GCOComparison />
