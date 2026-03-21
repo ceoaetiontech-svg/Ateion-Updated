@@ -428,7 +428,7 @@ function HeroSliderHeader() {
   return (
     <div className="h-[665px] relative shrink-0 w-full overflow-hidden pt-[80px]">
       <TopNavBar />
-      <div className="content-stretch flex flex-col gap-[16px] items-start left-0 top-0 w-full">
+      <div className="flex flex-col gap-[16px] items-start w-full">
         <HeroSliderImages />
       </div>
     </div>
