@@ -381,7 +381,7 @@ function PurpleCapabilityCardOuter() {
   return (
     <div className="flex items-start justify-start relative shrink-0 w-full">
       <div className="content-stretch flex items-center relative shrink-0 w-[1224px] pl-[64px]">
-        <div className="bg-[#aa9dff] h-[504px] rounded-bl-[13px] rounded-tl-[13px] shrink-0 flex-1" />
+        <div className="bg-[#aa9dff] h-[504px] w-[975px] rounded-bl-[13px] rounded-tl-[13px] shrink-0" />
         <PurpleCapabilityCardInner />
       </div>
     </div>
