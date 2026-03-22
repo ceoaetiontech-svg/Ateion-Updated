@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
 import { useNavigate } from "react-router";
 import { ImageTrail } from "@/app/components/ui/image-trail";
-import Navbar from "../../app/components/Navbar";
 import "../../styles/gco/HeroSection.css";
 import logoEducation from "../../assets/gco/logo-education.png";
 import logoPolicy from "../../assets/gco/logo-education-policy2020.jpg";
@@ -20,10 +19,7 @@ function HeroSection() {
   ];
 
   return (
-    <section className="hero relative overflow-hidden" ref={ref}>
-      <div className="fixed top-0 left-0 right-0 z-50">
-        <Navbar />
-      </div>
+    <section className="hero" ref={ref}>
       <ImageTrail containerRef={ref}>
         {images.map((url, index) => (
           <div
@@ -51,7 +47,7 @@ function HeroSection() {
 
           <div className="hero-buttons">
             <button className="btn-secondary" onClick={() => navigate('/contact')}>Contact us</button>
-            <button className="btn-black">Explore more</button>
+            <button className="btn-black" onClick={() => navigate('/gco')}>Explore more</button>
           </div>
 
           <div className="aligned-with">

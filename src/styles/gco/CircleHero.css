@@ -2,11 +2,11 @@
   width: 90%;
   max-width: 1200px;
   margin: auto;
-  padding: 5rem 1.5rem;
+  padding: 64px 1.5rem;
   display: grid;
   grid-template-columns: 35% 1fr;
   align-items: center;
-  gap: 4rem;
+  gap: 48px;
   background-color: #f7f3eb;
   font-family: 'SF Pro Display', sans-serif;
 }
@@ -20,15 +20,15 @@
 .circle-hero-title {
   font-size: clamp(1.75rem, 3.5vw, 3rem);
   line-height: 1.2;
-  margin-bottom: 1.5rem;
+  margin-bottom: 24px;
   color: #1a1a1a;
   font-family: 'OV Soge', serif;
 }
 
 .circle-hero-tags {
   display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
+  gap: 8px;
+  margin-bottom: 24px;
   flex-wrap: wrap;
 }
 

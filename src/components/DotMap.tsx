@@ -165,9 +165,9 @@ export default function DotMap() {
 
           {/* Ripples */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="absolute w-10 h-10 border-[1.5px] border-blue-400/70 rounded-full animate-ripple" />
-            <div className="absolute w-10 h-10 border-[1.5px] border-blue-400/70 rounded-full animate-ripple animate-ripple-delay-1" />
-            <div className="absolute w-10 h-10 border-[1.5px] border-blue-400/70 rounded-full animate-ripple animate-ripple-delay-2" />
+            <div className="absolute w-10 h-10 border-2 border-blue-400/70 rounded-full animate-ripple" />
+            <div className="absolute w-10 h-10 border-2 border-blue-400/70 rounded-full animate-ripple animate-ripple-delay-1" />
+            <div className="absolute w-10 h-10 border-2 border-blue-400/70 rounded-full animate-ripple animate-ripple-delay-2" />
           </div>
         </div>
       ))}

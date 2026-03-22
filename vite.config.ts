@@ -20,4 +20,22 @@ export default defineConfig({
 
   // File types to support raw imports. Never add .css, .tsx, or .ts files to this.
   assetsInclude: ["**/*.svg", "**/*.csv"],
+  
+  // Fix for motion-dom and lucide-react build issues
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'motion': ['framer-motion'],
+          'lucide': ['lucide-react'],
+        },
+      },
+    },
+    commonjsOptions: {
+      include: [/node_modules/],
+    },
+  },
+  optimizeDeps: {
+    include: ['lucide-react'],
+  },
 });
