@@ -157,6 +157,8 @@ export default function ContactPage() {
         )}
           </div>
         </main>
+        {/* Large vertical spacing before footer */}
+        <div className="w-full h-[80px] sm:h-[120px] md:h-[160px] lg:h-[200px]" />
         <SharedFooter />
       </div>
     </>

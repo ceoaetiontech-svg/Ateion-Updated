@@ -354,12 +354,22 @@ function HeroHeaderSection() {
 
 function PurpleCapabilityCardText() {
   return (
-    <div className="flex flex-col gap-[24px] sm:gap-[32px] items-start justify-center relative shrink-0 w-full md:max-w-[300px]">
-      <p className="font-['Inter',sans-serif] leading-[1.4] text-[16px] sm:text-[18px] text-black">
-        Because <strong>marks</strong> measure memory.<br />
-        <strong className="font-['IBM Plex Sans',sans-serif] italic text-[18px] sm:text-[20px]">Capability</strong> <strong className="font-['IBM Plex Sans',sans-serif] italic">measures the future.</strong>
-      </p>
-      <p className="font-['Inter',sans-serif] leading-[1.6] text-[13px] sm:text-[14px] text-black w-full">
+    <div className="flex flex-col gap-[20px] sm:gap-[28px] md:gap-[32px] items-start justify-start relative shrink-0 w-full md:max-w-none">
+      {/* Main heading with improved hierarchy */}
+      <div className="flex flex-col gap-[8px] sm:gap-[12px] w-full">
+        <p className="font-['SF Pro Display','-apple-system','BlinkMacSystemFont','Segoe UI','Helvetica',sans-serif] font-semibold leading-[1.2] text-[22px] sm:text-[24px] md:text-[28px] text-black tracking-[-0.5px]">
+          Marks measure memory.
+        </p>
+        <p className="font-['SF Pro Display','-apple-system','BlinkMacSystemFont','Segoe UI','Helvetica',sans-serif] font-semibold leading-[1.2] text-[22px] sm:text-[24px] md:text-[28px] bg-gradient-to-r from-[#aa9dff] via-[#c9b8ff] to-[#aa9dff] bg-clip-text text-transparent tracking-[-0.5px]">
+          Capability measures the future.
+        </p>
+      </div>
+      
+      {/* Divider line */}
+      <div className="h-[1px] w-full bg-gradient-to-r from-[#aa9dff] via-[#aa9dff] to-transparent opacity-40" />
+      
+      {/* Description text with refined typography */}
+      <p className="font-['SF Pro Text','-apple-system','BlinkMacSystemFont','Segoe UI','Helvetica',sans-serif] leading-[1.6] text-[15px] sm:text-[16px] text-[#424245] w-full font-normal tracking-[0.3px]">
         Ateion is the world's leading Capability-First Education ecosystem integrating AI literacy, innovation, and measurable readiness into modern schooling.
       </p>
     </div>
@@ -368,8 +378,39 @@ function PurpleCapabilityCardText() {
 
 function PurpleCapabilityCardInner() {
   return (
-    <div className="bg-[#e6e6e6] flex h-[400px] sm:h-[450px] md:h-[504px] items-start p-[24px] sm:p-[32px] md:p-[40px] relative rounded-[13px] sm:rounded-[20px] shrink-0 w-full md:w-[32%] lg:w-[28%] md:max-w-none">
-      <PurpleCapabilityCardText />
+    <div className="relative w-full h-full min-h-[420px] md:min-h-[480px] rounded-[24px] sm:rounded-[28px] md:rounded-[32px] overflow-hidden group">
+      {/* Background with subtle gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#fafafa] via-[#f5f0ff] to-[#ede8ff] backdrop-blur-xl" />
+      
+      {/* Decorative gradient orb - top right */}
+      <div className="absolute top-[-60px] right-[-80px] w-[240px] h-[240px] bg-gradient-to-br from-[#aa9dff] to-[#c9b8ff] rounded-full opacity-[0.12] blur-[60px] group-hover:opacity-[0.16] transition-opacity duration-500" />
+      
+      {/* Secondary accent orb - bottom left (subtle) */}
+      <div className="absolute bottom-[-40px] left-[-40px] w-[140px] h-[140px] bg-gradient-to-tr from-[#aa9dff] to-transparent rounded-full opacity-[0.08] blur-[50px]" />
+      
+      {/* Subtle top accent line */}
+      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#aa9dff] to-transparent opacity-30" />
+      
+      {/* Content container with padding */}
+      <div className="relative z-20 h-full flex flex-col justify-between p-[24px] sm:p-[32px] md:p-[40px]">
+        {/* Top section */}
+        <div>
+          <PurpleCapabilityCardText />
+        </div>
+        
+        {/* Bottom section with CTA hint */}
+        <div className="flex flex-col gap-[16px] sm:gap-[20px] pt-[24px] sm:pt-[32px] border-t border-[#e0d9ff] border-opacity-50">
+          <p className="font-['SF Pro Text','-apple-system','BlinkMacSystemFont','Segoe UI','Helvetica',sans-serif] text-[13px] sm:text-[14px] md:text-[15px] leading-[1.6] text-[#666668] font-medium tracking-[0.2px] opacity-80">
+            Transforming how the world measures educational excellence through intelligent capability assessment.
+          </p>
+          
+          {/* Subtle indicator */}
+          <div className="flex items-center gap-[8px] text-[#aa9dff] text-[12px] sm:text-[13px] font-medium tracking-[0.3px] opacity-70 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="w-[6px] h-[6px] rounded-full bg-[#aa9dff]" />
+            <span>Capability-First Innovation</span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -387,10 +428,47 @@ function PurpleCapabilityCardOuter() {
 
 function GlobalAlignedTitle() {
   return (
-    <div className="content-stretch flex flex-col gap-[16px] sm:gap-[24px] items-start relative shrink-0 w-full max-w-[260px]">
-      <p className="leading-[normal] min-w-full not-italic relative shrink-0 text-[28px] sm:text-[36px] text-white w-[min-content]" style={{ fontFamily: "'OV Soge', sans-serif" }}>Globally Aligned with</p>
-      <div className="h-[140px] sm:h-[184px] relative rounded-[16px] shrink-0 w-[200px] sm:w-[250px]" data-name="image 9">
-        <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none rounded-[16px] size-full" src={imgImage9} />
+    <div className="relative w-full h-full min-h-[300px] sm:min-h-[400px] rounded-[24px] sm:rounded-[32px] overflow-hidden group">
+      {/* Background with gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] via-[#2d2d2d] to-[#1a1a1a]" />
+      
+      {/* Decorative accent orb */}
+      <div className="absolute -top-20 -right-20 w-[240px] h-[240px] bg-gradient-to-br from-[#aa9dff] to-[#c9b8ff] rounded-full opacity-5 blur-[80px]" />
+      
+      {/* Top accent line */}
+      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#aa9dff] to-transparent opacity-30" />
+      
+      {/* Content */}
+      <div className="relative z-20 h-full flex flex-col justify-between p-[24px] sm:p-[32px] md:p-[40px]">
+        {/* Title section */}
+        <div className="flex flex-col gap-[8px]">
+          <p className="font-['SF Pro Display','-apple-system','BlinkMacSystemFont','Segoe UI','Helvetica',sans-serif] font-semibold leading-[1.2] text-[24px] sm:text-[28px] md:text-[32px] text-white tracking-[-0.5px]">
+            Globally Aligned
+          </p>
+          <p className="font-['SF Pro Text','-apple-system','BlinkMacSystemFont','Segoe UI','Helvetica',sans-serif] text-[14px] sm:text-[15px] text-[#a0a0a0] font-normal tracking-[0.3px] leading-[1.6]">
+            Partners and alliances worldwide
+          </p>
+        </div>
+        
+        {/* Images grid - 2 columns */}
+        <div className="grid grid-cols-2 gap-[12px] sm:gap-[16px] mt-auto">
+          <div className="relative h-[120px] sm:h-[150px] md:h-[160px] rounded-[12px] sm:rounded-[16px] overflow-hidden bg-[#333333] shadow-lg hover:shadow-xl transition-all duration-300 group/card hover:-translate-y-1">
+            <img 
+              alt="Global Partner 1" 
+              className="absolute inset-0 w-full h-full object-cover" 
+              src={imgImage9} 
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300" />
+          </div>
+          <div className="relative h-[120px] sm:h-[150px] md:h-[160px] rounded-[12px] sm:rounded-[16px] overflow-hidden bg-[#333333] shadow-lg hover:shadow-xl transition-all duration-300 group/card hover:-translate-y-1">
+            <img 
+              alt="Global Partner 2" 
+              className="absolute inset-0 w-full h-full object-cover" 
+              src={imgImage7} 
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300" />
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -409,25 +487,89 @@ function GlobalAlignedContent() {
 
 function GlobalAlignedBlackCard() {
   return (
-    <div className="bg-[#202020] content-stretch flex flex-col items-start pb-[24px] sm:pb-[32px] pt-[24px] sm:pt-[32px] px-[24px] sm:px-[32px] relative rounded-[13px] sm:rounded-[20px] shrink-0 md:shrink w-full md:w-[45%] lg:w-[40%]">
-      <GlobalAlignedContent />
+    <div className="relative w-full h-full min-h-[300px] sm:min-h-[400px] rounded-[24px] sm:rounded-[32px] overflow-hidden group">
+      {/* Background with gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] via-[#2d2d2d] to-[#1a1a1a]" />
+      
+      {/* Decorative accent orb */}
+      <div className="absolute -bottom-20 -left-20 w-[280px] h-[280px] bg-gradient-to-tr from-[#aa9dff] to-[#c9b8ff] rounded-full opacity-5 blur-[80px]" />
+      
+      {/* Top accent line */}
+      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#aa9dff] to-transparent opacity-30" />
+      
+      {/* Content */}
+      <div className="relative z-20 h-full flex flex-col justify-between p-[24px] sm:p-[32px] md:p-[40px]">
+        {/* Title section */}
+        <div className="flex flex-col gap-[8px]">
+          <p className="font-['SF Pro Display','-apple-system','BlinkMacSystemFont','Segoe UI','Helvetica',sans-serif] font-semibold leading-[1.2] text-[24px] sm:text-[28px] md:text-[32px] text-white tracking-[-0.5px]">
+            Global Partners
+          </p>
+          <p className="font-['SF Pro Text','-apple-system','BlinkMacSystemFont','Segoe UI','Helvetica',sans-serif] text-[14px] sm:text-[15px] text-[#a0a0a0] font-normal tracking-[0.3px] leading-[1.6]">
+            Trusted by educators worldwide
+          </p>
+        </div>
+        
+        {/* Images grid - 2 columns, full height */}
+        <div className="grid grid-cols-2 gap-[12px] sm:gap-[16px] mt-auto h-auto">
+          <div className="relative h-[120px] sm:h-[150px] md:h-[160px] rounded-[12px] sm:rounded-[16px] overflow-hidden bg-gradient-to-br from-[#333333] to-[#262626] shadow-lg hover:shadow-2xl transition-all duration-300 group/card hover:-translate-y-1">
+            <img 
+              alt="Global Partner 1" 
+              className="absolute inset-0 w-full h-full object-cover" 
+              src={imgImage9} 
+            />
+            {/* Hover overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300" />
+            {/* Shine effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/5 to-white/0 opacity-0 group-hover/card:opacity-100 transition-opacity duration-500" />
+          </div>
+          
+          <div className="relative h-[120px] sm:h-[150px] md:h-[160px] rounded-[12px] sm:rounded-[16px] overflow-hidden bg-gradient-to-br from-[#333333] to-[#262626] shadow-lg hover:shadow-2xl transition-all duration-300 group/card hover:-translate-y-1">
+            <img 
+              alt="Global Partner 2" 
+              className="absolute inset-0 w-full h-full object-cover" 
+              src={imgImage7} 
+            />
+            {/* Hover overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300" />
+            {/* Shine effect */}
+            <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/5 to-white/0 opacity-0 group-hover/card:opacity-100 transition-opacity duration-500" />
+          </div>
+        </div>
+        
+        {/* Bottom indicator dot */}
+        <div className="flex items-center gap-[8px] mt-[20px] sm:mt-[24px] text-[#aa9dff] text-[12px] sm:text-[13px] font-medium tracking-[0.2px] opacity-60 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="w-[6px] h-[6px] rounded-full bg-[#aa9dff]" />
+          <span>Partnership Excellence</span>
+        </div>
+      </div>
     </div>
   );
 }
 
 function RedIntelligenceTitle() {
   return (
-    <div className="h-auto sm:h-[132px] relative shrink-0 w-full max-w-[235px]">
-      <p className="relative leading-[normal] not-italic text-[20px] sm:text-[24px] text-black w-full" style={{ fontFamily: "'OV Soge', sans-serif" }}>Education is not broken. Its measurement system is :</p>
+    <div className="flex flex-col gap-[12px] sm:gap-[16px] relative shrink-0 w-full">
+      <div className="flex flex-col gap-[4px]">
+        <p className="font-['SF Pro Display','-apple-system','BlinkMacSystemFont','Segoe UI','Helvetica',sans-serif] font-semibold leading-[1.2] text-[20px] sm:text-[24px] text-white tracking-[-0.5px]">
+          Education is not broken.
+        </p>
+        <p className="font-['SF Pro Display','-apple-system','BlinkMacSystemFont','Segoe UI','Helvetica',sans-serif] font-semibold leading-[1.2] text-[20px] sm:text-[24px] bg-gradient-to-r from-[#ff9999] via-[#ffb3b3] to-[#ff9999] bg-clip-text text-transparent tracking-[-0.5px]">
+          Measurement system needs rethinking.
+        </p>
+      </div>
     </div>
   );
 }
 
 function RedIntelligenceTop() {
   return (
-    <div className="content-stretch flex items-start justify-between relative shrink-0 w-full">
-      <RedIntelligenceTitle />
-      <VerticalTicker />
+    <div className="flex flex-col sm:flex-row items-start gap-[16px] sm:gap-[24px] md:gap-[32px] w-full">
+      <div className="flex-1 min-w-0">
+        <RedIntelligenceTitle />
+      </div>
+      <div className="flex-shrink-0">
+        <VerticalTicker />
+      </div>
     </div>
   );
 }
@@ -446,8 +588,42 @@ function RedIntelligenceContent() {
 
 function RedIntelligenceCard() {
   return (
-    <div className="bg-[#ff6b6b] content-stretch flex flex-col items-start pb-[24px] sm:pb-[32px] pl-[24px] sm:pl-[50px] pr-[16px] sm:pr-[24px] pt-[24px] sm:pt-[32px] relative rounded-[13px] sm:rounded-[20px] shrink-0 md:shrink flex-1 w-full">
-      <RedIntelligenceContent />
+    <div className="relative w-full h-full min-h-[320px] sm:min-h-[400px] rounded-[24px] sm:rounded-[32px] overflow-hidden group">
+      {/* Background with gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#ff6b6b] via-[#ff7f7f] to-[#ff5252]" />
+      
+      {/* Secondary gradient overlay - slight angle */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-white opacity-5" />
+      
+      {/* Decorative accent orb - top left */}
+      <div className="absolute -top-24 -left-24 w-[280px] h-[280px] bg-gradient-to-br from-white to-[#ff9999] rounded-full opacity-[0.08] blur-[80px]" />
+      
+      {/* Subtle accent orb - bottom right */}
+      <div className="absolute -bottom-16 -right-16 w-[200px] h-[200px] bg-gradient-to-tl from-[#cc0000] to-transparent rounded-full opacity-[0.06] blur-[60px]" />
+      
+      {/* Top accent line */}
+      <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-white to-transparent opacity-30" />
+      
+      {/* Content container */}
+      <div className="relative z-20 h-full flex flex-col justify-between p-[24px] sm:p-[32px] md:p-[40px]">
+        {/* Top section - Title and Ticker */}
+        <div>
+          <RedIntelligenceTop />
+        </div>
+        
+        {/* Bottom section - Description */}
+        <div className="flex flex-col gap-[16px] sm:gap-[20px] pt-[20px] sm:pt-[24px] border-t border-white border-opacity-20">
+          <p className="font-['SF Pro Text','-apple-system','BlinkMacSystemFont','Segoe UI','Helvetica',sans-serif] leading-[1.6] text-[14px] sm:text-[15px] md:text-[16px] text-white font-medium tracking-[0.2px] opacity-95">
+            Ateion replaces memory-based validation with <span className="font-semibold">Capability-based intelligence</span>.
+          </p>
+          
+          {/* Indicator badge */}
+          <div className="flex items-center gap-[8px] text-white text-[12px] sm:text-[13px] font-medium tracking-[0.2px] opacity-70 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="w-[6px] h-[6px] rounded-full bg-white" />
+            <span>Future-Ready Assessment</span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -465,9 +641,22 @@ function HeroMetricsRow() {
 
 function HeroFeatureCardsRow() {
   return (
-    <div className="content-stretch flex flex-col gap-[24px] items-start relative shrink-0 w-full">
-      <PurpleCapabilityCardOuter />
-      <HeroMetricsRow />
+    <div className="w-full max-w-[1240px] mx-auto px-4 md:px-16 py-8">
+      {/* Grid: 1 column on mobile, 2 columns on desktop */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+        
+        {/* LEFT COLUMN: The Capability Card (Purple/Grey) */}
+        <div className="flex flex-col h-full">
+          <PurpleCapabilityCardInner />
+        </div>
+
+        {/* RIGHT COLUMN: The two smaller cards stacked vertically */}
+        <div className="flex flex-col gap-6">
+          <GlobalAlignedBlackCard />
+          <RedIntelligenceCard />
+        </div>
+
+      </div>
     </div>
   );
 }
