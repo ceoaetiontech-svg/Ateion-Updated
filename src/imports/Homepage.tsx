@@ -22,6 +22,7 @@ import imgImage13 from "../assets/a440209918fa81a1c528e2e95290d4f1f12546e7.png";
 import DotMap from "../components/DotMap";
 import SharedFooter from "../app/components/SharedFooter";
 import SharedNavbar from "../app/components/SharedNavbar";
+import RedIntelligenceCard from "../components/home/RedIntelligenceCard";
 
 /* ─────────────────────────────────────────────
    UTILITY COMPONENTS
@@ -62,40 +63,6 @@ function FadeIn({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
     >
       {children}
     </motion.div>
-  );
-}
-
-function VerticalTicker() {
-  const words = ["Inefficient", "Outdated", "Deprecated", "Stagnant"];
-  const [index, setIndex] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setIndex((prev) => (prev + 1) % words.length);
-    }, 2500);
-    return () => clearInterval(timer);
-  }, []);
-
-  return (
-    <span className="inline-block relative overflow-hidden align-bottom" style={{ height: "1.2em", minWidth: "160px" }}>
-      <AnimatePresence mode="wait">
-        <motion.span
-          key={words[index]}
-          initial={{ y: "100%", opacity: 0 }}
-          animate={{ y: "0%", opacity: 1 }}
-          exit={{ y: "-100%", opacity: 0 }}
-          transition={{ duration: 0.45, ease: [0.23, 1, 0.32, 1] }}
-          className="absolute left-0 bottom-0 font-bold italic"
-          style={{
-            fontFamily: "'IBM Plex Sans', sans-serif",
-            color: "#1a1a1a",
-            whiteSpace: "nowrap",
-          }}
-        >
-          {words[index]}
-        </motion.span>
-      </AnimatePresence>
-    </span>
   );
 }
 
@@ -329,39 +296,6 @@ function GlobalAlignedBlackCard() {
   );
 }
 
-function RedIntelligenceCard() {
-  return (
-    <div className="bg-[#ff6b6b] content-stretch flex flex-col items-start justify-center px-[28px] sm:px-[40px] md:px-[48px] py-[32px] sm:py-[40px] relative rounded-[13px] sm:rounded-[20px] shrink-0 md:shrink flex-1 w-full">
-      <div className="flex flex-col gap-[20px] sm:gap-[28px] items-start w-full max-w-[560px]">
-
-        {/* Single inline sentence with swapping word */}
-        <p
-          className="leading-[1.25] text-[22px] sm:text-[28px] md:text-[32px] text-black"
-          style={{ fontFamily: "'OV Soge', sans-serif" }}
-        >
-          Education is not broken. Its measurement system is{" "}
-          <VerticalTicker />
-        </p>
-
-        {/* Subtext */}
-        <p
-          className="leading-[1.6] text-[15px] sm:text-[17px] md:text-[18px] text-black text-opacity-75"
-          style={{ fontFamily: "'Inter', sans-serif", color: "rgba(0,0,0,0.72)" }}
-        >
-          Ateion replaces memory-based validation with{" "}
-          <span
-            className="italic font-semibold text-[17px] sm:text-[20px] md:text-[22px]"
-            style={{ fontFamily: "'IBM Plex Sans', sans-serif", color: "#1a1a1a" }}
-          >
-            Capability-based intelligence.
-          </span>
-        </p>
-
-      </div>
-    </div>
-  );
-}
-
 function HeroMetricsRow() {
   return (
     <div className="flex flex-col items-start justify-start relative shrink-0 w-full px-[16px] sm:px-[24px] md:px-0">
@@ -585,7 +519,7 @@ function EcosystemCard({
         {node.number}
       </p>
 
-        {/* Title */}
+      {/* Title */}
       <p
         className="mb-3 text-[22px] leading-tight md:text-[20px] lg:text-[22px]"
         style={{
