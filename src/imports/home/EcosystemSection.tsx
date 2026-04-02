@@ -51,12 +51,6 @@ function GcoFeatureBadge({
             transition={{ duration: 0.3 }}
             className="w-full flex flex-col items-start"
           >
-            <p
-              className="font-['DM_Sans:Light',sans-serif] font-light leading-[2] text-[20px] md:text-[24px] text-black w-full opacity-60 mb-2"
-              style={{ fontVariationSettings: "'opsz' 14" }}
-            >
-              ({activeData.number})
-            </p>
             <div className="flex flex-col gap-[20px] md:gap-[24px] items-start w-full">
               <p
                 className="leading-[1.19] not-italic text-[36px] sm:text-[42px] md:text-[48px] text-black tracking-[0.4px] w-full max-w-[500px]"
@@ -187,7 +181,7 @@ function EcosystemBubble({
             cy="50"
             r="49.5"
             animate={{
-              fill: isHovered ? "#FF595B" : defaultColor,
+              fill: isHovered ? (hoverColor === "#FF595B" ? "#FF595B" : "#1E1632") : defaultColor,
               stroke: isHovered
                 ? hoverColor
                 : defaultColor !== "transparent"
