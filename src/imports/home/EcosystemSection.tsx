@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import svgPaths from "../svg-paths";
+import svgPaths from "../../imports/svg-paths";
 
 function Tag({ text, className = "" }: { text: string; className?: string }) {
   return (
@@ -556,23 +556,30 @@ export default function EcosystemSection() {
           ← scroll to explore →
         </p>
 
-        {/* Horizontally scrollable cluster (mobile) */}
+        {/* Horizontally scrollable cluster (mobile) with vertical scroll area and invisible scrollbars */}
         <div
-          className="w-full overflow-x-auto overflow-y-hidden pb-4"
-          style={{ WebkitOverflowScrolling: "touch" }}
+          className="w-full overflow-x-auto overflow-y-auto pb-4"
+          style={{
+            WebkitOverflowScrolling: "touch",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+            maxHeight: "70vh",
+            minHeight: "40vh",
+          }}
         >
-          {/* Thin scrollbar styling via inline style — Tailwind can't target ::-webkit-scrollbar */}
+          {/* Hide scrollbars visually but keep content swipe-scrollable */}
           <style>{`
-            .bubble-scroll::-webkit-scrollbar { height: 3px; }
+            .bubble-scroll { scrollbar-width: none; -ms-overflow-style: none; }
+            .bubble-scroll::-webkit-scrollbar { width: 0; height: 0; }
             .bubble-scroll::-webkit-scrollbar-track { background: transparent; }
-            .bubble-scroll::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 2px; }
+            .bubble-scroll::-webkit-scrollbar-thumb { background: transparent; }
           `}</style>
-          <div className="bubble-scroll w-full overflow-x-auto overflow-y-hidden pb-4">
+          <div className="bubble-scroll w-full overflow-x-auto overflow-y-auto pb-4">
             {/* Scale down the cluster on mobile, but keep bigger height to avoid vertical scrollbar */}
             <div
               style={{
-                width: CANVAS_WIDTH * MOBILE_CLUSTER_SCALE,
-                height: CANVAS_HEIGHT * MOBILE_CLUSTER_SCALE,
+                width: CANVAS_WIDTH,
+                height: CANVAS_HEIGHT,
                 transform: `scale(${MOBILE_CLUSTER_SCALE})`,
                 transformOrigin: "top left",
                 minHeight: CANVAS_HEIGHT * MOBILE_CLUSTER_SCALE,

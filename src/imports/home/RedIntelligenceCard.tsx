@@ -53,7 +53,7 @@ function VerticalTicker() {
                 height: `${ITEM_HEIGHT}px`,
                 display: "flex",
                 alignItems: "center",
-                fontSize: isActive ? "42px" : "36px",
+                fontSize: isActive ? "36px" : "30px",
                 fontFamily: "'OV Soge', sans-serif",
                 fontWeight: 600,
                 whiteSpace: "nowrap",
