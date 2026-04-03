@@ -134,6 +134,29 @@ export default function DotMap() {
     <div ref={containerRef} className="relative w-full h-full bg-black">
       <canvas ref={canvasRef} className="absolute inset-0" />
 
+      {/* Add ripple animation styles */}
+      <style>{`
+        @keyframes ripple {
+          0% {
+            transform: scale(0.8);
+            opacity: 1;
+          }
+          100% {
+            transform: scale(2.4);
+            opacity: 0;
+          }
+        }
+        .animate-ripple {
+          animation: ripple 3s infinite;
+        }
+        .animate-ripple-delay-1 {
+          animation: ripple 3s infinite 1s;
+        }
+        .animate-ripple-delay-2 {
+          animation: ripple 3s infinite 2s;
+        }
+      `}</style>
+
       {nodePositions.map(node => (
         <div
           key={node.id}
@@ -161,7 +184,7 @@ export default function DotMap() {
           </motion.div>
 
           {/* Node core */}
-          <div className="relative w-3 h-3 bg-white rounded-full shadow-[0_0_20px_6px_rgba(255,255,255,0.5)] transition-transform duration-300 group-hover:scale-125" />
+          <div className="relative w-3 h-3 bg-white rounded-full shadow-[0_0_15px_4px_rgba(255,255,255,0.3)] transition-transform duration-300 group-hover:scale-125" />
 
           {/* Ripples */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">

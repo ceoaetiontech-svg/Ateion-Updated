@@ -367,8 +367,14 @@ function GlobalPresenceMapSection() {
               </div>
 
               {/* Dot map */}
-              <div className="relative shrink-0 w-full overflow-hidden rounded-[24px] sm:rounded-[28px] md:rounded-[32px] bg-[#050505] min-h-[260px] sm:min-h-[360px] md:min-h-[500px]">
-                <div className="absolute inset-0 scale-[1.08] sm:scale-[1] origin-center flex items-center justify-center">
+              <div
+                className="relative shrink-0 w-full overflow-x-auto md:overflow-hidden rounded-[24px] sm:rounded-[28px] md:rounded-[32px] bg-[#050505] min-h-[260px] sm:min-h-[360px] md:min-h-[500px]"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              >
+                <style>{`
+                  .map-scroll::-webkit-scrollbar { width: 0; height: 0; }
+                `}</style>
+                <div className="map-scroll absolute inset-0 scale-[1.08] sm:scale-[1] origin-center flex items-center justify-center">
                   <DotMap />
                 </div>
               </div>
