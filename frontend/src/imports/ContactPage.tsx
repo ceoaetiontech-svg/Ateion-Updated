@@ -5,8 +5,13 @@ import SharedFooter from '../app/components/SharedFooter';
 import './contact-styles.css';
 
 export default function ContactPage() {
+
+  const API_URL = import.meta.env.VITE_API_BASE_URL || '';
+
   const navigate = useNavigate();
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -52,13 +57,51 @@ export default function ContactPage() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (validateForm()) {
-      setSubmitted(true);
-      setFormData({ firstName: '', lastName: '', email: '', message: '', agreed: false });
-    }
-  };
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      setSubmitError('');
+  
+      if (!validateForm()) {
+        return;
+      }
+  
+      if (!formData.agreed) {
+        setSubmitError('Please accept the privacy policy before submitting.');
+        return;
+      }
+  
+      try {
+        setIsSubmitting(true);
+  
+        const payload = {
+          name: `${formData.firstName} ${formData.lastName}`.trim(),
+          email: formData.email.trim(),
+          subject: 'Website Contact Form',
+          message: formData.message.trim(),
+        };
+  
+        
+        const response = await fetch(`${API_URL}/contact`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        });
+  
+        if (!response.ok) {
+          throw new Error(`Request failed with status ${response.status}`);
+        }
+  
+        setSubmitted(true);
+        setFormData({ firstName: '', lastName: '', email: '', message: '', agreed: false });
+      } catch (error) {
+        setSubmitError('Unable to submit your message right now. Please try again.');
+        console.error('Contact form submission failed:', error);
+      } finally {
+        setIsSubmitting(false);
+      }
+    };
 
   return (
     <>
@@ -151,8 +194,11 @@ export default function ContactPage() {
                 />
                 I understand that Ateion will securely hold my data in accordance with their privacy policy
               </label>
-              <button type="submit" className="submit-btn">Submit</button>
+              <button type="submit" className="submit-btn" disabled={isSubmitting}>
+                {isSubmitting ? 'Submitting...' : 'Submit'}
+              </button>
             </div>
+            {submitError && <span className="error-message">{submitError}</span>}
           </form>
         )}
           </div>
