@@ -24,7 +24,9 @@ function VerticalTicker() {
       style={{
         height: `${ITEM_HEIGHT * 3}px`,
         overflow: "hidden",
-        width: "380px",
+        width: "100%",
+        maxWidth: "420px",
+        minWidth: "300px",
         position: "relative",
       }}
     >
@@ -53,7 +55,8 @@ function VerticalTicker() {
                 height: `${ITEM_HEIGHT}px`,
                 display: "flex",
                 alignItems: "center",
-                fontSize: isActive ? "64px" : "48px",
+                justifyContent: "flex-start",
+                fontSize: isActive ? "52px" : "40px",
                 fontFamily: "'OV Soge', sans-serif",
                 fontWeight: 600,
                 whiteSpace: "nowrap",
@@ -77,9 +80,9 @@ function DekstopCard() {
     return (
             <div className="bg-[#ff6b6b] content-stretch flex flex-col items-center justify-center pb-[32px] sm:pb-[56px] px-[24px] sm:px-[50px] pt-[32px] sm:pt-[56px] relative rounded-[13px] sm:rounded-[20px] shrink-0 md:shrink flex-1 w-full">
       <div className="content-stretch flex flex-col gap-[36px] items-center relative shrink-0 w-full max-w-[800px]">
-        <div className="content-stretch flex items-center justify-between relative shrink-0 w-full gap-[24px]">
-          <div className="h-auto relative shrink-0 w-full max-w-[420px]">
-            <p className="relative leading-[1.2] not-italic text-[32px] sm:text-[40px] md:text-[48px] text-black w-full" style={{ fontFamily: "'OV Soge', sans-serif" }}>Education is not broken. Its measurement system is :</p>
+        <div className="content-stretch flex items-center justify-between relative shrink-0 w-full gap-[12px] md:gap-[24px]">
+          <div className="h-auto relative shrink-0 w-full max-w-[360px]">
+            <p className="relative leading-[1.2] not-italic text-[28px] sm:text-[36px] md:text-[44px] text-black w-full" style={{ fontFamily: "'OV Soge', sans-serif" }}>Education is not broken. Its measurement system is :</p>
           </div>
           <VerticalTicker />
         </div>
