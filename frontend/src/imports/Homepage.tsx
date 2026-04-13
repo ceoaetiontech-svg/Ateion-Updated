@@ -457,10 +457,10 @@ function EducationStatusWrapper() {
                   {item.title}
                 </p>
                 <div className="mt-[20px] sm:mt-[24px] flex flex-col gap-[6px]">
-                  <span className="text-[12px] sm:text-[13px] font-bold text-black opacity-50 uppercase tracking-wider" style={{ fontFamily: "'Inter', sans-serif" }}>
+                  <span className="text-[12px] sm:text-[13px] font-bold text-black opacity-50 uppercase tracking-wider" style={{ fontFamily: "'Manrope', sans-serif" }}>
                     Source
                   </span>
-                  <span className="text-[15px] sm:text-[16px] font-semibold text-black opacity-80" style={{ fontFamily: "'Inter', sans-serif" }}>
+                  <span className="text-[15px] sm:text-[16px] font-semibold text-black opacity-80" style={{ fontFamily: "'Manrope', sans-serif" }}>
                     {item.source}
                   </span>
                 </div>
