@@ -150,24 +150,18 @@ function PurpleCapabilityCardOuter() {
        <div className="flex-1 w-full h-[350px] sm:h-[400px] md:h-auto rounded-[13px] sm:rounded-[20px] overflow-hidden relative">
 
   <video
-    autoPlay
-    muted
-    loop
-    playsInline
-    controls
-    className="w-full h-full object-cover"
-  >
-    <source src="/video.mp4" type="video/mp4" />
-  </video>
-
-  <a
-    href="https://www.ateion.com/"
-    target="_blank"
-    className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-red-500 text-white px-4 py-2 rounded-full"
-  >
-    Explore More →
-  </a>
-
+  autoPlay
+  muted
+  loop
+  playsInline
+  className="w-full h-[350px] sm:h-[400px] object-cover"
+  ref={(video) => {
+    if (video) video.playbackRate = 1.5;
+  }}
+>
+  <source src="/video.mp4" type="video/mp4" />
+</video>
+          
 </div>
         <PurpleCapabilityCardInner />
       </div>
