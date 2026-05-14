@@ -156,7 +156,7 @@ function PurpleCapabilityCardOuter() {
       <div className="content-stretch flex flex-col md:flex-row items-stretch relative shrink-0 w-full gap-[16px] sm:gap-[24px]">
        <div className="w-full flex justify-center">
   <div className="w-full max-w-[400px] sm:max-w-none 
-                  h-[220px] sm:h-[350px] md:h-[500px] 
+                  aspect-video 
                   overflow-hidden rounded-[24px] shadow-lg">
 
     <video
