@@ -147,7 +147,28 @@ function PurpleCapabilityCardOuter() {
   return (
     <div className="flex flex-col items-start justify-start relative shrink-0 w-full px-[16px] sm:px-[24px] md:px-0">
       <div className="content-stretch flex flex-col md:flex-row items-stretch relative shrink-0 w-full gap-[16px] sm:gap-[24px]">
-        <div className="bg-[#aa9dff] h-[350px] sm:h-[400px] md:h-auto flex-1 w-full rounded-[13px] sm:rounded-[20px] shrink-0 md:shrink" />
+        <div className="flex-1 w-full rounded-[13px] sm:rounded-[20px] overflow-hidden relative">
+
+  <video
+    autoPlay
+    muted
+    loop
+    playsInline
+    controls
+    className="w-full h-[350px] sm:h-[400px] object-cover"
+  >
+    <source src="/video.mp4" type="video/mp4" />
+  </video>
+
+  <a
+    href="https://www.ateion.com/"
+    target="_blank"
+    className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-red-500 text-white px-4 py-2 rounded-full"
+  >
+    Explore More →
+  </a>
+
+</div>
         <PurpleCapabilityCardInner />
       </div>
     </div>
