@@ -155,7 +155,7 @@ function PurpleCapabilityCardOuter() {
     <div className="flex flex-col items-start justify-start relative shrink-0 w-full px-[16px] sm:px-[24px] md:px-0">
       <div className="content-stretch flex flex-col md:flex-row items-stretch relative shrink-0 w-full gap-[16px] sm:gap-[24px]">
        <div className="w-full flex justify-center">
-       <div className="w-full max-w-[1100px] rounded-2xl overflow-hidden shadow-lg">
+       <div className="w-full max-w-[400px] h-[220px] sm:max-w-none sm:h-[350px] md:h-[500px] overflow-hidden rounded-[24px] shadow-lg">
 
     <video
       autoPlay
@@ -163,7 +163,7 @@ function PurpleCapabilityCardOuter() {
       loop
       playsInline
       controls
-      className=className=className="w-full min-h-[220px] sm:min-h-[300px] md:min-h-[400px] object-cover"
+      className=className=className="w-full h-[220px] sm:h-[350px] md:h-[500px] object-cover rounded-[24px]"
       ref={(video) => {
         if (video) {
           video.playbackRate = 1.5;
