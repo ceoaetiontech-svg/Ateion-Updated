@@ -149,12 +149,11 @@ function PurpleCapabilityCardOuter() {
       <div className="content-stretch flex flex-col md:flex-row items-stretch relative shrink-0 w-full gap-[16px] sm:gap-[24px]">
        <div className="flex-1 w-full h-[350px] sm:h-[400px] md:h-auto rounded-[13px] sm:rounded-[20px] overflow-hidden relative">
 
- <video
-  autoPlay
-  muted
+<video
+  controls
   loop
   playsInline
-  className="w-full h-[250px] sm:h-[350px] md:h-[450px] object-cover rounded-xl"
+  className="w-full h-[300px] sm:h-[400px] object-cover rounded-xl"
   ref={(video) => {
     if (video) video.playbackRate = 1.5;
   }}
