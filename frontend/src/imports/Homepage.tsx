@@ -163,7 +163,8 @@ function PurpleCapabilityCardOuter() {
       loop
       playsInline
       controls
-      className="w-full h-[400px] sm:h-[500px] md:h-[550px] object-cover"
+      className="w-full h-[300px] sm:h-[400px] md:h-[450px] object-cover rounded-[20px]"
+
       ref={(video) => {
         if (video) {
           video.playbackRate = 1.5;
