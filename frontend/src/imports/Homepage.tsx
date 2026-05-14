@@ -81,19 +81,19 @@ function ExploreButton() {
       rel="noopener noreferrer"
     >
       <motion.button
-        whileHover={{ scale: 1.04, backgroundColor: "#c92e2e" }}
-        whileTap={{ scale: 0.97 }}
-        className="flex items-center gap-[8px] bg-[#e03a3a] text-white rounded-full border-none cursor-pointer shadow-[0_8px_28px_rgba(224,58,58,0.3)]"
-        style={{
-          padding:
-            "clamp(10px,1.4vh,14px) clamp(18px,2vw,26px) clamp(10px,1.4vh,14px) clamp(14px,1.6vw,20px)",
-          fontFamily: "'Outfit', sans-serif",
-          fontSize: "clamp(12px, 1vw, 14px)",
-          fontWeight: 600,
-          letterSpacing: "0.02em",
-          transition: "background 0.2s",
-        }}
-      >
+  whileHover={{ scale: 1.04, backgroundColor: "#c92e2e" }}
+  whileTap={{ scale: 0.97 }}
+  className="flex items-center gap-[8px] bg-[#e03a3a] text-white rounded-full border-none cursor-pointer shadow-[0_8px_28px_rgba(224,58,58,0.3)]"
+  style={{
+    padding:
+      "clamp(10px, 1.4vh, 14px) clamp(18px, 2vw, 26px) clamp(10px, 1.4vh, 14px) clamp(14px, 1.6vw, 20px)",
+    fontFamily: "'Outfit', sans-serif",
+    fontSize: "clamp(12px, 1vw, 14px)",
+    fontWeight: 600,
+    letterSpacing: "0.02em",
+    transition: "background 0.2s",
+  }}
+>
         Explore more →
       </motion.button>
     </a>
