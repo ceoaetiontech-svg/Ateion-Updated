@@ -10,7 +10,7 @@ export default function App() {
         <Route path="/" element={<Homepage />} />
         <Route path="/gco" element={<GCOPage />} />
         <Route path="/contact" element={<ContactPage />} />
-      </Routes>
+      </Routes>``
     </BrowserRouter>
   );
 }
