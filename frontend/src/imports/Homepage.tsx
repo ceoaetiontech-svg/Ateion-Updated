@@ -75,28 +75,21 @@ function FadeIn({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
 
 function ExploreButton() {
   return (
-    <a
-      href="https://www.ateion.com/"
-      target="_blank"
-      rel="noopener noreferrer"
+    <motion.button
+      whileHover={{ scale: 1.04, backgroundColor: "#c92e2e" }}
+      whileTap={{ scale: 0.97 }}
+      className="flex items-center gap-[8px] bg-[#e03a3a] text-white rounded-full border-none cursor-pointer shadow-[0_8px_28px_rgba(224,58,58,0.3)]"
+      style={{
+        padding: "clamp(10px,1.4vh,14px) clamp(18px,2vw,26px) clamp(10px,1.4vh,14px) clamp(14px,1.6vw,20px)",
+        fontFamily: "'Outfit', sans-serif",
+        fontSize: "clamp(12px, 1vw, 14px)",
+        fontWeight: 600,
+        letterSpacing: "0.02em",
+        transition: "background 0.2s",
+      }}
     >
-      <motion.button
-  whileHover={{ scale: 1.04, backgroundColor: "#c92e2e" }}
-  whileTap={{ scale: 0.97 }}
-  className="flex items-center gap-[8px] bg-[#e03a3a] text-white rounded-full border-none cursor-pointer shadow-[0_8px_28px_rgba(224,58,58,0.3)]"
-  style={{
-    padding:
-      "clamp(10px, 1.4vh, 14px) clamp(18px, 2vw, 26px) clamp(10px, 1.4vh, 14px) clamp(14px, 1.6vw, 20px)",
-    fontFamily: "'Outfit', sans-serif",
-    fontSize: "clamp(12px, 1vw, 14px)",
-    fontWeight: 600,
-    letterSpacing: "0.02em",
-    transition: "background 0.2s",
-  }}
->
-        Explore more →
-      </motion.button>
-    </a>
+      Explore more
+    </motion.button>
   );
 }
 
@@ -109,7 +102,7 @@ function HeroTextBlock() {
       >
         Reimagining Education
       </p>
-    <ExploreButton />
+      <ExploreButton />
     </div>
   );
 }
@@ -154,29 +147,7 @@ function PurpleCapabilityCardOuter() {
   return (
     <div className="flex flex-col items-start justify-start relative shrink-0 w-full px-[16px] sm:px-[24px] md:px-0">
       <div className="content-stretch flex flex-col md:flex-row items-stretch relative shrink-0 w-full gap-[16px] sm:gap-[24px]">
-       <div className="w-full flex justify-center">
-       <div className=className="mx-auto w-[90%] sm:w-full max-w-[500px] sm:max-w-none h-[220px] sm:h-[350px] md:h-[450px] bg-black rounded-[20px] overflow-hidden"
->>
-
-    <video
-      autoPlay
-      loop
-      playsInline
-      controls
-      className="w-full h-full object-contain sm:object-cover"
-    >
-      ref={(video) => {
-        if (video) {
-          video.playbackRate = 1.5;
-          video.onplay = () => (video.playbackRate = 1.5);
-        }
-      }}
-    >
-      <source src="/video.mp4" type="video/mp4" />
-    </video>
-
-  </div>
-</div>
+        <div className="bg-[#aa9dff] h-[350px] sm:h-[400px] md:h-auto flex-1 w-full rounded-[13px] sm:rounded-[20px] shrink-0 md:shrink" />
         <PurpleCapabilityCardInner />
       </div>
     </div>
