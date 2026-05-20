@@ -144,13 +144,53 @@ function PurpleCapabilityCardInner() {
 }
 
 function PurpleCapabilityCardOuter() {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+useEffect(() => {
+  const enableSound = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = false;
+      videoRef.current.play();
+    }
+
+    window.removeEventListener("click", enableSound);
+  };
+
+  window.addEventListener("click", enableSound);
+
+  return () => {
+    window.removeEventListener("click", enableSound);
+  };
+}, []);
   return (
-    <div className="flex flex-col items-start justify-start relative shrink-0 w-full px-[16px] sm:px-[24px] md:px-0">
-      <div className="content-stretch flex flex-col md:flex-row items-stretch relative shrink-0 w-full gap-[16px] sm:gap-[24px]">
-        <div className="bg-[#aa9dff] h-[350px] sm:h-[400px] md:h-auto flex-1 w-full rounded-[13px] sm:rounded-[20px] shrink-0 md:shrink" />
-        <PurpleCapabilityCardInner />
-      </div>
-    </div>
+   <div className="flex flex-col items-start justify-start relative shrink-0 w-full px-[16px] sm:px-[24px] md:px-0">
+  <div className="content-stretch flex flex-col md:flex-row items-stretch relative shrink-0 w-full gap-[16px] sm:gap-[24px]">
+
+   <div className="w-full flex justify-center">
+  <div className="w-full max-w-[900px] h-[300px] sm:h-[400px] md:h-[500px] bg-black rounded-[20px] overflow-hidden">
+
+    <video
+      ref={videoRef}
+      autoPlay
+      muted
+      loop
+      controls
+      playsInline
+      className="w-full h-full"
+      style={{ objectFit: "cover" }}
+      onLoadedMetadata={(e) => {
+        e.currentTarget.playbackRate = 1.5;
+      }}
+    >
+      <source src="/video.mp4" type="video/mp4" />
+    </video>
+
+  </div>
+</div>
+    <PurpleCapabilityCardInner />
+
+  </div>
+</div>
   );
 }
 
