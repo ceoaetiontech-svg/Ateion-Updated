@@ -19,12 +19,12 @@ const navTextClass = "font-bold text-[13px] whitespace-nowrap font-manrope";
  */
 function NavButton({
   children,
-  variant = "default" as "default" | "muted" | "primary",
+  variant = "default" as "default" | "muted" | "primary" | "white",
   onClick,
   href,
 }: {
   children: React.ReactNode;
-  variant?: "default" | "muted" | "primary";
+  variant?: "default" | "muted" | "primary" | "white";
   onClick?: () => void;
   href?: string;
 }) {
@@ -37,6 +37,8 @@ function NavButton({
       "bg-[rgba(235,235,235,0.8)] hover:bg-[rgba(215,215,215,0.95)] text-[#292929]",
     primary:
       "bg-[#fb4444] hover:bg-[#ff5555] text-white shadow-[0_4px_12px_rgba(251,68,68,0.25)] hover:shadow-[0_6px_20px_rgba(251,68,68,0.35)]",
+    white:
+      "bg-white hover:bg-[#f5f5f5] text-[#292929] shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.1)]",
   };
 
   const handleClick = () => {
@@ -49,7 +51,7 @@ function NavButton({
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       onClick={handleClick}
-      className={`${variantClasses[variant]} flex h-[36px] items-center justify-center px-[20px] rounded-full shrink-0 cursor-pointer transition-colors`}
+      className={`${variantClasses[variant]} flex h-[36px] items-center justify-center px-[12px] xl:px-[20px] rounded-full shrink-0 cursor-pointer transition-colors`}
     >
       {children}
     </motion.div>
@@ -177,7 +179,7 @@ function ResourcesBtn({ onClick }: { onClick?: () => void }) {
 
 function NavLinks({ onCloseMobile }: { onCloseMobile?: () => void }) {
   return (
-    <div className="flex gap-[16px] items-center shrink-0">
+    <div className="flex gap-[8px] xl:gap-[16px] items-center shrink-0">
       <AboutUsBtn onClick={onCloseMobile} />
       <WorkshopsBtn onClick={onCloseMobile} />
       <GlobalOlympiadBtn onClick={onCloseMobile} />
@@ -201,6 +203,34 @@ function GetConnectedBtn({ onClick }: { onClick?: () => void }) {
   );
 }
 
+function SignInBtn({ onClick }: { onClick?: () => void }) {
+  return (
+    <NavButton
+      variant="white"
+      onClick={() => {
+        if (onClick) onClick();
+        window.dispatchEvent(new CustomEvent("open-login"));
+      }}
+    >
+      <p className={`${navTextClass} text-[#292929]`}>Sign In</p>
+    </NavButton>
+  );
+}
+
+function SignUpBtn({ onClick }: { onClick?: () => void }) {
+  return (
+    <NavButton
+      variant="primary"
+      onClick={() => {
+        if (onClick) onClick();
+        window.dispatchEvent(new CustomEvent("open-register"));
+      }}
+    >
+      <p className={`${navTextClass} text-white`}>Sign Up</p>
+    </NavButton>
+  );
+}
+
 function MobileMenuIcon({
   isOpen,
   onClick,
@@ -214,7 +244,7 @@ function MobileMenuIcon({
     <button
       type="button"
       onClick={onClick}
-      className="md:hidden flex flex-col justify-center items-center w-[40px] h-[40px] cursor-pointer z-[150] relative"
+      className="lg:hidden flex flex-col justify-center items-center w-[40px] h-[40px] cursor-pointer z-[150] relative"
       aria-label="Toggle menu"
     >
       <motion.div
@@ -266,16 +296,18 @@ export default function SharedNavbar() {
       role="navigation"
       aria-label="Main navigation"
     >
-      <div className="flex items-center justify-between px-[16px] md:px-[24px] py-[12px] md:py-[20px] w-full max-w-[1280px] mx-auto">
+      <div className="flex items-center justify-between px-[16px] lg:px-[24px] py-[12px] lg:py-[20px] w-full max-w-[1280px] mx-auto">
         <div className="flex items-center justify-start">
           <LogoContainer />
-          <div className="hidden md:flex items-center ml-[24px] lg:ml-[32px]">
+          <div className="hidden lg:flex items-center ml-[16px] xl:ml-[32px]">
             <NavLinks />
           </div>
         </div>
 
-        <div className="hidden md:flex items-center justify-end ml-auto">
+        <div className="hidden lg:flex items-center justify-end ml-auto gap-[8px] xl:gap-[12px]">
           <GetConnectedBtn />
+          <SignInBtn />
+          <SignUpBtn />
         </div>
 
         {/* Mobile Menu Button */}
@@ -294,7 +326,7 @@ export default function SharedNavbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="md:hidden bg-[#f7f3eb] border-t border-[rgba(0,0,0,0.1)] overflow-hidden"
+            className="lg:hidden bg-[#f7f3eb] border-t border-[rgba(0,0,0,0.1)] overflow-hidden"
           >
             <div className="flex flex-col gap-[12px] px-[24px] py-[24px]">
               <AboutUsBtn
@@ -311,6 +343,21 @@ export default function SharedNavbar() {
               />
               <GetConnectedBtn
                 onClick={() => handleNavClick("/contact")}
+              />
+              
+              <div className="h-[1px] bg-[rgba(0,0,0,0.08)] my-[4px]" />
+              
+              <SignInBtn
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  window.dispatchEvent(new CustomEvent("open-login"));
+                }}
+              />
+              <SignUpBtn
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  window.dispatchEvent(new CustomEvent("open-register"));
+                }}
               />
             </div>
           </motion.div>
