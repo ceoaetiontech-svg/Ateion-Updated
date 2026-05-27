@@ -6,6 +6,7 @@ import GCOPage from "../imports/GCOPage";
 import ContactPage from "../imports/ContactPage";
 import ResourcesPage from "../imports/ResourcesPage";
 
+
 import RegisterPage from "../imports/RegisterPage";
 import LoginPage from "../imports/LoginPage";
 
@@ -27,26 +28,29 @@ export default function App() {
   }, []);
 
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Homepage */}
-        <Route path="/" element={<Homepage />} />
+      <BrowserRouter>
+        <Routes>
+          {/* Homepage */}
+          <Route path="/" element={<Homepage />} />
 
-        {/* Other Pages */}
-        <Route path="/gco" element={<GCOPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/resources" element={<ResourcesPage />} />
-      </Routes>
+          {/* Other Pages */}
+          <Route path="/gco" element={<GCOPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/PlayGround" element={<ResourcesPage />} />
+        </Routes>
 
-      {/* REGISTER POPUP */}
-      {showRegister && (
-        <RegisterPage closeRegister={() => setShowRegister(false)} />
-      )}
+        {/* REGISTER POPUP */}
+        {showRegister && (
+            <RegisterPage closeRegister={() => setShowRegister(false)} />
+        )}
 
-      {/* LOGIN POPUP */}
-      {showLogin && (
-        <LoginPage closeLogin={() => setShowLogin(false)} />
-      )}
-    </BrowserRouter>
+        {/* LOGIN POPUP */}
+        {showLogin && (
+            <LoginPage closeLogin={() => setShowLogin(false)} />
+        )}
+      </BrowserRouter>
   );
 }
+
+
+

@@ -9,7 +9,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, Link } from "react-router";
-import svgPaths from "../../imports/svg-paths";
+
 import logo from "../../assets/logo.png";
 
 const navTextClass = "font-bold text-[13px] whitespace-nowrap font-manrope";
@@ -129,24 +129,6 @@ function AboutUsBtn({ onClick }: { onClick?: () => void }) {
   );
 }
 
-function WorkshopsBtn({ onClick }: { onClick?: () => void }) {
-  const navigate = useNavigate();
-  return (
-    <NavButton
-      variant="default"
-      onClick={() => {
-        if (onClick) onClick();
-        navigate("/#workshops");
-      }}
-    >
-      <p className={`${navTextClass} text-[#292929]`}>Workshops</p>
-      <svg className="w-[8px] h-[7px] ml-[6px] rotate-180" fill="none" viewBox="0 0 8.06516 7.25">
-        <path d={svgPaths.p3367e500} fill="#292929" />
-      </svg>
-    </NavButton>
-  );
-}
-
 function GlobalOlympiadBtn({ onClick }: { onClick?: () => void }) {
   const navigate = useNavigate();
   return (
@@ -169,10 +151,10 @@ function ResourcesBtn({ onClick }: { onClick?: () => void }) {
       variant="muted"
       onClick={() => {
         if (onClick) onClick();
-        navigate("/resources");
+        navigate("/PlayGround");
       }}
     >
-      <p className={`${navTextClass} text-[#292929]`}>Resources</p>
+      <p className={`${navTextClass} text-[#292929]`}>PlayGround</p>
     </NavButton>
   );
 }
@@ -181,7 +163,7 @@ function NavLinks({ onCloseMobile }: { onCloseMobile?: () => void }) {
   return (
     <div className="flex gap-[8px] xl:gap-[16px] items-center shrink-0">
       <AboutUsBtn onClick={onCloseMobile} />
-      <WorkshopsBtn onClick={onCloseMobile} />
+
       <GlobalOlympiadBtn onClick={onCloseMobile} />
       <ResourcesBtn onClick={onCloseMobile} />
     </div>
@@ -332,9 +314,7 @@ export default function SharedNavbar() {
               <AboutUsBtn
                 onClick={() => handleNavClick("/#about")}
               />
-              <WorkshopsBtn
-                onClick={() => handleNavClick("/#workshops")}
-              />
+
               <GlobalOlympiadBtn
                 onClick={() => handleNavClick("/gco")}
               />
