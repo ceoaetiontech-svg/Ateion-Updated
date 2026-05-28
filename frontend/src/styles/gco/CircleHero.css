@@ -52,7 +52,9 @@
   transition: transform 0.2s;
 }
 
-.circle-hero-btn:hover { transform: scale(1.05); }
+.circle-hero-btn:hover {
+  transform: scale(1.05);
+}
 
 .circle-hero-right {
   position: relative;
@@ -72,7 +74,9 @@
   transition: transform 0.3s ease;
 }
 
-.center-circle:hover { transform: scale(1.1); }
+.center-circle:hover {
+  transform: scale(1.1);
+}
 
 .ateion {
   width: clamp(120px, 15vw, 180px);
@@ -91,22 +95,13 @@
   color: white;
 }
 
-.workshop {
+.playground {
   width: clamp(120px, 15vw, 180px);
   height: clamp(120px, 15vw, 180px);
-  border: 1px solid #ccc;
-  background: white;
+  background: #ff5a5a;
+  color: white;
   top: 40px;
   right: 50px;
-}
-
-.kronos {
-  width: clamp(100px, 12vw, 140px);
-  height: clamp(100px, 12vw, 140px);
-  border: 1px solid #ccc;
-  background: white;
-  bottom: 20px;
-  left: 120px;
 }
 
 .vouch {
@@ -126,8 +121,14 @@
     padding: 3rem 5%;
     width: 95%;
   }
-  .circle-hero-tags { justify-content: center; }
-  .circle-hero-right { height: clamp(280px, 55vw, 450px); }
+
+  .circle-hero-tags {
+    justify-content: center;
+  }
+
+  .circle-hero-right {
+    height: clamp(280px, 55vw, 450px);
+  }
 }
 
 /* ─── Mobile ≤600px ──────────────────────────── */

@@ -27,12 +27,10 @@ const CircleHero = () => {
         <div className="center-circle gco">
           <h3>GCO</h3>
         </div>
-        <div className="center-circle workshop">
-          <p>Workshops</p>
+        <div className="center-circle playground">
+          <p>Playground</p>
         </div>
-        <div className="center-circle kronos">
-          <p>Kronos</p>
-        </div>
+        
         <div className="center-circle vouch">
           <p>Vouch</p>
         </div>

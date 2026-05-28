@@ -51,7 +51,7 @@ Use for readable body content:
 ### 🔘 **Manrope** (UI Font)
 Use for interactive elements:
 
-- ✅ Navigation buttons ("About Us", "Workshops", "GCO", "Learn")
+- ✅ Navigation buttons ("Home", "Workshops", "GCO", "Learn")
 - ✅ CTA buttons ("Get Connected", "Explore more")
 
 **CSS Class:** `font-['Manrope:Bold',sans-serif]`

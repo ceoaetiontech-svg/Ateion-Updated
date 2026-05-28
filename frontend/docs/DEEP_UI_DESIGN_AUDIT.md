@@ -420,7 +420,7 @@ function NavButton({
 }
 
 // Usage:
-<NavButton>About Us</NavButton>
+<NavButton>Home</NavButton>
 <NavButton variant="muted">Global Olympiad</NavButton>
 <NavButton variant="primary">Get Connected</NavButton>
 ```

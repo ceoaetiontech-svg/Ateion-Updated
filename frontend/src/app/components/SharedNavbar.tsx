@@ -114,23 +114,31 @@ function LogoContainer() {
   );
 }
 
-function AboutUsBtn({ onClick }: { onClick?: () => void }) {
+/**
+ * HOME BUTTON
+ */
+function HomeBtn({ onClick }: { onClick?: () => void }) {
   const navigate = useNavigate();
+
   return (
     <NavButton
       variant="default"
       onClick={() => {
         if (onClick) onClick();
-        navigate("/#about");
+        navigate("/");
       }}
     >
-      <p className={`${navTextClass} text-[#292929]`}>About Us</p>
+      <p className={`${navTextClass} text-[#292929]`}>Home</p>
     </NavButton>
   );
 }
 
+/**
+ * GLOBAL OLYMPIAD BUTTON
+ */
 function GlobalOlympiadBtn({ onClick }: { onClick?: () => void }) {
   const navigate = useNavigate();
+
   return (
     <NavButton
       variant="muted"
@@ -139,39 +147,84 @@ function GlobalOlympiadBtn({ onClick }: { onClick?: () => void }) {
         navigate("/gco");
       }}
     >
-      <p className={`${navTextClass} text-[#292929]`}>Global Olympiad</p>
+      <p className={`${navTextClass} text-[#292929]`}>
+        Global Olympiad
+      </p>
     </NavButton>
   );
 }
 
+/**
+ * PLAYGROUND BUTTON
+ */
 function ResourcesBtn({ onClick }: { onClick?: () => void }) {
   const navigate = useNavigate();
+
   return (
     <NavButton
       variant="muted"
       onClick={() => {
         if (onClick) onClick();
-        navigate("/PlayGround");
+        navigate("/playground");
       }}
     >
-      <p className={`${navTextClass} text-[#292929]`}>PlayGround</p>
+      <p className={`${navTextClass} text-[#292929]`}>
+        PlayGround
+      </p>
     </NavButton>
+  );
+}
+
+/**
+ * CERTIFICATE BUTTON
+ */
+function CertificateBtn({
+  onClick,
+}: {
+  onClick?: () => void;
+}) {
+
+  const navigate = useNavigate();
+
+  return (
+
+    <NavButton
+      variant="muted"
+      onClick={() => {
+
+        if (onClick) onClick();
+
+        navigate("/certificate");
+
+      }}
+    >
+
+      <p className={`${navTextClass} text-[#292929]`}>
+        Certificate
+      </p>
+
+    </NavButton>
+
   );
 }
 
 function NavLinks({ onCloseMobile }: { onCloseMobile?: () => void }) {
   return (
     <div className="flex gap-[8px] xl:gap-[16px] items-center shrink-0">
-      <AboutUsBtn onClick={onCloseMobile} />
-
+      <HomeBtn onClick={onCloseMobile} />
       <GlobalOlympiadBtn onClick={onCloseMobile} />
       <ResourcesBtn onClick={onCloseMobile} />
+      <CertificateBtn onClick={onCloseMobile} />
     </div>
   );
 }
 
+/**
+ * GET CONNECTED BUTTON
+ */
 function GetConnectedBtn({ onClick }: { onClick?: () => void }) {
   const navigate = useNavigate();
+
   return (
     <NavButton
       variant="primary"
@@ -180,11 +233,16 @@ function GetConnectedBtn({ onClick }: { onClick?: () => void }) {
         navigate("/contact");
       }}
     >
-      <p className={`${navTextClass} text-white`}>Get Connected</p>
+      <p className={`${navTextClass} text-white`}>
+        Get Connected
+      </p>
     </NavButton>
   );
 }
 
+/**
+ * SIGN IN BUTTON
+ */
 function SignInBtn({ onClick }: { onClick?: () => void }) {
   return (
     <NavButton
@@ -194,11 +252,16 @@ function SignInBtn({ onClick }: { onClick?: () => void }) {
         window.dispatchEvent(new CustomEvent("open-login"));
       }}
     >
-      <p className={`${navTextClass} text-[#292929]`}>Sign In</p>
+      <p className={`${navTextClass} text-[#292929]`}>
+        Sign In
+      </p>
     </NavButton>
   );
 }
 
+/**
+ * SIGN UP BUTTON
+ */
 function SignUpBtn({ onClick }: { onClick?: () => void }) {
   return (
     <NavButton
@@ -208,7 +271,9 @@ function SignUpBtn({ onClick }: { onClick?: () => void }) {
         window.dispatchEvent(new CustomEvent("open-register"));
       }}
     >
-      <p className={`${navTextClass} text-white`}>Sign Up</p>
+      <p className={`${navTextClass} text-white`}>
+        Sign Up
+      </p>
     </NavButton>
   );
 }
@@ -239,6 +304,7 @@ function MobileMenuIcon({
         }}
         transition={{ duration: 0.2 }}
       />
+
       <motion.div
         className={`w-[24px] h-[2px] rounded-full my-[4px] transition-colors duration-300 ${
           isWhite ? "bg-white" : "bg-[#1a1a1a]"
@@ -248,6 +314,7 @@ function MobileMenuIcon({
         }}
         transition={{ duration: 0.2 }}
       />
+
       <motion.div
         className={`w-[24px] h-[2px] rounded-full origin-center transition-colors duration-300 ${
           isWhite ? "bg-white" : "bg-[#1a1a1a]"
@@ -264,7 +331,9 @@ function MobileMenuIcon({
 
 export default function SharedNavbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   const isNavbarOnDark = useNavbarOnDark();
+
   const navigate = useNavigate();
 
   const handleNavClick = (path: string) => {
@@ -279,20 +348,24 @@ export default function SharedNavbar() {
       aria-label="Main navigation"
     >
       <div className="flex items-center justify-between px-[16px] lg:px-[24px] py-[12px] lg:py-[20px] w-full max-w-[1280px] mx-auto">
+        
+        {/* LEFT SIDE */}
         <div className="flex items-center justify-start">
           <LogoContainer />
+
           <div className="hidden lg:flex items-center ml-[16px] xl:ml-[32px]">
             <NavLinks />
           </div>
         </div>
 
+        {/* RIGHT SIDE */}
         <div className="hidden lg:flex items-center justify-end ml-auto gap-[8px] xl:gap-[12px]">
           <GetConnectedBtn />
           <SignInBtn />
           <SignUpBtn />
         </div>
 
-        {/* Mobile Menu Button */}
+        {/* MOBILE MENU BUTTON */}
         <MobileMenuIcon
           isOpen={isMobileMenuOpen}
           isWhite={isNavbarOnDark}
@@ -300,7 +373,7 @@ export default function SharedNavbar() {
         />
       </div>
 
-      {/* Mobile Menu Overlay */}
+      {/* MOBILE MENU */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -311,28 +384,36 @@ export default function SharedNavbar() {
             className="lg:hidden bg-[#f7f3eb] border-t border-[rgba(0,0,0,0.1)] overflow-hidden"
           >
             <div className="flex flex-col gap-[12px] px-[24px] py-[24px]">
-              <AboutUsBtn
-                onClick={() => handleNavClick("/#about")}
+              
+              <HomeBtn
+                onClick={() => handleNavClick("/")}
               />
 
               <GlobalOlympiadBtn
                 onClick={() => handleNavClick("/gco")}
               />
+
               <ResourcesBtn
-                onClick={() => handleNavClick("/#resources")}
+                onClick={() => handleNavClick("/playground")}
               />
+
+              <CertificateBtn
+                onClick={() => handleNavClick("/certificate")}
+              />
+
               <GetConnectedBtn
                 onClick={() => handleNavClick("/contact")}
               />
-              
+
               <div className="h-[1px] bg-[rgba(0,0,0,0.08)] my-[4px]" />
-              
+
               <SignInBtn
                 onClick={() => {
                   setIsMobileMenuOpen(false);
                   window.dispatchEvent(new CustomEvent("open-login"));
                 }}
               />
+
               <SignUpBtn
                 onClick={() => {
                   setIsMobileMenuOpen(false);

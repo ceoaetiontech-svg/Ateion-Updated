@@ -5,52 +5,114 @@ import Homepage from "../imports/Homepage";
 import GCOPage from "../imports/GCOPage";
 import ContactPage from "../imports/ContactPage";
 import ResourcesPage from "../imports/ResourcesPage";
-
+import CertificatePage from "../imports/CertificatePage";
+import AssessmentDemoPage from "../imports/AssessmentDemoPage";
 
 import RegisterPage from "../imports/RegisterPage";
 import LoginPage from "../imports/LoginPage";
 
 export default function App() {
+
   const [showRegister, setShowRegister] = useState(false);
+
   const [showLogin, setShowLogin] = useState(false);
 
   useEffect(() => {
-    const handleOpenLogin = () => setShowLogin(true);
-    const handleOpenRegister = () => setShowRegister(true);
 
-    window.addEventListener("open-login", handleOpenLogin);
-    window.addEventListener("open-register", handleOpenRegister);
+    const handleOpenLogin = () =>
+      setShowLogin(true);
+
+    const handleOpenRegister = () =>
+      setShowRegister(true);
+
+    window.addEventListener(
+      "open-login",
+      handleOpenLogin
+    );
+
+    window.addEventListener(
+      "open-register",
+      handleOpenRegister
+    );
 
     return () => {
-      window.removeEventListener("open-login", handleOpenLogin);
-      window.removeEventListener("open-register", handleOpenRegister);
+
+      window.removeEventListener(
+        "open-login",
+        handleOpenLogin
+      );
+
+      window.removeEventListener(
+        "open-register",
+        handleOpenRegister
+      );
+
     };
+
   }, []);
 
   return (
-      <BrowserRouter>
-        <Routes>
-          {/* Homepage */}
-          <Route path="/" element={<Homepage />} />
 
-          {/* Other Pages */}
-          <Route path="/gco" element={<GCOPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/PlayGround" element={<ResourcesPage />} />
-        </Routes>
+    <BrowserRouter>
 
-        {/* REGISTER POPUP */}
-        {showRegister && (
-            <RegisterPage closeRegister={() => setShowRegister(false)} />
-        )}
+      <Routes>
 
-        {/* LOGIN POPUP */}
-        {showLogin && (
-            <LoginPage closeLogin={() => setShowLogin(false)} />
-        )}
-      </BrowserRouter>
+        {/* HOMEPAGE */}
+        <Route
+          path="/"
+          element={<Homepage />}
+        />
+
+        {/* GCO PAGE */}
+        <Route
+          path="/gco"
+          element={<GCOPage />}
+        />
+
+        {/* CONTACT PAGE */}
+        <Route
+          path="/contact"
+          element={<ContactPage />}
+        />
+
+        {/* PLAYGROUND PAGE */}
+        <Route
+          path="/PlayGround"
+          element={<ResourcesPage />}
+        />
+
+        {/* CERTIFICATE PAGE */}
+        <Route
+          path="/certificate"
+          element={<CertificatePage />}
+        />
+
+        {/* ASSESSMENT DEMO PAGE */}
+        <Route
+          path="/assessment-demo"
+          element={<AssessmentDemoPage />}
+        />
+
+      </Routes>
+
+      {/* REGISTER POPUP */}
+      {showRegister && (
+        <RegisterPage
+          closeRegister={() =>
+            setShowRegister(false)
+          }
+        />
+      )}
+
+      {/* LOGIN POPUP */}
+      {showLogin && (
+        <LoginPage
+          closeLogin={() =>
+            setShowLogin(false)
+          }
+        />
+      )}
+
+    </BrowserRouter>
   );
 }
-
-
-

@@ -73,25 +73,7 @@ function FadeIn({ children, delay = 0 }: { children: React.ReactNode; delay?: nu
 ───────────────────────────────────────────── */
 
 
-function ExploreButton() {
-  return (
-    <motion.button
-      whileHover={{ scale: 1.04, backgroundColor: "#c92e2e" }}
-      whileTap={{ scale: 0.97 }}
-      className="flex items-center gap-[8px] bg-[#e03a3a] text-white rounded-full border-none cursor-pointer shadow-[0_8px_28px_rgba(224,58,58,0.3)]"
-      style={{
-        padding: "clamp(10px,1.4vh,14px) clamp(18px,2vw,26px) clamp(10px,1.4vh,14px) clamp(14px,1.6vw,20px)",
-        fontFamily: "'Outfit', sans-serif",
-        fontSize: "clamp(12px, 1vw, 14px)",
-        fontWeight: 600,
-        letterSpacing: "0.02em",
-        transition: "background 0.2s",
-      }}
-    >
-      Explore more
-    </motion.button>
-  );
-}
+
 
 function HeroTextBlock() {
   return (
@@ -102,7 +84,7 @@ function HeroTextBlock() {
       >
         Reimagining Education
       </p>
-      <ExploreButton />
+      
     </div>
   );
 }
@@ -194,31 +176,12 @@ useEffect(() => {
   );
 }
 
-function GlobalAlignedBlackCard() {
-  return (
-    <div className="bg-[#202020] content-stretch flex items-start pb-[24px] sm:pb-[32px] pt-[24px] sm:pt-[32px] px-[24px] sm:px-[32px] relative rounded-[13px] sm:rounded-[20px] shrink-0 md:shrink w-full md:w-[45%] lg:w-[40%]">
-      <div className="flex flex-col gap-6 p-4 rounded-2xl shadow-sm w-full max-w-4xl">
-        <div className="content-stretch flex flex-col gap-[16px] sm:gap-[24px] items-start relative shrink-0 w-full max-w-[260px]">
-          <p className="font-bold leading-[normal] min-w-full not-italic relative shrink-0 text-[28px] sm:text-[36px] text-white w-[min-content]" style={{ fontFamily: "'OV Soge', sans-serif" }}>Globally Aligned with</p>
-        </div>
-        <div className="flex flex-row gap-4 items-end w-full">
-          <div className="w-1/2">
-            <img alt="" className="w-full h-auto rounded-2xl object-contain" src={imgImage9} />
-          </div>
-          <div className="w-1/2">
-            <img alt="" className="w-full h-auto rounded-2xl object-contain" src={imgImage7} />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 function HeroMetricsRow() {
   return (
     <div className="flex flex-col items-start justify-start relative shrink-0 w-full px-[16px] sm:px-[24px] md:px-0">
       <div className="flex flex-col md:flex-row gap-[16px] sm:gap-[24px] items-stretch relative shrink-0 w-full">
-        <GlobalAlignedBlackCard />
+        
         <RedIntelligenceCard />
       </div>
     </div>
