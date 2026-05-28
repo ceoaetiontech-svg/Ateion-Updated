@@ -13,20 +13,23 @@ import imgGcoLogo from "../../assets/a440209918fa81a1c528e2e95290d4f1f12546e7.pn
 const footerTextClass = "text-[14px] text-[rgba(0,0,0,0.6)] font-lato leading-[1.4]";
 const footerLinkClass = `${footerTextClass} cursor-pointer hover:text-black transition-colors`;
 
-function SocialIcon({ svgPath }: { svgPath: string }) {
+function SocialIcon({ svgPath, href }: { svgPath: string; href?: string }) {
+  const IconContainer = href ? "a" : "div";
+  const linkProps = href ? { href, target: "_blank", rel: "noopener noreferrer" } : {};
+
   return (
-    <div className="w-[20px] h-[20px] sm:w-[22px] sm:h-[22px] cursor-pointer hover:opacity-70 transition-opacity">
+    <IconContainer {...linkProps} className="w-[20px] h-[20px] sm:w-[22px] sm:h-[22px] cursor-pointer hover:opacity-70 transition-opacity block">
       <svg className="w-full h-full" fill="none" viewBox="0 0 22.2726 22.2726">
         <path d={svgPath} fill="black" fillOpacity="0.7" />
       </svg>
-    </div>
+    </IconContainer>
   );
 }
 
 function FooterSocialLinks() {
   return (
     <div className="flex gap-[12px] sm:gap-[16px] items-center">
-      <SocialIcon svgPath={svgPaths.peb98800} />
+      <SocialIcon svgPath={svgPaths.peb98800} href="https://www.linkedin.com/company/ateion/" />
       <SocialIcon svgPath={svgPaths.p7943900} />
       <div className="w-[20px] h-[20px] sm:w-[22px] sm:h-[22px] cursor-pointer hover:opacity-70 transition-opacity">
         <img src={imgGcoLogo} alt="YouTube" className="w-full h-full object-cover" />
