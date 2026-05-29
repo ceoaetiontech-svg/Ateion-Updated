@@ -219,3 +219,45 @@
     font-size: 0.96rem;
   }
 }
+
+/* ─── Dark Mode ──────────────────────────────── */
+[data-theme="dark"] .timeline-section {
+  background-color: var(--color-background-primary);
+}
+
+[data-theme="dark"] .timeline-title {
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .timeline-line-bg {
+  background-color: var(--color-background-tertiary);
+}
+
+[data-theme="dark"] .timeline-circle {
+  border-color: var(--color-background-primary);
+}
+
+[data-theme="dark"] .timeline-text {
+  color: #d4d4d8;
+}
+
+[data-theme="dark"] .timeline-icon-container {
+  background-color: var(--color-background-tertiary);
+  color: var(--color-text-primary);
+}
+
+@media (max-width: 768px) {
+  [data-theme="dark"] .timeline-mobile-card {
+    background: linear-gradient(180deg, var(--color-background-secondary) 0%, #151517 100%);
+    border: 1px solid rgba(255,255,255,0.08);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  [data-theme="dark"] .timeline-icon-container-mobile {
+    background-color: var(--color-background-tertiary);
+  }
+
+  [data-theme="dark"] .timeline-text-mobile {
+    color: #d4d4d8;
+  }
+}

@@ -131,7 +131,7 @@ export default function DotMap() {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative w-full h-full bg-black">
+    <div ref={containerRef} className="relative w-full h-full bg-[#000000]">
       <canvas ref={canvasRef} className="absolute inset-0" />
 
       {/* Add ripple animation styles */}
@@ -176,21 +176,21 @@ export default function DotMap() {
             transition={{ duration: 0.2, ease: "easeOut" }}
             className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 pointer-events-none"
           >
-            <div className="bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-lg shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-white/20 whitespace-nowrap">
-              <span className="text-black text-[13px] font-semibold tracking-tight uppercase">{node.label}</span>
+            <div className="bg-[#ffffff]/95 backdrop-blur-md px-3 py-1.5 rounded-lg shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-[#ffffff]/20 whitespace-nowrap">
+              <span className="text-[#000000] text-[13px] font-semibold tracking-tight uppercase">{node.label}</span>
               {/* Tooltip Arrow */}
-              <div className="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-white/95" />
+              <div className="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-[#ffffff]/95" />
             </div>
           </motion.div>
 
           {/* Node core */}
-          <div className="relative w-3 h-3 bg-white rounded-full shadow-[0_0_15px_4px_rgba(255,255,255,0.3)] transition-transform duration-300 group-hover:scale-125" />
+          <div className="relative w-3 h-3 bg-[#ffffff] rounded-full shadow-[0_0_15px_4px_rgba(255,255,255,0.3)] transition-transform duration-300 group-hover:scale-125" />
 
           {/* Ripples */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="absolute w-12 h-12 border border-blue-500/30 rounded-full animate-ripple" />
-            <div className="absolute w-12 h-12 border border-blue-500/20 rounded-full animate-ripple animate-ripple-delay-1" />
-            <div className="absolute w-12 h-12 border border-blue-500/10 rounded-full animate-ripple animate-ripple-delay-2" />
+            <div className="absolute w-12 h-12 border border-[var(--color-primary)]/40 rounded-full animate-ripple" />
+            <div className="absolute w-12 h-12 border border-[var(--color-primary)]/30 rounded-full animate-ripple animate-ripple-delay-1" />
+            <div className="absolute w-12 h-12 border border-[var(--color-primary)]/20 rounded-full animate-ripple animate-ripple-delay-2" />
           </div>
         </div>
       ))}

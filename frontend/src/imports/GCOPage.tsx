@@ -20,7 +20,7 @@ const GCOPage = () => {
   return (
     <>
       <SharedNavbar />
-      <div id="gco-root" className="bg-[#f7f3eb] w-full min-h-screen overflow-x-hidden relative">
+      <div id="gco-root" className="bg-[var(--color-background-primary)] w-full min-h-screen overflow-x-hidden relative">
         <main className="mt-[60px] md:mt-[60px]">
           <HeroSection />
           <Slide />

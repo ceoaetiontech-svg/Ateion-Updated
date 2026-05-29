@@ -348,3 +348,168 @@
   --section-spacing-tablet: var(--space-8);   /* 64px */
   --section-spacing-desktop: var(--space-10); /* 80px */
 }
+
+/* ============================================================================
+ * PREMIUM DARK THEME OVERRIDES
+ * ============================================================================
+ * Applied via data-theme="dark" attribute on <html>
+ * Sleek, glassmorphic, indigo-based dark mode
+ * ============================================================================ */
+
+[data-theme="dark"] {
+  /* Primary Brand - Neon Coral (Glowing) */
+  --color-primary: #ff4a5a;
+  --color-primary-hover: #ff6b78;
+  --color-primary_active: #ff3344;
+  --color-primary_light: rgba(255, 74, 90, 0.15);
+  --color-primary_lighter: rgba(255, 74, 90, 0.08);
+
+  /* Neutral Grays - Soft Indigo-Tinted */
+  --color-white: #0a0514;
+  --color-gray-50: #0d0b14;
+  --color-gray-100: #120d1e;
+  --color-gray-200: #1c152e;
+  --color-gray-300: #292042;
+  --color-gray-400: #463b63;
+  --color-gray-500: #685b8c;
+  --color-gray-600: #a39fbd;
+  --color-gray-700: #d0cce6;
+  --color-gray-800: #e8e6f5;
+  --color-gray-900: #f4f2fa;
+  --color-black: #ffffff;
+
+  /* Brand Backgrounds - Deep Indigo to Space Black */
+  --color-background-primary: #0a0514;
+  --color-background-secondary: rgba(255, 255, 255, 0.03); /* Glassmorphic base */
+  --color-background-tertiary: rgba(255, 255, 255, 0.05);
+  --color-background-dark: #05020a;
+  --color-background-black: #000000;
+
+  /* Navigation */
+  --color-nav-button: rgba(255, 255, 255, 0.05);
+  --color-nav-button-hover: rgba(255, 255, 255, 0.1);
+  --color-nav-button-active: rgba(255, 255, 255, 0.15);
+
+  /* Text Colors */
+  --color-text-primary: #f4f2fa;
+  --color-text-secondary: #d0cce6;
+  --color-text-tertiary: #a39fbd;
+  --color-text-muted: rgba(244, 242, 250, 0.50);
+  --color-text-subtle: rgba(244, 242, 250, 0.30);
+  --color-text-inverse: #0a0514;
+  --color-text-link: #ff4a5a;
+  --color-text-link-hover: #ff6b78;
+
+  /* Border Colors */
+  --color-border-light: rgba(255, 255, 255, 0.05);
+  --color-border-medium: rgba(255, 255, 255, 0.10);
+  --color-border-dark: rgba(255, 255, 255, 0.15);
+  --color-border-input: rgba(255, 255, 255, 0.12);
+  --color-border-focus: rgba(255, 74, 90, 0.60);
+
+  /* Semantic Colors */
+  --color-success: #2dd4bf; /* Teal/Cyan for success on dark */
+  --color-success_light: rgba(45, 212, 191, 0.15);
+  --color-success_dark: #14b8a6;
+
+  --color-warning: #fbbf24;
+  --color-warning_light: rgba(251, 191, 36, 0.15);
+  --color-warning_dark: #f59e0b;
+
+  --color-error: #fb7185;
+  --color-error_light: rgba(251, 113, 133, 0.15);
+  --color-error_dark: #e11d48;
+
+  --color-info: #60a5fa;
+  --color-info_light: rgba(96, 165, 250, 0.15);
+  --color-info_dark: #3b82f6;
+
+  /* Special Brand Colors */
+  --color-purple-card: #9381ff;
+  --color-purple-card_dark: #7b66ff;
+  --color-red-card: #ff4a5a;
+  --color-red-card_dark: #ff2a3a;
+  --color-grey-card: rgba(255, 255, 255, 0.03);
+  --color-grey-card_dark: rgba(255, 255, 255, 0.05);
+
+  /* Shadows - Ambient Glows instead of hard shadows */
+  --shadow-xs: 0 4px 12px 0 rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 8px 24px 0 rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 12px 32px 0 rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 16px 40px 0 rgba(0, 0, 0, 0.6);
+  --shadow-xl: 0 24px 48px 0 rgba(0, 0, 0, 0.6);
+  --shadow-2xl: 0 32px 64px 0 rgba(0, 0, 0, 0.7);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.20);
+
+  /* Custom Shadows */
+  --shadow-button: 0 0 20px rgba(255, 74, 90, 0.4);
+  --shadow-button-hover: 0 0 30px rgba(255, 74, 90, 0.6);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.6);
+  --shadow-nav: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --shadow-modal: 0 24px 64px 0 rgba(0, 0, 0, 0.8);
+
+  /* Focus Ring */
+  --focus-ring-offset-style: var(--focus-ring-offset) solid var(--color-background-primary);
+}
+
+/* Glassmorphism Classes for Dark Mode */
+html[data-theme="dark"] .bg-\[var\(--color-background-secondary\)\] {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* Make body background a rich radial gradient in dark mode */
+html[data-theme="dark"] body {
+  background: radial-gradient(circle at 50% 0%, #17102e 0%, #0a0514 100%);
+  background-attachment: fixed;
+}
+
+/* Smooth theme transition */
+html[data-theme] *,
+html[data-theme] *::before,
+html[data-theme] *::after {
+  transition: background-color 0.4s ease, color 0.3s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+/* Exclude elements that should not animate */
+html[data-theme] video,
+html[data-theme] canvas,
+html[data-theme] img,
+html[data-theme] svg {
+  transition: none;
+}
+
+/* Invert PNG icons in dark mode */
+html[data-theme="dark"] .social-png-icon {
+  filter: invert(1) brightness(2);
+}
+
+/* ==========================================================================
+   CUSTOM PREMIUM SCROLLBAR
+   ========================================================================== */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-light);
+  border-radius: 12px;
+  border: 3px solid var(--color-background-primary);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-tertiary);
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-light) var(--color-background-primary);
+}

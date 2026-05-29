@@ -4,3 +4,10 @@
   --accent-color: #fb4444;
   --text-color: #1a1a1a;
 }
+
+[data-theme="dark"] {
+  --primary-color: var(--color-text-primary);
+  --bg-color: var(--color-background-primary);
+  --accent-color: #fb4444;
+  --text-color: var(--color-text-primary);
+}

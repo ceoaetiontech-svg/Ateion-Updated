@@ -9,6 +9,8 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, Link } from "react-router";
+import { Sun, Moon } from "lucide-react";
+import { useTheme } from "./ThemeProvider";
 
 import logo from "../../assets/logo.png";
 
@@ -32,13 +34,13 @@ function NavButton({
 
   const variantClasses = {
     default:
-      "bg-[rgba(235,235,235,0.8)] hover:bg-[rgba(215,215,215,0.95)] text-[#292929]",
+      "bg-[var(--color-nav-button)] hover:bg-[var(--color-nav-button-hover)] text-[var(--color-text-secondary)]",
     muted:
-      "bg-[rgba(235,235,235,0.8)] hover:bg-[rgba(215,215,215,0.95)] text-[#292929]",
+      "bg-[var(--color-nav-button)] hover:bg-[var(--color-nav-button-hover)] text-[var(--color-text-secondary)]",
     primary:
-      "bg-[#fb4444] hover:bg-[#ff5555] text-white shadow-[0_4px_12px_rgba(251,68,68,0.25)] hover:shadow-[0_6px_20px_rgba(251,68,68,0.35)]",
+      "bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-[#ffffff] shadow-[var(--shadow-button)] hover:shadow-[var(--shadow-button-hover)]",
     white:
-      "bg-white hover:bg-[#f5f5f5] text-[#292929] shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.1)]",
+      "bg-[var(--color-background-secondary)] hover:bg-[var(--color-background-tertiary)] text-[var(--color-text-secondary)] shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.1)]",
   };
 
   const handleClick = () => {
@@ -98,6 +100,8 @@ function useNavbarOnDark() {
 
 function LogoContainer() {
   const isLogoWhite = useNavbarOnDark();
+  const { theme } = useTheme();
+  const shouldInvert = isLogoWhite || theme === "dark";
 
   return (
     <div className="flex items-center relative shrink-0">
@@ -106,7 +110,7 @@ function LogoContainer() {
           src={logo}
           alt="Ateion Logo"
           className={`h-[50px] md:h-[60px] object-contain w-auto transition-all duration-300 ${
-            isLogoWhite ? "brightness-0 invert" : ""
+            shouldInvert ? "brightness-0 invert" : ""
           }`}
         />
       </Link>
@@ -128,7 +132,7 @@ function HomeBtn({ onClick }: { onClick?: () => void }) {
         navigate("/");
       }}
     >
-      <p className={`${navTextClass} text-[#292929]`}>Home</p>
+      <p className={`${navTextClass} text-[var(--color-text-secondary)]`}>Home</p>
     </NavButton>
   );
 }
@@ -147,7 +151,7 @@ function GlobalOlympiadBtn({ onClick }: { onClick?: () => void }) {
         navigate("/gco");
       }}
     >
-      <p className={`${navTextClass} text-[#292929]`}>
+      <p className={`${navTextClass} text-[var(--color-text-secondary)]`}>
         Global Olympiad
       </p>
     </NavButton>
@@ -168,7 +172,7 @@ function ResourcesBtn({ onClick }: { onClick?: () => void }) {
         navigate("/playground");
       }}
     >
-      <p className={`${navTextClass} text-[#292929]`}>
+      <p className={`${navTextClass} text-[var(--color-text-secondary)]`}>
         PlayGround
       </p>
     </NavButton>
@@ -199,7 +203,7 @@ function CertificateBtn({
       }}
     >
 
-      <p className={`${navTextClass} text-[#292929]`}>
+      <p className={`${navTextClass} text-[var(--color-text-secondary)]`}>
         Certificate
       </p>
 
@@ -252,7 +256,7 @@ function SignInBtn({ onClick }: { onClick?: () => void }) {
         window.dispatchEvent(new CustomEvent("open-login"));
       }}
     >
-      <p className={`${navTextClass} text-[#292929]`}>
+      <p className={`${navTextClass} text-[var(--color-text-secondary)]`}>
         Sign In
       </p>
     </NavButton>
@@ -296,7 +300,7 @@ function MobileMenuIcon({
     >
       <motion.div
         className={`w-[24px] h-[2px] rounded-full origin-center transition-colors duration-300 ${
-          isWhite ? "bg-white" : "bg-[#1a1a1a]"
+          isWhite ? "bg-white" : "bg-[var(--color-text-primary)]"
         }`}
         animate={{
           rotate: isOpen ? 45 : 0,
@@ -307,7 +311,7 @@ function MobileMenuIcon({
 
       <motion.div
         className={`w-[24px] h-[2px] rounded-full my-[4px] transition-colors duration-300 ${
-          isWhite ? "bg-white" : "bg-[#1a1a1a]"
+          isWhite ? "bg-white" : "bg-[var(--color-text-primary)]"
         }`}
         animate={{
           opacity: isOpen ? 0 : 1,
@@ -317,7 +321,7 @@ function MobileMenuIcon({
 
       <motion.div
         className={`w-[24px] h-[2px] rounded-full origin-center transition-colors duration-300 ${
-          isWhite ? "bg-white" : "bg-[#1a1a1a]"
+          isWhite ? "bg-white" : "bg-[var(--color-text-primary)]"
         }`}
         animate={{
           rotate: isOpen ? -45 : 0,
@@ -326,6 +330,49 @@ function MobileMenuIcon({
         transition={{ duration: 0.2 }}
       />
     </button>
+  );
+}
+
+/**
+ * THEME TOGGLE BUTTON (Sun/Moon)
+ */
+function ThemeToggleBtn() {
+  const { theme, toggleTheme } = useTheme();
+
+  return (
+    <motion.button
+      type="button"
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.9 }}
+      onClick={toggleTheme}
+      className="flex h-[36px] w-[36px] items-center justify-center rounded-full bg-[var(--color-nav-button)] hover:bg-[var(--color-nav-button-hover)] cursor-pointer transition-colors"
+      aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+      title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+    >
+      <AnimatePresence mode="wait" initial={false}>
+        {theme === "dark" ? (
+          <motion.div
+            key="sun"
+            initial={{ rotate: -90, opacity: 0 }}
+            animate={{ rotate: 0, opacity: 1 }}
+            exit={{ rotate: 90, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Sun size={18} className="text-[var(--color-text-secondary)]" />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="moon"
+            initial={{ rotate: 90, opacity: 0 }}
+            animate={{ rotate: 0, opacity: 1 }}
+            exit={{ rotate: -90, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Moon size={18} className="text-[var(--color-text-secondary)]" />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.button>
   );
 }
 
@@ -363,6 +410,7 @@ export default function SharedNavbar() {
           <GetConnectedBtn />
           <SignInBtn />
           <SignUpBtn />
+          <ThemeToggleBtn />
         </div>
 
         {/* MOBILE MENU BUTTON */}
@@ -381,7 +429,7 @@ export default function SharedNavbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="lg:hidden bg-[#f7f3eb] border-t border-[rgba(0,0,0,0.1)] overflow-hidden"
+            className="lg:hidden bg-[var(--color-background-primary)] border-t border-[var(--color-border-light)] overflow-hidden"
           >
             <div className="flex flex-col gap-[12px] px-[24px] py-[24px]">
               
@@ -405,7 +453,7 @@ export default function SharedNavbar() {
                 onClick={() => handleNavClick("/contact")}
               />
 
-              <div className="h-[1px] bg-[rgba(0,0,0,0.08)] my-[4px]" />
+              <div className="h-[1px] bg-[var(--color-border-light)] my-[4px]" />
 
               <SignInBtn
                 onClick={() => {
@@ -420,6 +468,8 @@ export default function SharedNavbar() {
                   window.dispatchEvent(new CustomEvent("open-register"));
                 }}
               />
+
+              <ThemeToggleBtn />
             </div>
           </motion.div>
         )}

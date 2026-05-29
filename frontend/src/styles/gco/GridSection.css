@@ -71,3 +71,20 @@
   .grid-section-grid { grid-template-columns: 1fr; }
   .grid-section-container { padding: 2rem 5%; }
 }
+
+/* ─── Dark Mode ──────────────────────────────── */
+[data-theme="dark"] .grid-section-container {
+  background-color: var(--color-background-primary);
+}
+
+[data-theme="dark"] .grid-section-title {
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .grid-section-description {
+  color: #d4d4d8;
+}
+
+[data-theme="dark"] .grid-section-box {
+  background: var(--color-background-tertiary);
+}

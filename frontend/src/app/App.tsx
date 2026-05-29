@@ -10,6 +10,7 @@ import AssessmentDemoPage from "../imports/AssessmentDemoPage";
 
 import RegisterPage from "../imports/RegisterPage";
 import LoginPage from "../imports/LoginPage";
+import ThemeProvider from "./components/ThemeProvider";
 
 export default function App() {
 
@@ -53,6 +54,7 @@ export default function App() {
 
   return (
 
+    <ThemeProvider>
     <BrowserRouter>
 
       <Routes>
@@ -114,5 +116,6 @@ export default function App() {
       )}
 
     </BrowserRouter>
+    </ThemeProvider>
   );
 }

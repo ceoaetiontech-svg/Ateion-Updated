@@ -57,7 +57,7 @@ export default function GCOQuestionSection() {
           height="46"
           viewBox="0 0 24 24"
           fill="none"
-          stroke="#111827"
+          stroke="var(--color-text-primary)"
           strokeWidth="1.5"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -85,7 +85,7 @@ export default function GCOQuestionSection() {
           height="46"
           viewBox="0 0 24 24"
           fill="none"
-          stroke="#111827"
+          stroke="var(--color-text-primary)"
           strokeWidth="1.5"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -146,7 +146,7 @@ export default function GCOQuestionSection() {
           height="46"
           viewBox="0 0 24 24"
           fill="none"
-          stroke="#111827"
+          stroke="var(--color-text-primary)"
           strokeWidth="1.5"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -173,7 +173,7 @@ export default function GCOQuestionSection() {
           height="46"
           viewBox="0 0 24 24"
           fill="none"
-          stroke="#111827"
+          stroke="var(--color-text-primary)"
           strokeWidth="1.5"
           strokeLinecap="round"
           strokeLinejoin="round"
@@ -201,12 +201,12 @@ export default function GCOQuestionSection() {
 
     <section
       style={{
-        backgroundColor: "#FAF8F2",
+        backgroundColor: "var(--color-background-primary)",
         padding: isMobile
           ? "60px 20px"
           : "100px 5%",
         fontFamily: "'Manrope', sans-serif",
-        color: "#111827",
+        color: "var(--color-text-primary)",
         minHeight: isMobile
           ? "auto"
           : "100vh",
@@ -265,7 +265,7 @@ export default function GCOQuestionSection() {
               margin: isMobile
                 ? "0 0 16px 0"
                 : "0 0 25px 0",
-              color: "#0a0f1c",
+              color: "var(--color-text-primary)",
             }}
           >
             Experience a
@@ -283,7 +283,7 @@ export default function GCOQuestionSection() {
               lineHeight: isMobile
                 ? "1.65"
                 : "1.7",
-              color: "#6b7280",
+              color: "var(--color-text-tertiary)",
               margin: isMobile
                 ? "0 0 24px 0"
                 : "0 0 40px 0",
@@ -307,8 +307,8 @@ export default function GCOQuestionSection() {
               navigate("/assessment-demo")
             }
             style={{
-              backgroundColor: "#fa4f54",
-              color: "#ffffff",
+              backgroundColor: "var(--color-primary)",
+              color: "var(--color-white)",
               border: "none",
               borderRadius: "100px",
               padding: isSmallMobile
@@ -363,7 +363,7 @@ export default function GCOQuestionSection() {
             <div
               key={index}
               style={{
-                backgroundColor: "#ffffff",
+                backgroundColor: "var(--color-background-secondary)",
                 borderRadius: isMobile
                   ? "16px"
                   : "20px",
@@ -381,12 +381,12 @@ export default function GCOQuestionSection() {
                   ? "10px"
                   : "10px",
                 border: isMobile
-                  ? "1px solid rgba(17, 24, 39, 0.06)"
+                  ? "1px solid var(--color-border-light)"
                   : "none",
               }}
             >
 
-              <div style={{ color: "#111827" }}>
+              <div style={{ color: "var(--color-text-primary)" }}>
                 {card.icon}
               </div>
 
@@ -399,7 +399,7 @@ export default function GCOQuestionSection() {
                     : "1.55rem",
                   fontWeight: "600",
                   margin: "0",
-                  color: "#0a0f1c",
+                  color: "var(--color-text-primary)",
                   letterSpacing: "-0.01em",
                 }}
               >
@@ -416,7 +416,7 @@ export default function GCOQuestionSection() {
                   lineHeight: isMobile
                     ? "1.65"
                     : "1.6",
-                  color: "#4b5563",
+                  color: "var(--color-text-tertiary)",
                   margin: "0",
                 }}
               >
