@@ -69,7 +69,7 @@ function MiniPolicyCard({ policy, index }: { policy: PolicyEntry; index: number 
       }}
     >
       {/* Logo image */}
-      <div style={{ width: "100%", aspectRatio: "1/1", overflow: "hidden", background: "#fff", flexShrink: 0 }}>
+      <div style={{ width: "100%", aspectRatio: "1/1", overflow: "hidden", background: "var(--color-background-secondary)", flexShrink: 0 }}>
         {img ? (
           <img
             src={img}
@@ -99,7 +99,7 @@ function MiniPolicyCard({ policy, index }: { policy: PolicyEntry; index: number 
       <div style={{
         display: "flex", alignItems: "center", gap: 8,
         padding: "10px 13px",
-        background: "#fff",
+        background: "var(--color-background-secondary)",
         borderTop: `3px solid ${policy.accentColor}`,
         flexShrink: 0,
       }}>
@@ -114,7 +114,7 @@ function MiniPolicyCard({ policy, index }: { policy: PolicyEntry; index: number 
         <div style={{ flex: 1, minWidth: 0 }}>
           <p style={{
             fontFamily: "'OV Soge', sans-serif",
-            fontSize: "0.82rem", fontWeight: 700, color: "#1a1a1a",
+            fontSize: "0.82rem", fontWeight: 700, color: "var(--color-text-primary)",
             margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
           }}>
             {policy.country}
@@ -139,7 +139,7 @@ function MiniPolicyCard({ policy, index }: { policy: PolicyEntry; index: number 
             transition={{ duration: 0.2, ease: "easeOut" }}
             style={{
               position: "absolute", inset: 0, borderRadius: 16,
-              background: "#fff", borderTop: `3px solid ${policy.accentColor}`,
+              background: "var(--color-background-secondary)", borderTop: `3px solid ${policy.accentColor}`,
               padding: "16px 14px 14px",
               display: "flex", flexDirection: "column", overflow: "hidden",
             }}
@@ -147,13 +147,13 @@ function MiniPolicyCard({ policy, index }: { policy: PolicyEntry; index: number 
             <p style={{
               fontFamily: "'Manrope', sans-serif",
               fontSize: "0.54rem", fontWeight: 800, letterSpacing: "0.16em",
-              textTransform: "uppercase", color: "#bbb", margin: "0 0 6px",
+              textTransform: "uppercase", color: "var(--color-text-subtle)", margin: "0 0 6px",
             }}>
               HOW ATEION ALIGNS
             </p>
             <p style={{
               fontFamily: "'Manrope', sans-serif",
-              fontSize: "0.7rem", color: "#333", lineHeight: 1.6,
+              fontSize: "0.7rem", color: "var(--color-text-secondary)", lineHeight: 1.6,
               flex: 1, margin: "0 0 10px",
             }}>
               {policy.frameworks[0].hoverMessage}
@@ -162,9 +162,9 @@ function MiniPolicyCard({ policy, index }: { policy: PolicyEntry; index: number 
               {policy.frameworks.map((fw, i) => (
                 <div key={i} style={{
                   display: "flex", alignItems: "center", justifyContent: "space-between",
-                  gap: 6, padding: "6px 9px", background: "#f7f7f7", borderRadius: 8,
+                  gap: 6, padding: "6px 9px", background: "var(--color-background-tertiary)", borderRadius: 8,
                 }}>
-                  <span style={{ fontFamily: "'Manrope', sans-serif", fontSize: "0.62rem", fontWeight: 600, color: "#333", flex: 1, lineHeight: 1.3 }}>
+                  <span style={{ fontFamily: "'Manrope', sans-serif", fontSize: "0.62rem", fontWeight: 600, color: "var(--color-text-secondary)", flex: 1, lineHeight: 1.3 }}>
                     {fw.name}
                   </span>
                   <button
@@ -206,7 +206,7 @@ export default function HomePolicySection() {
 
   return (
     <section style={{
-      background: "#f7f3eb",
+      background: "var(--color-background-primary)",
       padding: "0 5% 100px",
       position: "relative",
       overflow: "hidden",
@@ -244,7 +244,7 @@ export default function HomePolicySection() {
           style={{
             fontFamily: "'OV Soge', sans-serif",
             fontSize: "clamp(2rem, 4vw, 3.2rem)", fontWeight: 700,
-            color: "#1a1a1a", margin: "0 0 16px",
+            color: "var(--color-text-primary)", margin: "0 0 16px",
             lineHeight: 1.1, letterSpacing: "-0.025em",
           }}
         >
@@ -259,7 +259,7 @@ export default function HomePolicySection() {
           style={{
             fontFamily: "'Manrope', sans-serif",
             fontSize: "clamp(0.88rem, 1.4vw, 1.05rem)",
-            color: "#6b6b6b", maxWidth: 520, margin: "0 auto",
+            color: "var(--color-text-tertiary)", maxWidth: 520, margin: "0 auto",
             lineHeight: 1.8,
           }}
         >
@@ -296,8 +296,8 @@ export default function HomePolicySection() {
           style={{
             display: "inline-flex", alignItems: "center", gap: 10,
             fontFamily: "'Manrope', sans-serif", fontSize: "0.95rem", fontWeight: 700,
-            color: "#f7f3eb", background: "#1a1a1a",
-            border: "2px solid #1a1a1a", borderRadius: 100,
+            color: "var(--color-background-primary)", background: "var(--color-text-primary)",
+            border: "2px solid var(--color-text-primary)", borderRadius: 100,
             padding: "14px 38px", cursor: "pointer",
             transition: "background 0.28s ease, color 0.28s ease",
           }}
@@ -306,8 +306,8 @@ export default function HomePolicySection() {
             (e.currentTarget as HTMLButtonElement).style.borderColor = "#fb4444";
           }}
           onMouseLeave={(e) => {
-            (e.currentTarget as HTMLButtonElement).style.background = "#1a1a1a";
-            (e.currentTarget as HTMLButtonElement).style.borderColor = "#1a1a1a";
+            (e.currentTarget as HTMLButtonElement).style.background = "var(--color-text-primary)";
+            (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--color-text-primary)";
           }}
         >
           Explore All Global Policies

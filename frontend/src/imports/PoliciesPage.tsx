@@ -54,17 +54,17 @@ function PolicyGridCard({ policy }: { policy: PolicyEntry }) {
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
       style={{
-        background: "#fff",
+        background: "var(--color-background-secondary)",
         borderRadius: 20,
         overflow: "hidden",
         cursor: "pointer",
         position: "relative",
         display: "flex",
         flexDirection: "column",
-        border: "1px solid rgba(0,0,0,0.05)",
+        border: "1px solid var(--color-border-light)",
         boxShadow: hovered
           ? `0 20px 52px ${policy.accentColor}25, 0 6px 16px rgba(0,0,0,0.1)`
-          : "0 3px 12px rgba(0,0,0,0.07), 0 1px 3px rgba(0,0,0,0.04)",
+          : "var(--shadow-card)",
         transition: "box-shadow 0.3s ease",
       }}
       whileHover={{ scale: 1.03, y: -6 }}
@@ -73,7 +73,7 @@ function PolicyGridCard({ policy }: { policy: PolicyEntry }) {
       onClick={() => navigate(`/policy/${policy.id}`)}
     >
       {/* Policy logo image — full card top */}
-      <div style={{ width: "100%", aspectRatio: "1/1", overflow: "hidden", background: "#fff", flexShrink: 0 }}>
+      <div style={{ width: "100%", aspectRatio: "1/1", overflow: "hidden", background: "var(--color-background-secondary)", flexShrink: 0 }}>
         {img ? (
           <img
             src={img}
@@ -106,11 +106,9 @@ function PolicyGridCard({ policy }: { policy: PolicyEntry }) {
       {/* Bottom strip */}
       <div
         style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 10,
+          display: "flex", alignItems: "center", gap: 10,
           padding: "12px 16px",
-          background: "#fff",
+          background: "var(--color-background-secondary)",
           borderTop: `3px solid ${policy.accentColor}`,
           flexShrink: 0,
         }}
@@ -136,7 +134,7 @@ function PolicyGridCard({ policy }: { policy: PolicyEntry }) {
             fontFamily: "'OV Soge', sans-serif",
             fontSize: "0.9rem",
             fontWeight: 700,
-            color: "#1a1a1a",
+            color: "var(--color-text-primary)",
             margin: 0,
             whiteSpace: "nowrap",
             overflow: "hidden",
@@ -170,7 +168,7 @@ function PolicyGridCard({ policy }: { policy: PolicyEntry }) {
               position: "absolute",
               inset: 0,
               borderRadius: 20,
-              background: "#fff",
+              background: "var(--color-background-secondary)",
               borderTop: `3px solid ${policy.accentColor}`,
               padding: "20px 18px 18px",
               display: "flex",
@@ -193,7 +191,7 @@ function PolicyGridCard({ policy }: { policy: PolicyEntry }) {
             <p style={{
               fontFamily: "'Manrope', sans-serif",
               fontSize: "0.76rem",
-              color: "#333",
+              color: "var(--color-text-secondary)",
               lineHeight: 1.65,
               flex: 1,
               margin: "0 0 14px",
@@ -212,7 +210,7 @@ function PolicyGridCard({ policy }: { policy: PolicyEntry }) {
                     justifyContent: "space-between",
                     gap: 8,
                     padding: "8px 11px",
-                    background: "#f7f7f7",
+                    background: "var(--color-background-tertiary)",
                     borderRadius: 10,
                   }}
                 >
@@ -220,7 +218,7 @@ function PolicyGridCard({ policy }: { policy: PolicyEntry }) {
                     fontFamily: "'Manrope', sans-serif",
                     fontSize: "0.67rem",
                     fontWeight: 600,
-                    color: "#333",
+                    color: "var(--color-text-secondary)",
                     flex: 1,
                     lineHeight: 1.3,
                   }}>
@@ -300,7 +298,7 @@ export default function PoliciesPage() {
     <>
       <SharedNavbar />
 
-      <div style={{ background: "#f7f3eb", minHeight: "100vh", overflowX: "hidden", paddingTop: 60 }}>
+      <div style={{ background: "var(--color-background-primary)", minHeight: "100vh", overflowX: "hidden", paddingTop: 60 }}>
 
         {/* ── Hero header ── */}
         <section style={{ padding: "80px 5% 64px", textAlign: "center", position: "relative", overflow: "hidden" }}>
@@ -320,14 +318,14 @@ export default function PoliciesPage() {
 
           <motion.h1
             initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, delay: 0.1 }}
-            style={{ fontFamily: "'OV Soge', sans-serif", fontSize: "clamp(2.4rem, 5vw, 4rem)", fontWeight: 700, color: "#1a1a1a", margin: "0 0 20px", lineHeight: 1.08, letterSpacing: "-0.025em" }}
+            style={{ fontFamily: "'OV Soge', sans-serif", fontSize: "clamp(2.4rem, 5vw, 4rem)", fontWeight: 700, color: "var(--color-text-primary)", margin: "0 0 20px", lineHeight: 1.08, letterSpacing: "-0.025em" }}
           >
             Ateion's Global Policy Alignment
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, delay: 0.18 }}
-            style={{ fontFamily: "'Manrope', sans-serif", fontSize: "clamp(0.95rem, 1.5vw, 1.1rem)", color: "#6b6b6b", maxWidth: 520, margin: "0 auto 40px", lineHeight: 1.8 }}
+            style={{ fontFamily: "'Manrope', sans-serif", fontSize: "clamp(0.95rem, 1.5vw, 1.1rem)", color: "var(--color-text-secondary)", maxWidth: 520, margin: "0 auto 40px", lineHeight: 1.8 }}
           >
             Ateion's entire startup ecosystem is aligned with leading national and international education frameworks across the world.
           </motion.p>
@@ -343,7 +341,7 @@ export default function PoliciesPage() {
               { num: `${regions.length - 1}`, label: "Regions" },
             ].map((s) => (
               <div key={s.label} style={{ textAlign: "center" }}>
-                <p style={{ fontFamily: "'OV Soge', sans-serif", fontSize: "2.2rem", fontWeight: 700, color: "#1a1a1a", margin: 0, lineHeight: 1 }}>{s.num}</p>
+                <p style={{ fontFamily: "'OV Soge', sans-serif", fontSize: "2.2rem", fontWeight: 700, color: "var(--color-text-primary)", margin: 0, lineHeight: 1 }}>{s.num}</p>
                 <p style={{ fontFamily: "'Manrope', sans-serif", fontSize: "0.68rem", color: "#aaa", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", margin: "8px 0 0" }}>{s.label}</p>
               </div>
             ))}
@@ -369,8 +367,8 @@ export default function PoliciesPage() {
                 onChange={(e) => setSearch(e.target.value)}
                 style={{
                   width: "100%", padding: "15px 18px 15px 48px",
-                  background: "#fff", border: "1px solid rgba(0,0,0,0.08)", borderRadius: 14,
-                  fontFamily: "'Manrope', sans-serif", fontSize: "0.92rem", color: "#1a1a1a",
+                  background: "var(--color-background-secondary)", border: "1px solid var(--color-border-light)", borderRadius: 14,
+                  fontFamily: "'Manrope', sans-serif", fontSize: "0.92rem", color: "var(--color-text-primary)",
                   outline: "none", boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
                   transition: "border-color 0.2s, box-shadow 0.2s", boxSizing: "border-box",
                 }}
@@ -388,9 +386,9 @@ export default function PoliciesPage() {
                   style={{
                     fontFamily: "'Manrope', sans-serif", fontSize: "0.76rem", fontWeight: 700,
                     padding: "8px 18px", borderRadius: 100,
-                    border: activeRegion === region ? "1.5px solid #1a1a1a" : "1.5px solid rgba(0,0,0,0.12)",
-                    background: activeRegion === region ? "#1a1a1a" : "#fff",
-                    color: activeRegion === region ? "#f7f3eb" : "#555",
+                    border: activeRegion === region ? "1.5px solid var(--color-text-primary)" : "1.5px solid var(--color-border-medium)",
+                    background: activeRegion === region ? "var(--color-text-primary)" : "var(--color-background-secondary)",
+                    color: activeRegion === region ? "var(--color-background-primary)" : "var(--color-text-tertiary)",
                     cursor: "pointer", transition: "all 0.2s ease",
                   }}
                 >
