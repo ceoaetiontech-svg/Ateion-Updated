@@ -2,60 +2,57 @@
  * ============================================================================
  * ATEION SHARED NAVBAR
  * ============================================================================
- * Primary navbar used across all pages
+ * Primary navbar used across all pages (Homepage, GCO, Contact)
  * ============================================================================
  */
 
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, Link } from "react-router";
+import { Sun, Moon } from "lucide-react";
+import { useTheme } from "./ThemeProvider";
 
 import logo from "../../assets/logo.png";
 
-const navTextClass =
-  "font-bold text-[13px] whitespace-nowrap font-manrope";
+const navTextClass = "font-bold text-[13px] whitespace-nowrap font-manrope";
 
 /**
- * ============================================================================
- * NAV BUTTON
- * ============================================================================
+ * Unified NavButton component with 3 variants
  */
-
 function NavButton({
   children,
-  variant = "default" as
-    | "default"
-    | "muted"
-    | "primary"
-    | "white",
+  variant = "default" as "default" | "muted" | "primary" | "white",
   onClick,
+  href,
 }: {
   children: React.ReactNode;
   variant?: "default" | "muted" | "primary" | "white";
   onClick?: () => void;
+  href?: string;
 }) {
+  const navigate = useNavigate();
 
   const variantClasses = {
-
     default:
-      "bg-[rgba(235,235,235,0.8)] hover:bg-[rgba(215,215,215,0.95)] text-[#292929]",
-
+      "bg-[var(--color-nav-button)] hover:bg-[var(--color-nav-button-hover)] text-[var(--color-text-secondary)]",
     muted:
-      "bg-[rgba(235,235,235,0.8)] hover:bg-[rgba(215,215,215,0.95)] text-[#292929]",
-
+      "bg-[var(--color-nav-button)] hover:bg-[var(--color-nav-button-hover)] text-[var(--color-text-secondary)]",
     primary:
-      "bg-[#fb4444] hover:bg-[#ff5555] text-white shadow-[0_4px_12px_rgba(251,68,68,0.25)] hover:shadow-[0_6px_20px_rgba(251,68,68,0.35)]",
-
+      "bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-[#ffffff] shadow-[var(--shadow-button)] hover:shadow-[var(--shadow-button-hover)]",
     white:
-      "bg-white hover:bg-[#f5f5f5] text-[#292929] shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.1)]",
+      "bg-[var(--color-background-secondary)] hover:bg-[var(--color-background-tertiary)] text-[var(--color-text-secondary)] shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.1)]",
+  };
 
+  const handleClick = () => {
+    if (onClick) onClick();
+    if (href) navigate(href);
   };
 
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      onClick={onClick}
+      onClick={handleClick}
       className={`${variantClasses[variant]} flex h-[36px] items-center justify-center px-[12px] xl:px-[20px] rounded-full shrink-0 cursor-pointer transition-colors`}
     >
       {children}
@@ -63,94 +60,48 @@ function NavButton({
   );
 }
 
-/**
- * ============================================================================
- * DARK SECTION DETECTOR
- * ============================================================================
- */
-
 function useNavbarOnDark() {
-
-  const [isOnDarkSection, setIsOnDarkSection] =
-    useState(false);
+  const [isOnDarkSection, setIsOnDarkSection] = useState(false);
 
   useEffect(() => {
-
     const handleScroll = () => {
-
       const navbar = document.querySelector("nav");
-
       if (!navbar) return;
 
       const navRect = navbar.getBoundingClientRect();
+      const navMidY = navRect.top + navRect.height / 2;
 
-      const navMidY =
-        navRect.top + navRect.height / 2;
-
-      const darkSections =
-        document.querySelectorAll(".dark-section");
-
+      const darkSections = document.querySelectorAll(".dark-section");
       let overDark = false;
 
       darkSections.forEach((section) => {
-
         const rect = section.getBoundingClientRect();
-
-        if (
-          navMidY >= rect.top &&
-          navMidY <= rect.bottom
-        ) {
+        if (navMidY >= rect.top && navMidY <= rect.bottom) {
           overDark = true;
         }
-
       });
 
       setIsOnDarkSection(overDark);
-
     };
 
-    window.addEventListener(
-      "scroll",
-      handleScroll,
-      { passive: true }
-    );
-
-    window.addEventListener(
-      "resize",
-      handleScroll
-    );
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
 
     handleScroll();
 
     return () => {
-
-      window.removeEventListener(
-        "scroll",
-        handleScroll
-      );
-
-      window.removeEventListener(
-        "resize",
-        handleScroll
-      );
-
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
     };
-
   }, []);
 
   return isOnDarkSection;
-
 }
 
-/**
- * ============================================================================
- * LOGO
- * ============================================================================
- */
-
 function LogoContainer() {
-
   const isLogoWhite = useNavbarOnDark();
+  const { theme } = useTheme();
+  const shouldInvert = isLogoWhite || theme === "dark";
 
   return (
     <div className="flex items-center relative shrink-0">
@@ -159,9 +110,7 @@ function LogoContainer() {
           src={logo}
           alt="Ateion Logo"
           className={`h-[50px] md:h-[60px] object-contain w-auto transition-all duration-300 ${
-            isLogoWhite
-              ? "brightness-0 invert"
-              : ""
+            shouldInvert ? "brightness-0 invert" : ""
           }`}
         />
       </Link>
@@ -170,43 +119,69 @@ function LogoContainer() {
 }
 
 /**
- * ============================================================================
  * HOME BUTTON
- * ============================================================================
  */
-
-function HomeBtn({
-  onClick,
-}: {
-  onClick?: () => void;
-}) {
-
+function HomeBtn({ onClick }: { onClick?: () => void }) {
   const navigate = useNavigate();
 
   return (
     <NavButton
       variant="default"
       onClick={() => {
-
         if (onClick) onClick();
-
         navigate("/");
-
       }}
     >
-      <p className={`${navTextClass} text-[#292929]`}>
-        Home
+      <p className={`${navTextClass} text-[var(--color-text-secondary)]`}>Home</p>
+    </NavButton>
+  );
+}
+
+/**
+ * GLOBAL OLYMPIAD BUTTON
+ */
+function GlobalOlympiadBtn({ onClick }: { onClick?: () => void }) {
+  const navigate = useNavigate();
+
+  return (
+    <NavButton
+      variant="muted"
+      onClick={() => {
+        if (onClick) onClick();
+        navigate("/gco");
+      }}
+    >
+      <p className={`${navTextClass} text-[var(--color-text-secondary)]`}>
+        Global Olympiad
       </p>
     </NavButton>
   );
 }
 
 /**
- * ============================================================================
- * DASHBOARD BUTTON
- * ============================================================================
+ * PLAYGROUND BUTTON
  */
+function ResourcesBtn({ onClick }: { onClick?: () => void }) {
+  const navigate = useNavigate();
 
+  return (
+    <NavButton
+      variant="muted"
+      onClick={() => {
+        if (onClick) onClick();
+        navigate("/playground");
+      }}
+    >
+      <p className={`${navTextClass} text-[var(--color-text-secondary)]`}>
+        PlayGround
+      </p>
+    </NavButton>
+  );
+}
+
+/**
+ * DASHBOARD BUTTON
+ */
 function DashboardBtn({
   onClick,
 }: {
@@ -216,6 +191,7 @@ function DashboardBtn({
   const navigate = useNavigate();
 
   return (
+
     <NavButton
       variant="primary"
       onClick={() => {
@@ -226,132 +202,39 @@ function DashboardBtn({
 
       }}
     >
-      <p className={`${navTextClass} text-white`}>
+
+      <p className={`${navTextClass} text-[var(--color-background-primary)]`}>
         Dashboard
       </p>
+
     </NavButton>
+
   );
 }
 
-/**
- * ============================================================================
- * GLOBAL OLYMPIAD BUTTON
- * ============================================================================
- */
-
-function GlobalOlympiadBtn({
-  onClick,
-}: {
-  onClick?: () => void;
-}) {
-
-  const navigate = useNavigate();
-
+function NavLinks({ onCloseMobile }: { onCloseMobile?: () => void }) {
   return (
-    <NavButton
-      variant="muted"
-      onClick={() => {
-
-        if (onClick) onClick();
-
-        navigate("/gco");
-
-      }}
-    >
-      <p className={`${navTextClass} text-[#292929]`}>
-        Global Olympiad
-      </p>
-    </NavButton>
+    <div className="flex gap-[8px] xl:gap-[16px] items-center shrink-0">
+      <HomeBtn onClick={onCloseMobile} />
+      <GlobalOlympiadBtn onClick={onCloseMobile} />
+      <ResourcesBtn onClick={onCloseMobile} />
+      <DashboardBtn onClick={onCloseMobile} />
+    </div>
   );
 }
 
 /**
- * ============================================================================
- * PLAYGROUND BUTTON
- * ============================================================================
- */
-
-function ResourcesBtn({
-  onClick,
-}: {
-  onClick?: () => void;
-}) {
-
-  const navigate = useNavigate();
-
-  return (
-    <NavButton
-      variant="muted"
-      onClick={() => {
-
-        if (onClick) onClick();
-
-        navigate("/playground");
-
-      }}
-    >
-      <p className={`${navTextClass} text-[#292929]`}>
-        PlayGround
-      </p>
-    </NavButton>
-  );
-}
-
-/**
- * ============================================================================
- * CERTIFICATE BUTTON
- * ============================================================================
- */
-
-function CertificateBtn({
-  onClick,
-}: {
-  onClick?: () => void;
-}) {
-
-  const navigate = useNavigate();
-
-  return (
-    <NavButton
-      variant="muted"
-      onClick={() => {
-
-        if (onClick) onClick();
-
-        navigate("/certificate");
-
-      }}
-    >
-      <p className={`${navTextClass} text-[#292929]`}>
-        Certificate
-      </p>
-    </NavButton>
-  );
-}
-
-/**
- * ============================================================================
  * GET CONNECTED BUTTON
- * ============================================================================
  */
-
-function GetConnectedBtn({
-  onClick,
-}: {
-  onClick?: () => void;
-}) {
-
+function GetConnectedBtn({ onClick }: { onClick?: () => void }) {
   const navigate = useNavigate();
 
   return (
     <NavButton
       variant="primary"
       onClick={() => {
-
         if (onClick) onClick();
-
         navigate("/contact");
-
       }}
     >
       <p className={`${navTextClass} text-white`}>
@@ -362,31 +245,18 @@ function GetConnectedBtn({
 }
 
 /**
- * ============================================================================
  * SIGN IN BUTTON
- * ============================================================================
  */
-
-function SignInBtn({
-  onClick,
-}: {
-  onClick?: () => void;
-}) {
-
+function SignInBtn({ onClick }: { onClick?: () => void }) {
   return (
     <NavButton
       variant="white"
       onClick={() => {
-
         if (onClick) onClick();
-
-        window.dispatchEvent(
-          new CustomEvent("open-login")
-        );
-
+        window.dispatchEvent(new CustomEvent("open-login"));
       }}
     >
-      <p className={`${navTextClass} text-[#292929]`}>
+      <p className={`${navTextClass} text-[var(--color-text-secondary)]`}>
         Sign In
       </p>
     </NavButton>
@@ -394,28 +264,15 @@ function SignInBtn({
 }
 
 /**
- * ============================================================================
  * SIGN UP BUTTON
- * ============================================================================
  */
-
-function SignUpBtn({
-  onClick,
-}: {
-  onClick?: () => void;
-}) {
-
+function SignUpBtn({ onClick }: { onClick?: () => void }) {
   return (
     <NavButton
       variant="primary"
       onClick={() => {
-
         if (onClick) onClick();
-
-        window.dispatchEvent(
-          new CustomEvent("open-register")
-        );
-
+        window.dispatchEvent(new CustomEvent("open-register"));
       }}
     >
       <p className={`${navTextClass} text-white`}>
@@ -425,90 +282,198 @@ function SignUpBtn({
   );
 }
 
-/**
- * ============================================================================
- * NAV LINKS
- * ============================================================================
- */
-
-function NavLinks({
-  onCloseMobile,
+function MobileMenuIcon({
+  isOpen,
+  onClick,
+  isWhite,
 }: {
-  onCloseMobile?: () => void;
+  isOpen: boolean;
+  onClick: () => void;
+  isWhite: boolean;
 }) {
-
   return (
-    <div className="flex gap-[8px] xl:gap-[16px] items-center shrink-0">
-
-      {/* HOME */}
-      <HomeBtn onClick={onCloseMobile} />
-
-      {/* DASHBOARD */}
-      <DashboardBtn
-        onClick={onCloseMobile}
+    <button
+      type="button"
+      onClick={onClick}
+      className="lg:hidden flex flex-col justify-center items-center w-[40px] h-[40px] cursor-pointer z-[150] relative"
+      aria-label="Toggle menu"
+    >
+      <motion.div
+        className={`w-[24px] h-[2px] rounded-full origin-center transition-colors duration-300 ${
+          isWhite ? "bg-white" : "bg-[var(--color-text-primary)]"
+        }`}
+        animate={{
+          rotate: isOpen ? 45 : 0,
+          y: isOpen ? 6 : 0,
+        }}
+        transition={{ duration: 0.2 }}
       />
 
-      {/* GLOBAL OLYMPIAD */}
-      <GlobalOlympiadBtn
-        onClick={onCloseMobile}
+      <motion.div
+        className={`w-[24px] h-[2px] rounded-full my-[4px] transition-colors duration-300 ${
+          isWhite ? "bg-white" : "bg-[var(--color-text-primary)]"
+        }`}
+        animate={{
+          opacity: isOpen ? 0 : 1,
+        }}
+        transition={{ duration: 0.2 }}
       />
 
-      {/* PLAYGROUND */}
-      <ResourcesBtn
-        onClick={onCloseMobile}
+      <motion.div
+        className={`w-[24px] h-[2px] rounded-full origin-center transition-colors duration-300 ${
+          isWhite ? "bg-white" : "bg-[var(--color-text-primary)]"
+        }`}
+        animate={{
+          rotate: isOpen ? -45 : 0,
+          y: isOpen ? -6 : 0,
+        }}
+        transition={{ duration: 0.2 }}
       />
-
-      {/* CERTIFICATE */}
-      <CertificateBtn
-        onClick={onCloseMobile}
-      />
-
-    </div>
+    </button>
   );
 }
 
 /**
- * ============================================================================
- * MAIN NAVBAR
- * ============================================================================
+ * THEME TOGGLE BUTTON (Sun/Moon)
  */
-
-export default function SharedNavbar() {
+function ThemeToggleBtn() {
+  const { theme, toggleTheme } = useTheme();
 
   return (
+    <motion.button
+      type="button"
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.9 }}
+      onClick={toggleTheme}
+      className="flex h-[36px] w-[36px] items-center justify-center rounded-full bg-[var(--color-nav-button)] hover:bg-[var(--color-nav-button-hover)] cursor-pointer transition-colors"
+      aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+      title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+    >
+      <AnimatePresence mode="wait" initial={false}>
+        {theme === "dark" ? (
+          <motion.div
+            key="sun"
+            initial={{ rotate: -90, opacity: 0 }}
+            animate={{ rotate: 0, opacity: 1 }}
+            exit={{ rotate: 90, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Sun size={18} className="text-[var(--color-text-secondary)]" />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="moon"
+            initial={{ rotate: 90, opacity: 0 }}
+            animate={{ rotate: 0, opacity: 1 }}
+            exit={{ rotate: -90, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Moon size={18} className="text-[var(--color-text-secondary)]" />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.button>
+  );
+}
 
+export default function SharedNavbar() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const isNavbarOnDark = useNavbarOnDark();
+
+  const navigate = useNavigate();
+
+  const handleNavClick = (path: string) => {
+    setIsMobileMenuOpen(false);
+    navigate(path);
+  };
+
+  return (
     <nav
       className="fixed top-0 left-0 right-0 z-[100] bg-transparent"
       role="navigation"
       aria-label="Main navigation"
     >
-
       <div className="flex items-center justify-between px-[16px] lg:px-[24px] py-[12px] lg:py-[20px] w-full max-w-[1280px] mx-auto">
-
+        
         {/* LEFT SIDE */}
         <div className="flex items-center justify-start">
-
           <LogoContainer />
 
           <div className="hidden lg:flex items-center ml-[16px] xl:ml-[32px]">
             <NavLinks />
           </div>
-
         </div>
 
         {/* RIGHT SIDE */}
         <div className="hidden lg:flex items-center justify-end ml-auto gap-[8px] xl:gap-[12px]">
-
           <GetConnectedBtn />
-
           <SignInBtn />
-
           <SignUpBtn />
-
+          <ThemeToggleBtn />
         </div>
 
+        {/* MOBILE MENU BUTTON */}
+        <MobileMenuIcon
+          isOpen={isMobileMenuOpen}
+          isWhite={isNavbarOnDark}
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        />
       </div>
 
+      {/* MOBILE MENU */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="lg:hidden bg-[var(--color-background-primary)] border-t border-[var(--color-border-light)] overflow-hidden"
+          >
+            <div className="flex flex-col gap-[12px] px-[24px] py-[24px]">
+              
+              <HomeBtn
+                onClick={() => handleNavClick("/")}
+              />
+
+              <GlobalOlympiadBtn
+                onClick={() => handleNavClick("/gco")}
+              />
+
+              <ResourcesBtn
+                onClick={() => handleNavClick("/playground")}
+              />
+
+              <DashboardBtn
+                onClick={() => handleNavClick("/dashboard")}
+              />
+
+              <GetConnectedBtn
+                onClick={() => handleNavClick("/contact")}
+              />
+
+              <div className="h-[1px] bg-[var(--color-border-light)] my-[4px]" />
+
+              <SignInBtn
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  window.dispatchEvent(new CustomEvent("open-login"));
+                }}
+              />
+
+              <SignUpBtn
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  window.dispatchEvent(new CustomEvent("open-register"));
+                }}
+              />
+
+              <ThemeToggleBtn />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   );
 }
