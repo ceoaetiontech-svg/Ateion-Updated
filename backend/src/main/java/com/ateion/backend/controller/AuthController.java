@@ -7,9 +7,9 @@ import com.ateion.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-// FIXED: Added Map and HashMap imports for JSON conversion!
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -20,48 +20,43 @@ import java.util.Optional;
 public class AuthController {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder; // <--- INJECTED ENCODER
 
-    // 1. Handles the Sign Up Modal
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@RequestBody SignUpRequestDTO signUpRequest) {
-        
-        // Check if the email is already in the database
+
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: Email is already registered!");
         }
 
-        // Create the new user
+        // Create the new user and ENCRYPT the password
         User newUser = User.builder()
                 .fullName(signUpRequest.getFullName())
                 .email(signUpRequest.getEmail())
-                .password(signUpRequest.getPassword()) // Note: We will encrypt this later!
-                .ageSegment(signUpRequest.getAgeSegment()) 
+                .password(passwordEncoder.encode(signUpRequest.getPassword())) // <--- HASH THE PASSWORD
+                .ageSegment(signUpRequest.getAgeSegment())
                 .build();
 
-        // Save to Supabase
         userRepository.save(newUser);
         return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully!");
     }
 
-    // 2. Handles the Log In Modal
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequest) {
-        
-        // Find the user by their email
+
         Optional<User> optionalUser = userRepository.findByEmail(loginRequest.getEmail());
 
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            
-            // Check if the password matches
-            if (user.getPassword().equals(loginRequest.getPassword())) {
-                
-                // FIXED: Create a JSON object to send back to the React frontend!
+
+            // VERIFY using BCrypt's .matches()
+            if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+
                 Map<String, Object> userData = new HashMap<>();
                 userData.put("fullName", user.getFullName());
                 userData.put("email", user.getEmail());
-                userData.put("ageSegment", user.getAgeSegment()); // Sends the segment to the Playground!
-                
+                userData.put("ageSegment", user.getAgeSegment());
+
                 return ResponseEntity.ok(userData);
             } else {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Error: Incorrect password!");
