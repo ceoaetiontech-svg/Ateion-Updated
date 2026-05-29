@@ -87,7 +87,7 @@
 
 @font-face {
   font-family: 'SF Pro Display';
-  src: url('../assets/SFProDisplay-Regular.ttf') format('truetype');
+  src: url('../assets/fonts/SFProDisplay-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -95,7 +95,7 @@
 
 @font-face {
   font-family: 'SF Pro Display';
-  src: url('../assets/SFProDisplay-Medium.ttf') format('truetype');
+  src: url('../assets/fonts/SFProDisplay-Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -103,7 +103,7 @@
 
 @font-face {
   font-family: 'SF Pro Display';
-  src: url('../assets/SFProDisplay-Bold.ttf') format('truetype');
+  src: url('../assets/fonts/SFProDisplay-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;

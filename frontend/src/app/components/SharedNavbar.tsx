@@ -179,46 +179,12 @@ function ResourcesBtn({ onClick }: { onClick?: () => void }) {
   );
 }
 
-/**
- * CERTIFICATE BUTTON
- */
-function CertificateBtn({
-  onClick,
-}: {
-  onClick?: () => void;
-}) {
-
-  const navigate = useNavigate();
-
-  return (
-
-    <NavButton
-      variant="muted"
-      onClick={() => {
-
-        if (onClick) onClick();
-
-        navigate("/certificate");
-
-      }}
-    >
-
-      <p className={`${navTextClass} text-[var(--color-text-secondary)]`}>
-        Certificate
-      </p>
-
-    </NavButton>
-
-  );
-}
-
 function NavLinks({ onCloseMobile }: { onCloseMobile?: () => void }) {
   return (
     <div className="flex gap-[8px] xl:gap-[16px] items-center shrink-0">
       <HomeBtn onClick={onCloseMobile} />
       <GlobalOlympiadBtn onClick={onCloseMobile} />
       <ResourcesBtn onClick={onCloseMobile} />
-      <CertificateBtn onClick={onCloseMobile} />
     </div>
   );
 }
@@ -443,10 +409,6 @@ export default function SharedNavbar() {
 
               <ResourcesBtn
                 onClick={() => handleNavClick("/playground")}
-              />
-
-              <CertificateBtn
-                onClick={() => handleNavClick("/certificate")}
               />
 
               <GetConnectedBtn

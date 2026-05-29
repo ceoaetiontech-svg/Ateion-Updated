@@ -5,7 +5,6 @@ import Homepage from "../imports/Homepage";
 import GCOPage from "../imports/GCOPage";
 import ContactPage from "../imports/ContactPage";
 import ResourcesPage from "../imports/ResourcesPage";
-import CertificatePage from "../imports/CertificatePage";
 import AssessmentDemoPage from "../imports/AssessmentDemoPage";
 
 import RegisterPage from "../imports/RegisterPage";
@@ -83,11 +82,6 @@ export default function App() {
           element={<ResourcesPage />}
         />
 
-        {/* CERTIFICATE PAGE */}
-        <Route
-          path="/certificate"
-          element={<CertificatePage />}
-        />
 
         {/* ASSESSMENT DEMO PAGE */}
         <Route

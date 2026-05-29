@@ -29,11 +29,7 @@ function getInitialTheme(): Theme {
   const stored = localStorage.getItem(STORAGE_KEY);
   if (stored === "dark" || stored === "light") return stored;
 
-  // 2. Check OS preference
-  if (window.matchMedia?.("(prefers-color-scheme: dark)").matches) {
-    return "dark";
-  }
-
+  // 2. Default to light mode for first-time visitors
   return "light";
 }
 
@@ -56,19 +52,7 @@ export default function ThemeProvider({
     }
   }, [theme]);
 
-  // Listen for OS preference changes
-  useEffect(() => {
-    const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    const handler = (e: MediaQueryListEvent) => {
-      // Only auto-switch if user hasn't manually set a preference
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (!stored) {
-        setThemeState(e.matches ? "dark" : "light");
-      }
-    };
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, []);
+
 
   const toggleTheme = useCallback(() => {
     setThemeState((prev) => (prev === "light" ? "dark" : "light"));
