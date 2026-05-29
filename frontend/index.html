@@ -39,6 +39,17 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://cdn.jsdelivr.net" />
     <link href="https://fonts.googleapis.com/css2?family=Flow+Circular&family=Manrope:wght@200..800&display=swap" rel="stylesheet">
+
+    <!-- Anti-FOUC: Set theme before paint to prevent flash of wrong theme -->
+    <script>
+      (function() {
+        var t = localStorage.getItem('ateion-theme');
+        if (!t) t = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', t);
+        var m = document.querySelector('meta[name="theme-color"]');
+        if (m) m.setAttribute('content', t === 'dark' ? '#0f0f11' : '#f7f3eb');
+      })();
+    </script>
   </head>
 
   <body>

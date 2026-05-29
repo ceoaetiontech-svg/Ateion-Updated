@@ -190,7 +190,7 @@
 }
 
 .privacy-label {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400;
   color: #666;
   display: flex;
@@ -206,8 +206,8 @@
 
 .privacy-label input {
   cursor: pointer;
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   flex-shrink: 0;
   margin-top: 2px;
   accent-color: var(--color-black);
@@ -320,7 +320,7 @@
   padding: 56px 40px;
   background: var(--color-white);
   border-radius: 20px;
-  box-shadow: 0 4px 32px rgba(0,0,0,0.09);
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.09);
   animation: fadeIn 0.45s ease;
 }
 
@@ -348,7 +348,7 @@
 .contact-success-body {
   font-family: var(--font-body);
   font-size: 15px;
-  color: rgba(0,0,0,0.6);
+  color: rgba(0, 0, 0, 0.6);
   line-height: 1.6;
   margin-bottom: 32px;
 }
@@ -486,13 +486,13 @@
   }
 
   .privacy-label {
-    font-size: 11px;
+    font-size: 13px;
     gap: 8px;
   }
 
   .privacy-label input {
-    width: 14px;
-    height: 14px;
+    width: 16px;
+    height: 16px;
   }
 
   .submit-btn {
@@ -545,7 +545,7 @@
   }
 
   .privacy-label {
-    font-size: 10px;
+    font-size: 12px;
   }
 
   .submit-btn {
@@ -575,4 +575,126 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* ===== DARK MODE OVERRIDES ===== */
+[data-theme="dark"] {
+  --color-error: #ff4757;
+  --color-border: rgba(255, 255, 255, 0.15);
+  --color-black: var(--color-text-primary);
+  --color-white: var(--color-background-primary);
+}
+
+[data-theme="dark"] .contact-page-wrapper {
+  background-color: var(--color-background-primary);
+}
+
+[data-theme="dark"] .contact-title {
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .contact-description {
+  color: #d4d4d8;
+}
+
+[data-theme="dark"] .contact-btn {
+  border-color: rgba(255, 255, 255, 0.25);
+  color: var(--color-text-primary);
+  background: transparent;
+}
+
+[data-theme="dark"] .contact-btn:hover {
+  background-color: var(--color-text-primary);
+  color: var(--color-background-primary);
+  border-color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .form-row input,
+[data-theme="dark"] .message-textarea {
+  background-color: transparent;
+  color: var(--color-text-primary);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+[data-theme="dark"] .form-row input:focus,
+[data-theme="dark"] .message-textarea:focus {
+  border-color: var(--color-text-primary);
+  box-shadow: 0 2px 4px rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="dark"] .form-row input::placeholder,
+[data-theme="dark"] .message-textarea::placeholder {
+  color: var(--color-text-muted);
+}
+
+[data-theme="dark"] .input-error {
+  border-color: var(--color-error) !important;
+  background-color: rgba(255, 71, 87, 0.1);
+}
+
+[data-theme="dark"] .input-error:focus {
+  box-shadow: 0 2px 4px rgba(255, 71, 87, 0.25);
+}
+
+[data-theme="dark"] .message-textarea {
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+[data-theme="dark"] .message-textarea:focus {
+  border-color: var(--color-text-primary) !important;
+}
+
+[data-theme="dark"] .privacy-label {
+  color: var(--color-text-tertiary);
+}
+
+[data-theme="dark"] .privacy-label input {
+  accent-color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .privacy-label input:focus {
+  outline-color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .submit-btn {
+  background-color: var(--color-text-primary);
+  color: var(--color-background-primary);
+}
+
+[data-theme="dark"] .submit-btn:hover {
+  background-color: var(--color-primary-hover);
+  box-shadow: var(--shadow-button-hover);
+}
+
+[data-theme="dark"] .submit-btn:disabled {
+  background-color: #3a3a3e;
+  color: var(--color-text-muted);
+}
+
+[data-theme="dark"] .contact-success-card {
+  background: var(--color-background-secondary);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--color-border-light);
+  box-shadow: var(--shadow-modal);
+}
+
+[data-theme="dark"] .contact-success-title {
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .contact-success-body {
+  color: rgba(240, 240, 242, 0.6);
+}
+
+[data-theme="dark"] .contact-success-icon {
+  background: #2d245a;
+}
+
+[data-theme="dark"] .contact-success-btn {
+  background: #2d245a;
+}
+
+[data-theme="dark"] .contact-success-btn:hover {
+  background: #3d3470;
 }

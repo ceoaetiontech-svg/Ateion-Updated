@@ -213,3 +213,87 @@
 .close-btn:hover{
   background:#e5e7eb;
 }
+
+/* ===== DARK MODE OVERRIDES ===== */
+[data-theme="dark"] .register-container{
+  background: rgba(0, 0, 0, 0.60);
+}
+
+[data-theme="dark"] .register-card{
+  background: var(--color-background-secondary);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--color-border-light);
+  box-shadow: var(--shadow-modal);
+}
+
+[data-theme="dark"] .register-card .left-side{
+  background: transparent;
+}
+
+[data-theme="dark"] .register-card .left-side h1{
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .register-card .left-side p{
+  color: var(--color-text-tertiary);
+}
+
+[data-theme="dark"] .register-card .right-side h2{
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .register-card .right-side input{
+  background: var(--color-background-tertiary);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .register-card .right-side input:focus{
+  border: 1px solid #ff5a4f;
+}
+
+[data-theme="dark"] .register-card .right-side input::placeholder{
+  color: var(--color-text-muted);
+}
+
+[data-theme="dark"] .register-card .register-btn{
+  background: var(--color-primary);
+  color: white;
+}
+
+[data-theme="dark"] .register-card .divider{
+  color: var(--color-text-muted);
+}
+
+[data-theme="dark"] .register-card .google-btn{
+  background: var(--color-background-tertiary);
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .register-card .google-btn:hover{
+  background: #3a3a3e;
+}
+
+[data-theme="dark"] .register-card .linkedin-btn{
+  background: #0077b5;
+  color: white;
+}
+
+[data-theme="dark"] .register-card .github-btn{
+  background: var(--color-text-primary);
+  color: var(--color-background-primary);
+}
+
+[data-theme="dark"] .register-card .github-btn:hover{
+  background: #d4d4d8;
+}
+
+[data-theme="dark"] .register-card .close-btn{
+  background: var(--color-background-tertiary);
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .register-card .close-btn:hover{
+  background: #3a3a3e;
+}

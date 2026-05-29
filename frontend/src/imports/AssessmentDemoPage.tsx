@@ -87,7 +87,7 @@ export default function AssessmentDemoPage() {
 
   return (
 
-    <div className="min-h-screen bg-[#f7f3eb] overflow-x-hidden">
+    <div className="min-h-screen bg-[var(--color-background-primary)] overflow-x-hidden">
 
       {/* NAVBAR */}
       <SharedNavbar />
@@ -95,7 +95,7 @@ export default function AssessmentDemoPage() {
       {/* PAGE */}
       <div className="pt-[140px] pb-[80px] px-[20px] md:px-[60px]">
 
-        <div className="max-w-[900px] mx-auto bg-white rounded-[30px] p-[30px] md:p-[50px] shadow-[0_10px_40px_rgba(0,0,0,0.08)]">
+        <div className="max-w-[900px] mx-auto bg-[var(--color-background-secondary)] rounded-[30px] p-[30px] md:p-[50px] shadow-[0_10px_40px_rgba(0,0,0,0.08)]">
 
           {/* TOP */}
           <div className="flex items-center justify-between mb-[40px]">
@@ -107,7 +107,7 @@ export default function AssessmentDemoPage() {
               </p>
 
               <h1
-                className="text-[32px] md:text-[46px] font-bold text-black"
+                className="text-[32px] md:text-[46px] font-bold text-[var(--color-text-primary)]"
                 style={{
                   fontFamily:
                     "'OV Soge', sans-serif",
@@ -132,7 +132,7 @@ export default function AssessmentDemoPage() {
               {questions.length}
             </p>
 
-            <h2 className="text-[24px] font-semibold text-black leading-[1.5]">
+            <h2 className="text-[24px] font-semibold text-[var(--color-text-primary)] leading-[1.5]">
 
               {
                 questions[currentQuestion]
@@ -163,7 +163,7 @@ export default function AssessmentDemoPage() {
                       currentQuestion
                     ] === option
                       ? "border-[#fb4444] bg-[#fff1f1] text-[#fb4444]"
-                      : "border-gray-200 hover:border-[#fb4444] hover:bg-[#fff5f5]"
+                      : "border-[var(--color-border-medium)] hover:border-[#fb4444] hover:bg-[#fff5f5]"
                   }
                   `}
                 >
@@ -181,7 +181,7 @@ export default function AssessmentDemoPage() {
             <button
               onClick={previousQuestion}
               disabled={currentQuestion === 0}
-              className="px-6 py-3 rounded-full border border-gray-300 hover:bg-gray-100 transition disabled:opacity-40"
+              className="px-6 py-3 rounded-full border border-[var(--color-border-medium)] hover:bg-[var(--color-background-tertiary)] transition disabled:opacity-40"
             >
               Previous
             </button>

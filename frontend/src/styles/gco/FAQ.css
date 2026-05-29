@@ -102,3 +102,44 @@
   .faq-answer { padding: 0 16px 20px 16px; font-size: 15px; }
   .faq-arrow { width: 28px; height: 28px; font-size: 18px; }
 }
+
+/* ─── Dark Mode ──────────────────────────────── */
+[data-theme="dark"] .faq-container {
+  background-color: var(--color-background-primary);
+}
+
+[data-theme="dark"] .faq-title {
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .faq-item {
+  background-color: var(--color-background-secondary);
+  border-color: rgba(255,255,255,0.06);
+  box-shadow: 0px 4px 20px 0px rgba(0,0,0,0.2);
+}
+
+[data-theme="dark"] .faq-item:hover {
+  box-shadow: 0px 8px 30px 0px rgba(0,0,0,0.35);
+}
+
+[data-theme="dark"] .faq-question {
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .faq-question-btn:hover .faq-question {
+  color: #fb4444;
+}
+
+[data-theme="dark"] .faq-arrow {
+  background-color: var(--color-background-tertiary);
+  color: var(--color-text-primary);
+  box-shadow: 0px 0.5px 1px 0px rgba(0,0,0,0.3);
+}
+
+[data-theme="dark"] .faq-arrow svg path {
+  stroke: var(--color-text-primary);
+}
+
+[data-theme="dark"] .faq-answer {
+  color: rgba(255,255,255,0.7);
+}

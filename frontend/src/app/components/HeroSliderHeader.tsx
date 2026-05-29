@@ -12,7 +12,8 @@ import hero9 from "../../assets/hero/hero9.png";
 import certificate from "../../assets/hero/certificate.jpg";
 import SharedNavbar from "./SharedNavbar";
 
-const itemClass = "h-[120px] sm:h-[150px] md:h-[180px] lg:h-[200px] relative shrink-0 rounded-lg overflow-hidden shadow-sm transition-all duration-500";
+const itemClass =
+  "h-[120px] sm:h-[150px] md:h-[180px] lg:h-[200px] relative shrink-0 rounded-lg overflow-hidden shadow-sm transition-all duration-500";
 
 export function Frame67() {
   const items = (
@@ -43,7 +44,8 @@ export function Frame67() {
         className="flex gap-[12px] items-end shrink-0"
         style={{ width: "max-content" }}
       >
-        {items}{items}
+        {items}
+        {items}
       </motion.div>
     </div>
   );
@@ -78,15 +80,22 @@ export function Frame66() {
         className="flex gap-[12px] items-center shrink-0"
         style={{ width: "max-content" }}
       >
-        {items}{items}
+        {items}
+        {items}
       </motion.div>
     </div>
   );
 }
 
-export default function HeroSliderHeader({ showNavbar = true, children }: { showNavbar?: boolean; children?: React.ReactNode }) {
+export default function HeroSliderHeader({
+  showNavbar = true,
+  children,
+}: {
+  showNavbar?: boolean;
+  children?: React.ReactNode;
+}) {
   return (
-    <div className="flex flex-col w-full bg-[#f7f3eb]">
+    <div className="flex flex-col w-full bg-[var(--color-background-primary)]">
       {/* 1. Marquee Animation (Top) - Merged rows */}
       <div className="w-full pt-[80px] sm:pt-[100px] flex flex-col gap-[14px]">
         <Frame67 />

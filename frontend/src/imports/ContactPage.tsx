@@ -105,7 +105,7 @@ export default function ContactPage() {
     <>
       <SharedNavbar />
 
-      <div className="bg-[#f7f3eb] w-full min-h-screen overflow-x-hidden relative">
+      <div className="bg-[var(--color-background-primary)] w-full min-h-screen overflow-x-hidden relative">
         <main className="contact-page-main pt-[120px] sm:pt-[140px] md:pt-[160px] pb-[48px] sm:pb-[64px] md:pb-[80px] px-[16px] sm:px-[24px]">
           <div className="max-w-[1240px] mx-auto w-full">
             <h1 className="contact-title text-center">Contact Us</h1>

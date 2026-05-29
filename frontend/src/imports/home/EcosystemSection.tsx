@@ -5,10 +5,10 @@ import svgPaths from "../svg-paths";
 function Tag({ text, className = "" }: { text: string; className?: string }) {
   return (
     <div
-      className={`border-[#272424] border-[0.6px] border-solid rounded-full px-6 py-2 h-[54px] flex items-center justify-center bg-transparent ${className}`}
+      className={`border-[var(--color-text-primary)] border-[0.6px] border-solid rounded-full px-6 py-2 h-[54px] flex items-center justify-center bg-transparent ${className}`}
     >
       <p
-        className="font-['Outfit',sans-serif] font-normal leading-none text-[#272424] text-[17px] text-center pt-[1px]"
+        className="font-['Outfit',sans-serif] font-normal leading-none text-[var(--color-text-primary)] text-[17px] text-center pt-[1px]"
         style={{ fontVariationSettings: "'opsz' 14" }}
       >
         {text}
@@ -53,14 +53,14 @@ function GcoFeatureBadge({
           >
             <div className="flex flex-col gap-[20px] md:gap-[24px] items-start w-full">
               <p
-                className="font-bold leading-[1.19] not-italic text-[36px] sm:text-[42px] md:text-[48px] text-black tracking-[0.4px] w-full max-w-[500px]"
+                className="font-bold leading-[1.19] not-italic text-[36px] sm:text-[42px] md:text-[48px] text-[var(--color-text-primary)] tracking-[0.4px] w-full max-w-[500px]"
                 style={{ fontFamily: "'OV Soge', sans-serif" }}
               >
                 {activeData.title}
               </p>
               <div className="flex justify-start w-full">
                 {activeData.id !== "gco" && (
-                  <p className="font-['Manrope',sans-serif] text-[16px] md:text-[18px] text-[rgba(0,0,0,0.7)] leading-relaxed md:pr-8">
+                  <p className="font-['Manrope',sans-serif] text-[16px] md:text-[18px] text-[var(--color-text-muted)] leading-relaxed md:pr-8">
                     {activeData.description}
                   </p>
                 )}
@@ -71,13 +71,13 @@ function GcoFeatureBadge({
       </div>
 
       <div
-        className="flex items-center justify-between bg-[#161616] h-[54px] pl-7 pr-6 rounded-full w-[174px] cursor-pointer group hover:bg-[#222] transition-colors"
+        className="flex items-center justify-between bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] shadow-[var(--shadow-button)] hover:shadow-[var(--shadow-button-hover)] h-[54px] pl-7 pr-6 rounded-full w-[174px] cursor-pointer group transition-all"
         role="button"
         tabIndex={0}
         aria-label="View more details"
         onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); /* future: navigate or expand */ } }}
       >
-        <p className="font-['Outfit',sans-serif] leading-none text-[17px] text-white tracking-[0.16px] whitespace-nowrap pt-0.5">
+        <p className="font-['Outfit',sans-serif] leading-none text-[17px] text-[#ffffff] tracking-[0.16px] whitespace-nowrap pt-0.5">
           View More
         </p>
         <div className="flex items-center justify-center" aria-hidden="true">
@@ -87,7 +87,7 @@ function GcoFeatureBadge({
               height="24"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="white"
+              stroke="#ffffff"
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -205,7 +205,7 @@ function EcosystemBubble({
             fontFamily: "'OV Soge', sans-serif",
             fontSize: titleSize,
             color:
-              isHovered && isDark ? "white" : staticTextColor || "black",
+              isHovered && isDark ? "white" : staticTextColor || "var(--color-text-primary)",
             textShadow:
               isHovered && isDark
                 ? "0 0 8px rgba(255,255,255,0.4)"
@@ -227,7 +227,7 @@ function EcosystemBubble({
             color:
               isHovered && isDark
                 ? "rgba(255,255,255,0.9)"
-                : staticTextColor || "rgba(0,0,0,0.7)",
+                : staticTextColor || "var(--color-text-muted)",
           }}
           animate={{
             opacity: isHovered ? 1 : 0.6,
@@ -309,7 +309,7 @@ function EcosystemCluster({
           <path
             d={svgPaths.p242fe600}
             id="Vector 467"
-            stroke="black"
+            stroke="var(--color-text-primary)"
             strokeWidth="0.88"
           />
         </svg>
@@ -331,7 +331,7 @@ function EcosystemCluster({
         >
           <path
             d={svgPaths.p3505a800}
-            fill="black"
+            fill="var(--color-text-primary)"
             id="Vector 465"
           />
         </svg>
@@ -353,7 +353,7 @@ function EcosystemCluster({
         >
           <path
             d={svgPaths.p3938fb80}
-            fill="black"
+            fill="var(--color-text-primary)"
             id="Vector 466"
           />
         </svg>
@@ -376,7 +376,7 @@ function EcosystemCluster({
           <path
             d={svgPaths.pe1a2a00}
             id="Vector 468"
-            stroke="black"
+            stroke="var(--color-text-primary)"
             strokeWidth="0.88"
           />
         </svg>
@@ -404,7 +404,7 @@ function EcosystemCluster({
         mt="0px"
         size="274.68px"
         defaultColor="#FF595B"
-        staticTextColor="black"
+        staticTextColor="var(--color-text-primary)"
         hoverColor="#FF595B"
         isDark={true}
         gradientId="gcoGrad"
@@ -522,9 +522,9 @@ export default function EcosystemSection() {
   return (
     // `relative` + `w-full` + explicit padding ensures the section occupies
     // real document space so the next sibling renders below it — no overlap.
-    <section className="relative w-full bg-[#f7f3eb] py-[60px] sm:py-[80px] md:py-[120px]">
+    <section className="relative w-full bg-[var(--color-background-primary)] py-[60px] sm:py-[80px] md:py-[120px]">
       {/* Section title */}
-      <p className="font-bold text-[36px] sm:text-[48px] md:text-[58px] text-black text-center w-full mb-[32px] sm:mb-[48px] md:mb-[60px] tracking-tight px-4" style={{ fontFamily: "'OV Soge', sans-serif" }}>
+      <p className="font-bold text-[36px] sm:text-[48px] md:text-[58px] text-[var(--color-text-primary)] text-center w-full mb-[32px] sm:mb-[48px] md:mb-[60px] tracking-tight px-4" style={{ fontFamily: "'OV Soge', sans-serif" }}>
         <span>Ateion as an Ecosystem</span>
       </p>
 
@@ -543,7 +543,7 @@ export default function EcosystemSection() {
         <GcoFeatureBadge activeData={activeData} />
 
         {/* Scroll hint */}
-        <p className="text-[11px] text-black/30 tracking-widest uppercase self-center">
+        <p className="text-[11px] text-[var(--color-text-primary)] opacity-30 tracking-widest uppercase self-center">
           ← scroll to explore →
         </p>
 

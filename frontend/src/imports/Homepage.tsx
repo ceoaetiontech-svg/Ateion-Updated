@@ -79,7 +79,7 @@ function HeroTextBlock() {
   return (
     <div className="w-full flex flex-col items-start justify-center px-[16px] pt-0 sm:px-[24px] md:px-[64px] gap-[16px] sm:gap-[20px] min-h-[25vh] md:min-h-[30vh] z-[100]">
       <p
-        className="leading-[0.96] not-italic text-[32px] sm:text-[40px] md:text-[48px] lg:text-[56px] text-black font-bold"
+        className="leading-[0.96] not-italic text-[32px] sm:text-[40px] md:text-[48px] lg:text-[56px] text-[var(--color-text-primary)] font-bold"
         style={{ fontFamily: "'OV Soge', sans-serif" }}
       >
         Reimagining Education
@@ -91,7 +91,7 @@ function HeroTextBlock() {
 
 function HeroHeaderSection() {
   return (
-    <div className="flex flex-col items-start w-full bg-[#f7f3eb]">
+    <div className="flex flex-col items-start w-full bg-[var(--color-background-primary)]">
       <HeroSliderHeader>
         <div className="flex flex-col gap-[40px] md:gap-[60px] w-full items-start">
           <HeroTextBlock />
@@ -110,14 +110,14 @@ function HeroHeaderSection() {
 
 function PurpleCapabilityCardInner() {
   return (
-    <div className="bg-[#e6e6e6] flex h-[400px] sm:h-[450px] md:h-[504px] items-start p-[24px] sm:p-[32px] md:p-[40px] relative rounded-[13px] sm:rounded-[20px] shrink-0 w-full md:w-[32%] lg:w-[28%] md:max-w-none">
+    <div className="bg-[var(--color-grey-card)] flex h-[400px] sm:h-[450px] md:h-[504px] items-start p-[24px] sm:p-[32px] md:p-[40px] relative rounded-[13px] sm:rounded-[20px] shrink-0 w-full md:w-[32%] lg:w-[28%] md:max-w-none">
       <div className="flex flex-col gap-[24px] sm:gap-[32px] items-start justify-center relative shrink-0 w-full md:max-w-[300px]">
-        <p className="font-['Inter',sans-serif] leading-[1.4] text-[16px] sm:text-[18px] text-black">
+        <p className="font-['Inter',sans-serif] leading-[1.4] text-[16px] sm:text-[18px] text-[var(--color-text-primary)]">
           Because <strong>marks</strong> measure memory.<br />
           <strong className="font-['IBM Plex Sans',sans-serif] italic text-[18px] sm:text-[20px]">Capability</strong>{" "}
           <strong className="font-['IBM Plex Sans',sans-serif] italic">measures the future.</strong>
         </p>
-        <p className="font-['Inter',sans-serif] leading-[1.6] text-[13px] sm:text-[14px] text-black w-full">
+        <p className="font-['Inter',sans-serif] leading-[1.6] text-[13px] sm:text-[14px] text-[var(--color-text-primary)] w-full">
           Ateion is the world's leading Capability-First Education ecosystem integrating AI literacy, innovation, and measurable readiness into modern schooling.
         </p>
       </div>
@@ -149,7 +149,7 @@ useEffect(() => {
   <div className="content-stretch flex flex-col md:flex-row items-stretch relative shrink-0 w-full gap-[16px] sm:gap-[24px]">
 
    <div className="w-full flex justify-center">
-  <div className="w-full max-w-[900px] h-[300px] sm:h-[400px] md:h-[500px] bg-black rounded-[20px] overflow-hidden">
+  <div className="w-full max-w-[900px] h-[300px] sm:h-[400px] md:h-[500px] bg-[#000000] rounded-[20px] overflow-hidden">
 
     <video
       ref={videoRef}
@@ -206,11 +206,11 @@ function GlobalPresenceMapSection() {
     <div className="content-stretch flex flex-col items-center relative shrink-0 w-full">
       {/* Section heading */}
       <div className="w-full flex justify-center mb-6 sm:mb-8 md:mb-10 px-4">
-        <p className="font-semibold leading-tight text-[32px] sm:text-[40px] md:text-[48px] text-black text-center" style={{ fontFamily: "'OV Soge', sans-serif" }}>Global Presence</p>
+        <p className="font-semibold leading-tight text-[32px] sm:text-[40px] md:text-[48px] text-[var(--color-text-primary)] text-center" style={{ fontFamily: "'OV Soge', sans-serif" }}>Global Presence</p>
       </div>
 
       {/* Dark stats + map block */}
-      <div className="dark-section bg-black h-auto relative shrink-0 w-full py-[40px] sm:py-[56px] md:py-[80px]">
+      <div className="dark-section bg-[#05020a] h-auto relative shrink-0 w-full py-[40px] sm:py-[56px] md:py-[80px]">
         <div className="content-stretch flex flex-col items-center relative size-full px-[16px] sm:px-[24px] md:px-[40px]">
           <div className="content-stretch flex flex-col items-center relative shrink-0 w-full">
             <div className="content-stretch flex flex-col gap-[32px] sm:gap-[48px] md:gap-[64px] items-center relative shrink-0 w-full max-w-[1280px] mx-auto">
@@ -220,7 +220,7 @@ function GlobalPresenceMapSection() {
                 <div className="content-stretch flex flex-col gap-[28px] sm:gap-[40px] md:gap-[48px] items-center relative shrink-0 w-full max-w-[1200px]">
                   <FadeIn>
                     <div className="flex items-center justify-center relative shrink-0 mb-6 sm:mb-8 px-4">
-                      <p className="font-semibold not-italic opacity-90 relative text-[28px] sm:text-[32px] md:text-[36px] text-center text-white tracking-wide" style={{ fontFamily: "'OV Soge', sans-serif" }}>
+                      <p className="font-semibold not-italic opacity-90 relative text-[28px] sm:text-[32px] md:text-[36px] text-center text-[#ffffff] tracking-wide" style={{ fontFamily: "'OV Soge', sans-serif" }}>
                         Powered by Proven Numbers
                       </p>
                     </div>
@@ -310,11 +310,11 @@ function EducationStatusWrapper() {
       <FadeIn>
         <div className="flex flex-col gap-[16px] sm:gap-[24px] items-start w-full">
           {/* Header row */}
-          <div className="content-stretch flex flex-col sm:flex-row items-start sm:items-center justify-between not-italic relative shrink-0 text-black w-full py-[24px] sm:py-[48px] gap-[24px] sm:gap-[64px]">
+          <div className="content-stretch flex flex-col sm:flex-row items-start sm:items-center justify-between not-italic relative shrink-0 text-[var(--color-text-primary)] w-full py-[24px] sm:py-[48px] gap-[24px] sm:gap-[64px]">
             <p className="font-bold leading-tight relative shrink-0 text-[28px] sm:text-[36px] md:text-[48px] flex-1" style={{ fontFamily: "'OV Soge', sans-serif" }}>
               Education is not broken.
             </p>
-            <p className="font-['Inter',sans-serif] leading-relaxed relative shrink-0 text-[16px] sm:text-[18px] text-[rgba(0,0,0,0.7)] flex-1">
+            <p className="font-['Inter',sans-serif] leading-relaxed relative shrink-0 text-[16px] sm:text-[18px] text-[var(--color-text-muted)] flex-1">
               <span>{`Its measurement system is `}</span>
               <span className="font-bold">outdated.</span>
               <span>{` Ateion replaces memory-based validation with `}</span>
@@ -331,16 +331,16 @@ function EducationStatusWrapper() {
                 target="_blank"
                 rel="noopener noreferrer"
                 key={i}
-                className="bg-white hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] transition-all duration-300 min-h-[200px] sm:min-h-[240px] md:min-h-[260px] rounded-[20px] p-[28px] sm:p-[32px] flex flex-col justify-between border border-black/5 group"
+                className="bg-[var(--color-background-secondary)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] transition-all duration-300 min-h-[200px] sm:min-h-[240px] md:min-h-[260px] rounded-[20px] p-[28px] sm:p-[32px] flex flex-col justify-between border border-black/5 group"
               >
-                <p className="text-[22px] sm:text-[26px] md:text-[30px] font-medium text-black leading-[1.05] group-hover:text-[#e03a3a] transition-colors" style={{ fontFamily: "'OV Soge', sans-serif", letterSpacing: "-0.01em" }}>
+                <p className="text-[22px] sm:text-[26px] md:text-[30px] font-medium text-[var(--color-text-primary)] leading-[1.05] group-hover:text-[#e03a3a] transition-colors" style={{ fontFamily: "'OV Soge', sans-serif", letterSpacing: "-0.01em" }}>
                   {item.title}
                 </p>
                 <div className="mt-[20px] sm:mt-[24px] flex flex-col gap-[6px]">
-                  <span className="text-[12px] sm:text-[13px] font-bold text-black opacity-50 uppercase tracking-wider" style={{ fontFamily: "'Manrope', sans-serif" }}>
+                  <span className="text-[12px] sm:text-[13px] font-bold text-[var(--color-text-primary)] opacity-50 uppercase tracking-wider" style={{ fontFamily: "'Manrope', sans-serif" }}>
                     Source
                   </span>
-                  <span className="text-[15px] sm:text-[16px] font-semibold text-black opacity-80" style={{ fontFamily: "'Manrope', sans-serif" }}>
+                  <span className="text-[15px] sm:text-[16px] font-semibold text-[var(--color-text-primary)] opacity-80" style={{ fontFamily: "'Manrope', sans-serif" }}>
                     {item.source}
                   </span>
                 </div>
@@ -389,7 +389,7 @@ function FAQItem({ question, answer, isOpen, toggle }: { question: string; answe
   const buttonId = `faq-button-${question.slice(0, 20).replace(/\s+/g, '-').toLowerCase()}`;
 
   return (
-    <div className="bg-[#f7f3eb] mb-[12px] relative rounded-[20px] shadow-[0px_4px_20px_0px_rgba(25,33,61,0.04)] overflow-hidden transition-all duration-300 border border-[rgba(0,0,0,0.03)] hover:shadow-[0px_8px_30px_0px_rgba(25,33,61,0.08)]">
+    <div className="bg-[var(--color-background-primary)] mb-[12px] relative rounded-[20px] shadow-[0px_4px_20px_0px_rgba(25,33,61,0.04)] overflow-hidden transition-all duration-300 border border-[rgba(0,0,0,0.03)] hover:shadow-[0px_8px_30px_0px_rgba(25,33,61,0.08)]">
       <button
         type="button"
         id={buttonId}
@@ -398,7 +398,7 @@ function FAQItem({ question, answer, isOpen, toggle }: { question: string; answe
         aria-controls={answerId}
         className="w-full content-stretch flex items-center justify-between px-[20px] sm:px-[32px] py-[20px] sm:py-[28px] relative text-left group"
       >
-        <span className="flex-[1_0_0] font-semibold leading-[1.35] max-w-[700px] not-italic relative text-[#1a1a1a] text-[18px] sm:text-[20px] md:text-[22px] transition-colors group-hover:text-[#fb4444]" style={{ fontFamily: "'SF Pro Display', sans-serif" }}>
+        <span className="flex-[1_0_0] font-semibold leading-[1.35] max-w-[700px] not-italic relative text-[var(--color-text-primary)] text-[18px] sm:text-[20px] md:text-[22px] transition-colors group-hover:text-[#fb4444]" style={{ fontFamily: "'SF Pro Display', sans-serif" }}>
           {question}
         </span>
         <div className={`bg-[#e7e3dd] content-stretch flex items-center p-[6px] sm:p-[8px] relative rounded-[100px] shadow-[0px_1px_2px_0px_rgba(25,33,61,0.07)] shrink-0 transition-transform duration-500 ${isOpen ? "rotate-90" : ""}`} aria-hidden="true">
@@ -429,7 +429,7 @@ function FAQItem({ question, answer, isOpen, toggle }: { question: string; answe
             transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
           >
             <div className="px-[20px] sm:px-[32px] pb-[20px] sm:pb-[32px] pt-[8px]">
-              <p className="leading-relaxed text-[15px] sm:text-[16px] text-[rgba(0,0,0,0.7)] max-w-[750px]" style={{ fontFamily: "'SF Pro Display', sans-serif" }}>
+              <p className="leading-relaxed text-[15px] sm:text-[16px] text-[var(--color-text-muted)] max-w-[750px]" style={{ fontFamily: "'SF Pro Display', sans-serif" }}>
                 {answer}
               </p>
             </div>
@@ -455,7 +455,7 @@ function FAQSectionContainer() {
     <div className="flex flex-col items-center w-full px-[16px] sm:px-[24px] md:px-[64px] py-[40px] sm:py-[60px] mb-[40px] sm:mb-[60px]">
       <div className="content-stretch flex flex-col gap-[32px] items-center relative shrink-0 w-full max-w-[1044px]">
         {/* Title */}
-        <p className="leading-[1.19] not-italic text-[24px] sm:text-[28px] md:text-[32px] text-black text-center" style={{ fontFamily: "'SF Pro Display', sans-serif" }}>
+        <p className="leading-[1.19] not-italic text-[24px] sm:text-[28px] md:text-[32px] text-[var(--color-text-primary)] text-center" style={{ fontFamily: "'SF Pro Display', sans-serif" }}>
           Your Common Questions Answered
         </p>
         {/* Accordion */}
@@ -475,7 +475,7 @@ function FAQSectionContainer() {
 
 export default function Homepage() {
   return (
-    <div className="bg-[#f7f3eb] w-full min-h-screen overflow-x-hidden flex flex-col gap-[80px] sm:gap-[100px] md:gap-[120px]" data-name="Homepage">
+    <div className="bg-[var(--color-background-primary)] w-full min-h-screen overflow-x-hidden flex flex-col gap-[80px] sm:gap-[100px] md:gap-[120px]" data-name="Homepage">
 
       {/* 1 & 2. Unified Hero Branding + Capability Cards */}
       <section>
