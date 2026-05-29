@@ -24,7 +24,7 @@
   display: flex;
   flex-direction: column; /* Stack on mobile */
   min-height: 100vh;
-  background: radial-gradient(circle at 50% 0%, #17102e 0%, #0a0514 100%);
+  background: var(--color-background-primary);
   color: var(--color-text-primary);
   font-family: "Manrope", sans-serif;
 }
@@ -33,10 +33,10 @@
 .sidebar {
   width: 100%;
   height: auto;
-  background: rgba(10, 5, 20, 0.4);
+  background: var(--color-background-secondary);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid var(--color-border-light);
   padding: var(--dash-spacing-sm) var(--dash-spacing-sm);
   position: relative;
   z-index: 50;
@@ -175,10 +175,10 @@
 }
 
 .card {
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--color-background-secondary);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--color-border-light);
   border-radius: 20px;
   padding: var(--dash-spacing-lg);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -239,9 +239,9 @@
 }
 
 .card-btn {
-  background: rgba(255, 255, 255, 0.05);
+  background: transparent;
   color: var(--color-text-primary);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--color-border-medium);
   padding: var(--dash-spacing-sm) var(--dash-spacing-md);
   border-radius: 12px;
   font-size: var(--dash-font-sm);
@@ -276,7 +276,7 @@
 
 .coming-soon-label {
   display: inline-block;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--color-border-light);
   color: var(--color-text-secondary);
   padding: 10px 20px;
   border-radius: 12px;
@@ -378,4 +378,34 @@
   .cards {
     gap: var(--dash-spacing-xl);
   }
+}
+
+/* ==========================================================================
+   DARK MODE OVERRIDES
+   ========================================================================== */
+[data-theme="dark"] .dashboard {
+  background: radial-gradient(circle at 50% 0%, #17102e 0%, #0a0514 100%);
+}
+
+[data-theme="dark"] .sidebar {
+  background: rgba(10, 5, 20, 0.4);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .sidebar ul li:not(.disabled-link):hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .card-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .coming-soon-label {
+  background: rgba(255, 255, 255, 0.1);
 }
