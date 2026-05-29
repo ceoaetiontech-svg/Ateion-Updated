@@ -115,7 +115,34 @@ export default function ResourcesPage() {
   ]);
 
    const [selectedMood, setSelectedMood] = useState("Good");
+   const [showAddTask, setShowAddTask] = useState(false);
 
+   const [newTask, setNewTask] = useState({
+     title: "",
+     date: "",
+     priority: "medium",
+   });
+   const handleAddTask = () => {
+    if (!newTask.title) return;
+  
+    const task = {
+      id: Date.now(),
+      title: newTask.title,
+      date: newTask.date || "Today",
+      priority: newTask.priority,
+      completed: false,
+    };
+  
+    setTasks([...tasks, task]);
+  
+    setNewTask({
+      title: "",
+      date: "",
+      priority: "medium",
+    });
+  
+    setShowAddTask(false);
+  };
   // Function to check/uncheck tasks
   const toggleTask = (id: number) => {
     setTasks(tasks.map(task => 
@@ -475,60 +502,156 @@ export default function ResourcesPage() {
             )}
 
              {/* ========================================== */}
-            {/* VIEW: ORGANISE (TASKS)                     */}
-            {/* ========================================== */}
-            {activeView === "Tasks" && (
-              <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <h3 className="text-xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "'OV Soge', sans-serif" }}>My Tasks</h3>
-                
-                <div className="w-full max-w-2xl">
-                  <div className="bg-[var(--color-background-secondary)] p-6 rounded-[20px] shadow-sm border border-[var(--color-border-light)] flex flex-col h-full">
-                    <h4 className="text-[16px] font-bold text-[var(--color-text-primary)] mb-4">Upcoming Tasks</h4>
-                    <div className="flex flex-col gap-3">
-                      {/* DYNAMIC INTERACTIVE TASKS */}
-                      {tasks.map((task) => (
-                        <div 
-                          key={task.id}
-                          onClick={() => toggleTask(task.id)}
-                          className={`flex items-start gap-3 p-3 rounded-xl border transition-all cursor-pointer group ${
-                            task.completed 
-                              ? "border-[var(--color-border-light)] opacity-60 bg-gray-50/50" 
-                              : task.priority === "medium"
-                              ? "border-orange-200 bg-orange-50/30 hover:bg-orange-50"
-                              : "border-[var(--color-border-light)] hover:bg-gray-50"
-                          }`}
-                        >
-                          <div className={`w-5 h-5 rounded mt-0.5 flex items-center justify-center transition-colors ${
-                            task.completed
-                              ? "bg-[#fb4444] text-[#ffffff]"
-                              : task.priority === "medium"
-                              ? "border-2 border-orange-300 group-hover:border-orange-500"
-                              : "border-2 border-gray-300 group-hover:border-[#fb4444]"
-                          }`}>
-                            {task.completed && <CheckSquare size={14} />}
-                          </div>
-                          <div className={`flex-1 transition-all ${task.completed ? "line-through text-[var(--color-text-tertiary)]" : ""}`}>
-                            <p className="text-sm font-semibold text-[var(--color-text-primary)]">{task.title}</p>
-                            <div className="flex items-center gap-2 mt-1">
-                              <span className="text-[10px] text-[var(--color-text-tertiary)] flex items-center gap-1">
-                                <Calendar size={10} /> {task.date}
-                              </span>
-                              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${
-                                task.priority === "high" 
-                                  ? "text-[#fb4444] bg-red-50" 
-                                  : "text-orange-500 bg-orange-100"
-                              }`}>
-                                {task.priority}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+{/* VIEW: ORGANISE (TASKS)                     */}
+{/* ========================================== */}
+{activeView === "Tasks" && (
+  <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
+
+    {/* HEADER WITH BUTTON */}
+    <div className="flex justify-between items-center">
+      <h3
+        className="text-xl font-bold text-[var(--color-text-primary)]"
+        style={{ fontFamily: "'OV Soge', sans-serif" }}
+      >
+        My Tasks
+      </h3>
+
+      <button
+        onClick={() => setShowAddTask(true)}
+        className="bg-[#fb4444] text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-red-600 transition shadow-sm"
+      >
+        + Add Task
+      </button>
+    </div>
+
+    <div className="w-full max-w-2xl">
+      <div className="bg-[var(--color-background-secondary)] p-6 rounded-[20px] shadow-md border border-[var(--color-border-light)] flex flex-col h-full">
+        
+        <h4 className="text-[16px] font-bold text-[var(--color-text-primary)] mb-4">
+          Upcoming Tasks
+        </h4>
+
+        <div className="flex flex-col gap-3">
+
+          {/* DYNAMIC INTERACTIVE TASKS */}
+          {tasks.map((task) => (
+            <div
+              key={task.id}
+              onClick={() => toggleTask(task.id)}
+              className={`flex items-start gap-3 p-3 rounded-xl border transition-all cursor-pointer group ${
+                task.completed
+                  ? "border-[var(--color-border-light)] opacity-60 bg-gray-50/50"
+                  : task.priority === "medium"
+                  ? "border-orange-200 bg-orange-50/30 hover:bg-orange-50"
+                  : "border-[var(--color-border-light)] hover:bg-gray-50 hover:shadow-sm"
+              }`}
+            >
+              {/* Checkbox */}
+              <div
+                className={`w-5 h-5 rounded mt-0.5 flex items-center justify-center transition-all ${
+                  task.completed
+                    ? "bg-[#fb4444] text-white scale-105"
+                    : task.priority === "medium"
+                    ? "border-2 border-orange-300 group-hover:border-orange-500"
+                    : "border-2 border-gray-300 group-hover:border-[#fb4444]"
+                }`}
+              >
+                {task.completed && <CheckSquare size={14} />}
+              </div>
+
+              {/* Task Content */}
+              <div
+                className={`flex-1 transition-all ${
+                  task.completed
+                    ? "line-through text-[var(--color-text-tertiary)]"
+                    : ""
+                }`}
+              >
+                <p className="text-sm font-semibold text-[var(--color-text-primary)]">
+                  {task.title}
+                </p>
+
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="text-[10px] text-[var(--color-text-tertiary)] flex items-center gap-1">
+                    <Calendar size={10} /> {task.date}
+                  </span>
+
+                  <span
+                    className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${
+                      task.priority === "high"
+                        ? "text-[#fb4444] bg-red-50"
+                        : "text-orange-500 bg-orange-100"
+                    }`}
+                  >
+                    {task.priority}
+                  </span>
                 </div>
               </div>
-            )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    {/* ADD TASK MODAL */}
+    {showAddTask && (
+      <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
+        <div className="bg-white p-6 rounded-xl w-[320px] shadow-xl">
+          <h3 className="font-bold text-lg mb-4 text-[var(--color-text-primary)]">
+            Add New Task
+          </h3>
+
+          <input
+            type="text"
+            placeholder="Task title"
+            value={newTask.title}
+            onChange={(e) =>
+              setNewTask({ ...newTask, title: e.target.value })
+            }
+            className="w-full border p-2 rounded mb-3 outline-none focus:ring-2 focus:ring-[#fb4444]"
+          />
+
+          <input
+            type="date"
+            value={newTask.date}
+            onChange={(e) =>
+              setNewTask({ ...newTask, date: e.target.value })
+            }
+            className="w-full border p-2 rounded mb-3 outline-none"
+          />
+
+          <select
+            value={newTask.priority}
+            onChange={(e) =>
+              setNewTask({ ...newTask, priority: e.target.value })
+            }
+            className="w-full border p-2 rounded mb-4"
+          >
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+
+          <div className="flex justify-between">
+            <button
+              onClick={() => setShowAddTask(false)}
+              className="px-3 py-1 bg-gray-300 rounded hover:bg-gray-400"
+            >
+              Cancel
+            </button>
+
+            <button
+              onClick={handleAddTask}
+              className="px-3 py-1 bg-[#fb4444] text-white rounded hover:bg-red-600"
+            >
+              Add
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+  </div>
+)}
 
             {/* ========================================== */}
             {/* VIEW: ORGANISE (CALENDAR)                  */}
@@ -721,132 +844,160 @@ export default function ResourcesPage() {
             )}
 
                         {/* ========================================== */}
-            {/* VIEW: EVOLVE (MENTAL HEALTH)               */}
-            {/* ========================================== */}
-            {activeView === "Mental Health" && (
-              <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
-                <h3 className="text-xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "'OV Soge', sans-serif" }}>Mental Health & Support</h3>
+            {/* VIEW: EVOLVE (MENTAL HEALTH) */}
+{/* ========================================== */}
+{activeView === "Mental Health" && (
+  <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <h3 className="text-xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "'OV Soge', sans-serif" }}>
+      Mental Health & Support
+    </h3>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  
-                  {/* A. Mood Check-in (Fully Interactive) */}
-                  <div className="bg-[var(--color-background-secondary)] p-6 rounded-[20px] shadow-sm border border-[var(--color-border-light)] flex flex-col">
-                    <h4 className="text-[16px] font-bold text-[var(--color-text-primary)] mb-4">How are you feeling today?</h4>
-                    <div className="flex justify-between items-center gap-2 mb-6">
-                      
-                      {/* Stressed Button */}
-                      <button 
-                        onClick={() => setSelectedMood("Stressed")}
-                        className={`flex-1 py-4 flex flex-col items-center gap-2 rounded-xl border transition-colors group ${
-                          selectedMood === "Stressed" ? "border-purple-400 bg-purple-50 shadow-sm" : "border-[var(--color-border-light)] hover:bg-purple-50"
-                        }`}
-                      >
-                        <span className="text-3xl group-hover:scale-110 transition-transform">😫</span>
-                        <span className={`text-xs mt-1 ${selectedMood === "Stressed" ? "font-bold text-purple-600" : "font-medium text-[var(--color-text-tertiary)]"}`}>Stressed</span>
-                      </button>
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      
+      {/* A. Mood Check-in (Fully Interactive & Professionalized) */}
+      <div className="bg-[var(--color-background-secondary)] p-6 rounded-[20px] shadow-sm border border-[var(--color-border-light)] flex flex-col transition-all duration-300">
+        <h4 className="text-[16px] font-bold text-[var(--color-text-primary)] mb-4">How are you feeling today?</h4>
+        <div className="flex justify-between items-center gap-2 mb-5">
+          
+          {/* Stressed Button */}
+          <button 
+            onClick={() => setSelectedMood("Stressed")}
+            className={`flex-1 py-4 flex flex-col items-center gap-2 rounded-xl border transition-all duration-200 group ${
+              selectedMood === "Stressed" 
+                ? "border-purple-400 bg-purple-50/70 shadow-md -translate-y-0.5" 
+                : "border-[var(--color-border-light)] hover:bg-purple-50/40"
+            }`}
+          >
+            <span className="text-3xl group-hover:scale-110 transition-transform duration-200">😫</span>
+            <span className={`text-xs mt-1 ${selectedMood === "Stressed" ? "font-bold text-purple-600" : "font-medium text-[var(--color-text-tertiary)]"}`}>Stressed</span>
+          </button>
 
-                      {/* Okay Button */}
-                      <button 
-                        onClick={() => setSelectedMood("Okay")}
-                        className={`flex-1 py-4 flex flex-col items-center gap-2 rounded-xl border transition-colors group ${
-                          selectedMood === "Okay" ? "border-orange-400 bg-orange-50 shadow-sm" : "border-[var(--color-border-light)] hover:bg-orange-50"
-                        }`}
-                      >
-                        <span className="text-3xl group-hover:scale-110 transition-transform">😐</span>
-                        <span className={`text-xs mt-1 ${selectedMood === "Okay" ? "font-bold text-orange-600" : "font-medium text-[var(--color-text-tertiary)]"}`}>Okay</span>
-                      </button>
+          {/* Okay Button */}
+          <button 
+            onClick={() => setSelectedMood("Okay")}
+            className={`flex-1 py-4 flex flex-col items-center gap-2 rounded-xl border transition-all duration-200 group ${
+              selectedMood === "Okay" 
+                ? "border-amber-400 bg-amber-50/70 shadow-md -translate-y-0.5" 
+                : "border-[var(--color-border-light)] hover:bg-amber-50/40"
+            }`}
+          >
+            <span className="text-3xl group-hover:scale-110 transition-transform duration-200">😐</span>
+            <span className={`text-xs mt-1 ${selectedMood === "Okay" ? "font-bold text-amber-600" : "font-medium text-[var(--color-text-tertiary)]"}`}>Okay</span>
+          </button>
 
-                      {/* Good Button */}
-                      <button 
-                        onClick={() => setSelectedMood("Good")}
-                        className={`flex-1 py-4 flex flex-col items-center gap-2 rounded-xl border transition-colors group ${
-                          selectedMood === "Good" ? "border-[#fb4444] bg-red-50 shadow-sm" : "border-[var(--color-border-light)] hover:bg-red-50"
-                        }`}
-                      >
-                        <span className="text-3xl group-hover:scale-110 transition-transform">😊</span>
-                        <span className={`text-xs mt-1 ${selectedMood === "Good" ? "font-bold text-[#fb4444]" : "font-medium text-[var(--color-text-tertiary)]"}`}>Good</span>
-                      </button>
+          {/* Good Button (Fixed red border to a professional Indigo theme) */}
+          <button 
+            onClick={() => setSelectedMood("Good")}
+            className={`flex-1 py-4 flex flex-col items-center gap-2 rounded-xl border transition-all duration-200 group ${
+              selectedMood === "Good" 
+                ? "border-indigo-400 bg-indigo-50/70 shadow-md -translate-y-0.5" 
+                : "border-[var(--color-border-light)] hover:bg-indigo-50/40"
+            }`}
+          >
+            <span className="text-3xl group-hover:scale-110 transition-transform duration-200">😊</span>
+            <span className={`text-xs mt-1 ${selectedMood === "Good" ? "font-bold text-indigo-600" : "font-medium text-[var(--color-text-tertiary)]"}`}>Good</span>
+          </button>
 
-                      {/* Great Button */}
-                      <button 
-                        onClick={() => setSelectedMood("Great")}
-                        className={`flex-1 py-4 flex flex-col items-center gap-2 rounded-xl border transition-colors group ${
-                          selectedMood === "Great" ? "border-emerald-400 bg-emerald-50 shadow-sm" : "border-[var(--color-border-light)] hover:bg-emerald-50"
-                        }`}
-                      >
-                        <span className="text-3xl group-hover:scale-110 transition-transform">🤩</span>
-                        <span className={`text-xs mt-1 ${selectedMood === "Great" ? "font-bold text-emerald-600" : "font-medium text-[var(--color-text-tertiary)]"}`}>Great</span>
-                      </button>
+          {/* Great Button */}
+          <button 
+            onClick={() => setSelectedMood("Great")}
+            className={`flex-1 py-4 flex flex-col items-center gap-2 rounded-xl border transition-all duration-200 group ${
+              selectedMood === "Great" 
+                ? "border-emerald-400 bg-emerald-50/70 shadow-md -translate-y-0.5" 
+                : "border-[var(--color-border-light)] hover:bg-emerald-50/40"
+            }`}
+          >
+            <span className="text-3xl group-hover:scale-110 transition-transform duration-200">🤩</span>
+            <span className={`text-xs mt-1 ${selectedMood === "Great" ? "font-bold text-emerald-600" : "font-medium text-[var(--color-text-tertiary)]"}`}>Great</span>
+          </button>
 
-                    </div>
-                    
-                    {/* DYNAMIC AI Insight Box */}
-                    <div className="p-4 bg-purple-500/10 rounded-xl border border-purple-500/20 mt-auto">
-                      <p className="text-sm font-semibold text-[var(--color-text-primary)] mb-1 flex items-center gap-2">
-                        <Brain size={16} className="text-purple-500"/> AI Insight
-                      </p>
-                      <p className="text-xs font-medium text-[var(--color-text-secondary)] leading-relaxed">
-                        {selectedMood === "Stressed" && "Take a deep breath. It looks like you're feeling overwhelmed. Consider trying the Box Breathing exercise below to recenter yourself."}
-                        {selectedMood === "Okay" && "You're doing alright! A quick Mindfulness Practice could help elevate your focus and energy for the rest of the day."}
-                        {selectedMood === "Good" && "Your mood has been consistently \"Good\"! Keeping up with your daily reflections is having a positive impact on your stress levels."}
-                        {selectedMood === "Great" && "Fantastic! You're in a great headspace to tackle challenging new concepts today. Keep that momentum going!"}
-                      </p>
-                    </div>
-                  </div>
+        </div>
 
-                  {/* B. Recommended Exercises */}
-                  <div className="bg-[var(--color-background-secondary)] p-6 rounded-[20px] shadow-sm border border-[var(--color-border-light)] flex flex-col">
-                    <h4 className="text-[16px] font-bold text-[var(--color-text-primary)] mb-4">Quick Relief Exercises</h4>
-                    <div className="flex flex-col gap-3">
-                      
-                      {/* Exercise 1 */}
-                      <div className="flex items-center justify-between p-3 rounded-xl border border-[var(--color-border-light)] hover:border-blue-500/30 hover:bg-blue-500/10 transition-colors cursor-pointer group">
-                        <div className="flex items-center gap-4">
-                          <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <Wind size={18} />
-                          </div>
-                          <div>
-                            <p className="text-sm font-bold text-[var(--color-text-primary)]">Box Breathing</p>
-                            <p className="text-xs text-[var(--color-text-tertiary)]">Reduce anxiety • 3 mins</p>
-                          </div>
-                        </div>
-                        <ChevronRight size={16} className="text-[var(--color-text-tertiary)] group-hover:text-blue-500 transition-colors" />
-                      </div>
+        {/* NEW FEATURE: Contextual Tags (Slides down when any mood is active) */}
+        {selectedMood && (
+          <div className="mb-5 animate-in fade-in slide-in-from-top-2 duration-300">
+            <p className="text-xs font-semibold text-[var(--color-text-secondary)] mb-2">What's contributing to your mood?</p>
+            <div className="flex flex-wrap gap-1.5">
+              {["Studies", "Health", "Sleep", "Social", "Coding", "Hobbies"].map((tag) => (
+                <button 
+                  key={tag} 
+                  className="px-2.5 py-1 text-xs rounded-full border border-[var(--color-border-light)] bg-[var(--color-background-primary)] text-[var(--color-text-secondary)] hover:border-gray-400 hover:text-[var(--color-text-primary)] transition-all"
+                >
+                  +{tag}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+        
+        {/* DYNAMIC AI Insight Box */}
+        <div className="p-4 bg-purple-500/10 rounded-xl border border-purple-500/20 mt-auto transition-all duration-300">
+          <p className="text-sm font-semibold text-[var(--color-text-primary)] mb-1 flex items-center gap-2">
+            <Brain size={16} className="text-purple-500"/> AI Insight
+          </p>
+          <p className="text-xs font-medium text-[var(--color-text-secondary)] leading-relaxed min-h-[32px]">
+            {selectedMood === "Stressed" && "Take a deep breath. It looks like you're feeling overwhelmed. Consider trying the Box Breathing exercise below to recenter yourself."}
+            {selectedMood === "Okay" && "You're doing alright! A quick Mindfulness Practice could help elevate your focus and energy for the rest of the day."}
+            {selectedMood === "Good" && "Your mood has been consistently \"Good\"! Keeping up with your daily reflections is having a positive impact on your stress levels."}
+            {selectedMood === "Great" && "Fantastic! You're in a great headspace to tackle challenging new concepts today. Keep that momentum going!"}
+            {!selectedMood && "Select a mood above to generate a real-time mental well-being insight based on your day."}
+          </p>
+        </div>
+      </div>
 
-                      {/* Exercise 2 */}
-                      <div className="flex items-center justify-between p-3 rounded-xl border border-[var(--color-border-light)] hover:border-emerald-500/30 hover:bg-emerald-500/10 transition-colors cursor-pointer group">
-                        <div className="flex items-center gap-4">
-                          <div className="w-10 h-10 rounded-full bg-emerald-100 text-emerald-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <Smile size={18} />
-                          </div>
-                          <div>
-                            <p className="text-sm font-bold text-[var(--color-text-primary)]">Guided Meditation</p>
-                            <p className="text-xs text-[var(--color-text-tertiary)]">Regain focus • 10 mins</p>
-                          </div>
-                        </div>
-                        <ChevronRight size={16} className="text-[var(--color-text-tertiary)] group-hover:text-emerald-500 transition-colors" />
-                      </div>
-
-                      {/* Exercise 3 */}
-                      <div className="flex items-center justify-between p-3 rounded-xl border border-[var(--color-border-light)] hover:border-purple-500/30 hover:bg-purple-500/10 transition-colors cursor-pointer group">
-                        <div className="flex items-center gap-4">
-                          <div className="w-10 h-10 rounded-full bg-purple-100 text-purple-500 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <Heart size={18} />
-                          </div>
-                          <div>
-                            <p className="text-sm font-bold text-[var(--color-text-primary)]">Gratitude Journal</p>
-                            <p className="text-xs text-[var(--color-text-tertiary)]">Evening reflection • 5 mins</p>
-                          </div>
-                        </div>
-                        <ChevronRight size={16} className="text-[var(--color-text-tertiary)] group-hover:text-purple-500 transition-colors" />
-                      </div>
-
-                    </div>
-                  </div>
-
-                </div>
+      {/* B. Recommended Exercises */}
+      <div className="bg-[var(--color-background-secondary)] p-6 rounded-[20px] shadow-sm border border-[var(--color-border-light)] flex flex-col">
+        <h4 className="text-[16px] font-bold text-[var(--color-text-primary)] mb-4">Quick Relief Exercises</h4>
+        <div className="flex flex-col gap-3">
+          
+          {/* Exercise 1 */}
+          <div className="flex items-center justify-between p-3 rounded-xl border border-[var(--color-border-light)] hover:border-blue-500/30 hover:bg-blue-500/10 transition-all duration-200 cursor-pointer group hover:-translate-x-0.5">
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 rounded-full bg-blue-100 text-blue-500 flex items-center justify-center group-hover:scale-105 transition-transform">
+                <Wind size={18} />
               </div>
-            )}
+              <div>
+                <p className="text-sm font-bold text-[var(--color-text-primary)]">Box Breathing</p>
+                <p className="text-xs text-[var(--color-text-tertiary)]">Reduce anxiety • 3 mins</p>
+              </div>
+            </div>
+            <ChevronRight size={16} className="text-[var(--color-text-tertiary)] group-hover:text-blue-500 transition-colors" />
+          </div>
+
+          {/* Exercise 2 */}
+          <div className="flex items-center justify-between p-3 rounded-xl border border-[var(--color-border-light)] hover:border-emerald-500/30 hover:bg-emerald-500/10 transition-all duration-200 cursor-pointer group hover:-translate-x-0.5">
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 rounded-full bg-emerald-100 text-emerald-500 flex items-center justify-center group-hover:scale-105 transition-transform">
+                <Smile size={18} />
+              </div>
+              <div>
+                <p className="text-sm font-bold text-[var(--color-text-primary)]">Guided Meditation</p>
+                <p className="text-xs text-[var(--color-text-tertiary)]">Regain focus • 10 mins</p>
+              </div>
+            </div>
+            <ChevronRight size={16} className="text-[var(--color-text-tertiary)] group-hover:text-emerald-500 transition-colors" />
+          </div>
+
+          {/* Exercise 3 */}
+          <div className="flex items-center justify-between p-3 rounded-xl border border-[var(--color-border-light)] hover:border-purple-500/30 hover:bg-purple-500/10 transition-all duration-200 cursor-pointer group hover:-translate-x-0.5">
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 rounded-full bg-purple-100 text-purple-500 flex items-center justify-center group-hover:scale-105 transition-transform">
+                <Heart size={18} />
+              </div>
+              <div>
+                <p className="text-sm font-bold text-[var(--color-text-primary)]">Gratitude Journal</p>
+                <p className="text-xs text-[var(--color-text-tertiary)]">Evening reflection • 5 mins</p>
+              </div>
+            </div>
+            <ChevronRight size={16} className="text-[var(--color-text-tertiary)] group-hover:text-purple-500 transition-colors" />
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+)}
 
 
             {/* ========================================== */}
