@@ -9,17 +9,10 @@ import { allPolicies, PolicyFramework } from "../data/policies";
 function AlignmentBullets({ text, color }: { text: string; color: string }) {
   const sentences = text.split(/(?<=[.!?])\s+/).filter(Boolean).slice(0, 3);
   return (
-    <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+    <ul className="list-none p-0 m-0">
       {sentences.map((s, i) => (
-        <li key={i} style={{
-          display: "flex", alignItems: "flex-start", gap: 12, marginBottom: 14,
-          fontFamily: "'Manrope', sans-serif", fontSize: "0.88rem",
-          color: "var(--color-text-secondary)", lineHeight: 1.7,
-        }}>
-          <span style={{
-            marginTop: 6, flexShrink: 0, width: 8, height: 8,
-            borderRadius: "50%", background: color, display: "block",
-          }} />
+        <li key={i} className="flex items-start gap-3 mb-[14px] font-['Manrope',sans-serif] text-[0.88rem] text-[var(--color-text-secondary)] leading-[1.7]">
+          <span style={{ background: color }} className="mt-[6px] shrink-0 w-2 h-2 rounded-full block" />
           {s}
         </li>
       ))}
@@ -35,21 +28,10 @@ function FrameworkPanel({ fw, accentColor }: { fw: PolicyFramework; accentColor:
       exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.35 }}
     >
       {/* Policy description card */}
-      <div style={{
-        background: "var(--color-background-secondary)",
-        border: "1px solid var(--color-border-light)",
-        borderRadius: 20, padding: "32px 30px", marginBottom: 24,
-        boxShadow: "var(--shadow-card)",
-      }}>
+      <div className="bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] rounded-[20px] py-8 px-[30px] mb-6 shadow-[var(--shadow-card)]">
         <div style={{
-          width: 64, height: 64, borderRadius: 16,
-          background: `${accentColor}10`, border: `1px solid ${accentColor}25`,
-          display: "flex", alignItems: "center", justifyContent: "center",
-          marginBottom: 20, fontSize: "0.65rem",
-          fontFamily: "'Manrope', sans-serif", fontWeight: 700,
-          color: "var(--color-text-subtle)", letterSpacing: "0.08em",
-          textTransform: "uppercase", flexDirection: "column", gap: 4,
-        }}>
+          background: `${accentColor}10`, border: `1px solid ${accentColor}25`
+        }} className="w-16 h-16 rounded-2xl flex items-center justify-center mb-5 text-[0.65rem] font-['Manrope',sans-serif] font-bold text-[var(--color-text-subtle)] tracking-[0.08em] uppercase flex-col gap-1">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
             stroke={accentColor} strokeWidth="1.5" opacity={0.5}>
             <rect x="3" y="3" width="18" height="18" rx="4" />
@@ -59,28 +41,20 @@ function FrameworkPanel({ fw, accentColor }: { fw: PolicyFramework; accentColor:
           Logo
         </div>
 
-        <h3 style={{
-          fontFamily: "'OV Soge', sans-serif", fontSize: "1.5rem", fontWeight: 700,
-          color: "var(--color-text-primary)", margin: "0 0 12px", lineHeight: 1.2,
-        }}>
+        <h3 className="font-['OV_Soge',sans-serif] text-[1.5rem] font-bold text-[var(--color-text-primary)] m-0 mb-3 leading-[1.2]">
           {fw.name}
         </h3>
 
-        <p style={{
-          fontFamily: "'Manrope', sans-serif", fontSize: "0.92rem",
-          color: "var(--color-text-tertiary)", lineHeight: 1.75, margin: "0 0 20px",
-        }}>
+        <p className="font-['Manrope',sans-serif] text-[0.92rem] text-[var(--color-text-tertiary)] leading-[1.75] m-0 mb-5">
           {fw.description}
         </p>
 
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+        <div className="flex flex-wrap gap-[6px]">
           {fw.tags.map((tag) => (
             <span key={tag} style={{
-              fontFamily: "'Manrope', sans-serif", fontSize: "0.65rem", fontWeight: 700,
-              padding: "4px 12px", borderRadius: 100,
               border: `1px solid ${accentColor}35`,
               background: `${accentColor}0c`, color: accentColor,
-            }}>
+            }} className="font-['Manrope',sans-serif] text-[0.65rem] font-bold py-1 px-3 rounded-full">
               {tag}
             </span>
           ))}
@@ -89,17 +63,9 @@ function FrameworkPanel({ fw, accentColor }: { fw: PolicyFramework; accentColor:
 
       {/* Ateion Alignment card */}
       <div style={{
-        background: "var(--color-background-secondary)",
-        border: "1px solid var(--color-border-light)",
-        borderRadius: 20, padding: "32px 30px", marginBottom: 24,
-        boxShadow: "var(--shadow-card)",
         borderLeft: `4px solid ${accentColor}`,
-      }}>
-        <p style={{
-          fontFamily: "'Manrope', sans-serif", fontSize: "0.65rem", fontWeight: 800,
-          letterSpacing: "0.18em", textTransform: "uppercase",
-          color: accentColor, marginBottom: 16,
-        }}>
+      }} className="bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] rounded-[20px] py-8 px-[30px] mb-6 shadow-[var(--shadow-card)]">
+        <p style={{ color: accentColor }} className="font-['Manrope',sans-serif] text-[0.65rem] font-extrabold tracking-[0.18em] uppercase mb-4">
           HOW ATEION ALIGNS
         </p>
         <AlignmentBullets text={fw.alignmentText} color={accentColor} />
@@ -108,13 +74,8 @@ function FrameworkPanel({ fw, accentColor }: { fw: PolicyFramework; accentColor:
       {/* Open policy button */}
       <motion.a
         href={fw.policyLink} target="_blank" rel="noopener noreferrer"
-        style={{
-          display: "inline-flex", alignItems: "center", gap: 10,
-          fontFamily: "'Manrope', sans-serif", fontSize: "0.88rem", fontWeight: 700,
-          color: "#fff", background: accentColor, border: "none",
-          borderRadius: 100, padding: "13px 30px",
-          textDecoration: "none", cursor: "pointer",
-        }}
+        style={{ background: accentColor }}
+        className="inline-flex items-center gap-[10px] font-['Manrope',sans-serif] text-[0.88rem] font-bold text-white border-none rounded-full py-[13px] px-[30px] no-underline cursor-pointer"
         whileHover={{ scale: 1.04, opacity: 0.9 }} whileTap={{ scale: 0.97 }}
       >
         Read Official Policy
@@ -140,27 +101,15 @@ export default function PolicyDetailPage() {
     return (
       <>
         <SharedNavbar />
-        <div style={{
-          background: "var(--color-background-primary)",
-          minHeight: "100vh", display: "flex", flexDirection: "column",
-          alignItems: "center", justifyContent: "center",
-          paddingTop: 60, fontFamily: "'Manrope', sans-serif", textAlign: "center",
-        }}>
-          <p style={{ fontSize: "4rem", marginBottom: 16 }}>🌍</p>
-          <h1 style={{
-            fontFamily: "'OV Soge', sans-serif", fontSize: "2.2rem", fontWeight: 700,
-            color: "var(--color-text-primary)", marginBottom: 12,
-          }}>
+        <div className="bg-[var(--color-background-primary)] min-h-screen flex flex-col items-center justify-center pt-[60px] font-['Manrope',sans-serif] text-center">
+          <p className="text-6xl mb-4">🌍</p>
+          <h1 className="font-['OV_Soge',sans-serif] text-[2.2rem] font-bold text-[var(--color-text-primary)] mb-3">
             Policy Not Found
           </h1>
-          <p style={{ color: "var(--color-text-muted)", marginBottom: 32 }}>
+          <p className="text-[var(--color-text-muted)] mb-8">
             We couldn't find a policy for "{id}".
           </p>
-          <button onClick={() => navigate("/policies")} style={{
-            fontFamily: "'Manrope', sans-serif", fontWeight: 700, fontSize: "0.9rem",
-            background: "var(--color-text-primary)", color: "var(--color-background-primary)",
-            border: "none", borderRadius: 100, padding: "13px 30px", cursor: "pointer",
-          }}>
+          <button onClick={() => navigate("/policies")} className="font-['Manrope',sans-serif] font-bold text-[0.9rem] bg-[var(--color-text-primary)] text-[var(--color-background-primary)] border-none rounded-full py-[13px] px-[30px] cursor-pointer">
             ← Back to All Policies
           </button>
         </div>
@@ -174,32 +123,19 @@ export default function PolicyDetailPage() {
   return (
     <>
       <SharedNavbar />
-      <div style={{
-        background: "var(--color-background-primary)",
-        minHeight: "100vh", overflowX: "hidden", paddingTop: 60,
-      }}>
+      <div className="bg-[var(--color-background-primary)] min-h-screen overflow-x-hidden pt-[60px]">
         {/* ── Hero ── */}
-        <section style={{ padding: "72px 5% 64px", position: "relative", overflow: "hidden" }}>
+        <section className="pt-[72px] pb-16 px-[5%] relative overflow-hidden">
           <div style={{
-            position: "absolute", top: -80, right: -100, width: 500, height: 500,
-            borderRadius: "50%",
             background: `radial-gradient(circle, ${policy.accentColor}14 0%, transparent 70%)`,
-            pointerEvents: "none",
-          }} />
+          }} className="absolute -top-20 -right-[100px] w-[500px] h-[500px] rounded-full pointer-events-none" />
 
           {/* Back button */}
           <motion.button
             initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4 }}
             onClick={() => navigate("/policies")}
-            style={{
-              display: "inline-flex", alignItems: "center", gap: 8,
-              fontFamily: "'Manrope', sans-serif", fontSize: "0.8rem", fontWeight: 700,
-              color: "var(--color-text-tertiary)", background: "transparent",
-              border: "1.5px solid var(--color-border-medium)",
-              borderRadius: 100, padding: "8px 18px", cursor: "pointer",
-              marginBottom: 48, transition: "border-color 0.2s, color 0.2s",
-            }}
+            className="inline-flex items-center gap-2 font-['Manrope',sans-serif] text-[0.8rem] font-bold text-[var(--color-text-tertiary)] bg-transparent border-[1.5px] border-[var(--color-border-medium)] rounded-full py-2 px-[18px] cursor-pointer mb-12 transition-colors duration-200"
             whileHover={{ scale: 1.02 }}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
@@ -212,77 +148,50 @@ export default function PolicyDetailPage() {
           {/* Flag + Country + Region */}
           <motion.div
             initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.55, delay: 0.05 }} style={{ maxWidth: 800 }}
+            transition={{ duration: 0.55, delay: 0.05 }} className="max-w-[800px]"
           >
-            <div style={{ fontSize: "4.5rem", lineHeight: 1, marginBottom: 20 }}>
+            <div className="text-[4.5rem] leading-none mb-5">
               {policy.flag}
             </div>
 
-            <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 16, flexWrap: "wrap" }}>
+            <div className="flex items-center gap-[14px] mb-4 flex-wrap">
               <span style={{
-                fontFamily: "'Manrope', sans-serif", fontSize: "0.62rem", fontWeight: 800,
-                letterSpacing: "0.16em", textTransform: "uppercase",
                 color: policy.accentColor, background: `${policy.accentColor}0d`,
                 border: `1px solid ${policy.accentColor}30`,
-                borderRadius: 100, padding: "4px 12px",
-              }}>
+              }} className="font-['Manrope',sans-serif] text-[0.62rem] font-extrabold tracking-[0.16em] uppercase rounded-full py-1 px-3">
                 {policy.region}
               </span>
-              <span style={{
-                fontFamily: "'Manrope', sans-serif", fontSize: "0.62rem", fontWeight: 800,
-                letterSpacing: "0.12em", textTransform: "uppercase",
-                color: "var(--color-text-subtle)",
-              }}>
+              <span className="font-['Manrope',sans-serif] text-[0.62rem] font-extrabold tracking-[0.12em] uppercase text-[var(--color-text-subtle)]">
                 {policy.frameworks.length} Framework{policy.frameworks.length > 1 ? "s" : ""}
               </span>
             </div>
 
-            <h1 style={{
-              fontFamily: "'OV Soge', sans-serif",
-              fontSize: "clamp(2.6rem, 6vw, 4.5rem)", fontWeight: 700,
-              color: "var(--color-text-primary)", margin: "0 0 16px",
-              lineHeight: 1.05, letterSpacing: "-0.03em",
-            }}>
+            <h1 className="font-['OV_Soge',sans-serif] text-[clamp(2.6rem,6vw,4.5rem)] font-bold text-[var(--color-text-primary)] m-0 mb-4 leading-[1.05] tracking-[-0.03em]">
               {policy.country}
             </h1>
 
-            <p style={{
-              fontFamily: "'Manrope', sans-serif",
-              fontSize: "clamp(0.95rem, 1.5vw, 1.1rem)",
-              color: "var(--color-text-tertiary)", lineHeight: 1.8, maxWidth: 560, margin: 0,
-            }}>
+            <p className="font-['Manrope',sans-serif] text-[clamp(0.95rem,1.5vw,1.1rem)] text-[var(--color-text-tertiary)] leading-[1.8] max-w-[560px] m-0">
               {policy.frameworks[0].shortDescription}
             </p>
           </motion.div>
         </section>
 
         {/* ── Content ── */}
-        <section style={{ padding: "0 5% 100px" }}>
-          <div style={{ maxWidth: 800, margin: "0 auto" }}>
+        <section className="px-[5%] pb-[100px]">
+          <div className="max-w-[800px] mx-auto">
 
             {/* Framework tabs */}
             {policy.frameworks.length > 1 && (
               <motion.div
                 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.45, delay: 0.2 }}
-                style={{
-                  display: "flex", gap: 8, marginBottom: 32,
-                  background: "var(--color-background-secondary)",
-                  padding: 6, borderRadius: 14,
-                  border: "1px solid var(--color-border-light)",
-                  boxShadow: "var(--shadow-xs)", flexWrap: "wrap",
-                }}
+                className="flex gap-2 mb-8 bg-[var(--color-background-secondary)] p-1.5 rounded-[14px] border border-[var(--color-border-light)] shadow-[var(--shadow-xs)] flex-wrap"
               >
                 {policy.frameworks.map((fw, i) => (
                   <button key={i} onClick={() => setActiveTab(i)} style={{
-                    flex: 1, minWidth: 140,
-                    fontFamily: "'Manrope', sans-serif", fontSize: "0.78rem", fontWeight: 700,
-                    padding: "10px 16px", borderRadius: 10, border: "none",
                     background: activeTab === i ? policy.accentColor : "transparent",
                     color: activeTab === i ? "#fff" : "var(--color-text-muted)",
-                    cursor: "pointer", transition: "all 0.22s ease",
-                    lineHeight: 1.3, textAlign: "left",
-                  }}>
+                  }} className="flex-1 min-w-[140px] font-['Manrope',sans-serif] text-[0.78rem] font-bold py-2.5 px-4 rounded-[10px] border-none cursor-pointer transition-all duration-[0.22s] ease-in-out leading-[1.3] text-left">
                     {fw.name}
                   </button>
                 ))}
@@ -297,57 +206,28 @@ export default function PolicyDetailPage() {
             <motion.div
               initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }} transition={{ duration: 0.5 }}
-              style={{
-                marginTop: 56,
-                background: "var(--color-background-secondary)",
-                borderRadius: 24, padding: "48px 40px", textAlign: "center",
-                boxShadow: "var(--shadow-card)",
-                border: "1px solid var(--color-border-light)",
-              }}
+              className="mt-14 bg-[var(--color-background-secondary)] rounded-[24px] py-12 px-10 text-center shadow-[var(--shadow-card)] border border-[var(--color-border-light)]"
             >
-              <p style={{
-                fontFamily: "'Manrope', sans-serif", fontSize: "0.65rem", fontWeight: 800,
-                letterSpacing: "0.18em", textTransform: "uppercase",
-                color: "var(--color-primary)", marginBottom: 16,
-              }}>
+              <p className="font-['Manrope',sans-serif] text-[0.65rem] font-extrabold tracking-[0.18em] uppercase text-[var(--color-primary)] mb-4">
                 READY TO EXPERIENCE ATEION?
               </p>
-              <h2 style={{
-                fontFamily: "'OV Soge', sans-serif",
-                fontSize: "clamp(1.6rem, 3vw, 2.4rem)", fontWeight: 700,
-                color: "var(--color-text-primary)", margin: "0 0 12px",
-                lineHeight: 1.15, letterSpacing: "-0.02em",
-              }}>
+              <h2 className="font-['OV_Soge',sans-serif] text-[clamp(1.6rem,3vw,2.4rem)] font-bold text-[var(--color-text-primary)] m-0 mb-3 leading-[1.15] tracking-[-0.02em]">
                 Assess Capabilities the Right Way
               </h2>
-              <p style={{
-                fontFamily: "'Manrope', sans-serif", fontSize: "0.92rem",
-                color: "var(--color-text-tertiary)", lineHeight: 1.75,
-                maxWidth: 460, margin: "0 auto 32px",
-              }}>
+              <p className="font-['Manrope',sans-serif] text-[0.92rem] text-[var(--color-text-tertiary)] leading-[1.75] max-w-[460px] mx-auto mb-8">
                 The Global Capability Olympiad measures thinking, not memory — built for the world's most forward-thinking education policies.
               </p>
-              <div style={{ display: "flex", justifyContent: "center", gap: 14, flexWrap: "wrap" }}>
+              <div className="flex justify-center gap-[14px] flex-wrap">
                 <motion.button
                   onClick={() => navigate("/contact")}
-                  style={{
-                    fontFamily: "'Manrope', sans-serif", fontWeight: 700, fontSize: "0.88rem",
-                    background: "var(--color-text-primary)", color: "var(--color-background-primary)",
-                    border: "2px solid var(--color-text-primary)",
-                    borderRadius: 100, padding: "13px 30px", cursor: "pointer",
-                  }}
+                  className="font-['Manrope',sans-serif] font-bold text-[0.88rem] bg-[var(--color-text-primary)] text-[var(--color-background-primary)] border-2 border-[var(--color-text-primary)] rounded-full py-[13px] px-[30px] cursor-pointer"
                   whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
                 >
                   Contact Us
                 </motion.button>
                 <motion.button
                   onClick={() => navigate("/gco")}
-                  style={{
-                    fontFamily: "'Manrope', sans-serif", fontWeight: 700, fontSize: "0.88rem",
-                    background: "transparent", color: "var(--color-text-primary)",
-                    border: "2px solid var(--color-border-dark)",
-                    borderRadius: 100, padding: "13px 30px", cursor: "pointer",
-                  }}
+                  className="font-['Manrope',sans-serif] font-bold text-[0.88rem] bg-transparent text-[var(--color-text-primary)] border-2 border-[var(--color-border-dark)] rounded-full py-[13px] px-[30px] cursor-pointer"
                   whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}
                 >
                   Explore GCO →

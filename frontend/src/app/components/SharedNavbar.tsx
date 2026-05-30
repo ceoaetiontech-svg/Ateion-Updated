@@ -8,7 +8,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate, Link } from "react-router";
+import { useNavigate, Link, useLocation } from "react-router";
 import { Sun, Moon } from "lucide-react";
 import { useTheme } from "./ThemeProvider";
 
@@ -52,6 +52,7 @@ function NavButton({
     <motion.div
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
+      transition={{ type: "spring", stiffness: 400, damping: 17 }}
       onClick={handleClick}
       className={`${variantClasses[variant]} flex h-[36px] items-center justify-center px-[12px] xl:px-[20px] rounded-full shrink-0 cursor-pointer transition-colors`}
     >
@@ -123,16 +124,18 @@ function LogoContainer() {
  */
 function HomeBtn({ onClick }: { onClick?: () => void }) {
   const navigate = useNavigate();
+  const location = useLocation();
+  const isActive = location.pathname === "/";
 
   return (
     <NavButton
-      variant="primary"
+      variant={isActive ? "primary" : "default"}
       onClick={() => {
         if (onClick) onClick();
         navigate("/");
       }}
     >
-      <p className={`${navTextClass} text-[var(--color-background-primary)]`}>Home</p>
+      <p className={`${navTextClass} ${isActive ? "text-[#ffffff]" : "text-[var(--color-text-secondary)]"}`}>Home</p>
     </NavButton>
   );
 }
@@ -142,16 +145,18 @@ function HomeBtn({ onClick }: { onClick?: () => void }) {
  */
 function GlobalOlympiadBtn({ onClick }: { onClick?: () => void }) {
   const navigate = useNavigate();
+  const location = useLocation();
+  const isActive = location.pathname.startsWith("/gco") || location.pathname.startsWith("/policy") || location.pathname.startsWith("/policies");
 
   return (
     <NavButton
-      variant="muted"
+      variant={isActive ? "primary" : "default"}
       onClick={() => {
         if (onClick) onClick();
         navigate("/gco");
       }}
     >
-      <p className={`${navTextClass} text-[var(--color-text-secondary)]`}>
+      <p className={`${navTextClass} ${isActive ? "text-[#ffffff]" : "text-[var(--color-text-secondary)]"}`}>
         Global Olympiad
       </p>
     </NavButton>
@@ -163,16 +168,18 @@ function GlobalOlympiadBtn({ onClick }: { onClick?: () => void }) {
  */
 function ResourcesBtn({ onClick }: { onClick?: () => void }) {
   const navigate = useNavigate();
+  const location = useLocation();
+  const isActive = location.pathname.startsWith("/playground") || location.pathname.startsWith("/resources");
 
   return (
     <NavButton
-      variant="muted"
+      variant={isActive ? "primary" : "default"}
       onClick={() => {
         if (onClick) onClick();
         navigate("/playground");
       }}
     >
-      <p className={`${navTextClass} text-[var(--color-text-secondary)]`}>
+      <p className={`${navTextClass} ${isActive ? "text-[#ffffff]" : "text-[var(--color-text-secondary)]"}`}>
         PlayGround
       </p>
     </NavButton>
@@ -187,28 +194,22 @@ function DashboardBtn({
 }: {
   onClick?: () => void;
 }) {
-
   const navigate = useNavigate();
+  const location = useLocation();
+  const isActive = location.pathname.startsWith("/dashboard");
 
   return (
-
     <NavButton
-      variant="default"
+      variant={isActive ? "primary" : "default"}
       onClick={() => {
-
         if (onClick) onClick();
-
         navigate("/dashboard");
-
       }}
     >
-
-      <p className={`${navTextClass} text-[var(--color-text-secondary)]`}>
+      <p className={`${navTextClass} ${isActive ? "text-[#ffffff]" : "text-[var(--color-text-secondary)]"}`}>
         Dashboard
       </p>
-
     </NavButton>
-
   );
 }
 
@@ -228,16 +229,18 @@ function NavLinks({ onCloseMobile }: { onCloseMobile?: () => void }) {
  */
 function GetConnectedBtn({ onClick }: { onClick?: () => void }) {
   const navigate = useNavigate();
+  const location = useLocation();
+  const isActive = location.pathname.startsWith("/contact");
 
   return (
     <NavButton
-      variant="primary"
+      variant={isActive ? "primary" : "white"}
       onClick={() => {
         if (onClick) onClick();
         navigate("/contact");
       }}
     >
-      <p className={`${navTextClass} text-white`}>
+      <p className={`${navTextClass} ${isActive ? "text-[#ffffff]" : "text-[var(--color-text-secondary)]"}`}>
         Get Connected
       </p>
     </NavButton>
@@ -248,15 +251,28 @@ function GetConnectedBtn({ onClick }: { onClick?: () => void }) {
  * SIGN IN BUTTON
  */
 function SignInBtn({ onClick }: { onClick?: () => void }) {
+  const [isActive, setIsActive] = useState(false);
+
+  useEffect(() => {
+    const handleOpen = () => setIsActive(true);
+    const handleClose = () => setIsActive(false);
+    window.addEventListener("open-login", handleOpen);
+    window.addEventListener("close-login", handleClose);
+    return () => {
+      window.removeEventListener("open-login", handleOpen);
+      window.removeEventListener("close-login", handleClose);
+    };
+  }, []);
+
   return (
     <NavButton
-      variant="white"
+      variant={isActive ? "primary" : "white"}
       onClick={() => {
         if (onClick) onClick();
         window.dispatchEvent(new CustomEvent("open-login"));
       }}
     >
-      <p className={`${navTextClass} text-[var(--color-text-secondary)]`}>
+      <p className={`${navTextClass} ${isActive ? "text-[#ffffff]" : "text-[var(--color-text-secondary)]"}`}>
         Sign In
       </p>
     </NavButton>
@@ -267,15 +283,28 @@ function SignInBtn({ onClick }: { onClick?: () => void }) {
  * SIGN UP BUTTON
  */
 function SignUpBtn({ onClick }: { onClick?: () => void }) {
+  const [isActive, setIsActive] = useState(false);
+
+  useEffect(() => {
+    const handleOpen = () => setIsActive(true);
+    const handleClose = () => setIsActive(false);
+    window.addEventListener("open-register", handleOpen);
+    window.addEventListener("close-register", handleClose);
+    return () => {
+      window.removeEventListener("open-register", handleOpen);
+      window.removeEventListener("close-register", handleClose);
+    };
+  }, []);
+
   return (
     <NavButton
-      variant="primary"
+      variant={isActive ? "primary" : "white"}
       onClick={() => {
         if (onClick) onClick();
         window.dispatchEvent(new CustomEvent("open-register"));
       }}
     >
-      <p className={`${navTextClass} text-white`}>
+      <p className={`${navTextClass} ${isActive ? "text-[#ffffff]" : "text-[var(--color-text-secondary)]"}`}>
         Sign Up
       </p>
     </NavButton>

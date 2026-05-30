@@ -65,7 +65,7 @@
   font-size:56px;
   line-height:1.1;
 
-  color:#111827;
+  color: var(--color-text-primary);
 
   margin-bottom:25px;
 }
@@ -74,7 +74,7 @@
   font-size:18px;
   line-height:1.7;
 
-  color:#374151;
+  color: var(--color-text-secondary);
 }
 
 .right-side{
@@ -91,7 +91,7 @@
   font-size:34px;
   margin-bottom:30px;
 
-  color:#111827;
+  color: var(--color-text-primary);
 }
 
 .right-side input{
@@ -124,7 +124,7 @@
   border-radius:14px;
 
   background:#ff5a4f;
-  color:white;
+  color: var(--color-background-primary);
 
   font-size:16px;
   font-weight:600;
@@ -170,17 +170,17 @@
 
 .google-btn{
   background:#f3f4f6;
-  color:#111827;
+  color: var(--color-text-primary);
 }
 
 .linkedin-btn{
   background:#0077b5;
-  color:white;
+  color: var(--color-background-primary);
 }
 
 .github-btn{
   background:#111827;
-  color:white;
+  color: var(--color-background-primary);
 }
 
 .google-btn:hover,
@@ -259,7 +259,7 @@
 
 [data-theme="dark"] .register-card .register-btn{
   background: var(--color-primary);
-  color: white;
+  color: var(--color-background-primary);
 }
 
 [data-theme="dark"] .register-card .divider{
@@ -277,7 +277,7 @@
 
 [data-theme="dark"] .register-card .linkedin-btn{
   background: #0077b5;
-  color: white;
+  color: var(--color-background-primary);
 }
 
 [data-theme="dark"] .register-card .github-btn{

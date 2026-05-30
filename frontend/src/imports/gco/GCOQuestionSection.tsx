@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { Scale, Network, ArrowLeftRight, Compass } from "lucide-react";
 
 export default function GCOQuestionSection() {
 
@@ -52,26 +53,7 @@ export default function GCOQuestionSection() {
   const cards = [
     {
       icon: (
-        <svg
-          width="46"
-          height="46"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="var(--color-text-primary)"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          style={{ marginBottom: "15px" }}
-          aria-hidden="true"
-        >
-          <path d="M12 3v18" />
-          <path d="M9 21h6" />
-          <path d="M5 7v1" />
-          <path d="M19 7v1" />
-          <path d="M2 13h6L5 7z" />
-          <path d="M16 13h6L19 7z" />
-          <path d="M5 7h14" />
-        </svg>
+        <Scale size={46} strokeWidth={1.5} className="text-[var(--color-text-primary)] mb-[15px]" />
       ),
       title: "Ethical reasoning",
       description:
@@ -80,59 +62,7 @@ export default function GCOQuestionSection() {
 
     {
       icon: (
-        <svg
-          width="46"
-          height="46"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="var(--color-text-primary)"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          style={{ marginBottom: "15px" }}
-        >
-          <rect
-            x="10"
-            y="3"
-            width="4"
-            height="4"
-            rx="0.5"
-          />
-
-          <path d="M12 7v4" />
-
-          <path d="M6 11h12" />
-
-          <path d="M6 11v4" />
-
-          <path d="M18 11v4" />
-
-          <rect
-            x="4"
-            y="15"
-            width="4"
-            height="4"
-            rx="0.5"
-          />
-
-          <path d="M12 11v4" />
-
-          <rect
-            x="10"
-            y="15"
-            width="4"
-            height="4"
-            rx="0.5"
-          />
-
-          <rect
-            x="16"
-            y="15"
-            width="4"
-            height="4"
-            rx="0.5"
-          />
-        </svg>
+        <Network size={46} strokeWidth={1.5} className="text-[var(--color-text-primary)] mb-[15px]" />
       ),
       title: "Systems thinking",
       description:
@@ -141,25 +71,7 @@ export default function GCOQuestionSection() {
 
     {
       icon: (
-        <svg
-          width="46"
-          height="46"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="var(--color-text-primary)"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          style={{ marginBottom: "15px" }}
-        >
-          <path d="M17 8H3" />
-
-          <path d="M7 4L3 8l4 4" />
-
-          <path d="M7 16h14" />
-
-          <path d="M17 12l4 4-4 4" />
-        </svg>
+        <ArrowLeftRight size={46} strokeWidth={1.5} className="text-[var(--color-text-primary)] mb-[15px]" />
       ),
       title: "Trade-off awareness",
       description:
@@ -168,28 +80,7 @@ export default function GCOQuestionSection() {
 
     {
       icon: (
-        <svg
-          width="46"
-          height="46"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="var(--color-text-primary)"
-          strokeWidth="1.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          style={{ marginBottom: "15px" }}
-        >
-          <circle
-            cx="12"
-            cy="12"
-            r="9"
-          />
-
-          <path
-            d="M12 7l-2 5 2 5 2-5 2-5z"
-            transform="rotate(45 12 12)"
-          />
-        </svg>
+        <Compass size={46} strokeWidth={1.5} className="text-[var(--color-text-primary)] mb-[15px]" />
       ),
       title: "Adaptive judgment",
       description:

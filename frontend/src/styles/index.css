@@ -5,4 +5,13 @@
 html, body {
   overflow-x: hidden;
   max-width: 100vw;
+  background-color: var(--color-background-primary);
+  color: var(--color-text-primary);
+}
+
+.solid-hover-overlay {
+  background-color: var(--color-background-secondary);
+}
+html[data-theme="dark"] .solid-hover-overlay {
+  background-color: var(--color-background-primary);
 }

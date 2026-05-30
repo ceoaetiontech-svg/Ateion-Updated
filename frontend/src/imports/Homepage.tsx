@@ -13,6 +13,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion, animate, useInView, AnimatePresence } from "framer-motion";
+import { ChevronRight } from "lucide-react";
 import svgPaths from "./svg-paths";
 import logo from "../assets/logo.png";
 import imgRectangle9 from "../assets/e54e08242e5e8cea29c382ba6bc82218d425f28e.png";
@@ -406,19 +407,7 @@ function FAQItem({ question, answer, isOpen, toggle }: { question: string; answe
           {question}
         </span>
         <div className={`bg-[#e7e3dd] content-stretch flex items-center p-[6px] sm:p-[8px] relative rounded-[100px] shadow-[0px_1px_2px_0px_rgba(25,33,61,0.07)] shrink-0 transition-transform duration-500 ${isOpen ? "rotate-90" : ""}`} aria-hidden="true">
-          <div className="overflow-clip relative shrink-0 size-[18px] sm:size-[20px]">
-            <div className="-translate-x-1/2 -translate-y-1/2 absolute flex h-[12px] items-center justify-center left-[calc(50%+1px)] top-1/2 w-[6px]">
-              <div className="-scale-y-100 flex-none">
-                <div className="h-[12px] relative w-[6px]">
-                  <div className="absolute inset-[-7.14%_-14.29%]">
-                    <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 7.65656 13.6117">
-                      <path d={svgPaths.p1487cd00} stroke="#1C1B1B" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.70146" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <ChevronRight size={20} className="text-[#1C1B1B]" strokeWidth={1.7} />
         </div>
       </button>
       <AnimatePresence initial={false}>

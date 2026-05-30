@@ -1,8 +1,9 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router";
 import SharedNavbar from "../app/components/SharedNavbar";
 import SharedFooter from "../app/components/SharedFooter";
+import Skeleton from "../app/components/Skeleton";
 import { allPolicies, regions, PolicyEntry } from "../data/policies";
 
 // ─── All 12 policy images ─────────────────────────────────────────────────
@@ -54,50 +55,31 @@ function PolicyGridCard({ policy }: { policy: PolicyEntry }) {
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
       style={{
-        background: "var(--color-background-secondary)",
-        borderRadius: 20,
-        overflow: "hidden",
-        cursor: "pointer",
-        position: "relative",
-        display: "flex",
-        flexDirection: "column",
-        border: "1px solid var(--color-border-light)",
         boxShadow: hovered
           ? `0 20px 52px ${policy.accentColor}25, 0 6px 16px rgba(0,0,0,0.1)`
           : "var(--shadow-card)",
-        transition: "box-shadow 0.3s ease",
       }}
+      className="bg-[var(--color-background-secondary)] rounded-[var(--radius-lg)] overflow-hidden cursor-pointer relative flex flex-col border border-[var(--color-border-light)] transition-shadow duration-300"
       whileHover={{ scale: 1.03, y: -6 }}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
       onClick={() => navigate(`/policy/${policy.id}`)}
     >
       {/* Policy logo image — full card top */}
-      <div style={{ width: "100%", aspectRatio: "1/1", overflow: "hidden", background: "var(--color-background-secondary)", flexShrink: 0 }}>
+      <div className="w-full aspect-square overflow-hidden bg-transparent shrink-0">
         {img ? (
           <img
             src={img}
             alt={`${policy.country} education policy`}
             style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "contain",
-              objectPosition: "center",
-              display: "block",
-              transition: "transform 0.4s ease",
               transform: hovered ? "scale(1.04)" : "scale(1)",
             }}
+            className="w-full h-full object-contain object-center block transition-transform duration-400 ease-in-out"
           />
         ) : (
           <div style={{
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "4rem",
             background: `${policy.accentColor}08`,
-          }}>
+          }} className="w-full h-full flex items-center justify-center text-[4rem]">
             {policy.flag}
           </div>
         )}
@@ -106,51 +88,25 @@ function PolicyGridCard({ policy }: { policy: PolicyEntry }) {
       {/* Bottom strip */}
       <div
         style={{
-          display: "flex", alignItems: "center", gap: 10,
-          padding: "12px 16px",
-          background: "var(--color-background-secondary)",
           borderTop: `3px solid ${policy.accentColor}`,
-          flexShrink: 0,
         }}
+        className="flex items-center gap-[10px] py-3 px-4 bg-transparent shrink-0"
       >
         <span
           style={{
-            fontFamily: "'Manrope', sans-serif",
-            fontSize: "0.62rem",
-            fontWeight: 800,
-            letterSpacing: "0.06em",
-            color: "#fff",
             background: policy.accentColor,
-            borderRadius: 6,
-            padding: "4px 8px",
-            flexShrink: 0,
-            lineHeight: 1,
           }}
+          className="font-['Manrope',sans-serif] text-[0.62rem] font-extrabold tracking-[0.06em] text-white rounded-md py-1 px-2 shrink-0 leading-none"
         >
           {policy.code}
         </span>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <p style={{
-            fontFamily: "'OV Soge', sans-serif",
-            fontSize: "0.9rem",
-            fontWeight: 700,
-            color: "var(--color-text-primary)",
-            margin: 0,
-            whiteSpace: "nowrap",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-          }}>
+        <div className="flex-1 min-w-0">
+          <p className="font-['OV_Soge',sans-serif] text-[0.9rem] font-bold text-[var(--color-text-primary)] m-0 whitespace-nowrap overflow-hidden text-ellipsis">
             {policy.country}
           </p>
           <p style={{
-            fontFamily: "'Manrope', sans-serif",
-            fontSize: "0.58rem",
-            fontWeight: 800,
-            letterSpacing: "0.1em",
-            textTransform: "uppercase",
             color: policy.accentColor,
-            margin: "2px 0 0",
-          }}>
+          }} className="font-['Manrope',sans-serif] text-[0.58rem] font-extrabold tracking-[0.1em] uppercase mt-0.5 mb-0">
             {policy.frameworks.length} framework{policy.frameworks.length > 1 ? "s" : ""}
           </p>
         </div>
@@ -159,85 +115,39 @@ function PolicyGridCard({ policy }: { policy: PolicyEntry }) {
       {/* Hover overlay */}
       <AnimatePresence>
         {hovered && (
-          <motion.div
+            <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
             style={{
-              position: "absolute",
-              inset: 0,
-              borderRadius: 20,
-              background: "var(--color-background-secondary)",
               borderTop: `3px solid ${policy.accentColor}`,
-              padding: "20px 18px 18px",
-              display: "flex",
-              flexDirection: "column",
-              overflow: "hidden",
             }}
+            className="absolute inset-0 rounded-[var(--radius-lg)] solid-hover-overlay pt-5 px-[18px] pb-[18px] flex flex-col overflow-hidden"
           >
-            <p style={{
-              fontFamily: "'Manrope', sans-serif",
-              fontSize: "0.58rem",
-              fontWeight: 800,
-              letterSpacing: "0.16em",
-              textTransform: "uppercase",
-              color: "#bbb",
-              margin: "0 0 8px",
-            }}>
+            <p className="font-['Manrope',sans-serif] text-[0.58rem] font-extrabold tracking-[0.16em] uppercase text-[#bbb] m-0 mb-2">
               HOW ATEION ALIGNS
             </p>
 
-            <p style={{
-              fontFamily: "'Manrope', sans-serif",
-              fontSize: "0.76rem",
-              color: "var(--color-text-secondary)",
-              lineHeight: 1.65,
-              flex: 1,
-              margin: "0 0 14px",
-            }}>
+            <p className="font-['Manrope',sans-serif] text-[0.76rem] text-[var(--color-text-secondary)] leading-[1.65] flex-1 m-0 mb-[14px]">
               {policy.frameworks[0].hoverMessage}
             </p>
 
             {/* Framework open buttons */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 7, marginBottom: 14 }}>
+            <div className="flex flex-col gap-[7px] mb-[14px]">
               {policy.frameworks.map((fw, i) => (
                 <div
                   key={i}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    gap: 8,
-                    padding: "8px 11px",
-                    background: "var(--color-background-tertiary)",
-                    borderRadius: 10,
-                  }}
+                  className="flex items-center justify-between gap-2 py-2 px-[11px] bg-[var(--color-background-tertiary)] rounded-[10px]"
                 >
-                  <span style={{
-                    fontFamily: "'Manrope', sans-serif",
-                    fontSize: "0.67rem",
-                    fontWeight: 600,
-                    color: "var(--color-text-secondary)",
-                    flex: 1,
-                    lineHeight: 1.3,
-                  }}>
+                  <span className="font-['Manrope',sans-serif] text-[0.67rem] font-semibold text-[var(--color-text-secondary)] flex-1 leading-[1.3]">
                     {fw.name}
                   </span>
                   <button
                     style={{
-                      fontFamily: "'Manrope', sans-serif",
-                      fontSize: "0.62rem",
-                      fontWeight: 700,
-                      color: "#fff",
                       background: policy.accentColor,
-                      border: "none",
-                      borderRadius: 100,
-                      padding: "5px 11px",
-                      cursor: "pointer",
-                      whiteSpace: "nowrap",
-                      flexShrink: 0,
                     }}
+                    className="font-['Manrope',sans-serif] text-[0.62rem] font-bold text-white border-none rounded-full py-[5px] px-[11px] cursor-pointer whitespace-nowrap shrink-0"
                     onClick={(e) => handleOpen(e, fw.policyLink)}
                   >
                     Open →
@@ -247,20 +157,16 @@ function PolicyGridCard({ policy }: { policy: PolicyEntry }) {
             </div>
 
             {/* Tags */}
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+            <div className="flex flex-wrap gap-1">
               {policy.frameworks[0].tags.map((tag) => (
                 <span
                   key={tag}
                   style={{
-                    fontFamily: "'Manrope', sans-serif",
-                    fontSize: "0.6rem",
-                    fontWeight: 700,
-                    padding: "3px 9px",
-                    borderRadius: 100,
                     border: `1px solid ${policy.accentColor}38`,
                     background: `${policy.accentColor}0d`,
                     color: policy.accentColor,
                   }}
+                  className="font-['Manrope',sans-serif] text-[0.6rem] font-bold py-[3px] px-[9px] rounded-full"
                 >
                   {tag}
                 </span>
@@ -277,6 +183,12 @@ function PolicyGridCard({ policy }: { policy: PolicyEntry }) {
 export default function PoliciesPage() {
   const [search, setSearch]           = useState("");
   const [activeRegion, setActiveRegion] = useState("All");
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 800);
+    return () => clearTimeout(timer);
+  }, []);
 
   const filtered = useMemo(() => {
     const q = search.toLowerCase();
@@ -298,34 +210,31 @@ export default function PoliciesPage() {
     <>
       <SharedNavbar />
 
-      <div style={{ background: "var(--color-background-primary)", minHeight: "100vh", overflowX: "hidden", paddingTop: 60 }}>
+      <div className="bg-[var(--color-background-primary)] min-h-screen overflow-x-hidden pt-[60px]">
 
         {/* ── Hero header ── */}
-        <section style={{ padding: "80px 5% 64px", textAlign: "center", position: "relative", overflow: "hidden" }}>
+        <section className="py-20 px-[5%] pb-16 text-center relative overflow-hidden">
           <div style={{
-            position: "absolute", top: -100, left: "50%", transform: "translateX(-50%)",
-            width: 600, height: 600, borderRadius: "50%",
             background: "radial-gradient(circle, rgba(251,68,68,0.06) 0%, transparent 70%)",
-            pointerEvents: "none",
-          }} />
+          }} className="absolute -top-[100px] left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full pointer-events-none" />
 
           <motion.span
             initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
-            style={{ display: "block", fontFamily: "'Manrope', sans-serif", fontSize: "0.68rem", fontWeight: 800, letterSpacing: "0.22em", textTransform: "uppercase", color: "#fb4444", marginBottom: 18 }}
+            className="block font-['Manrope',sans-serif] text-[0.68rem] font-extrabold tracking-[0.22em] uppercase text-[#fb4444] mb-[18px]"
           >
             GLOBAL POLICY ALIGNMENT
           </motion.span>
 
           <motion.h1
             initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, delay: 0.1 }}
-            style={{ fontFamily: "'OV Soge', sans-serif", fontSize: "clamp(2.4rem, 5vw, 4rem)", fontWeight: 700, color: "var(--color-text-primary)", margin: "0 0 20px", lineHeight: 1.08, letterSpacing: "-0.025em" }}
+            className="font-['OV_Soge',sans-serif] text-[clamp(2.4rem,5vw,4rem)] font-bold text-[var(--color-text-primary)] m-0 mb-5 leading-[1.08] tracking-[-0.025em]"
           >
             Ateion's Global Policy Alignment
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, delay: 0.18 }}
-            style={{ fontFamily: "'Manrope', sans-serif", fontSize: "clamp(0.95rem, 1.5vw, 1.1rem)", color: "var(--color-text-secondary)", maxWidth: 520, margin: "0 auto 40px", lineHeight: 1.8 }}
+            className="font-['Manrope',sans-serif] text-[clamp(0.95rem,1.5vw,1.1rem)] text-[var(--color-text-secondary)] max-w-[520px] mx-auto mb-10 leading-[1.8]"
           >
             Ateion's entire startup ecosystem is aligned with leading national and international education frameworks across the world.
           </motion.p>
@@ -333,30 +242,30 @@ export default function PoliciesPage() {
           {/* Stats row */}
           <motion.div
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.26 }}
-            style={{ display: "flex", justifyContent: "center", gap: 48, flexWrap: "wrap" }}
+            className="flex justify-center gap-12 flex-wrap"
           >
             {[
               { num: `${allPolicies.length}`, label: "Countries" },
               { num: `${allPolicies.reduce((a, p) => a + p.frameworks.length, 0)}`, label: "Frameworks" },
               { num: `${regions.length - 1}`, label: "Regions" },
             ].map((s) => (
-              <div key={s.label} style={{ textAlign: "center" }}>
-                <p style={{ fontFamily: "'OV Soge', sans-serif", fontSize: "2.2rem", fontWeight: 700, color: "var(--color-text-primary)", margin: 0, lineHeight: 1 }}>{s.num}</p>
-                <p style={{ fontFamily: "'Manrope', sans-serif", fontSize: "0.68rem", color: "#aaa", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", margin: "8px 0 0" }}>{s.label}</p>
+              <div key={s.label} className="text-center">
+                <p className="font-['OV_Soge',sans-serif] text-[2.2rem] font-bold text-[var(--color-text-primary)] m-0 leading-none">{s.num}</p>
+                <p className="font-['Manrope',sans-serif] text-[0.68rem] text-[#aaa] font-bold uppercase tracking-[0.12em] mt-2 mb-0">{s.label}</p>
               </div>
             ))}
           </motion.div>
         </section>
 
         {/* ── Search + filters ── */}
-        <section style={{ padding: "0 5% 52px" }}>
+        <section className="px-[5%] pb-[52px]">
           <motion.div
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }}
-            style={{ maxWidth: 860, margin: "0 auto" }}
+            className="max-w-[860px] mx-auto"
           >
             {/* Search bar */}
-            <div style={{ position: "relative", marginBottom: 18 }}>
-              <svg style={{ position: "absolute", left: 18, top: "50%", transform: "translateY(-50%)", color: "#bbb", pointerEvents: "none" }}
+            <div className="relative mb-[18px]">
+              <svg className="absolute left-[18px] top-1/2 -translate-y-1/2 text-[#bbb] pointer-events-none"
                 width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" />
               </svg>
@@ -365,32 +274,22 @@ export default function PoliciesPage() {
                 placeholder="Search countries, frameworks, or tags…"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                style={{
-                  width: "100%", padding: "15px 18px 15px 48px",
-                  background: "var(--color-background-secondary)", border: "1px solid var(--color-border-light)", borderRadius: 14,
-                  fontFamily: "'Manrope', sans-serif", fontSize: "0.92rem", color: "var(--color-text-primary)",
-                  outline: "none", boxShadow: "0 2px 12px rgba(0,0,0,0.04)",
-                  transition: "border-color 0.2s, box-shadow 0.2s", boxSizing: "border-box",
-                }}
-                onFocus={(e) => { e.currentTarget.style.borderColor = "#fb4444"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(251,68,68,0.10)"; }}
-                onBlur={(e) =>  { e.currentTarget.style.borderColor = "rgba(0,0,0,0.08)"; e.currentTarget.style.boxShadow = "0 2px 12px rgba(0,0,0,0.04)"; }}
+                className="w-full py-[15px] pr-[18px] pl-[48px] bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] rounded-[14px] font-['Manrope',sans-serif] text-[0.92rem] text-[var(--color-text-primary)] outline-none shadow-[0_2px_12px_rgba(0,0,0,0.04)] transition-all duration-200 box-border focus:border-[#fb4444] focus:shadow-[0_0_0_3px_rgba(251,68,68,0.10)]"
               />
             </div>
 
             {/* Region filter pills */}
-            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            <div className="flex gap-2 flex-wrap">
               {regions.map((region) => (
                 <button
                   key={region}
                   onClick={() => setActiveRegion(region)}
                   style={{
-                    fontFamily: "'Manrope', sans-serif", fontSize: "0.76rem", fontWeight: 700,
-                    padding: "8px 18px", borderRadius: 100,
                     border: activeRegion === region ? "1.5px solid var(--color-text-primary)" : "1.5px solid var(--color-border-medium)",
                     background: activeRegion === region ? "var(--color-text-primary)" : "var(--color-background-secondary)",
                     color: activeRegion === region ? "var(--color-background-primary)" : "var(--color-text-tertiary)",
-                    cursor: "pointer", transition: "all 0.2s ease",
                   }}
+                  className="font-['Manrope',sans-serif] text-[0.76rem] font-bold py-2 px-[18px] rounded-full cursor-pointer transition-all duration-200"
                 >
                   {region}
                 </button>
@@ -400,27 +299,34 @@ export default function PoliciesPage() {
         </section>
 
         {/* ── Cards grid ── */}
-        <section style={{ padding: "0 5% 100px" }}>
-          <div style={{ maxWidth: 1320, margin: "0 auto" }}>
+        <section className="px-[5%] pb-[100px]">
+          <div className="max-w-[1320px] mx-auto">
             {filtered.length === 0 ? (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ textAlign: "center", padding: "80px 0" }}>
-                <p style={{ fontSize: "3rem", marginBottom: 16 }}>🌍</p>
-                <p style={{ fontFamily: "'OV Soge', sans-serif", fontSize: "1.4rem", fontWeight: 700, color: "#1a1a1a", marginBottom: 8 }}>No policies found</p>
-                <p style={{ fontFamily: "'Manrope', sans-serif", fontSize: "0.88rem", color: "#999" }}>Try a different search term or region filter.</p>
+              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-20">
+                <p className="text-[3rem] mb-4">🌍</p>
+                <p className="font-['OV_Soge',sans-serif] text-[1.4rem] font-bold text-[#1a1a1a] mb-2">No policies found</p>
+                <p className="font-['Manrope',sans-serif] text-[0.88rem] text-[#999]">Try a different search term or region filter.</p>
               </motion.div>
             ) : (
               <motion.div
                 layout
+                className="grid gap-[22px]"
                 style={{
-                  display: "grid",
                   gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 280px), 1fr))",
-                  gap: 22,
                 }}
               >
                 <AnimatePresence mode="popLayout">
-                  {filtered.map((policy) => (
-                    <PolicyGridCard key={policy.id} policy={policy} />
-                  ))}
+                  {isLoading ? (
+                    Array.from({ length: 8 }).map((_, i) => (
+                      <motion.div key={`skeleton-${i}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                        <Skeleton className="w-full aspect-[4/5] rounded-[var(--radius-lg)]" />
+                      </motion.div>
+                    ))
+                  ) : (
+                    filtered.map((policy) => (
+                      <PolicyGridCard key={policy.id} policy={policy} />
+                    ))
+                  )}
                 </AnimatePresence>
               </motion.div>
             )}

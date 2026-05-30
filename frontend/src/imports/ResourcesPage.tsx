@@ -595,8 +595,8 @@ export default function ResourcesPage() {
 
     {/* ADD TASK MODAL */}
     {showAddTask && (
-      <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
-        <div className="bg-white p-6 rounded-xl w-[320px] shadow-xl">
+      <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/40 backdrop-blur-sm">
+        <div className="bg-[var(--color-background-secondary)] p-6 rounded-xl w-[320px] shadow-xl">
           <h3 className="font-bold text-lg mb-4 text-[var(--color-text-primary)]">
             Add New Task
           </h3>

@@ -1,5 +1,6 @@
-import { BrowserRouter, Routes, Route } from "react-router";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router";
 import { useState, useEffect } from "react";
+import { AnimatePresence } from "framer-motion";
 
 import Homepage from "../imports/Homepage";
 import GCOPage from "../imports/GCOPage";
@@ -14,125 +15,69 @@ import LoginPage from "../imports/LoginPage";
 import PoliciesPage from "../imports/PoliciesPage";
 import PolicyDetailPage from "../imports/PolicyDetailPage";
 import ThemeProvider from "./components/ThemeProvider";
+import PageTransition from "./components/PageTransition";
+
+function AnimatedRoutes() {
+  const location = useLocation();
+
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<PageTransition><Homepage /></PageTransition>} />
+        <Route path="/gco" element={<PageTransition><GCOPage /></PageTransition>} />
+        <Route path="/contact" element={<PageTransition><ContactPage /></PageTransition>} />
+        <Route path="/PlayGround" element={<PageTransition><ResourcesPage /></PageTransition>} />
+        <Route path="/certificate" element={<PageTransition><CertificatePage /></PageTransition>} />
+        <Route path="/assessment-demo" element={<PageTransition><AssessmentDemoPage /></PageTransition>} />
+        <Route path="/dashboard" element={<PageTransition><DashboardPage /></PageTransition>} />
+        <Route path="/policies" element={<PageTransition><PoliciesPage /></PageTransition>} />
+        <Route path="/policy/:id" element={<PageTransition><PolicyDetailPage /></PageTransition>} />
+      </Routes>
+    </AnimatePresence>
+  );
+}
 
 export default function App() {
 
   const [showRegister, setShowRegister] = useState(false);
-
   const [showLogin, setShowLogin] = useState(false);
 
   useEffect(() => {
+    const handleOpenLogin = () => setShowLogin(true);
+    const handleOpenRegister = () => setShowRegister(true);
 
-    const handleOpenLogin = () =>
-      setShowLogin(true);
-
-    const handleOpenRegister = () =>
-      setShowRegister(true);
-
-    window.addEventListener(
-      "open-login",
-      handleOpenLogin
-    );
-
-    window.addEventListener(
-      "open-register",
-      handleOpenRegister
-    );
+    window.addEventListener("open-login", handleOpenLogin);
+    window.addEventListener("open-register", handleOpenRegister);
 
     return () => {
-
-      window.removeEventListener(
-        "open-login",
-        handleOpenLogin
-      );
-
-      window.removeEventListener(
-        "open-register",
-        handleOpenRegister
-      );
-
+      window.removeEventListener("open-login", handleOpenLogin);
+      window.removeEventListener("open-register", handleOpenRegister);
     };
-
   }, []);
 
   return (
-
     <ThemeProvider>
       <BrowserRouter>
 
-        <Routes>
-
-          {/* HOMEPAGE */}
-          <Route
-            path="/"
-            element={<Homepage />}
-          />
-
-          {/* GCO PAGE */}
-          <Route
-            path="/gco"
-            element={<GCOPage />}
-          />
-
-          {/* CONTACT PAGE */}
-          <Route
-            path="/contact"
-            element={<ContactPage />}
-          />
-
-          {/* PLAYGROUND PAGE */}
-          <Route
-            path="/PlayGround"
-            element={<ResourcesPage />}
-          />
-
-          {/* CERTIFICATE PAGE */}
-          <Route
-            path="/certificate"
-            element={<CertificatePage />}
-          />
-
-          {/* ASSESSMENT DEMO PAGE */}
-          <Route
-            path="/assessment-demo"
-            element={<AssessmentDemoPage />}
-          />
-
-          {/* DASHBOARD PAGE */}
-          <Route
-            path="/dashboard"
-            element={<DashboardPage />}
-          />
-
-          {/* ALL POLICIES PAGE */}
-          <Route
-            path="/policies"
-            element={<PoliciesPage />}
-          />
-
-          {/* POLICY DETAIL PAGE */}
-          <Route
-            path="/policy/:id"
-            element={<PolicyDetailPage />}
-          />
-
-        </Routes>
+        <AnimatedRoutes />
 
         {/* REGISTER POPUP */}
         {showRegister && (
           <RegisterPage
-            closeRegister={() =>
-              setShowRegister(false)
-            }
+            closeRegister={() => {
+              setShowRegister(false);
+              window.dispatchEvent(new CustomEvent("close-register"));
+            }}
           />
         )}
 
         {/* LOGIN POPUP */}
         {showLogin && (
           <LoginPage
-            closeLogin={() =>
-              setShowLogin(false)
-            }
+            closeLogin={() => {
+              setShowLogin(false);
+              window.dispatchEvent(new CustomEvent("close-login"));
+            }}
           />
         )}
 

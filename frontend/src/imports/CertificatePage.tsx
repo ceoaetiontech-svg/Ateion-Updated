@@ -6,7 +6,7 @@ import imgImage7 from "../assets/e985b07ea1f916546c05a06ca93558ef62ecc870.png";
 
 export default function CertificatePage() {
   return (
-    <div className="min-h-screen bg-[#f7f3eb] overflow-x-hidden">
+    <div className="min-h-screen bg-[var(--color-background-primary)] overflow-x-hidden">
 
       {/* NAVBAR */}
       <SharedNavbar />

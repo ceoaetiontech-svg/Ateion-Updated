@@ -219,13 +219,13 @@
   --shadow-2xl: 0 24px 48px 0 rgba(0, 0, 0, 0.25);
   --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
   
-  /* Custom Shadows */
-  --shadow-button: 0 4px 12px rgba(251, 68, 68, 0.25);
-  --shadow-button-hover: 0 6px 20px rgba(251, 68, 68, 0.35);
-  --shadow-card: 0 4px 20px rgba(25, 33, 61, 0.04);
-  --shadow-card-hover: 0 8px 30px rgba(25, 33, 61, 0.08);
-  --shadow-nav: 0 2px 16px rgba(0, 0, 0, 0.07);
-  --shadow-modal: 0 24px 48px 0 rgba(0, 0, 0, 0.25);
+  /* Custom Shadows (Premium Diffused) */
+  --shadow-button: 0 4px 14px rgba(251, 68, 68, 0.15);
+  --shadow-button-hover: 0 8px 24px rgba(251, 68, 68, 0.25);
+  --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.04);
+  --shadow-card-hover: 0 12px 40px rgba(0, 0, 0, 0.08);
+  --shadow-nav: 0 2px 20px rgba(0, 0, 0, 0.04);
+  --shadow-modal: 0 24px 60px 0 rgba(0, 0, 0, 0.12);
   
   /* ──────────────────────────────────────────────────────────────────────────
    * TRANSITIONS - EVEN NUMBERS ONLY
@@ -441,13 +441,13 @@
   --shadow-2xl: 0 32px 64px 0 rgba(0, 0, 0, 0.7);
   --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.20);
 
-  /* Custom Shadows */
-  --shadow-button: 0 0 20px rgba(255, 74, 90, 0.4);
-  --shadow-button-hover: 0 0 30px rgba(255, 74, 90, 0.6);
-  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.4);
-  --shadow-card-hover: 0 12px 48px rgba(0, 0, 0, 0.6);
-  --shadow-nav: 0 4px 24px rgba(0, 0, 0, 0.4);
-  --shadow-modal: 0 24px 64px 0 rgba(0, 0, 0, 0.8);
+  /* Custom Shadows (Premium Diffused Dark) */
+  --shadow-button: 0 4px 20px rgba(255, 74, 90, 0.25);
+  --shadow-button-hover: 0 8px 32px rgba(255, 74, 90, 0.4);
+  --shadow-card: 0 12px 40px rgba(0, 0, 0, 0.4);
+  --shadow-card-hover: 0 16px 50px rgba(0, 0, 0, 0.6);
+  --shadow-nav: 0 4px 30px rgba(0, 0, 0, 0.4);
+  --shadow-modal: 0 32px 80px 0 rgba(0, 0, 0, 0.6);
 
   /* Focus Ring */
   --focus-ring-offset-style: var(--focus-ring-offset) solid var(--color-background-primary);
@@ -458,7 +458,7 @@ html[data-theme="dark"] .bg-\[var\(--color-background-secondary\)\] {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 8px 32px 0 rgba(0, 0, 0, 0.3);
 }
 
 /* Make body background a rich radial gradient in dark mode */

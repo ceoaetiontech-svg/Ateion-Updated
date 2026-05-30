@@ -39,7 +39,7 @@
 .contact-description {
   font-size: 16px;
   font-weight: 400;
-  color: #333;
+  color: var(--color-text-secondary);
   max-width: 600px;
   margin: 0 auto 40px;
   line-height: 1.6;
@@ -234,7 +234,7 @@
 }
 
 .submit-btn:hover {
-  background-color: #333;
+  background-color: var(--color-text-secondary);
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
