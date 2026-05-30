@@ -67,19 +67,10 @@ function FooterSocialLinks() {
         size="w-[32px] h-[32px] sm:w-[38px] sm:h-[38px]"
       />
 
-      {/* X / TWITTER ICON */}
-      <div className="w-[32px] h-[32px] sm:w-[38px] sm:h-[38px] cursor-pointer hover:opacity-70 transition-opacity flex items-center justify-center">
-        <img
-          src={imgGcoLogo}
-          alt="Twitter / X"
-          className="w-full h-full object-cover social-png-icon"
-        />
-      </div>
-
       {/* MAIL ICON */}
       <a
         href="mailto:destiny@ateion.info?subject=Hello%20Ateion"
-        className="w-[32px] h-[32px] sm:w-[38px] sm:h-[38px] rounded-full bg-black flex items-center justify-center hover:opacity-70 transition-opacity"
+        className="w-[32px] h-[32px] sm:w-[38px] sm:h-[38px] rounded-full bg-[var(--color-text-primary)] flex items-center justify-center hover:opacity-70 transition-opacity"
       >
         <svg
           width="20"
@@ -89,14 +80,14 @@ function FooterSocialLinks() {
         >
           <path
             d="M4 6H20V18H4V6Z"
-            stroke="white"
+            stroke="var(--color-background-primary)"
             strokeWidth="2"
             strokeLinejoin="round"
           />
 
           <path
             d="M4 7L12 13L20 7"
-            stroke="white"
+            stroke="var(--color-background-primary)"
             strokeWidth="2"
             strokeLinejoin="round"
           />
