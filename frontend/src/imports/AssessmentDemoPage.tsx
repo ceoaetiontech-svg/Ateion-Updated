@@ -102,7 +102,7 @@ export default function AssessmentDemoPage() {
 
             <div>
 
-              <p className="text-[14px] text-gray-500 mb-2">
+              <p className="text-[14px] text-[var(--color-text-tertiary)] mb-2">
                 Global Capability Olympiad
               </p>
 
@@ -127,7 +127,7 @@ export default function AssessmentDemoPage() {
           {/* QUESTION */}
           <div className="mb-[40px]">
 
-            <p className="text-[18px] text-gray-500 mb-4">
+            <p className="text-[18px] text-[var(--color-text-tertiary)] mb-4">
               Question {currentQuestion + 1} of{" "}
               {questions.length}
             </p>
@@ -162,8 +162,8 @@ export default function AssessmentDemoPage() {
                     selectedAnswers[
                       currentQuestion
                     ] === option
-                      ? "border-[#fb4444] bg-[#fff1f1] text-[#fb4444]"
-                      : "border-[var(--color-border-medium)] hover:border-[#fb4444] hover:bg-[#fff5f5]"
+                      ? "border-[#fb4444] bg-[#fb4444]/10 text-[#fb4444]"
+                      : "border-[var(--color-border-medium)] hover:border-[#fb4444] hover:bg-[#fb4444]/5 text-[var(--color-text-secondary)]"
                   }
                   `}
                 >
@@ -181,7 +181,7 @@ export default function AssessmentDemoPage() {
             <button
               onClick={previousQuestion}
               disabled={currentQuestion === 0}
-              className="px-6 py-3 rounded-full border border-[var(--color-border-medium)] hover:bg-[var(--color-background-tertiary)] transition disabled:opacity-40"
+              className="px-6 py-3 rounded-full border border-[var(--color-border-medium)] hover:bg-[var(--color-background-tertiary)] text-[var(--color-text-primary)] transition disabled:opacity-40"
             >
               Previous
             </button>

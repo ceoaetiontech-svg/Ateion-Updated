@@ -126,13 +126,13 @@ function HomeBtn({ onClick }: { onClick?: () => void }) {
 
   return (
     <NavButton
-      variant="default"
+      variant="primary"
       onClick={() => {
         if (onClick) onClick();
         navigate("/");
       }}
     >
-      <p className={`${navTextClass} text-[var(--color-text-secondary)]`}>Home</p>
+      <p className={`${navTextClass} text-[var(--color-background-primary)]`}>Home</p>
     </NavButton>
   );
 }
@@ -193,7 +193,7 @@ function DashboardBtn({
   return (
 
     <NavButton
-      variant="primary"
+      variant="default"
       onClick={() => {
 
         if (onClick) onClick();
@@ -203,7 +203,7 @@ function DashboardBtn({
       }}
     >
 
-      <p className={`${navTextClass} text-[var(--color-background-primary)]`}>
+      <p className={`${navTextClass} text-[var(--color-text-secondary)]`}>
         Dashboard
       </p>
 
@@ -216,9 +216,9 @@ function NavLinks({ onCloseMobile }: { onCloseMobile?: () => void }) {
   return (
     <div className="flex gap-[8px] xl:gap-[16px] items-center shrink-0">
       <HomeBtn onClick={onCloseMobile} />
+      <DashboardBtn onClick={onCloseMobile} />
       <GlobalOlympiadBtn onClick={onCloseMobile} />
       <ResourcesBtn onClick={onCloseMobile} />
-      <DashboardBtn onClick={onCloseMobile} />
     </div>
   );
 }
@@ -437,16 +437,16 @@ export default function SharedNavbar() {
                 onClick={() => handleNavClick("/")}
               />
 
+              <DashboardBtn
+                onClick={() => handleNavClick("/dashboard")}
+              />
+
               <GlobalOlympiadBtn
                 onClick={() => handleNavClick("/gco")}
               />
 
               <ResourcesBtn
                 onClick={() => handleNavClick("/playground")}
-              />
-
-              <DashboardBtn
-                onClick={() => handleNavClick("/dashboard")}
               />
 
               <GetConnectedBtn
