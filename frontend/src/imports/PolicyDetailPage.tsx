@@ -28,7 +28,7 @@ function FrameworkPanel({ fw, accentColor }: { fw: PolicyFramework; accentColor:
       exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.35 }}
     >
       {/* Policy description card */}
-      <div className="bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] rounded-[20px] py-8 px-[30px] mb-6 shadow-[var(--shadow-card)]">
+      <div className="clay-card bg-[var(--color-background-secondary)] py-8 px-[30px] mb-6">
         <div style={{
           background: `${accentColor}10`, border: `1px solid ${accentColor}25`
         }} className="w-16 h-16 rounded-2xl flex items-center justify-center mb-5 text-[0.65rem] font-['Manrope',sans-serif] font-bold text-[var(--color-text-subtle)] tracking-[0.08em] uppercase flex-col gap-1">
@@ -64,7 +64,7 @@ function FrameworkPanel({ fw, accentColor }: { fw: PolicyFramework; accentColor:
       {/* Ateion Alignment card */}
       <div style={{
         borderLeft: `4px solid ${accentColor}`,
-      }} className="bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] rounded-[20px] py-8 px-[30px] mb-6 shadow-[var(--shadow-card)]">
+      }} className="clay-card bg-[var(--color-background-secondary)] py-8 px-[30px] mb-6">
         <p style={{ color: accentColor }} className="font-['Manrope',sans-serif] text-[0.65rem] font-extrabold tracking-[0.18em] uppercase mb-4">
           HOW ATEION ALIGNS
         </p>
@@ -75,7 +75,7 @@ function FrameworkPanel({ fw, accentColor }: { fw: PolicyFramework; accentColor:
       <motion.a
         href={fw.policyLink} target="_blank" rel="noopener noreferrer"
         style={{ background: accentColor }}
-        className="inline-flex items-center gap-[10px] font-['Manrope',sans-serif] text-[0.88rem] font-bold text-white border-none rounded-full py-[13px] px-[30px] no-underline cursor-pointer"
+        className="clay-button inline-flex items-center gap-[10px] font-['Manrope',sans-serif] text-[0.88rem] font-bold text-white border-none py-[13px] px-[30px] no-underline cursor-pointer"
         whileHover={{ scale: 1.04, opacity: 0.9 }} whileTap={{ scale: 0.97 }}
       >
         Read Official Policy
@@ -135,7 +135,7 @@ export default function PolicyDetailPage() {
             initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4 }}
             onClick={() => navigate("/policies")}
-            className="inline-flex items-center gap-2 font-['Manrope',sans-serif] text-[0.8rem] font-bold text-[var(--color-text-tertiary)] bg-transparent border-[1.5px] border-[var(--color-border-medium)] rounded-full py-2 px-[18px] cursor-pointer mb-12 transition-colors duration-200"
+            className="clay-button inline-flex items-center gap-2 font-['Manrope',sans-serif] text-[0.8rem] font-bold text-[var(--color-text-tertiary)] bg-transparent py-2 px-[18px] cursor-pointer mb-12 transition-colors duration-200"
             whileHover={{ scale: 1.02 }}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none"

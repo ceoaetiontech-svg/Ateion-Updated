@@ -58,7 +58,7 @@ export default function BeyondScoreClone() {
           alignItems: isTablet ? "stretch" : "center",
           gap: isMobile ? "28px" : isTablet ? "40px" : "40px",
           overflow: "hidden",
-          boxShadow: "0 20px 50px rgba(0,0,0,0.5)"
+          boxShadow: "var(--shadow-clay)"
         }}>
 
           <div style={{
@@ -125,9 +125,9 @@ export default function BeyondScoreClone() {
               </ul>
             </div>
 
-            <button style={{
+            <button className="clay-button" style={{
               background: "transparent",
-              border: "1px solid #374151",
+              border: "1.5px solid rgba(255,255,255,0.2)",
               color: "#fff",
               padding: isSmallMobile ? "12px 18px" : "12px 24px",
               borderRadius: "100px",
@@ -188,14 +188,13 @@ export default function BeyondScoreClone() {
                   imageFirst: false,
                   accent: "#f43f5e"
                 }].map((phone, index) => (
-                  <div key={index} style={{
+                  <div key={index} className="clay-card" style={{
                     width: isMobile ? "260px" : "290px",
                     minWidth: isMobile ? "260px" : "290px",
                     background: "linear-gradient(180deg, #0d0d12 0%, #09090c 100%)",
                     borderRadius: "30px",
-                    border: "1px solid #262631",
+                    border: "1.5px solid rgba(255,255,255,0.08)",
                     padding: isMobile ? "18px 16px" : "20px 18px",
-                    boxShadow: "0 24px 50px rgba(0,0,0,0.45)",
                     display: "flex",
                     flexDirection: "column",
                     minHeight: isMobile ? "430px" : "470px"
@@ -235,7 +234,7 @@ export default function BeyondScoreClone() {
             ) : (
             <>
             {/* Left Phone */}
-            <div style={{
+            <div className="clay-card" style={{
               position: "absolute",
               left: "2%",
               top: "15%",
@@ -243,10 +242,9 @@ export default function BeyondScoreClone() {
               height: "460px",
               background: "#111",
               borderRadius: "30px",
-              border: "1px solid #2a2a2a",
+              border: "1.5px solid rgba(255,255,255,0.08)",
               padding: "16px 14px",
               transform: "rotate(-10deg)",
-              boxShadow: "-15px 25px 50px rgba(0,0,0,0.8)",
               zIndex: 1,
               overflow: "hidden",
               display: "flex",
@@ -280,7 +278,7 @@ export default function BeyondScoreClone() {
             </div>
 
             {/* Right Phone */}
-            <div style={{
+            <div className="clay-card" style={{
               position: "absolute",
               right: "2%",
               top: "20%",
@@ -288,10 +286,9 @@ export default function BeyondScoreClone() {
               height: "460px",
               background: "#111",
               borderRadius: "30px",
-              border: "1px solid #2a2a2a",
+              border: "1.5px solid rgba(255,255,255,0.08)",
               padding: "16px 14px",
               transform: "rotate(10deg)",
-              boxShadow: "15px 25px 50px rgba(0,0,0,0.8)",
               zIndex: 1,
               overflow: "hidden",
               display: "flex",
@@ -320,7 +317,7 @@ export default function BeyondScoreClone() {
             </div>
 
             {/* Center Phone */}
-            <div style={{
+            <div className="clay-card" style={{
               position: "absolute",
               top: "5%",
               left: "50%",
@@ -329,9 +326,8 @@ export default function BeyondScoreClone() {
               height: "505px",
               background: "#080808",
               borderRadius: "35px",
-              border: "1px solid #333",
+              border: "1.5px solid rgba(255,255,255,0.08)",
               padding: "20px 18px",
-              boxShadow: "0 40px 80px rgba(0,0,0,0.95), 0 0 0 1px rgba(255,255,255,0.05)",
               zIndex: 10,
               display: "flex",
               flexDirection: "column"

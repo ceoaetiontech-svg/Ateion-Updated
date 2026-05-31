@@ -35,17 +35,22 @@ const GCOComparison = () => {
     <section className="gco-comparison-section">
       <div className="gco-comparison-header">
         <h2 className="gco-comparison-title">What Makes GCO Different</h2>
-        <p className="gco-comparison-subtitle">Traditional Exams vs GCO</p>
+        <p className="gco-comparison-subtitle">Traditional Exams vs Global Olympiad</p>
       </div>
 
-      <div className="gco-comparison-container">
+      <div className="gco-comparison-grid">
         {/* Left Card - Traditional */}
-        <div className="gco-card-traditional">
-          <h3 className="gco-card-title">Traditional</h3>
-          <ul className="gco-list">
+        <div className="clay-card traditional-card">
+          <div className="card-header-muted">
+            <h3 className="traditional-title">Traditional</h3>
+            <p className="traditional-subtitle">The Old Way</p>
+          </div>
+          <ul className="comparison-list">
             {comparisonData.map((item, index) => (
-              <li key={`trad-${index}`} className="gco-list-item">
-                <div className="gco-icon-traditional">×</div>
+              <li key={`trad-${index}`} className="comparison-list-item muted-item">
+                <div className="icon-cross">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </div>
                 <span>{item.traditional}</span>
               </li>
             ))}
@@ -53,25 +58,28 @@ const GCOComparison = () => {
         </div>
 
         {/* Right Card - GCO */}
-        <div className="gco-card-modern-container">
-          <div className="gco-card-modern">
-            <div className="gco-card-modern-content">
-              <h3 className="gco-card-title">GCO</h3>
-              <ul className="gco-list">
-                {comparisonData.map((item, index) => (
-                  <li key={`gco-${index}`} className="gco-list-item">
-                    <div className="gco-icon-modern"></div>
-                    <span>{item.gco}</span>
-                  </li>
-                ))}
-              </ul>
-              
-              <p className="gco-summary">
-                GCO redefines assessment by valuing creativity, adaptability,
-                and global fairness empowering learners to showcase
-                originality beyond traditional boundaries.
-              </p>
-            </div>
+        <div className="glass-card modern-card">
+          <div className="card-header-vibrant">
+            <h3 className="modern-title">Global Olympiad</h3>
+            <p className="modern-subtitle">The Future of Assessment</p>
+          </div>
+          <ul className="comparison-list">
+            {comparisonData.map((item, index) => (
+              <li key={`gco-${index}`} className="comparison-list-item vibrant-item">
+                <div className="icon-check">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <span>{item.gco}</span>
+              </li>
+            ))}
+          </ul>
+          
+          <div className="modern-summary-box">
+            <p className="gco-summary">
+              GCO redefines assessment by valuing creativity, adaptability,
+              and global fairness—empowering learners to showcase
+              originality beyond traditional boundaries.
+            </p>
           </div>
         </div>
       </div>

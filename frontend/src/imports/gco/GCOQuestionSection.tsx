@@ -197,11 +197,11 @@ export default function GCOQuestionSection() {
             onClick={() =>
               navigate("/assessment-demo")
             }
+            className="clay-button"
             style={{
               backgroundColor: "var(--color-primary)",
               color: "var(--color-white)",
-              border: "none",
-              borderRadius: "100px",
+              border: "1.5px solid rgba(255,255,255,0.2)",
               padding: isSmallMobile
                 ? "14px 22px"
                 : isMobile
@@ -212,10 +212,6 @@ export default function GCOQuestionSection() {
                 : "1.05rem",
               fontWeight: "600",
               cursor: "pointer",
-              boxShadow:
-                "0 8px 25px var(--color-border-focus)",
-              transition:
-                "transform 0.2s ease, boxShadow 0.2s ease",
               fontFamily:
                 "'Manrope', sans-serif",
               width: isSmallMobile
@@ -253,6 +249,7 @@ export default function GCOQuestionSection() {
 
             <div
               key={index}
+              className="clay-card"
               style={{
                 backgroundColor: "var(--color-background-secondary)",
                 borderRadius: isMobile
@@ -263,17 +260,11 @@ export default function GCOQuestionSection() {
                   : isMobile
                   ? "26px 22px"
                   : "45px 40px",
-                boxShadow: isMobile
-                  ? "0 12px 28px rgba(0,0,0,0.05)"
-                  : "0 10px 40px rgba(0,0,0,0.04)",
                 display: "flex",
                 flexDirection: "column",
                 gap: isMobile
                   ? "10px"
                   : "10px",
-                border: isMobile
-                  ? "1px solid var(--color-border-light)"
-                  : "none",
               }}
             >
 

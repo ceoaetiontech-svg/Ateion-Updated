@@ -23,11 +23,19 @@ export default defineConfig({
   
   // Fix for motion-dom and lucide-react build issues
   build: {
+    chunkSizeWarningLimit: 1600,
     rollupOptions: {
       output: {
         manualChunks: {
-          'motion': ['framer-motion'],
-          'lucide': ['lucide-react'],
+          'react-vendor': ['react', 'react-dom', 'react-router'],
+          'ui-vendor': ['framer-motion', 'lucide-react', 'recharts', 'd3'],
+          'radix-vendor': [
+            '@radix-ui/react-accordion',
+            '@radix-ui/react-dialog',
+            '@radix-ui/react-dropdown-menu',
+            '@radix-ui/react-popover',
+            '@radix-ui/react-select'
+          ]
         },
       },
     },

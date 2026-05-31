@@ -261,3 +261,80 @@
     color: #d4d4d8;
   }
 }
+
+/* ─── Claymorphism Overrides ─────────────────── */
+.timeline-icon-container {
+  box-shadow: var(--shadow-clay);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.timeline-icon-container:hover {
+  box-shadow: var(--shadow-clay-hover);
+}
+
+.timeline-circle {
+  box-shadow: var(--shadow-clay-button);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.timeline-mobile-card {
+  box-shadow: var(--shadow-clay);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 24px;
+}
+
+.timeline-mobile-card:hover {
+  box-shadow: var(--shadow-clay-hover);
+}
+
+.timeline-icon-container-mobile {
+  box-shadow: var(--shadow-clay);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* ─── Dark Claymorphism ──────────────────────── */
+[data-theme="dark"] .timeline-icon-container {
+  box-shadow:
+    inset 2px 2px 4px rgba(255, 255, 255, 0.05),
+    inset -1px -1px 3px rgba(0, 0, 0, 0.3),
+    6px 6px 16px rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .timeline-icon-container:hover {
+  box-shadow:
+    inset 2px 2px 5px rgba(255, 255, 255, 0.07),
+    inset -1px -1px 3px rgba(0, 0, 0, 0.35),
+    8px 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .timeline-circle {
+  box-shadow:
+    inset 2px 2px 4px rgba(255, 255, 255, 0.04),
+    inset -1px -1px 2px rgba(0, 0, 0, 0.25),
+    4px 4px 12px rgba(0, 0, 0, 0.35);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .timeline-mobile-card {
+  box-shadow:
+    inset 2px 2px 4px rgba(255, 255, 255, 0.05),
+    inset -1px -1px 3px rgba(0, 0, 0, 0.3),
+    6px 6px 16px rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .timeline-mobile-card:hover {
+  box-shadow:
+    inset 2px 2px 5px rgba(255, 255, 255, 0.07),
+    inset -1px -1px 3px rgba(0, 0, 0, 0.35),
+    8px 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .timeline-icon-container-mobile {
+  box-shadow:
+    inset 2px 2px 4px rgba(255, 255, 255, 0.05),
+    inset -1px -1px 3px rgba(0, 0, 0, 0.3),
+    6px 6px 16px rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 255, 255, 0.08);
+}

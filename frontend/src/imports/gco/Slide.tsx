@@ -3,7 +3,7 @@ import '../../styles/gco/Slide.css';
 export default function Slide() {
   return (
     <div className="slide dark-section">
-      <div className="top-section">
+      <div className="top-section clay-card">
         <h1 className="title">
           Education Systems Are<br />
           Fighting the Last War

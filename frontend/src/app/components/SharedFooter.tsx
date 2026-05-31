@@ -40,7 +40,7 @@ function MailIcon({ href }: { href: string }) {
 
 export default function SharedFooter() {
   return (
-    <footer className="w-full bg-[var(--color-background-secondary)] border-t border-[var(--color-border-tertiary)]">
+    <footer className="w-full bg-[var(--color-background-secondary)] border-t border-[var(--color-border-tertiary)]" style={{ boxShadow: 'var(--shadow-clay)' }}>
 
       {/* Main Footer Body */}
       <div className="w-full max-w-[1280px] mx-auto px-[24px] sm:px-[40px] md:px-[64px] py-[48px] sm:py-[64px]">

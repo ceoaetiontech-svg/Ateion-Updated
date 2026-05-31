@@ -53,6 +53,7 @@ function MiniPolicyCard({ policy, index }: { policy: PolicyEntry; index: number 
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
       onClick={() => navigate(`/policy/${policy.id}`)}
+      className="clay-card"
       style={{
         background: "#fff",
         borderRadius: 16,
@@ -61,11 +62,7 @@ function MiniPolicyCard({ policy, index }: { policy: PolicyEntry; index: number 
         position: "relative",
         display: "flex",
         flexDirection: "column",
-        border: "1px solid rgba(0,0,0,0.05)",
-        boxShadow: hovered
-          ? `0 18px 48px ${policy.accentColor}22, 0 6px 14px rgba(0,0,0,0.09)`
-          : "0 3px 10px rgba(0,0,0,0.06)",
-        transition: "box-shadow 0.3s ease",
+        border: "1.5px solid var(--color-border-light)",
       }}
     >
       {/* Logo image */}
@@ -168,9 +165,11 @@ function MiniPolicyCard({ policy, index }: { policy: PolicyEntry; index: number 
                     {fw.name}
                   </span>
                   <button
+                    className="clay-button"
                     style={{
                       fontFamily: "'Manrope', sans-serif", fontSize: "0.58rem", fontWeight: 700,
-                      color: "#fff", background: policy.accentColor, border: "none",
+                      color: "#fff", background: policy.accentColor,
+                      border: "1px solid rgba(255,255,255,0.15)",
                       borderRadius: 100, padding: "4px 9px", cursor: "pointer",
                       whiteSpace: "nowrap", flexShrink: 0,
                     }}
@@ -293,21 +292,13 @@ export default function HomePolicySection() {
           onClick={() => navigate("/policies")}
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
+          className="clay-button"
           style={{
             display: "inline-flex", alignItems: "center", gap: 10,
             fontFamily: "'Manrope', sans-serif", fontSize: "0.95rem", fontWeight: 700,
             color: "var(--color-background-primary)", background: "var(--color-text-primary)",
-            border: "2px solid var(--color-text-primary)", borderRadius: 100,
+            border: "1.5px solid var(--color-text-primary)", borderRadius: 100,
             padding: "14px 38px", cursor: "pointer",
-            transition: "background 0.28s ease, color 0.28s ease",
-          }}
-          onMouseEnter={(e) => {
-            (e.currentTarget as HTMLButtonElement).style.background = "var(--color-primary)";
-            (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--color-primary)";
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLButtonElement).style.background = "var(--color-text-primary)";
-            (e.currentTarget as HTMLButtonElement).style.borderColor = "var(--color-text-primary)";
           }}
         >
           Explore All Global Policies

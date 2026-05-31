@@ -73,7 +73,7 @@ function VerticalTicker() {
 
 export default function RedIntelligenceCard() {
   return (
-    <div className="bg-[var(--color-primary)] content-stretch flex flex-col items-center justify-center pb-[32px] sm:pb-[48px] pl-[24px] sm:pl-[64px] pr-[16px] sm:pr-[48px] pt-[32px] sm:pt-[48px] relative rounded-[13px] sm:rounded-[20px] shrink-0 md:shrink flex-1 w-full">
+    <div className="clay-card bg-[var(--color-primary)] content-stretch flex flex-col items-center justify-center pb-[32px] sm:pb-[48px] pl-[24px] sm:pl-[64px] pr-[16px] sm:pr-[48px] pt-[32px] sm:pt-[48px] relative rounded-[13px] sm:rounded-[20px] shrink-0 md:shrink flex-1 w-full">
       <div className="content-stretch flex flex-col gap-[24px] sm:gap-[32px] items-start relative shrink-0 w-full max-w-[800px]">
         {/* Desktop layout */}
         <div className="hidden lg:flex items-center justify-between relative shrink-0 w-full gap-[24px]">

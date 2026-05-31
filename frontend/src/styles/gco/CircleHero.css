@@ -172,3 +172,68 @@
   border-color: #3a3a3e;
   background: var(--color-background-secondary);
 }
+
+/* ─── Claymorphism Overrides ─────────────────── */
+.circle-hero-btn {
+  box-shadow: var(--shadow-clay-button);
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.circle-hero-btn:hover {
+  box-shadow: var(--shadow-clay-hover);
+}
+
+.vouch {
+  box-shadow: var(--shadow-clay);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 24px;
+}
+
+.vouch:hover {
+  box-shadow: var(--shadow-clay-hover);
+}
+
+.circle-hero-tags span {
+  box-shadow: var(--shadow-clay-button);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+/* ─── Dark Claymorphism ──────────────────────── */
+[data-theme="dark"] .circle-hero-btn {
+  box-shadow:
+    inset 2px 2px 4px rgba(255, 255, 255, 0.04),
+    inset -1px -1px 2px rgba(0, 0, 0, 0.25),
+    4px 4px 12px rgba(0, 0, 0, 0.35);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .circle-hero-btn:hover {
+  box-shadow:
+    inset 2px 2px 5px rgba(255, 255, 255, 0.07),
+    inset -1px -1px 3px rgba(0, 0, 0, 0.35),
+    8px 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .vouch {
+  box-shadow:
+    inset 2px 2px 4px rgba(255, 255, 255, 0.05),
+    inset -1px -1px 3px rgba(0, 0, 0, 0.3),
+    6px 6px 16px rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .vouch:hover {
+  box-shadow:
+    inset 2px 2px 5px rgba(255, 255, 255, 0.07),
+    inset -1px -1px 3px rgba(0, 0, 0, 0.35),
+    8px 8px 20px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .circle-hero-tags span {
+  box-shadow:
+    inset 2px 2px 4px rgba(255, 255, 255, 0.04),
+    inset -1px -1px 2px rgba(0, 0, 0, 0.25),
+    4px 4px 12px rgba(0, 0, 0, 0.35);
+  border-color: rgba(255, 255, 255, 0.1);
+}

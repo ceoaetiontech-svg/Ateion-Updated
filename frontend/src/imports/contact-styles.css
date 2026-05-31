@@ -86,6 +86,26 @@
   margin: 0 auto;
 }
 
+.contact-form-clay {
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: var(--shadow-clay);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.contact-form-clay:hover {
+  box-shadow: var(--shadow-clay-hover);
+}
+
+[data-theme="dark"] .contact-form-clay {
+  box-shadow:
+    inset 1px 1px 3px rgba(255, 255, 255, 0.06),
+    inset -1px -1px 2px rgba(0, 0, 0, 0.3),
+    6px 6px 20px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -319,9 +339,15 @@
   text-align: center;
   padding: 56px 40px;
   background: var(--color-white);
-  border-radius: 20px;
-  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.09);
+  border-radius: 24px;
+  box-shadow: var(--shadow-clay);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   animation: fadeIn 0.45s ease;
+  transition: box-shadow 0.3s ease;
+}
+
+.contact-success-card:hover {
+  box-shadow: var(--shadow-clay-hover);
 }
 
 .contact-success-icon {
@@ -675,8 +701,11 @@
   background: var(--color-background-secondary);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid var(--color-border-light);
-  box-shadow: var(--shadow-modal);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow:
+    inset 1px 1px 3px rgba(255, 255, 255, 0.06),
+    inset -1px -1px 2px rgba(0, 0, 0, 0.3),
+    6px 6px 20px rgba(0, 0, 0, 0.5);
 }
 
 [data-theme="dark"] .contact-success-title {

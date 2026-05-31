@@ -346,7 +346,7 @@ export default function ResourcesPage() {
                   
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                     {/* Stat Card 1: Courses */}
-                    <div className="bg-[var(--color-background-secondary)] p-6 rounded-[20px] shadow-sm border border-[var(--color-border-light)] flex items-center justify-between">
+                    <div className="clay-card p-6 flex items-center justify-between">
                       <div>
                         <p className="text-[var(--color-text-tertiary)] text-sm font-medium mb-1">Active Courses</p>
                         <p className="text-3xl font-bold text-[var(--color-text-primary)]">4</p>
@@ -358,7 +358,7 @@ export default function ResourcesPage() {
                     </div>
 
                     {/* Stat Card 2: Hours */}
-                    <div className="bg-[var(--color-background-secondary)] p-6 rounded-[20px] shadow-sm border border-[var(--color-border-light)] flex items-center justify-between">
+                    <div className="clay-card p-6 flex items-center justify-between">
                       <div>
                         <p className="text-[var(--color-text-tertiary)] text-sm font-medium mb-1">Hours Learned</p>
                         <p className="text-3xl font-bold text-[var(--color-text-primary)]">127</p>
@@ -370,7 +370,7 @@ export default function ResourcesPage() {
                     </div>
 
                     {/* Stat Card 3: Badges */}
-                    <div className="bg-[var(--color-background-secondary)] p-6 rounded-[20px] shadow-sm border border-[var(--color-border-light)] flex items-center justify-between">
+                    <div className="clay-card p-6 flex items-center justify-between">
                       <div>
                         <p className="text-[var(--color-text-tertiary)] text-sm font-medium mb-1">Achievements</p>
                         <p className="text-3xl font-bold text-[var(--color-text-primary)]">23</p>
@@ -382,7 +382,7 @@ export default function ResourcesPage() {
                     </div>
 
                     {/* Stat Card 4: Streaks */}
-                    <div className="bg-[var(--color-background-secondary)] p-6 rounded-[20px] shadow-sm border border-[var(--color-border-light)] flex items-center justify-between">
+                    <div className="clay-card p-6 flex items-center justify-between">
                       <div>
                         <p className="text-[var(--color-text-tertiary)] text-sm font-medium mb-1">Streak</p>
                         <p className="text-3xl font-bold text-[var(--color-text-primary)]">7 Days</p>
@@ -413,7 +413,7 @@ export default function ResourcesPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     
                     {/* Course Card 1 */}
-                    <div className="bg-[var(--color-background-secondary)] rounded-[20px] overflow-hidden shadow-sm border border-[var(--color-border-light)] flex flex-col group hover:shadow-md transition-all cursor-pointer">
+                    <div className="clay-card overflow-hidden flex flex-col group hover:shadow-md transition-all cursor-pointer">
                       <div className="relative h-[160px] w-full overflow-hidden">
                         <img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?q=80&w=600&auto=format&fit=crop" alt="React Course" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                         <div className="absolute top-3 left-3 bg-[var(--color-primary)] text-[#ffffff] px-3 py-1 rounded-md text-[10px] font-bold flex items-center gap-1.5 shadow-md">
@@ -441,7 +441,7 @@ export default function ResourcesPage() {
                     </div>
 
                     {/* Course Card 2 */}
-                    <div className="bg-[var(--color-background-secondary)] rounded-[20px] overflow-hidden shadow-sm border border-[var(--color-border-light)] flex flex-col group hover:shadow-md transition-all cursor-pointer">
+                    <div className="clay-card overflow-hidden flex flex-col group hover:shadow-md transition-all cursor-pointer">
                       <div className="relative h-[160px] w-full overflow-hidden">
                         <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=600&auto=format&fit=crop" alt="Data Science" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                         <div className="absolute top-3 left-3 bg-[var(--color-primary)] text-[#ffffff] px-3 py-1 rounded-md text-[10px] font-bold flex items-center gap-1.5 shadow-md">
@@ -469,7 +469,7 @@ export default function ResourcesPage() {
                     </div>
 
                     {/* Course Card 3 */}
-                    <div className="bg-[var(--color-background-secondary)] rounded-[20px] overflow-hidden shadow-sm border border-[var(--color-border-light)] flex flex-col group hover:shadow-md transition-all cursor-pointer">
+                    <div className="clay-card overflow-hidden flex flex-col group hover:shadow-md transition-all cursor-pointer">
                       <div className="relative h-[160px] w-full overflow-hidden">
                         <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=600&auto=format&fit=crop" alt="Web Development" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                         <div className="absolute top-3 left-3 bg-[var(--color-primary)] text-[#ffffff] px-3 py-1 rounded-md text-[10px] font-bold flex items-center gap-1.5 shadow-md">
@@ -661,7 +661,7 @@ export default function ResourcesPage() {
                 <h3 className="text-xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "'OV Soge', sans-serif" }}>My Calendar</h3>
                 
                 <div className="w-full max-w-[350px]">
-                  <div className="bg-[var(--color-background-secondary)] p-6 rounded-[20px] shadow-sm border border-[var(--color-border-light)] flex flex-col h-full items-center">
+                  <div className="clay-card p-6 flex flex-col h-full items-center">
                     <h4 className="text-[16px] font-bold text-[var(--color-text-primary)] mb-4 self-start">May 2026</h4>
                     <div className="w-full mt-2">
                       <div className="flex justify-between items-center mb-6">
@@ -696,7 +696,7 @@ export default function ResourcesPage() {
                 <h3 className="text-xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "'OV Soge', sans-serif" }}>My Notes</h3>
                 
                 <div className="w-full max-w-2xl">
-                  <div className="bg-[var(--color-background-secondary)] p-6 rounded-[20px] shadow-sm border border-[var(--color-border-light)] flex flex-col h-full">
+                  <div className="clay-card p-6 flex flex-col h-full">
                     <h4 className="text-[16px] font-bold text-[var(--color-text-primary)] mb-4">Quick Notes</h4>
                     <div className="flex flex-col gap-3">
                       <div className="p-4 rounded-xl border border-[var(--color-border-light)] hover:border-purple-300 hover:shadow-sm transition-all cursor-pointer bg-purple-50/30">
@@ -727,7 +727,7 @@ export default function ResourcesPage() {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
                   {/* A. Learning Activity Chart Placeholder */}
-                  <div className="bg-[var(--color-background-secondary)] p-6 rounded-[20px] shadow-sm border border-[var(--color-border-light)] flex flex-col h-full">
+                  <div className="clay-card p-6 flex flex-col h-full">
                     <h4 className="text-[16px] font-bold text-[var(--color-text-primary)] mb-8">Learning Activity</h4>
                     <div className="relative w-full h-[180px] flex items-end justify-between pb-6 border-b border-[var(--color-border-light)]">
                       
@@ -782,7 +782,7 @@ export default function ResourcesPage() {
                   </div>
 
                   {/* B. Wellness Hub Timeline */}
-                  <div className="bg-[var(--color-background-secondary)] p-6 rounded-[20px] shadow-sm border border-[var(--color-border-light)] flex flex-col h-full">
+                  <div className="clay-card p-6 flex flex-col h-full">
                     <h4 className="text-[16px] font-bold text-[var(--color-text-primary)] mb-6">Wellness Hub</h4>
                     <div className="flex flex-col gap-6 border-l-2 border-[var(--color-border-light)] ml-2 pl-5 relative mt-2">
 
@@ -817,7 +817,7 @@ export default function ResourcesPage() {
                   </div>
 
                   {/* C. Achievements Grid */}
-                  <div className="bg-[var(--color-background-secondary)] p-6 rounded-[20px] shadow-sm border border-[var(--color-border-light)] flex flex-col h-full lg:col-span-2">
+                  <div className="clay-card p-6 flex flex-col h-full lg:col-span-2">
                     <h4 className="text-[16px] font-bold text-[var(--color-text-primary)] mb-4">Achievements</h4>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                       <div className="flex flex-col items-center justify-center p-5 rounded-xl border border-[var(--color-border-light)] bg-gray-50/50 hover:bg-gray-50 hover:border-[var(--color-primary_light)] transition-colors cursor-pointer group">
@@ -855,7 +855,7 @@ export default function ResourcesPage() {
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       
       {/* A. Mood Check-in (Fully Interactive & Professionalized) */}
-      <div className="bg-[var(--color-background-secondary)] p-6 rounded-[20px] shadow-sm border border-[var(--color-border-light)] flex flex-col transition-all duration-300">
+      <div className="clay-card p-6 flex flex-col transition-all duration-300">
         <h4 className="text-[16px] font-bold text-[var(--color-text-primary)] mb-4">How are you feeling today?</h4>
         <div className="flex justify-between items-center gap-2 mb-5">
           
@@ -946,7 +946,7 @@ export default function ResourcesPage() {
       </div>
 
       {/* B. Recommended Exercises */}
-      <div className="bg-[var(--color-background-secondary)] p-6 rounded-[20px] shadow-sm border border-[var(--color-border-light)] flex flex-col">
+      <div className="clay-card p-6 flex flex-col">
         <h4 className="text-[16px] font-bold text-[var(--color-text-primary)] mb-4">Quick Relief Exercises</h4>
         <div className="flex flex-col gap-3">
           

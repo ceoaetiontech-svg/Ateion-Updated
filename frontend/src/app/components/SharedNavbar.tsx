@@ -34,13 +34,13 @@ function NavButton({
 
   const variantClasses = {
     default:
-      "bg-[var(--color-background-secondary)] border border-[#bfdbfe] text-[var(--color-primary)] hover:bg-[#eff6ff] hover:border-[var(--color-primary)]",
+      "bg-[var(--color-background-secondary)] border border-[var(--color-primary)] text-[var(--color-primary)] hover:bg-[var(--color-primary_light)]",
     primary:
-      "bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-[#ffffff] shadow-[var(--shadow-button)]",
+      "bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-hover)]",
     white:
-      "bg-[var(--color-background-secondary)] hover:bg-[var(--color-background-tertiary)] text-[var(--color-text-secondary)] shadow-sm",
+      "bg-[var(--color-background-secondary)] border border-[var(--color-border-medium)] text-[var(--color-text-primary)] hover:bg-[var(--color-background-tertiary)]",
     "outline-dark":
-      "bg-[var(--color-background-secondary)] border border-[var(--color-text-primary)] text-[var(--color-text-primary)] hover:bg-[var(--color-text-primary)] hover:text-[var(--color-background-primary)]",
+      "bg-[var(--color-background-secondary)] border border-[var(--color-text-primary)] text-[var(--color-text-primary)] hover:bg-[var(--color-background-tertiary)]",
   };
 
   const handleClick = () => {
@@ -54,7 +54,7 @@ function NavButton({
       whileTap={{ scale: 0.95 }}
       transition={{ type: "spring", stiffness: 400, damping: 17 }}
       onClick={handleClick}
-      className={`${variantClasses[variant]} flex h-[36px] items-center justify-center px-[12px] xl:px-[20px] rounded-full shrink-0 cursor-pointer transition-colors`}
+      className={`clay-button ${variantClasses[variant]} rounded-full flex h-[36px] items-center justify-center px-[16px] xl:px-[24px] shrink-0 cursor-pointer transition-colors`}
     >
       {children}
     </motion.div>
@@ -135,7 +135,7 @@ function HomeBtn({ onClick }: { onClick?: () => void }) {
         navigate("/");
       }}
     >
-      <p className={`${navTextClass} ${isActive ? "text-[#ffffff]" : "text-[var(--color-primary)]"}`}>Home</p>
+      <p className={`${navTextClass}`}>Home</p>
     </NavButton>
   );
 }
@@ -156,7 +156,7 @@ function GlobalOlympiadBtn({ onClick }: { onClick?: () => void }) {
         navigate("/gco");
       }}
     >
-      <p className={`${navTextClass} ${isActive ? "text-[#ffffff]" : "text-[var(--color-primary)]"}`}>
+      <p className={`${navTextClass}`}>
         Global Olympiad
       </p>
     </NavButton>
@@ -179,7 +179,7 @@ function ResourcesBtn({ onClick }: { onClick?: () => void }) {
         navigate("/playground");
       }}
     >
-      <p className={`${navTextClass} ${isActive ? "text-[#ffffff]" : "text-[var(--color-primary)]"}`}>
+      <p className={`${navTextClass}`}>
         PlayGround
       </p>
     </NavButton>
@@ -202,7 +202,7 @@ function PsychometricTestBtn({ onClick }: { onClick?: () => void }) {
         navigate("/assessment-demo");
       }}
     >
-      <p className={`${navTextClass} ${isActive ? "text-[#ffffff]" : "text-[var(--color-primary)]"}`}>
+      <p className={`${navTextClass}`}>
         Psychometric Test
       </p>
     </NavButton>
@@ -229,7 +229,7 @@ function DashboardBtn({
         navigate("/dashboard");
       }}
     >
-      <p className={`${navTextClass} ${isActive ? "text-[#ffffff]" : "text-[var(--color-primary)]"}`}>
+      <p className={`${navTextClass}`}>
         Dashboard
       </p>
     </NavButton>
@@ -266,7 +266,7 @@ function GetConnectedBtn({ onClick }: { onClick?: () => void }) {
     >
       <div className="flex items-center gap-2">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-        <p className={`${navTextClass} text-[#ffffff]`}>
+        <p className={`${navTextClass}`}>
           Get Connected
         </p>
       </div>
@@ -301,7 +301,7 @@ function SignInBtn({ onClick }: { onClick?: () => void }) {
     >
       <div className="flex items-center gap-2 group">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:text-[var(--color-background-primary)]"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-        <p className={`${navTextClass} group-hover:text-[var(--color-background-primary)] text-[var(--color-text-primary)]`}>
+        <p className={`${navTextClass}`}>
           Sign In
         </p>
       </div>
@@ -336,7 +336,7 @@ function SignUpBtn({ onClick }: { onClick?: () => void }) {
     >
       <div className="flex items-center gap-2">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
-        <p className={`${navTextClass} text-[#ffffff]`}>
+        <p className={`${navTextClass}`}>
           Sign Up
         </p>
       </div>
@@ -407,7 +407,7 @@ function ThemeToggleBtn() {
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
       onClick={toggleTheme}
-      className="flex h-[36px] w-[36px] items-center justify-center rounded-full bg-[var(--color-nav-button)] hover:bg-[var(--color-nav-button-hover)] cursor-pointer transition-colors"
+      className="clay-button flex h-[36px] w-[36px] items-center justify-center rounded-full bg-[var(--color-background-secondary)] border border-[var(--color-border-medium)] text-[var(--color-text-primary)] cursor-pointer transition-colors"
       aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
       title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
     >
@@ -430,7 +430,7 @@ function ThemeToggleBtn() {
             exit={{ rotate: -90, opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <Moon size={18} className="text-[var(--color-text-secondary)]" />
+            <Moon size={18} />
           </motion.div>
         )}
       </AnimatePresence>
@@ -462,17 +462,17 @@ export default function SharedNavbar() {
         <div className="flex items-center justify-start">
           <LogoContainer />
 
-          <div className="hidden lg:flex items-center ml-[16px] xl:ml-[32px]">
+          <div className="hidden lg:flex items-center ml-[16px] xl:ml-[32px] gap-[16px]">
             <NavLinks />
           </div>
         </div>
 
         {/* RIGHT SIDE */}
         <div className="hidden lg:flex items-center justify-end ml-auto gap-[8px] xl:gap-[12px]">
+          <ThemeToggleBtn />
           <GetConnectedBtn />
           <SignInBtn />
           <SignUpBtn />
-          <ThemeToggleBtn />
         </div>
 
         {/* MOBILE MENU BUTTON */}

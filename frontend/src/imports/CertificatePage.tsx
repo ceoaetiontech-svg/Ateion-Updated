@@ -35,7 +35,7 @@ export default function CertificatePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
 
             {/* CARD 1 */}
-            <div className="bg-[#202020] rounded-[30px] p-10 hover:scale-[1.02] transition duration-300">
+            <div className="bg-[var(--color-background-secondary)] clay-card p-10">
 
               <img
                 src={imgImage9}
@@ -46,7 +46,7 @@ export default function CertificatePage() {
             </div>
 
             {/* CARD 2 */}
-            <div className="bg-[#202020] rounded-[30px] p-10 hover:scale-[1.02] transition duration-300">
+            <div className="bg-[var(--color-background-secondary)] clay-card p-10">
 
               <img
                 src={imgImage7}

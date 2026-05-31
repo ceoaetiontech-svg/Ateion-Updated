@@ -13,7 +13,7 @@ import certificate from "../../assets/hero/certificate.jpg";
 import SharedNavbar from "./SharedNavbar";
 
 const itemClass =
-  "h-[120px] sm:h-[150px] md:h-[180px] lg:h-[200px] relative shrink-0 rounded-lg overflow-hidden shadow-sm transition-all duration-500";
+  "clay-card h-[120px] sm:h-[150px] md:h-[180px] lg:h-[200px] relative shrink-0 rounded-lg overflow-hidden transition-all duration-500";
 
 export function Frame67() {
   const items = (

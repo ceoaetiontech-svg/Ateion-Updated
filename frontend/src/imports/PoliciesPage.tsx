@@ -59,7 +59,7 @@ function PolicyGridCard({ policy }: { policy: PolicyEntry }) {
           ? `0 20px 52px ${policy.accentColor}25, 0 6px 16px rgba(0,0,0,0.1)`
           : "var(--shadow-card)",
       }}
-      className="bg-[var(--color-background-secondary)] rounded-[var(--radius-lg)] overflow-hidden cursor-pointer relative flex flex-col border border-[var(--color-border-light)] transition-shadow duration-300"
+      className="clay-card bg-[var(--color-background-secondary)] overflow-hidden cursor-pointer relative flex flex-col transition-shadow duration-300"
       whileHover={{ scale: 1.03, y: -6 }}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
@@ -274,7 +274,7 @@ export default function PoliciesPage() {
                 placeholder="Search countries, frameworks, or tags…"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full py-[15px] pr-[18px] pl-[48px] bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] rounded-[14px] font-['Manrope',sans-serif] text-[0.92rem] text-[var(--color-text-primary)] outline-none shadow-[0_2px_12px_rgba(0,0,0,0.04)] transition-all duration-200 box-border focus:border-[var(--color-primary)] focus:shadow-[0_0_0_3px_var(--color-primary_light)]"
+                className="clay-input w-full py-[15px] pr-[18px] pl-[48px] font-['Manrope',sans-serif] text-[0.92rem] text-[var(--color-text-primary)] outline-none transition-all duration-200 box-border focus:border-[var(--color-primary)] focus:shadow-[0_0_0_3px_var(--color-primary_light)]"
               />
             </div>
 
@@ -289,7 +289,7 @@ export default function PoliciesPage() {
                     background: activeRegion === region ? "var(--color-text-primary)" : "var(--color-background-secondary)",
                     color: activeRegion === region ? "var(--color-background-primary)" : "var(--color-text-tertiary)",
                   }}
-                  className="font-['Manrope',sans-serif] text-[0.76rem] font-bold py-2 px-[18px] rounded-full cursor-pointer transition-all duration-200"
+                  className="clay-button font-['Manrope',sans-serif] text-[0.76rem] font-bold py-2 px-[18px] cursor-pointer transition-all duration-200"
                 >
                   {region}
                 </button>

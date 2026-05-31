@@ -1,5 +1,5 @@
 .gco-comparison-section {
-  padding: 4rem 5%;
+  padding: 5rem 5%;
   background-color: var(--color-background-primary);
   display: flex;
   flex-direction: column;
@@ -9,261 +9,233 @@
 
 .gco-comparison-header {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: 64px;
 }
 
 .gco-comparison-title {
-  font-size: clamp(1.5rem, 3.5vw, 2.5rem);
-  font-weight: 500;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 600;
   letter-spacing: -0.02em;
   color: var(--color-text-primary);
-  margin-bottom: 0.75rem;
+  margin-bottom: 1rem;
   font-family: 'OV Soge', sans-serif;
 }
 
 .gco-comparison-subtitle {
-  font-size: clamp(0.9rem, 1.8vw, 1.125rem);
+  font-size: clamp(1rem, 2vw, 1.25rem);
   color: var(--color-text-tertiary);
-  font-family: 'OV Soge', sans-serif;
   font-weight: 500;
   margin: 0;
 }
 
-.gco-comparison-container {
-  display: flex;
+.gco-comparison-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
   width: 100%;
-  max-width: 1020px;
-  background-color: var(--color-background-secondary);
-  border-radius: 12px;
-  padding: 0;
+  max-width: 1100px;
 }
 
-/* Left Card (Traditional) */
-.gco-card-traditional {
-  flex: 1;
-  padding: 3.75rem 5rem;
-}
-
-.gco-card-traditional .gco-card-title {
-  font-size: clamp(1.25rem, 2.5vw, 1.875rem);
-  font-weight: 500;
-  letter-spacing: -0.03em;
-  color: var(--color-text-primary);
-  margin: 0 0 40px 0;
-}
-
-.gco-list {
+/* ─── Shared Card Styles ─────────────────────── */
+.comparison-list {
   list-style: none;
   padding: 0;
   margin: 0;
+  flex: 1;
 }
 
-.gco-card-traditional .gco-list-item {
+.comparison-list-item {
   display: flex;
   align-items: center;
-  padding: 1.125rem 0;
-  font-size: clamp(0.8rem, 1.3vw, 0.875rem);
-  color: var(--color-text-secondary);
-  gap: 1rem;
-  border-bottom: 1px solid #f3f4f6;
-  font-weight: 400;
+  padding: 1.25rem 0;
+  font-size: clamp(0.9rem, 1.5vw, 1rem);
+  gap: 1.25rem;
+  border-bottom: 1px solid var(--color-border-light);
+  font-weight: 500;
+}
+.comparison-list-item:last-child {
+  border-bottom: none;
 }
 
-.gco-card-traditional .gco-list-item:last-child { border-bottom: none; }
+/* ─── Traditional Card (Muted) ───────────────── */
+.traditional-card {
+  padding: 3.5rem;
+  background-color: var(--color-background-secondary);
+  border: 1px solid var(--color-border-light);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
 
-.gco-icon-traditional {
+.card-header-muted {
+  margin-bottom: 2.5rem;
+}
+
+.traditional-title {
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin: 0 0 0.5rem 0;
+  font-family: 'OV Soge', sans-serif;
+}
+
+.traditional-subtitle {
+  color: var(--color-text-tertiary);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.muted-item {
+  color: var(--color-text-secondary);
+  opacity: 0.8;
+}
+
+.icon-cross {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 14px;
-  height: 14px;
-  background-color: var(--color-text-primary);
-  color: var(--color-background-primary);
+  width: 24px;
+  height: 24px;
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
   border-radius: 50%;
-  font-size: 10px;
-  font-weight: bold;
   flex-shrink: 0;
 }
 
-/* Right Card (GCO) */
-.gco-card-modern-container {
-  flex: 1;
-  padding: 1.5rem 1.5rem 1.5rem 0;
+/* ─── Modern Card (Vibrant Glass) ────────────── */
+.modern-card {
+  padding: 3.5rem;
+  background: linear-gradient(135deg, var(--color-primary_light) 0%, rgba(147, 197, 253, 0.05) 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 24px;
+  box-shadow: 0 24px 60px rgba(37, 99, 235, 0.15), inset 0 2px 10px rgba(255,255,255,0.4);
   position: relative;
-}
-
-.gco-card-modern {
-  position: relative;
-  height: 100%;
-  padding: 3.125rem 3.75rem;
-  display: flex;
-  flex-direction: column;
-}
-
-.gco-card-modern::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-color: #241c30;
-  border-radius: 16px;
-  transform: rotate(2deg);
-  z-index: 0;
-  transform-origin: center center;
-}
-
-.gco-card-modern-content {
-  position: relative;
-  z-index: 1;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   height: 100%;
+  transform: translateY(-8px); /* slightly elevated */
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
-.gco-card-modern .gco-card-title {
-  font-size: clamp(1.25rem, 2.5vw, 2rem);
-  font-weight: 500;
-  letter-spacing: -0.03em;
-  color: var(--color-background-primary);
-  margin: 0 0 1.875rem 0;
+.modern-card:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 32px 70px rgba(37, 99, 235, 0.25), inset 0 2px 15px rgba(255,255,255,0.6);
 }
 
-.gco-card-modern .gco-list-item {
+.card-header-vibrant {
+  margin-bottom: 2.5rem;
+}
+
+.modern-title {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 600;
+  color: var(--color-primary);
+  margin: 0 0 0.5rem 0;
+  font-family: 'OV Soge', sans-serif;
+  background: linear-gradient(to right, var(--color-primary), #60a5fa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.modern-subtitle {
+  color: var(--color-text-secondary);
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.vibrant-item {
+  color: var(--color-text-primary);
+  font-weight: 600;
+  border-bottom-color: rgba(59, 130, 246, 0.15);
+}
+
+.icon-check {
   display: flex;
   align-items: center;
-  padding: 0.875rem 0;
-  font-size: clamp(0.8rem, 1.3vw, 0.875rem);
-  color: #f1f5f9;
-  gap: 1rem;
-  font-weight: 400;
-  border: none;
-}
-
-.gco-icon-modern {
-  width: 12px;
-  height: 12px;
-  background-color: var(--color-background-secondary);
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+  color: white;
   border-radius: 50%;
   flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.modern-summary-box {
+  margin-top: 2.5rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .gco-summary {
-  margin-top: auto;
-  padding-top: 3.125rem;
-  font-size: 0.8125rem;
+  margin: 0;
+  font-size: 0.95rem;
   line-height: 1.6;
-  color: #cbd5e1;
-  font-weight: 400;
+  color: var(--color-text-primary);
+  font-weight: 500;
 }
 
-/* ─── Tablet ≤768px ──────────────────────────── */
-@media (max-width: 768px) {
+/* ─── Responsive ─────────────────────────────── */
+@media (max-width: 900px) {
+  .gco-comparison-grid {
+    grid-template-columns: 1fr;
+  }
+  .modern-card {
+    transform: none;
+  }
+  .modern-card:hover {
+    transform: translateY(-4px);
+  }
   .gco-comparison-section {
     padding: 3rem 5%;
   }
-  .gco-comparison-header {
-    margin-bottom: 32px;
-  }
-  .gco-comparison-container {
-    flex-direction: column;
-    background-color: transparent;
-    gap: 1.25rem;
-  }
-  .gco-card-traditional {
-    background-color: var(--color-background-secondary);
-    border-radius: 12px;
-    padding: 2rem;
-    margin-bottom: 0;
-  }
-  .gco-card-modern-container {
-    padding: 0;
-  }
-  .gco-card-modern::before {
-    transform: rotate(1deg);
-  }
-  .gco-card-modern {
-    padding: 2rem;
-  }
-  .gco-card-traditional .gco-list-item,
-  .gco-card-modern .gco-list-item {
-    font-size: 0.85rem;
-    padding: 0.875rem 0;
-  }
 }
 
-/* ─── Mobile ≤600px ──────────────────────────── */
 @media (max-width: 600px) {
-  .gco-comparison-section {
-    padding: 2.5rem 4%;
+  .traditional-card, .modern-card {
+    padding: 2rem;
   }
-  .gco-comparison-header {
-    margin-bottom: 24px;
+  .modern-title {
+    font-size: 2rem;
   }
-  .gco-comparison-title {
-    font-size: clamp(1.35rem, 6vw, 1.75rem);
-    margin-bottom: 0.5rem;
+  .icon-cross, .icon-check {
+    width: 20px;
+    height: 20px;
   }
-  .gco-comparison-subtitle {
-    font-size: clamp(0.85rem, 3.5vw, 1rem);
-  }
-  .gco-card-traditional {
-    padding: 1.5rem;
-  }
-  .gco-card-modern {
-    padding: 1.5rem;
-  }
-  .gco-card-traditional .gco-list-item,
-  .gco-card-modern .gco-list-item {
-    font-size: 0.8rem;
-    padding: 0.75rem 0;
-    gap: 0.75rem;
-  }
-  .gco-summary {
-    font-size: 0.75rem;
-    padding-top: 2rem;
+  .icon-cross svg, .icon-check svg {
+    width: 12px;
+    height: 12px;
   }
 }
 
-/* ─── Dark Mode ──────────────────────────────── */
-[data-theme="dark"] .gco-comparison-section {
-  background-color: var(--color-background-primary);
+/* ─── Dark Mode Overrides ────────────────────── */
+[data-theme="dark"] .modern-card {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.15) 0%, rgba(14, 19, 32, 0.4) 100%);
+  border-color: rgba(59, 130, 246, 0.2);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4), inset 0 2px 10px rgba(59, 130, 246, 0.1);
 }
 
-[data-theme="dark"] .gco-comparison-container {
-  background-color: var(--color-background-secondary);
+[data-theme="dark"] .modern-summary-box {
+  background: rgba(14, 19, 32, 0.6);
+  border-color: rgba(255, 255, 255, 0.05);
 }
 
-[data-theme="dark"] .gco-comparison-title {
-  color: var(--color-text-primary);
+[data-theme="dark"] .icon-cross {
+  background-color: rgba(239, 68, 68, 0.15);
 }
 
-[data-theme="dark"] .gco-comparison-subtitle {
-  color: var(--color-text-tertiary);
+[data-theme="dark"] .vibrant-item {
+  border-bottom-color: rgba(255, 255, 255, 0.05);
 }
 
-[data-theme="dark"] .gco-card-traditional .gco-card-title {
-  color: var(--color-text-primary);
-}
-
-[data-theme="dark"] .gco-card-traditional .gco-list-item {
-  color: #d4d4d8;
-  border-bottom-color: rgba(255,255,255,0.08);
-}
-
-[data-theme="dark"] .gco-icon-traditional {
-  background-color: var(--color-text-primary);
-  color: var(--color-background-primary);
-}
-
-[data-theme="dark"] .gco-card-modern::before {
-  background-color: #1e1628;
-}
-
-@media (max-width: 768px) {
-  [data-theme="dark"] .gco-comparison-container {
-    background-color: transparent;
-  }
-
-  [data-theme="dark"] .gco-card-traditional {
-    background-color: var(--color-background-secondary);
-  }
+[data-theme="dark"] .modern-title {
+  background: linear-gradient(to right, #60a5fa, #93c5fd);
+  -webkit-background-clip: text;
 }

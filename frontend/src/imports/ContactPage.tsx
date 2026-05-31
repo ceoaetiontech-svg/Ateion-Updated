@@ -136,6 +136,7 @@ export default function ContactPage() {
                 </button>
               </div>
             ) : (
+              <div className="contact-form-clay">
               <form
                 onSubmit={handleSubmit}
                 className="contact-form"
@@ -243,6 +244,7 @@ export default function ContactPage() {
                   </button>
                 </div>
               </form>
+              </div>
             )}
           </div>
         </main>

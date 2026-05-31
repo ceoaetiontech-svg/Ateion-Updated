@@ -112,7 +112,7 @@ function HeroHeaderSection() {
 
 function PurpleCapabilityCardInner() {
   return (
-    <div className="bg-[var(--color-grey-card)] flex h-[400px] sm:h-[450px] md:h-[504px] items-start p-[24px] sm:p-[32px] md:p-[40px] relative rounded-[13px] sm:rounded-[20px] shrink-0 w-full md:w-[32%] lg:w-[28%] md:max-w-none">
+    <div className="clay-card bg-[var(--color-grey-card)] flex h-[400px] sm:h-[450px] md:h-[504px] items-start p-[24px] sm:p-[32px] md:p-[40px] relative shrink-0 w-full md:w-[32%] lg:w-[28%] md:max-w-none">
       <div className="flex flex-col gap-[24px] sm:gap-[32px] items-start justify-center relative shrink-0 w-full md:max-w-[300px]">
         <p className="font-['Inter',sans-serif] leading-[1.4] text-[16px] sm:text-[18px] text-[var(--color-text-primary)]">
           Because <strong>marks</strong> measure memory.<br />
@@ -336,7 +336,7 @@ function EducationStatusWrapper() {
                 target="_blank"
                 rel="noopener noreferrer"
                 key={i}
-                className="bg-[var(--color-background-secondary)] hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] transition-all duration-300 min-h-[200px] sm:min-h-[240px] md:min-h-[260px] rounded-[20px] p-[28px] sm:p-[32px] flex flex-col justify-between border border-black/5 group"
+                className="clay-card hover:shadow-[var(--shadow-clay-hover)] transition-all duration-300 min-h-[200px] sm:min-h-[240px] md:min-h-[260px] p-[28px] sm:p-[32px] flex flex-col justify-between group"
               >
                 <p className="text-[22px] sm:text-[26px] md:text-[30px] font-medium text-[var(--color-text-primary)] leading-[1.05] group-hover:text-[var(--color-primary-hover)] transition-colors" style={{ fontFamily: "'OV Soge', sans-serif", letterSpacing: "-0.01em" }}>
                   {item.title}
@@ -394,7 +394,7 @@ function FAQItem({ question, answer, isOpen, toggle }: { question: string; answe
   const buttonId = `faq-button-${question.slice(0, 20).replace(/\s+/g, '-').toLowerCase()}`;
 
   return (
-    <div className="bg-[var(--color-background-primary)] mb-[12px] relative rounded-[20px] shadow-[0px_4px_20px_0px_rgba(25,33,61,0.04)] overflow-hidden transition-all duration-300 border border-[rgba(0,0,0,0.03)] hover:shadow-[0px_8px_30px_0px_rgba(25,33,61,0.08)]">
+    <div className="clay-faq mb-[12px] relative overflow-hidden">
       <button
         type="button"
         id={buttonId}
@@ -406,8 +406,8 @@ function FAQItem({ question, answer, isOpen, toggle }: { question: string; answe
         <span className="flex-[1_0_0] font-semibold leading-[1.35] max-w-[700px] not-italic relative text-[var(--color-text-primary)] text-[18px] sm:text-[20px] md:text-[22px] transition-colors group-hover:text-[var(--color-primary)]" style={{ fontFamily: "'SF Pro Display', sans-serif" }}>
           {question}
         </span>
-        <div className={`bg-[#e7e3dd] content-stretch flex items-center p-[6px] sm:p-[8px] relative rounded-[100px] shadow-[0px_1px_2px_0px_rgba(25,33,61,0.07)] shrink-0 transition-transform duration-500 ${isOpen ? "rotate-90" : ""}`} aria-hidden="true">
-          <ChevronRight size={20} className="text-[#1C1B1B]" strokeWidth={1.7} />
+        <div className={`bg-[var(--color-background-tertiary)] content-stretch flex items-center p-[6px] sm:p-[8px] relative rounded-[100px] shrink-0 transition-transform duration-500 ${isOpen ? "rotate-90" : ""}`} aria-hidden="true">
+          <ChevronRight size={20} className="text-[var(--color-text-primary)]" strokeWidth={1.7} />
         </div>
       </button>
       <AnimatePresence initial={false}>

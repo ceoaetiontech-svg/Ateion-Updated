@@ -51,12 +51,7 @@ export default function PolicyGridCard({ policy, index }: { policy: PolicyEntry;
       viewport={{ once: true }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.4, delay, ease: "easeOut" }}
-      style={{
-        boxShadow: hovered
-          ? `0 20px 52px ${policy.accentColor}25, 0 6px 16px rgba(0,0,0,0.1)`
-          : "var(--shadow-card)",
-      }}
-      className="bg-[var(--color-background-secondary)] rounded-[var(--radius-lg)] overflow-hidden cursor-pointer relative flex flex-col border border-[var(--color-border-light)] transition-shadow duration-300"
+      className="clay-card bg-[var(--color-background-secondary)] rounded-[var(--radius-lg)] overflow-hidden cursor-pointer relative flex flex-col border border-[var(--color-border-light)]"
       whileHover={{ scale: 1.03, y: -6 }}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
@@ -141,11 +136,12 @@ export default function PolicyGridCard({ policy, index }: { policy: PolicyEntry;
                     {fw.name}
                   </span>
                   <button
+                    className="clay-button font-['Manrope',sans-serif] text-[0.62rem] font-bold text-white rounded-full py-[5px] px-[11px] cursor-pointer whitespace-nowrap shrink-0"
                     style={{
                       background: policy.accentColor,
+                      border: "1px solid rgba(255,255,255,0.15)",
                     }}
-                    className="font-['Manrope',sans-serif] text-[0.62rem] font-bold text-white border-none rounded-full py-[5px] px-[11px] cursor-pointer whitespace-nowrap shrink-0"
-                    onClick={(e) => handleOpen(e, fw.policyLink)}
+                    onClick={(e) => handleOpen(e, fw.policyLink)
                   >
                     Open →
                   </button>

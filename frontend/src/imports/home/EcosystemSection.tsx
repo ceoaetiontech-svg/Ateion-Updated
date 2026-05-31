@@ -74,7 +74,7 @@ function GcoFeatureBadge({
       </div>
 
       <div
-        className="flex items-center justify-between bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] shadow-[var(--shadow-button)] hover:shadow-[var(--shadow-button-hover)] h-[54px] pl-7 pr-6 rounded-full w-[174px] cursor-pointer group transition-all"
+        className="clay-button flex items-center justify-between bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] h-[54px] pl-7 pr-6 rounded-full w-[174px] cursor-pointer group"
         role="button"
         tabIndex={0}
         aria-label="View more details"

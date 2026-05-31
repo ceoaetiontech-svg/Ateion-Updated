@@ -227,6 +227,24 @@
   --shadow-nav: 0 2px 20px rgba(0, 0, 0, 0.04);
   --shadow-modal: 0 24px 60px 0 rgba(0, 0, 0, 0.12);
   
+  /* Claymorphism Shadows - BOLD EDITION */
+  --shadow-clay: 
+    inset 3px 3px 6px rgba(255, 255, 255, 0.7),
+    inset -2px -2px 5px rgba(0, 0, 0, 0.08),
+     10px 10px 28px rgba(0, 0, 0, 0.18);
+  --shadow-clay-hover: 
+    inset 3px 3px 7px rgba(255, 255, 255, 0.8),
+    inset -2px -2px 5px rgba(0, 0, 0, 0.10),
+     14px 14px 36px rgba(0, 0, 0, 0.25);
+  --shadow-clay-pressed:
+    inset 3px 3px 8px rgba(0, 0, 0, 0.12),
+    inset -2px -2px 4px rgba(255, 255, 255, 0.5),
+     4px 4px 12px rgba(0, 0, 0, 0.15);
+  --shadow-clay-button:
+    inset 3px 3px 5px rgba(255, 255, 255, 0.6),
+    inset -2px -2px 4px rgba(0, 0, 0, 0.06),
+     6px 6px 18px rgba(0, 0, 0, 0.14);
+  
   /* ──────────────────────────────────────────────────────────────────────────
    * TRANSITIONS - EVEN NUMBERS ONLY
    * ────────────────────────────────────────────────────────────────────────── */
@@ -515,4 +533,187 @@ html[data-theme="dark"] .social-png-icon {
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--color-border-light) var(--color-background-primary);
+}
+
+/* ============================================================================
+ * CLAYMORPHISM UTILITY CLASSES
+ * ============================================================================
+ * Soft, 3D inflated look with inner highlights and outer shadows.
+ * Apply these classes to cards, buttons, inputs, and FAQ items.
+ * ============================================================================ */
+
+.clay-card {
+  border-radius: 24px;
+  box-shadow: var(--shadow-clay);
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.clay-card:hover {
+  box-shadow: var(--shadow-clay-hover);
+  transform: translateY(-3px);
+}
+
+.clay-button {
+  border-radius: 9999px;
+  box-shadow: var(--shadow-clay-button);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.clay-button:hover {
+  box-shadow: var(--shadow-clay-hover);
+  transform: translateY(-2px);
+}
+
+.clay-button:active {
+  box-shadow: var(--shadow-clay-pressed);
+  transform: translateY(0px);
+}
+
+.clay-input {
+  background: var(--color-background-secondary);
+  border-radius: 16px;
+  box-shadow: 
+    inset 3px 3px 8px rgba(0, 0, 0, 0.08),
+    inset -3px -3px 8px rgba(255, 255, 255, 0.9);
+  border: 1.5px solid var(--color-border-light);
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.clay-input:focus {
+  box-shadow:
+    inset 3px 3px 8px rgba(0, 0, 0, 0.08),
+    inset -3px -3px 8px rgba(255, 255, 255, 0.9),
+    0 0 0 4px var(--color-primary_light);
+  border-color: var(--color-border-focus);
+}
+
+.clay-faq {
+  border-radius: 20px;
+  box-shadow: var(--shadow-clay);
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  background: var(--color-background-secondary);
+}
+
+.clay-faq:hover {
+  box-shadow: var(--shadow-clay-hover);
+  transform: translateY(-2px);
+}
+
+/* ============================================================================
+ * LIQUID GLASS ANIMATIONS
+ * ============================================================================
+ * Animated iridescent glass effect with flowing gradient borders,
+ * shimmer overlays, and refractive light shifts.
+ * ============================================================================ */
+
+@keyframes liquid-shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes liquid-border-rotate {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes float-drift {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(30px, -20px) scale(1.05); }
+  50% { transform: translate(-10px, 15px) scale(0.95); }
+  75% { transform: translate(20px, 10px) scale(1.02); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.liquid-glass-card {
+  position: relative;
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+.liquid-glass-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1.5px;
+  border-radius: 30px;
+  background: linear-gradient(
+    120deg,
+    rgba(99, 102, 241, 0.7),
+    rgba(139, 92, 246, 0.7),
+    rgba(56, 189, 248, 0.6),
+    rgba(167, 139, 250, 0.8),
+    rgba(129, 140, 248, 0.7),
+    rgba(99, 102, 241, 0.7)
+  );
+  background-size: 400% 400%;
+  animation: liquid-border-rotate 5s ease infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.liquid-glass-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 30px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(167, 139, 250, 0.06) 20%,
+    rgba(255, 255, 255, 0.10) 40%,
+    rgba(129, 140, 248, 0.08) 55%,
+    rgba(167, 139, 250, 0.06) 70%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: liquid-shimmer 3.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.liquid-glass-orb {
+  animation: float-drift 10s ease-in-out infinite, pulse-glow 3s ease-in-out infinite;
+}
+
+/* Dark mode clay adjustments - BOLD EDITION */
+[data-theme="dark"] .clay-card,
+[data-theme="dark"] .clay-faq {
+  box-shadow:
+    inset 2px 2px 5px rgba(255, 255, 255, 0.08),
+    inset -2px -2px 4px rgba(0, 0, 0, 0.4),
+     10px 10px 30px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .clay-card:hover,
+[data-theme="dark"] .clay-faq:hover {
+  box-shadow:
+    inset 2px 2px 6px rgba(255, 255, 255, 0.10),
+    inset -2px -2px 5px rgba(0, 0, 0, 0.4),
+     14px 14px 38px rgba(0, 0, 0, 0.7);
+  transform: translateY(-3px);
+}
+
+[data-theme="dark"] .clay-button {
+  box-shadow:
+    inset 2px 2px 4px rgba(255, 255, 255, 0.06),
+    inset -2px -2px 3px rgba(0, 0, 0, 0.3),
+     6px 6px 20px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .clay-input {
+  box-shadow:
+    inset 2px 2px 6px rgba(0, 0, 0, 0.4),
+    inset -2px -2px 3px rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
