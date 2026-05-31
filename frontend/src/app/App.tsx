@@ -17,6 +17,8 @@ import PolicyDetailPage from "../imports/PolicyDetailPage";
 import ThemeProvider from "./components/ThemeProvider";
 import PageTransition from "./components/PageTransition";
 
+import AdminLoginPage from "../admin/pages/AdminLoginPage";
+
 function AnimatedRoutes() {
   const location = useLocation();
 
@@ -32,6 +34,7 @@ function AnimatedRoutes() {
         <Route path="/dashboard" element={<PageTransition><DashboardPage /></PageTransition>} />
         <Route path="/policies" element={<PageTransition><PoliciesPage /></PageTransition>} />
         <Route path="/policy/:id" element={<PageTransition><PolicyDetailPage /></PageTransition>} />
+        <Route path="/admin" element={<PageTransition> <AdminLoginPage /></PageTransition>}/>
       </Routes>
     </AnimatePresence>
   );
