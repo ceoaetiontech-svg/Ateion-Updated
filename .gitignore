@@ -1,3 +1,6 @@
+.vscode/
+.settings/
+.idea/
 node_modules/
 build/
 dist/
