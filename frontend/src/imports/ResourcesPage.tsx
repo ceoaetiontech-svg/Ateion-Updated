@@ -51,7 +51,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "../app/components/ui/collapsible";
-
+import { useNavigate ,Link} from "react-router";
 const navigationSections = [
   {
     title: "Courses",
@@ -143,6 +143,7 @@ export default function ResourcesPage() {
   
     setShowAddTask(false);
   };
+  const navigate = useNavigate();
   // Function to check/uncheck tasks
   const toggleTask = (id: number) => {
     setTasks(tasks.map(task => 
@@ -151,32 +152,53 @@ export default function ResourcesPage() {
   };
 
   // 2. Fetch user data on component mount
-  useEffect(() => {
-    // Read the user object saved during Login/Sign Up
-    const storedUser = localStorage.getItem("user"); 
-    
-    if (storedUser) {
-      const parsedUser = JSON.parse(storedUser);
-      
-      // Map the backend age group code to the UI badge text
-      let mappedSegment = "Universal Access";
-      switch(parsedUser.ageGroup) {
-        case "group_1": mappedSegment = "Segment 1 • Age 6-8"; break;
-        case "group_2": mappedSegment = "Segment 2 • Age 9-11"; break;
-        case "group_3": mappedSegment = "Segment 3 • Age 12-14"; break;
-        case "group_4": mappedSegment = "Segment 4 • Age 15-17"; break;
-        case "group_5": mappedSegment = "Segment 5 • Age 18+"; break;
-      }
+  useEffect(() => { 
+    // 1. Grab the secure token from the browser
+    const token = localStorage.getItem("token");
 
-      setUserProfile({
-        fullName: parsedUser.fullName || "Student",
-        firstName: parsedUser.fullName ? parsedUser.fullName.split(" ") : "Student",
-        segmentText: mappedSegment,
-        // Optional: you can check if they have paid or hit the 3 video limit here
-        isPremium: parsedUser.isPremium || false 
-      });
+    // 2. Kick them out if they have no token at all
+    if (!token) {
+        window.dispatchEvent(new CustomEvent("open-login"));
+        navigate("/");
+        return;
     }
-  }, []);
+
+    // 3. Call the database directly to verify the token and get the user
+    const fetchUserDataFromDB = async () => {
+        try {
+            const apiUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
+            
+            const response = await fetch(`${apiUrl}/auth/me`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`, 
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (response.ok) {
+                // Token is valid! Database returned the real user row.
+                const dbUser = await response.json();
+                setUserProfile({
+        fullName: dbUser.fullName || "Student",
+        // 👇 ADD  RIGHT HERE 👇
+        firstName: dbUser.fullName ? dbUser.fullName.split(" ")[0] : "Student", 
+        segmentText: dbUser.ageSegment || "Universal Access",
+        isPremium: dbUser.isPremium || false 
+    });
+            } else {
+                // Token is fake, expired, or user was deleted from DB
+                localStorage.removeItem("token");
+                window.dispatchEvent(new CustomEvent("open-login"));
+                navigate("/");
+            }
+        } catch (error) {
+            console.error("Database fetch error:", error);
+        }
+    };
+
+    fetchUserDataFromDB();
+}, [navigate]);
   return (
       <SidebarProvider>
         <div className="flex h-screen w-full bg-[var(--color-background-primary)]">
@@ -237,36 +259,63 @@ export default function ResourcesPage() {
   ))}
               </SidebarContent>
 
-              {/* FOOTER */}
-              <SidebarFooter>
-                <SidebarSeparator />
+               {/* FOOTER */}
+          <SidebarFooter>
+            
+            {/* 1. DYNAMIC USER AVATAR BLOCK */}
+            <SidebarMenu>
+              <SidebarMenuItem>
+                {/* 🚨 Using asChild with a native <a> tag forces a guaranteed browser redirect 🚨 */}
+                <SidebarMenuButton size="lg" asChild className="hover:bg-[#ffffff]/10 text-[#ffffff] cursor-pointer p-1 h-auto mt-2">
+                  <a href="/dashboard" className="flex items-center gap-3 w-full rounded-lg">
+                    
+                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-primary)] text-white font-bold text-lg shrink-0">
+                      {userProfile.fullName ? userProfile.fullName.charAt(0).toUpperCase() : "A"}
+                    </div>
+                    
+                    <div className="flex flex-col text-left">
+                      <span className="text-sm font-semibold text-[#ffffff]">
+                        {userProfile.fullName}
+                      </span>
+                      <span className="text-xs text-[#ffffff]/60">
+                        {userProfile.segmentText}
+                      </span>
+                    </div>
+                    
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
 
-                <SidebarMenu>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton className="text-[#ffffff] hover:bg-[#ffffff]/10">
-                      <User size={16} />
-                      <span>Profile</span>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
+            <SidebarSeparator className="bg-[#ffffff]/20 mx-4 my-2" />
 
-                  <SidebarMenuItem>
-                    <SidebarMenuButton className="text-[#ffffff] hover:bg-[#ffffff]/10">
-                      <Settings size={16} />
-                      <span>Settings</span>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
+            {/* 2. SYSTEM SETTINGS */}
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton className="text-[#ffffff] hover:bg-[#ffffff]/10">
+                  <Settings size={16} />
+                  <span>Settings</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
 
-                  <SidebarMenuItem>
-                    <SidebarMenuButton className="text-[#ffffff] hover:bg-[#ffffff]/10">
-                      <LogOut size={16} />
-                      <span>Logout</span>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                </SidebarMenu>
-              </SidebarFooter>
-            </div>
-          </Sidebar>
-          <SidebarInset className="flex flex-1 flex-col overflow-x-hidden bg-transparent w-full">
+              <SidebarMenuItem>
+                <SidebarMenuButton className="text-[#ffffff] hover:bg-[#ffffff]/10 cursor-pointer"
+    onClick={() => {
+      // 1. Delete the secure token from memory
+      localStorage.removeItem("token");
+      // 2. Redirect back to the home page
+      navigate("/");
+    }}>
+                  <LogOut size={16} />
+                  <span>Logout</span>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+            
+          </SidebarFooter>
+        </div>
+      </Sidebar>
+      <SidebarInset className="flex flex-1 flex-col overflow-x-hidden bg-transparent w-full">
           
            {/* 1. TOP HEADER WITH DYNAMIC AGE BADGE */}
         <header className="flex h-16 sm:h-20 items-center justify-between px-6 lg:px-10 bg-[var(--color-background-secondary)]/60 backdrop-blur-md border-b border-[var(--color-border-light)] shrink-0">

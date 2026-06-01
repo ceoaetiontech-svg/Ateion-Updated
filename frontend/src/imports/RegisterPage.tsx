@@ -14,45 +14,52 @@ export default function RegisterPage({ closeRegister }: any) {
   // 2. CREATE ACCOUNT HANDLER
   const handleCreateAccount = async (e?: any) => {
     if (e) e.preventDefault();
-
     
-    // Check if passwords match before sending to the backend
+    // Check if passwords match
     if (formData.password !== formData.confirmPassword) {
-        alert("Error: Passwords do not match!");
+        alert("Passwords do not match!");
         return;
     }
 
     try {
-      // Dynamically pull the API URL. Falls back to localhost for local testing
-      const apiUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
+        const apiUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
+        
+        // 1. Create the account in Supabase
+        const response = await fetch(`${apiUrl}/auth/signup`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData)
+        });
 
-      // Send the POST request to the backend
-      const response = await fetch(`${apiUrl}/auth/signup`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          fullName: formData.fullName,     
-          email: formData.email,
-          password: formData.password,
-          ageSegment: formData.ageSegment  
-        }),
-      });
+        if (response.ok) {
+            // 2. Automatically log the user in immediately!
+            const loginResponse = await fetch(`${apiUrl}/auth/login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email: formData.email, password: formData.password })
+            });
 
-      const message = await response.text();
+            if (loginResponse.ok) {
+                const responseText = await loginResponse.text();
+                let token = responseText;
+                try {
+                    const jsonData = JSON.parse(responseText);
+                    token = jsonData.token || jsonData.jwt || responseText;
+                } catch (err) {}
 
-      if (response.ok) {
-        alert("Success: " + message);
-        if (closeRegister) closeRegister();
-      } else {
-        alert("Failed: " + message);
-      }
+                // 3. Save the token to the browser's memory
+                localStorage.setItem("token", token);
+            }
+            
+            alert("Account created! You are now logged in.");
+            if (closeRegister) closeRegister(); // Close the modal window
+        } else {
+            alert("Error creating account. That email might already be in use.");
+        }
     } catch (error) {
-      console.error("Error signing up:", error);
-      alert("Could not connect to the server. Please try again.");
+        console.error("Signup error:", error);
     }
-  };
+};
 
   // 3. SOCIAL LOGIN HANDLERS
   // Dynamically get the backend URL for OAuth redirects
