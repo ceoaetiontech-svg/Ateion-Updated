@@ -8,41 +8,40 @@ export default function LoginPage({ closeLogin }: any) {
 
   // 2. SIGN IN HANDLER
   const handleLogin = async (e?: any) => {
-    // Stop the page from refreshing when you click the button!
-    if (e) e.preventDefault(); 
-
+    if (e) e.preventDefault();
     try {
-      // Dynamically pull the API URL. Falls back to localhost for local testing
-      const apiUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
+        const apiUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
+        const response = await fetch(`${apiUrl}/auth/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password })
+        });
 
-      // Send the login request to the Spring Boot backend
-      const response = await fetch(`${apiUrl}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+        if (response.ok) {
+            // 1. Get the response from backend
+            const responseText = await response.text();
+            
+            // 2. Safely extract the token
+            let token = responseText;
+            try {
+                const jsonData = JSON.parse(responseText);
+                token = jsonData.token || jsonData.jwt || responseText;
+            } catch (err) { 
+                // Ignore if it's a plain string instead of JSON
+            }
 
-      if (response.ok) {
-        // Grab the JSON user object from our Spring Boot backend
-        const userData = await response.json();
-        
-        // Save it to localStorage so the Playground can read it [1]!
-        //localStorage.setItem("user", JSON.stringify(userData));
-
-        alert("Login successful!");
-        if (closeLogin) closeLogin();
-        
-        // Redirect the user straight to the Playground!
-        
-      } else {
-        const errorMsg = await response.text();
-        alert("Login Failed: " + errorMsg);
-      }
+            // 🚨 CRITICAL FIX: Save the token to the browser's memory!
+            localStorage.setItem("token", token);
+            
+            alert("Logged in successfully!");
+            if (closeLogin) closeLogin(); // Close the modal window
+        } else {
+            alert("Invalid email or password");
+        }
     } catch (error) {
-      console.error("Login error:", error);
-      alert("Could not connect to the server. Please try again.");
+        console.error("Login error:", error);
     }
-  };
+};
 
   // 3. SOCIAL LOGIN HANDLERS
   const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";

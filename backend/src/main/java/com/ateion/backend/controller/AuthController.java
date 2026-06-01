@@ -1,5 +1,4 @@
 package com.ateion.backend.controller;
-
 import com.ateion.backend.dto.LoginRequestDTO;
 import com.ateion.backend.dto.SignUpRequestDTO;
 import com.ateion.backend.entity.User;
@@ -69,4 +68,27 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error: User not found!");
         }
     }
+
+    @GetMapping("/me")
+public ResponseEntity<?> getCurrentUser(@RequestHeader("Authorization") String bearerToken) {
+    try {
+        // 1. Remove the "Bearer " prefix from the token
+        String token = bearerToken.substring(7);
+        
+        // 2. Extract the email from the token using your JwtUtil
+        String email = jwtUtil.extractUsername(token); 
+        
+        // 3. Directly fetch the user from the database table
+        Optional<User> user = userRepository.findByEmail(email);
+        
+        if (user.isPresent()) {
+            return ResponseEntity.ok(user.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found in database");
+        }
+    } catch (Exception e) {
+        // If the token is fake or expired, reject them!
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid Token");
+    }
+}
 }
