@@ -149,14 +149,30 @@
 }
 
 @keyframes wave-animation {
-  0% { transform: rotate(0.0deg) }
-  10% { transform: rotate(14.0deg) }
-  20% { transform: rotate(-8.0deg) }
-  30% { transform: rotate(14.0deg) }
-  40% { transform: rotate(-4.0deg) }
-  50% { transform: rotate(10.0deg) }
-  60% { transform: rotate(0.0deg) }
-  100% { transform: rotate(0.0deg) }
+  0% {
+    transform: rotate(0deg);
+  }
+  10% {
+    transform: rotate(14deg);
+  }
+  20% {
+    transform: rotate(-8deg);
+  }
+  30% {
+    transform: rotate(14deg);
+  }
+  40% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(10deg);
+  }
+  60% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
 }
 
 .topbar p {
@@ -196,7 +212,11 @@
   left: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle, var(--color-primary_light) 0%, transparent 60%);
+  background: radial-gradient(
+    circle,
+    var(--color-primary_light) 0%,
+    transparent 60%
+  );
   opacity: 0;
   transition: opacity 0.5s ease;
   pointer-events: none;
@@ -272,8 +292,12 @@
   border-color: rgba(255, 255, 255, 0.05);
   box-shadow: var(--shadow-clay);
 }
-.disabled-glow { display: none; }
-.disabled-icon { color: var(--color-text-subtle); }
+.disabled-glow {
+  display: none;
+}
+.disabled-icon {
+  color: var(--color-text-subtle);
+}
 
 .coming-soon-label {
   display: inline-block;
@@ -326,7 +350,7 @@
     flex-direction: column; /* Vertical list */
     overflow-x: visible;
   }
-  
+
   .sidebar ul li {
     justify-content: flex-start;
   }
@@ -360,7 +384,7 @@
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: var(--dash-spacing-lg);
   }
-  
+
   .card {
     padding: var(--dash-spacing-xl);
   }
@@ -433,3 +457,4 @@
 [data-theme="dark"] .coming-soon-label {
   background: rgba(255, 255, 255, 0.1);
 }
+

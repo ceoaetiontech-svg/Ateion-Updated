@@ -1,5 +1,5 @@
-import React from 'react';
-import '../../styles/gco/FAQ.css';
+import React from "react";
+import "../../styles/gco/FAQ.css";
 
 const FAQ = () => {
   const faqs = [

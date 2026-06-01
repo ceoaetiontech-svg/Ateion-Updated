@@ -15,10 +15,16 @@ import RegisterPage from "../imports/RegisterPage";
 import LoginPage from "../imports/LoginPage";
 import PoliciesPage from "../imports/PoliciesPage";
 import PolicyDetailPage from "../imports/PolicyDetailPage";
+import AdminDashboardPage from "../imports/admin/pages/AdminDashboardPage";
+import AdminLayout from "../imports/admin/layouts/AdminLayout";
+import CourseListView from "../imports/admin/components/CourseListView";
+import CourseUploadView from "../imports/admin/components/CourseUploadView";
+import UsersPage from "../imports/admin/pages/UsersPage";
+import SettingsPage from "../imports/admin/pages/SettingsPage";
 import ThemeProvider from "./components/ThemeProvider";
 import PageTransition from "./components/PageTransition";
 
-import AdminLoginPage from "../admin/pages/AdminLoginPage";
+import AdminLoginPage from "../imports/admin/pages/AdminLoginPage";
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -125,6 +131,53 @@ function AnimatedRoutes() {
             </PageTransition>
           }
         />
+
+        <Route element={<AdminLayout />}>
+          <Route
+            path="/admin/dashboard"
+            element={
+              <PageTransition>
+                <AdminDashboardPage />
+              </PageTransition>
+            }
+          />
+          <Route
+            path="/admin/courses"
+            element={
+              <PageTransition>
+                <CourseListView />
+              </PageTransition>
+            }
+          />
+          <Route
+            path="/admin/upload"
+            element={
+              <PageTransition>
+                <CourseUploadView
+                  onUploadSuccess={() =>
+                    (window.location.href = "/admin/courses")
+                  }
+                />
+              </PageTransition>
+            }
+          />
+          <Route
+            path="/admin/users"
+            element={
+              <PageTransition>
+                <UsersPage />
+              </PageTransition>
+            }
+          />
+          <Route
+            path="/admin/settings"
+            element={
+              <PageTransition>
+                <SettingsPage />
+              </PageTransition>
+            }
+          />
+        </Route>
       </Routes>
     </AnimatePresence>
   );
@@ -173,3 +226,4 @@ export default function App() {
     </ThemeProvider>
   );
 }
+

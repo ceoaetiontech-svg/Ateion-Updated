@@ -7,32 +7,32 @@ import Skeleton from "../app/components/Skeleton";
 import { allPolicies, regions, PolicyEntry } from "../data/policies";
 
 // ─── All 12 policy images ─────────────────────────────────────────────────
-import singaporeImg  from "../assets/policies/singapore.png";
-import finlandImg    from "../assets/policies/finland.png";
-import japanImg      from "../assets/policies/japan.png";
-import indiaImg      from "../assets/gco/education-ministry-logo.jpg";
-import uaeImg        from "../assets/gco/logo-education.png";
-import germanyImg    from "../assets/policies/germany.png";
-import usaImg        from "../assets/policies/usa.png";
-import ukImg         from "../assets/policies/uk.png";
+import singaporeImg from "../assets/policies/singapore.png";
+import finlandImg from "../assets/policies/finland.png";
+import japanImg from "../assets/policies/japan.png";
+import indiaImg from "../assets/gco/education-ministry-logo.jpg";
+import uaeImg from "../assets/gco/logo-education.png";
+import germanyImg from "../assets/policies/germany.png";
+import usaImg from "../assets/policies/usa.png";
+import ukImg from "../assets/policies/uk.png";
 import southkoreaImg from "../assets/policies/southkorea.jpg";
-import euImg         from "../assets/policies/eu.png";
-import unescoImg     from "../assets/policies/unesco.jpg";
-import wefImg        from "../assets/policies/wef.jpg";
+import euImg from "../assets/policies/eu.png";
+import unescoImg from "../assets/policies/unesco.jpg";
+import wefImg from "../assets/policies/wef.jpg";
 
 const policyImages: Record<string, string> = {
-  singapore:  singaporeImg,
-  finland:    finlandImg,
-  japan:      japanImg,
-  india:      indiaImg,
-  uae:        uaeImg,
-  germany:    germanyImg,
-  usa:        usaImg,
-  uk:         ukImg,
+  singapore: singaporeImg,
+  finland: finlandImg,
+  japan: japanImg,
+  india: indiaImg,
+  uae: uaeImg,
+  germany: germanyImg,
+  usa: usaImg,
+  uk: ukImg,
   southkorea: southkoreaImg,
-  eu:         euImg,
-  unesco:     unescoImg,
-  wef:        wefImg,
+  eu: euImg,
+  unesco: unescoImg,
+  wef: wefImg,
 };
 
 // ─── Individual card ──────────────────────────────────────────────────────────
@@ -77,9 +77,12 @@ function PolicyGridCard({ policy }: { policy: PolicyEntry }) {
             className="w-full h-full object-contain object-center block transition-transform duration-400 ease-in-out"
           />
         ) : (
-          <div style={{
-            background: `${policy.accentColor}08`,
-          }} className="w-full h-full flex items-center justify-center text-[4rem]">
+          <div
+            style={{
+              background: `${policy.accentColor}08`,
+            }}
+            className="w-full h-full flex items-center justify-center text-[4rem]"
+          >
             {policy.flag}
           </div>
         )}
@@ -104,10 +107,14 @@ function PolicyGridCard({ policy }: { policy: PolicyEntry }) {
           <p className="font-['OV_Soge',sans-serif] text-[0.9rem] font-bold text-[var(--color-text-primary)] m-0 whitespace-nowrap overflow-hidden text-ellipsis">
             {policy.country}
           </p>
-          <p style={{
-            color: policy.accentColor,
-          }} className="font-['Manrope',sans-serif] text-[0.58rem] font-extrabold tracking-[0.1em] uppercase mt-0.5 mb-0">
-            {policy.frameworks.length} framework{policy.frameworks.length > 1 ? "s" : ""}
+          <p
+            style={{
+              color: policy.accentColor,
+            }}
+            className="font-['Manrope',sans-serif] text-[0.58rem] font-extrabold tracking-[0.1em] uppercase mt-0.5 mb-0"
+          >
+            {policy.frameworks.length} framework
+            {policy.frameworks.length > 1 ? "s" : ""}
           </p>
         </div>
       </div>
@@ -115,7 +122,7 @@ function PolicyGridCard({ policy }: { policy: PolicyEntry }) {
       {/* Hover overlay */}
       <AnimatePresence>
         {hovered && (
-            <motion.div
+          <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
@@ -181,7 +188,7 @@ function PolicyGridCard({ policy }: { policy: PolicyEntry }) {
 
 // ─── PoliciesPage ──────────────────────────────────────────────────────────────
 export default function PoliciesPage() {
-  const [search, setSearch]           = useState("");
+  const [search, setSearch] = useState("");
   const [activeRegion, setActiveRegion] = useState("All");
   const [isLoading, setIsLoading] = useState(true);
 
@@ -199,7 +206,7 @@ export default function PoliciesPage() {
         p.frameworks.some(
           (f) =>
             f.name.toLowerCase().includes(q) ||
-            f.tags.some((t) => t.toLowerCase().includes(q))
+            f.tags.some((t) => t.toLowerCase().includes(q)),
         );
       const matchRegion = activeRegion === "All" || p.region === activeRegion;
       return matchSearch && matchRegion;
@@ -211,47 +218,66 @@ export default function PoliciesPage() {
       <SharedNavbar />
 
       <div className="bg-[var(--color-background-primary)] min-h-screen overflow-x-hidden pt-[60px]">
-
         {/* ── Hero header ── */}
         <section className="py-20 px-[5%] pb-16 text-center relative overflow-hidden">
-          <div style={{
-            background: "radial-gradient(circle, var(--color-primary_light) 0%, transparent 70%)",
-          }} className="absolute -top-[100px] left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full pointer-events-none" />
+          <div
+            style={{
+              background:
+                "radial-gradient(circle, var(--color-primary_light) 0%, transparent 70%)",
+            }}
+            className="absolute -top-[100px] left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
+          />
 
           <motion.span
-            initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
+            initial={{ opacity: 0, y: 14 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
             className="block font-['Manrope',sans-serif] text-[0.68rem] font-extrabold tracking-[0.22em] uppercase text-[var(--color-primary)] mb-[18px]"
           >
             GLOBAL POLICY ALIGNMENT
           </motion.span>
 
           <motion.h1
-            initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, delay: 0.1 }}
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.1 }}
             className="font-['OV_Soge',sans-serif] text-[clamp(2.4rem,5vw,4rem)] font-bold text-[var(--color-text-primary)] m-0 mb-5 leading-[1.08] tracking-[-0.025em]"
           >
             Ateion's Global Policy Alignment
           </motion.h1>
 
           <motion.p
-            initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.55, delay: 0.18 }}
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.18 }}
             className="font-['Manrope',sans-serif] text-[clamp(0.95rem,1.5vw,1.1rem)] text-[var(--color-text-secondary)] max-w-[520px] mx-auto mb-10 leading-[1.8]"
           >
-            Ateion's entire startup ecosystem is aligned with leading national and international education frameworks across the world.
+            Ateion's entire startup ecosystem is aligned with leading national
+            and international education frameworks across the world.
           </motion.p>
 
           {/* Stats row */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.26 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.26 }}
             className="flex justify-center gap-12 flex-wrap"
           >
             {[
               { num: `${allPolicies.length}`, label: "Countries" },
-              { num: `${allPolicies.reduce((a, p) => a + p.frameworks.length, 0)}`, label: "Frameworks" },
+              {
+                num: `${allPolicies.reduce((a, p) => a + p.frameworks.length, 0)}`,
+                label: "Frameworks",
+              },
               { num: `${regions.length - 1}`, label: "Regions" },
             ].map((s) => (
               <div key={s.label} className="text-center">
-                <p className="font-['OV_Soge',sans-serif] text-[2.2rem] font-bold text-[var(--color-text-primary)] m-0 leading-none">{s.num}</p>
-                <p className="font-['Manrope',sans-serif] text-[0.68rem] text-[#aaa] font-bold uppercase tracking-[0.12em] mt-2 mb-0">{s.label}</p>
+                <p className="font-['OV_Soge',sans-serif] text-[2.2rem] font-bold text-[var(--color-text-primary)] m-0 leading-none">
+                  {s.num}
+                </p>
+                <p className="font-['Manrope',sans-serif] text-[0.68rem] text-[#aaa] font-bold uppercase tracking-[0.12em] mt-2 mb-0">
+                  {s.label}
+                </p>
               </div>
             ))}
           </motion.div>
@@ -260,14 +286,26 @@ export default function PoliciesPage() {
         {/* ── Search + filters ── */}
         <section className="px-[5%] pb-[52px]">
           <motion.div
-            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
             className="max-w-[860px] mx-auto"
           >
             {/* Search bar */}
             <div className="relative mb-[18px]">
-              <svg className="absolute left-[18px] top-1/2 -translate-y-1/2 text-[#bbb] pointer-events-none"
-                width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" />
+              <svg
+                className="absolute left-[18px] top-1/2 -translate-y-1/2 text-[#bbb] pointer-events-none"
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="M21 21l-4.35-4.35" />
               </svg>
               <input
                 type="text"
@@ -285,9 +323,18 @@ export default function PoliciesPage() {
                   key={region}
                   onClick={() => setActiveRegion(region)}
                   style={{
-                    border: activeRegion === region ? "1.5px solid var(--color-text-primary)" : "1.5px solid var(--color-border-medium)",
-                    background: activeRegion === region ? "var(--color-text-primary)" : "var(--color-background-secondary)",
-                    color: activeRegion === region ? "var(--color-background-primary)" : "var(--color-text-tertiary)",
+                    border:
+                      activeRegion === region
+                        ? "1.5px solid var(--color-text-primary)"
+                        : "1.5px solid var(--color-border-medium)",
+                    background:
+                      activeRegion === region
+                        ? "var(--color-text-primary)"
+                        : "var(--color-background-secondary)",
+                    color:
+                      activeRegion === region
+                        ? "var(--color-background-primary)"
+                        : "var(--color-text-tertiary)",
                   }}
                   className="clay-button font-['Manrope',sans-serif] text-[0.76rem] font-bold py-2 px-[18px] cursor-pointer transition-all duration-200"
                 >
@@ -302,31 +349,43 @@ export default function PoliciesPage() {
         <section className="px-[5%] pb-[100px]">
           <div className="max-w-[1320px] mx-auto">
             {filtered.length === 0 ? (
-              <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-20">
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-center py-20"
+              >
                 <p className="text-[3rem] mb-4">🌍</p>
-                <p className="font-['OV_Soge',sans-serif] text-[1.4rem] font-bold text-[var(--color-text-primary)] mb-2">No policies found</p>
-                <p className="font-['Manrope',sans-serif] text-[0.88rem] text-[#999]">Try a different search term or region filter.</p>
+                <p className="font-['OV_Soge',sans-serif] text-[1.4rem] font-bold text-[var(--color-text-primary)] mb-2">
+                  No policies found
+                </p>
+                <p className="font-['Manrope',sans-serif] text-[0.88rem] text-[#999]">
+                  Try a different search term or region filter.
+                </p>
               </motion.div>
             ) : (
               <motion.div
                 layout
                 className="grid gap-[22px]"
                 style={{
-                  gridTemplateColumns: "repeat(auto-fill, minmax(min(100%, 280px), 1fr))",
+                  gridTemplateColumns:
+                    "repeat(auto-fill, minmax(min(100%, 280px), 1fr))",
                 }}
               >
                 <AnimatePresence mode="popLayout">
-                  {isLoading ? (
-                    Array.from({ length: 8 }).map((_, i) => (
-                      <motion.div key={`skeleton-${i}`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                        <Skeleton className="w-full aspect-[4/5] rounded-[var(--radius-lg)]" />
-                      </motion.div>
-                    ))
-                  ) : (
-                    filtered.map((policy) => (
-                      <PolicyGridCard key={policy.id} policy={policy} />
-                    ))
-                  )}
+                  {isLoading
+                    ? Array.from({ length: 8 }).map((_, i) => (
+                        <motion.div
+                          key={`skeleton-${i}`}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                        >
+                          <Skeleton className="w-full aspect-[4/5] rounded-[var(--radius-lg)]" />
+                        </motion.div>
+                      ))
+                    : filtered.map((policy) => (
+                        <PolicyGridCard key={policy.id} policy={policy} />
+                      ))}
                 </AnimatePresence>
               </motion.div>
             )}

@@ -1,43 +1,49 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { motion, useInView } from 'framer-motion';
-import { BookOpen, FileText, Lightbulb, FileCheck } from 'lucide-react';
-import '../../styles/gco/TimelineSection.css';
+import React, { useRef, useEffect, useState } from "react";
+import { motion, useInView } from "framer-motion";
+import { BookOpen, FileText, Lightbulb, FileCheck } from "lucide-react";
+import "../../styles/gco/TimelineSection.css";
 
 interface TimelineStep {
   number: number;
   icon: React.ReactNode;
   text: string;
-  side: 'left' | 'right';
+  side: "left" | "right";
 }
 
 const timelineSteps: TimelineStep[] = [
   {
     number: 1,
     icon: <BookOpen className="timeline-icon-svg" />,
-    text: 'Students face unfamiliar real-world scenarios.',
-    side: 'right',
+    text: "Students face unfamiliar real-world scenarios.",
+    side: "right",
   },
   {
     number: 2,
     icon: <FileText className="timeline-icon-svg" />,
-    text: 'There is no syllabus to prepare from.',
-    side: 'left',
+    text: "There is no syllabus to prepare from.",
+    side: "left",
   },
   {
     number: 3,
     icon: <Lightbulb className="timeline-icon-svg" />,
-    text: 'AI evaluates reasoning pathways — not memory.',
-    side: 'right',
+    text: "AI evaluates reasoning pathways — not memory.",
+    side: "right",
   },
   {
     number: 4,
     icon: <FileCheck className="timeline-icon-svg" />,
-    text: 'Students receive a Strategic Capability Report.',
-    side: 'left',
+    text: "Students receive a Strategic Capability Report.",
+    side: "left",
   },
 ];
 
-function TimelineStepComponent({ step, index }: { step: TimelineStep; index: number }) {
+function TimelineStepComponent({
+  step,
+  index,
+}: {
+  step: TimelineStep;
+  index: number;
+}) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -45,18 +51,20 @@ function TimelineStepComponent({ step, index }: { step: TimelineStep; index: num
     <div ref={ref}>
       <div className="timeline-step timeline-step-desktop">
         <motion.div
-          className={`timeline-content-side timeline-left ${step.side === 'left' ? 'text-side' : 'icon-side'}`}
+          className={`timeline-content-side timeline-left ${step.side === "left" ? "text-side" : "icon-side"}`}
           initial={{ opacity: 0, x: 50 }}
           animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          {step.side === 'left' ? (
+          {step.side === "left" ? (
             <p className="timeline-text text-right">{step.text}</p>
           ) : (
             <motion.div
               className="timeline-icon-container"
               initial={{ scale: 0, opacity: 0 }}
-              animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
+              animate={
+                isInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }
+              }
               transition={{ duration: 0.5, delay: 0.3 }}
             >
               {step.icon}
@@ -67,25 +75,29 @@ function TimelineStepComponent({ step, index }: { step: TimelineStep; index: num
         <motion.div
           className="timeline-circle"
           initial={{ scale: 0, opacity: 0 }}
-          animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
+          animate={
+            isInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }
+          }
           transition={{ duration: 0.6, delay: 0 }}
         >
           <span className="timeline-number">{step.number}</span>
         </motion.div>
 
         <motion.div
-          className={`timeline-content-side timeline-right ${step.side === 'right' ? 'text-side' : 'icon-side'}`}
+          className={`timeline-content-side timeline-right ${step.side === "right" ? "text-side" : "icon-side"}`}
           initial={{ opacity: 0, x: -50 }}
           animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          {step.side === 'right' ? (
+          {step.side === "right" ? (
             <p className="timeline-text text-left">{step.text}</p>
           ) : (
             <motion.div
               className="timeline-icon-container"
               initial={{ scale: 0, opacity: 0 }}
-              animate={isInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
+              animate={
+                isInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }
+              }
               transition={{ duration: 0.5, delay: 0.3 }}
             >
               {step.icon}
@@ -120,15 +132,15 @@ export default function TimelineSection() {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(max-width: 768px)');
+    const mediaQuery = window.matchMedia("(max-width: 768px)");
     const updateIsMobile = (event?: MediaQueryListEvent) => {
       setIsMobile(event ? event.matches : mediaQuery.matches);
     };
 
     updateIsMobile();
-    mediaQuery.addEventListener('change', updateIsMobile);
+    mediaQuery.addEventListener("change", updateIsMobile);
 
-    return () => mediaQuery.removeEventListener('change', updateIsMobile);
+    return () => mediaQuery.removeEventListener("change", updateIsMobile);
   }, []);
 
   useEffect(() => {
@@ -145,7 +157,10 @@ export default function TimelineSection() {
           const elementTop = rect.top;
           const elementHeight = rect.height;
 
-          const scrollProgress = Math.max(0, Math.min(1, (windowHeight * 0.8 - elementTop) / elementHeight));
+          const scrollProgress = Math.max(
+            0,
+            Math.min(1, (windowHeight * 0.8 - elementTop) / elementHeight),
+          );
           setLineHeight(scrollProgress * 100);
         }
         ticking = false;
@@ -154,10 +169,10 @@ export default function TimelineSection() {
       ticking = true;
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
@@ -176,7 +191,9 @@ export default function TimelineSection() {
           <div
             ref={lineRef}
             className="timeline-line-bg"
-            style={{ height: `${(timelineSteps.length - 1) * (isMobile ? 164 : 200)}px` }}
+            style={{
+              height: `${(timelineSteps.length - 1) * (isMobile ? 164 : 200)}px`,
+            }}
           />
 
           <motion.div
@@ -184,8 +201,8 @@ export default function TimelineSection() {
             style={{
               height: `${(timelineSteps.length - 1) * (isMobile ? 164 : 200)}px`,
               scaleY: lineHeight / 100,
-              transformOrigin: 'top',
-              backgroundColor: '#1E1632'
+              transformOrigin: "top",
+              backgroundColor: "#1E1632",
             }}
           />
 

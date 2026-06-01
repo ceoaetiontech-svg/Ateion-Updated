@@ -9,7 +9,6 @@ import GCOQuestionSection from "./gco/GCOQuestionSection";
 import BeyondScore from "./gco/BeyondScore";
 import PolicyAlignmentSection from "./gco/PolicyAlignmentSection";
 
-
 import "../styles/gco/index.css";
 import "../styles/gco/fonts.css";
 import "../styles/gco/theme.css";
@@ -22,7 +21,10 @@ const GCOPage = () => {
   return (
     <>
       <SharedNavbar />
-      <div id="gco-root" className="bg-[var(--color-background-primary)] w-full min-h-screen overflow-x-hidden relative">
+      <div
+        id="gco-root"
+        className="bg-[var(--color-background-primary)] w-full min-h-screen overflow-x-hidden relative"
+      >
         <main className="mt-[60px] md:mt-[60px]">
           <HeroSection />
           <PolicyAlignmentSection />

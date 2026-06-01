@@ -23,14 +23,14 @@
   /* ──────────────────────────────────────────────────────────────────────────
    * COLOR PALETTE
    * ────────────────────────────────────────────────────────────────────────── */
-  
+
   /* Primary Brand - Electric Blue */
   --color-primary: #2563eb;
   --color-primary-hover: #1d55d4;
   --color-primary_active: #1e40af;
   --color-primary_light: rgba(37, 99, 235, 0.08);
   --color-primary_lighter: rgba(37, 99, 235, 0.04);
-  
+
   /* Neutral Grays */
   --color-white: #ffffff;
   --color-gray-50: #f2f4f8;
@@ -44,19 +44,19 @@
   --color-gray-800: #141e30;
   --color-gray-900: #0e1320;
   --color-black: #080d18;
-  
+
   /* Brand Backgrounds */
   --color-background-primary: #f2f4f8;
   --color-background-secondary: #ffffff;
   --color-background-tertiary: #e4e9f4;
   --color-background-dark: #1a2235;
   --color-background-black: #0e1320;
-  
+
   /* Navigation */
   --color-nav-button: rgba(235, 235, 235, 0.8);
   --color-nav-button-hover: rgba(215, 215, 215, 0.95);
   --color-nav-button-active: rgba(200, 200, 200, 0.85);
-  
+
   /* Text Colors */
   --color-text-primary: #1a2235;
   --color-text-secondary: #334060;
@@ -66,31 +66,31 @@
   --color-text-inverse: #ffffff;
   --color-text-link: #2563eb;
   --color-text-link-hover: #1d55d4;
-  
+
   /* Border Colors */
   --color-border-light: rgba(26, 34, 53, 0.08);
   --color-border-medium: rgba(26, 34, 53, 0.14);
   --color-border-dark: rgba(26, 34, 53, 0.22);
   --color-border-input: rgba(26, 34, 53, 0.14);
-  --color-border-focus: rgba(37, 99, 235, 0.50);
-  
+  --color-border-focus: rgba(37, 99, 235, 0.5);
+
   /* Semantic Colors */
   --color-success: #16a34a;
   --color-success_light: #dcfce7;
   --color-success_dark: #15803d;
-  
+
   --color-warning: #ca8a04;
   --color-warning_light: #fef9c3;
   --color-warning_dark: #a16207;
-  
+
   --color-error: #dc2626;
   --color-error_light: #fee2e2;
   --color-error_dark: #b91c1c;
-  
+
   --color-info: #2563eb;
   --color-info_light: #dbeafe;
   --color-info_dark: #1d4ed8;
-  
+
   /* Product Colors */
   --color-gco: #2563eb;
   --color-gco_dark: #3b82f6;
@@ -98,39 +98,42 @@
   --color-playground_dark: #22d3ee;
   --color-vouch: #64748b;
   --color-vouch_dark: #94a3b8;
-  
+
   /* ──────────────────────────────────────────────────────────────────────────
    * TYPOGRAPHY - EVEN NUMBERS ONLY
    * ────────────────────────────────────────────────────────────────────────── */
-  
+
   /* Font Families */
-  --font-family-heading: 'OV Soge', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-family-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-family-accent: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-family-mono: 'SF Pro Display', 'Courier New', monospace;
-  --font-family-footer: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
-  
+  --font-family-heading:
+    "OV Soge", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-family-body:
+    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-family-accent:
+    "Manrope", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-family-mono: "SF Pro Display", "Courier New", monospace;
+  --font-family-footer: "Lato", -apple-system, BlinkMacSystemFont, sans-serif;
+
   /* Font Sizes - EVEN NUMBERS ONLY (12px, 14px, 16px, 18px, 20px, 24px, 30px, 32px, 36px, 48px, 60px, 72px) */
-  --font-size-xxs: 0.75rem;    /* 12px */
-  --font-size-xs: 0.875rem;    /* 14px */
-  --font-size-sm: 1rem;        /* 16px */
-  --font-size-base: 1.125rem;  /* 18px */
-  --font-size-lg: 1.25rem;     /* 20px */
-  --font-size-xl: 1.5rem;      /* 24px */
-  --font-size-2xl: 1.875rem;   /* 30px */
-  --font-size-3xl: 2rem;       /* 32px */
-  --font-size-4xl: 2.25rem;    /* 36px */
-  --font-size-5xl: 3rem;       /* 48px */
-  --font-size-6xl: 3.75rem;    /* 60px */
-  --font-size-7xl: 4.5rem;     /* 72px */
-  
+  --font-size-xxs: 0.75rem; /* 12px */
+  --font-size-xs: 0.875rem; /* 14px */
+  --font-size-sm: 1rem; /* 16px */
+  --font-size-base: 1.125rem; /* 18px */
+  --font-size-lg: 1.25rem; /* 20px */
+  --font-size-xl: 1.5rem; /* 24px */
+  --font-size-2xl: 1.875rem; /* 30px */
+  --font-size-3xl: 2rem; /* 32px */
+  --font-size-4xl: 2.25rem; /* 36px */
+  --font-size-5xl: 3rem; /* 48px */
+  --font-size-6xl: 3.75rem; /* 60px */
+  --font-size-7xl: 4.5rem; /* 72px */
+
   /* Font Weights - EVEN NUMBERS ONLY */
   --font-weight-light: 300;
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
   --font-weight-bold: 700;
-  
+
   /* Line Heights - EVEN DECIMALS ONLY */
   --line-height-none: 1;
   --line-height-tight: 1.25;
@@ -138,7 +141,7 @@
   --line-height-normal: 1.5;
   --line-height-relaxed: 1.625;
   --line-height-loose: 2;
-  
+
   /* Letter Spacing */
   --letter-spacing-tighter: -0.05em;
   --letter-spacing-tight: -0.025em;
@@ -146,109 +149,106 @@
   --letter-spacing-wide: 0.025em;
   --letter-spacing-wider: 0.05em;
   --letter-spacing-widest: 0.1em;
-  
+
   /* ──────────────────────────────────────────────────────────────────────────
    * SPACING SYSTEM - 4px GRID, EVEN NUMBERS ONLY
    * ────────────────────────────────────────────────────────────────────────── */
-  
+
   --space-0: 0;
-  --space-1: 0.5rem;    /* 8px */
-  --space-2: 1rem;      /* 16px */
-  --space-3: 1.5rem;    /* 24px */
-  --space-4: 2rem;      /* 32px */
-  --space-5: 2.5rem;    /* 40px */
-  --space-6: 3rem;      /* 48px */
-  --space-8: 4rem;      /* 64px */
-  --space-10: 5rem;     /* 80px */
-  --space-12: 6rem;     /* 96px */
-  --space-16: 8rem;     /* 128px */
-  --space-20: 10rem;    /* 160px */
-  --space-24: 12rem;    /* 192px */
-  --space-32: 16rem;    /* 256px */
-  
+  --space-1: 0.5rem; /* 8px */
+  --space-2: 1rem; /* 16px */
+  --space-3: 1.5rem; /* 24px */
+  --space-4: 2rem; /* 32px */
+  --space-5: 2.5rem; /* 40px */
+  --space-6: 3rem; /* 48px */
+  --space-8: 4rem; /* 64px */
+  --space-10: 5rem; /* 80px */
+  --space-12: 6rem; /* 96px */
+  --space-16: 8rem; /* 128px */
+  --space-20: 10rem; /* 160px */
+  --space-24: 12rem; /* 192px */
+  --space-32: 16rem; /* 256px */
+
   /* ──────────────────────────────────────────────────────────────────────────
    * SIZING - EVEN NUMBERS ONLY
    * ────────────────────────────────────────────────────────────────────────── */
-  
+
   /* Component Heights - EVEN NUMBERS ONLY */
-  --height-nav: 5rem;                 /* 80px */
-  --height-nav-button: 2rem;          /* 32px */
-  --height-button-sm: 2rem;           /* 32px */
-  --height-button-md: 2.5rem;         /* 40px */
-  --height-button-lg: 3rem;           /* 48px */
-  --height-input: 2.5rem;             /* 40px */
-  --height-hero: 41.5625rem;          /* 665px */
-  --height-card-lg: 31.5rem;          /* 504px */
-  --height-card-md: 23.5625rem;       /* 377px */
-  --height-footer-bar: 4rem;          /* 64px */
-  
+  --height-nav: 5rem; /* 80px */
+  --height-nav-button: 2rem; /* 32px */
+  --height-button-sm: 2rem; /* 32px */
+  --height-button-md: 2.5rem; /* 40px */
+  --height-button-lg: 3rem; /* 48px */
+  --height-input: 2.5rem; /* 40px */
+  --height-hero: 41.5625rem; /* 665px */
+  --height-card-lg: 31.5rem; /* 504px */
+  --height-card-md: 23.5625rem; /* 377px */
+  --height-footer-bar: 4rem; /* 64px */
+
   /* Max Widths - EVEN NUMBERS */
-  --max-width-container: 80rem;       /* 1280px */
-  --max-width-content: 64rem;         /* 1024px */
-  --max-width-narrow: 48rem;          /* 768px */
-  --max-width-text: 45rem;            /* 720px */
-  
+  --max-width-container: 80rem; /* 1280px */
+  --max-width-content: 64rem; /* 1024px */
+  --max-width-narrow: 48rem; /* 768px */
+  --max-width-text: 45rem; /* 720px */
+
   /* ──────────────────────────────────────────────────────────────────────────
    * BORDER RADIUS - EVEN NUMBERS ONLY
    * ────────────────────────────────────────────────────────────────────────── */
-  
+
   --radius-none: 0;
-  --radius-sm: 0.5rem;    /* 8px */
-  --radius-md: 1rem;      /* 16px */
-  --radius-lg: 1.5rem;    /* 24px */
-  --radius-xl: 2rem;      /* 32px */
-  --radius-2xl: 2.5rem;   /* 40px */
-  --radius-full: 9999px;  /* Pill shape */
-  
+  --radius-sm: 0.5rem; /* 8px */
+  --radius-md: 1rem; /* 16px */
+  --radius-lg: 1.5rem; /* 24px */
+  --radius-xl: 2rem; /* 32px */
+  --radius-2xl: 2.5rem; /* 40px */
+  --radius-full: 9999px; /* Pill shape */
+
   /* Component Radius */
   --radius-button: var(--radius-full);
   --radius-input: var(--radius-md);
   --radius-card: var(--radius-xl);
   --radius-modal: var(--radius-xl);
-  
+
   /* ──────────────────────────────────────────────────────────────────────────
    * SHADOWS
    * ────────────────────────────────────────────────────────────────────────── */
-  
+
   --shadow-none: none;
   --shadow-xs: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
-  --shadow-sm: 0 2px 6px 0 rgba(0, 0, 0, 0.10);
-  --shadow-md: 0 4px 8px 0 rgba(0, 0, 0, 0.10);
-  --shadow-lg: 0 8px 16px 0 rgba(0, 0, 0, 0.10);
-  --shadow-xl: 0 16px 32px 0 rgba(0, 0, 0, 0.10);
+  --shadow-sm: 0 2px 6px 0 rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 16px 0 rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 16px 32px 0 rgba(0, 0, 0, 0.1);
   --shadow-2xl: 0 24px 48px 0 rgba(0, 0, 0, 0.25);
   --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
-  
+
   /* Custom Shadows (Premium Diffused) */
   --shadow-button: 0 4px 14px rgba(37, 99, 235, 0.25);
-  --shadow-button-hover: 0 8px 24px rgba(37, 99, 235, 0.40);
+  --shadow-button-hover: 0 8px 24px rgba(37, 99, 235, 0.4);
   --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.04);
   --shadow-card-hover: 0 12px 40px rgba(0, 0, 0, 0.08);
   --shadow-nav: 0 2px 20px rgba(0, 0, 0, 0.04);
   --shadow-modal: 0 24px 60px 0 rgba(0, 0, 0, 0.12);
-  
+
   /* Claymorphism Shadows - BOLD EDITION */
-  --shadow-clay: 
+  --shadow-clay:
     inset 3px 3px 6px rgba(255, 255, 255, 0.7),
-    inset -2px -2px 5px rgba(0, 0, 0, 0.08),
-     10px 10px 28px rgba(0, 0, 0, 0.18);
-  --shadow-clay-hover: 
+    inset -2px -2px 5px rgba(0, 0, 0, 0.08), 10px 10px 28px rgba(0, 0, 0, 0.18);
+  --shadow-clay-hover:
     inset 3px 3px 7px rgba(255, 255, 255, 0.8),
-    inset -2px -2px 5px rgba(0, 0, 0, 0.10),
-     14px 14px 36px rgba(0, 0, 0, 0.25);
+    inset -2px -2px 5px rgba(0, 0, 0, 0.1), 14px 14px 36px rgba(0, 0, 0, 0.25);
   --shadow-clay-pressed:
     inset 3px 3px 8px rgba(0, 0, 0, 0.12),
     inset -2px -2px 4px rgba(255, 255, 255, 0.5),
-     4px 4px 12px rgba(0, 0, 0, 0.15);
+    4px 4px 12px rgba(0, 0, 0, 0.15);
   --shadow-clay-button:
     inset 3px 3px 5px rgba(255, 255, 255, 0.6),
-    inset -2px -2px 4px rgba(0, 0, 0, 0.06),
-     6px 6px 18px rgba(0, 0, 0, 0.14);
-  
+    inset -2px -2px 4px rgba(0, 0, 0, 0.06), 6px 6px 18px rgba(0, 0, 0, 0.14);
+
   /* ──────────────────────────────────────────────────────────────────────────
    * TRANSITIONS - EVEN NUMBERS ONLY
    * ────────────────────────────────────────────────────────────────────────── */
-  
+
   /* Duration - EVEN NUMBERS ONLY */
   --duration-instant: 0ms;
   --duration-fast: 100ms;
@@ -256,7 +256,7 @@
   --duration-slow: 300ms;
   --duration-slower: 500ms;
   --duration-slowest: 700ms;
-  
+
   /* Easing */
   --ease-linear: cubic-bezier(0, 0, 1, 1);
   --ease-in: cubic-bezier(0.4, 0, 1, 1);
@@ -264,17 +264,17 @@
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  
+
   /* Transition Presets */
   --transition-fast: var(--duration-fast) var(--ease-out);
   --transition-base: var(--duration-normal) var(--ease-out);
   --transition-slow: var(--duration-slow) var(--ease-out);
   --transition-slower: var(--duration-slower) var(--ease-in-out);
-  
+
   /* ──────────────────────────────────────────────────────────────────────────
    * Z-INDEX - EVEN HUNDREDS ONLY
    * ────────────────────────────────────────────────────────────────────────── */
-  
+
   --z-base: 0;
   --z-dropdown: 100;
   --z-sticky: 200;
@@ -285,33 +285,33 @@
   --z-popover: 700;
   --z-tooltip: 800;
   --z-notification: 900;
-  
+
   /* ──────────────────────────────────────────────────────────────────────────
    * BREAKPOINTS - EVEN NUMBERS ONLY
    * ────────────────────────────────────────────────────────────────────────── */
-  
+
   --breakpoint-sm: 640px;
   --breakpoint-md: 768px;
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1280px;
   --breakpoint-2xl: 1536px;
-  
+
   /* ──────────────────────────────────────────────────────────────────────────
    * COMPONENT SPECIFICATIONS - EVEN NUMBERS ONLY
    * ────────────────────────────────────────────────────────────────────────── */
-  
+
   /* Navigation */
   --nav-height: var(--height-nav);
-  --nav-padding-x: var(--space-2);         /* 16px */
+  --nav-padding-x: var(--space-2); /* 16px */
   --nav-padding-x-desktop: var(--space-4); /* 32px */
-  --nav-padding-y: var(--space-1);         /* 8px */
-  --nav-button-gap: var(--space-1);        /* 16px desktop */
+  --nav-padding-y: var(--space-1); /* 8px */
+  --nav-button-gap: var(--space-1); /* 16px desktop */
   --nav-button-gap-mobile: var(--space-0); /* 8px mobile */
   --nav-button-height: var(--height-nav-button);
-  --nav-button-padding-x: var(--space-1);  /* 16px */
-  --nav-button-font-size: var(--font-size-xs);  /* 14px */
+  --nav-button-padding-x: var(--space-1); /* 16px */
+  --nav-button-font-size: var(--font-size-xs); /* 14px */
   --nav-button-font-size-desktop: var(--font-size-sm); /* 16px */
-  
+
   /* Buttons */
   --button-height-sm: var(--height-button-sm);
   --button-height-md: var(--height-button-md);
@@ -319,51 +319,52 @@
   --button-padding-x: var(--space-1);
   --button-font-size: var(--font-size-xs);
   --button-border-radius: var(--radius-full);
-  
+
   /* Cards */
   --card-padding: var(--space-2);
   --card-border-radius: var(--radius-xl);
   --card-shadow: var(--shadow-card);
   --card-shadow-hover: var(--shadow-card-hover);
-  
+
   /* Footer */
   --footer-padding-y: var(--space-6);
   --footer-column-gap: var(--space-8);
   --footer-font-size: var(--font-size-xs);
   --footer-bar-height: var(--height-footer-bar);
-  
+
   /* Forms */
   --input-height: var(--height-input);
   --input-border-radius: var(--radius-md);
   --input-border-color: var(--color-border-input);
   --input-focus-border-color: var(--color-primary);
-  
+
   /* ──────────────────────────────────────────────────────────────────────────
    * ACCESSIBILITY
    * ────────────────────────────────────────────────────────────────────────── */
-  
+
   /* Focus Ring - EVEN NUMBERS */
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;
-  --focus-ring-color: rgba(37, 99, 235, 0.50);
+  --focus-ring-color: rgba(37, 99, 235, 0.5);
   --focus-ring: var(--focus-ring-width) solid var(--focus-ring-color);
-  --focus-ring-offset-style: var(--focus-ring-offset) solid var(--color-background-primary);
-  
+  --focus-ring-offset-style: var(--focus-ring-offset) solid
+    var(--color-background-primary);
+
   /* Minimum Touch Target - EVEN NUMBER */
   --min-touch-target: 44px;
-  
+
   /* ──────────────────────────────────────────────────────────────────────────
    * GRIDS & LAYOUT - EVEN NUMBERS ONLY
    * ────────────────────────────────────────────────────────────────────────── */
-  
+
   /* Container Padding - EVEN NUMBERS */
-  --container-padding-mobile: var(--space-1);   /* 16px */
-  --container-padding-tablet: var(--space-2);   /* 32px */
-  --container-padding-desktop: var(--space-4);  /* 64px */
-  
+  --container-padding-mobile: var(--space-1); /* 16px */
+  --container-padding-tablet: var(--space-2); /* 32px */
+  --container-padding-desktop: var(--space-4); /* 64px */
+
   /* Section Spacing - EVEN NUMBERS */
-  --section-spacing-mobile: var(--space-6);   /* 48px */
-  --section-spacing-tablet: var(--space-8);   /* 64px */
+  --section-spacing-mobile: var(--space-6); /* 48px */
+  --section-spacing-tablet: var(--space-8); /* 64px */
   --section-spacing-desktop: var(--space-10); /* 80px */
 }
 
@@ -412,18 +413,18 @@
   --color-text-primary: #e0e8f8;
   --color-text-secondary: #c8d4ec;
   --color-text-tertiary: #aab5cc;
-  --color-text-muted: rgba(200, 212, 236, 0.50);
-  --color-text-subtle: rgba(200, 212, 236, 0.30);
+  --color-text-muted: rgba(200, 212, 236, 0.5);
+  --color-text-subtle: rgba(200, 212, 236, 0.3);
   --color-text-inverse: #0e1320;
   --color-text-link: #3b82f6;
   --color-text-link-hover: #60a5fa;
 
   /* Border Colors */
   --color-border-light: rgba(255, 255, 255, 0.06);
-  --color-border-medium: rgba(255, 255, 255, 0.10);
+  --color-border-medium: rgba(255, 255, 255, 0.1);
   --color-border-dark: rgba(255, 255, 255, 0.16);
-  --color-border-input: rgba(255, 255, 255, 0.10);
-  --color-border-focus: rgba(59, 130, 246, 0.60);
+  --color-border-input: rgba(255, 255, 255, 0.1);
+  --color-border-focus: rgba(59, 130, 246, 0.6);
 
   /* Semantic Colors */
   --color-success: #16a34a;
@@ -441,7 +442,7 @@
   --color-info: #3b82f6;
   --color-info_light: rgba(59, 130, 246, 0.15);
   --color-info_dark: #2563eb;
-  
+
   /* Product Colors */
   --color-gco: #3b82f6;
   --color-gco_dark: #3b82f6;
@@ -460,7 +461,7 @@
   --shadow-lg: 0 16px 40px 0 rgba(0, 0, 0, 0.6);
   --shadow-xl: 0 24px 48px 0 rgba(0, 0, 0, 0.6);
   --shadow-2xl: 0 32px 64px 0 rgba(0, 0, 0, 0.7);
-  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.20);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.2);
 
   /* Custom Shadows (Premium Diffused Dark) */
   --shadow-button: 0 4px 20px rgba(56, 189, 248, 0.25);
@@ -471,7 +472,8 @@
   --shadow-modal: 0 32px 80px 0 rgba(0, 0, 0, 0.6);
 
   /* Focus Ring */
-  --focus-ring-offset-style: var(--focus-ring-offset) solid var(--color-background-primary);
+  --focus-ring-offset-style: var(--focus-ring-offset) solid
+    var(--color-background-primary);
 }
 
 /* Glassmorphism Classes for Dark Mode */
@@ -479,7 +481,9 @@ html[data-theme="dark"] .bg-\[var\(--color-background-secondary\)\] {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 8px 32px 0 rgba(0, 0, 0, 0.3);
 }
 
 /* Make body background a rich radial gradient in dark mode */
@@ -492,7 +496,11 @@ html[data-theme="dark"] body {
 html[data-theme] *,
 html[data-theme] *::before,
 html[data-theme] *::after {
-  transition: background-color 0.4s ease, color 0.3s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+  transition:
+    background-color 0.4s ease,
+    color 0.3s ease,
+    border-color 0.4s ease,
+    box-shadow 0.4s ease;
 }
 /* Exclude elements that should not animate */
 html[data-theme] video,
@@ -546,7 +554,9 @@ html[data-theme="dark"] .social-png-icon {
   border-radius: 24px;
   box-shadow: var(--shadow-clay);
   border: 1.5px solid rgba(255, 255, 255, 0.45);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
 }
 
 .clay-card:hover {
@@ -558,7 +568,9 @@ html[data-theme="dark"] .social-png-icon {
   border-radius: 9999px;
   box-shadow: var(--shadow-clay-button);
   border: 1.5px solid rgba(255, 255, 255, 0.35);
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
 .clay-button:hover {
@@ -574,11 +586,13 @@ html[data-theme="dark"] .social-png-icon {
 .clay-input {
   background: var(--color-background-secondary);
   border-radius: 16px;
-  box-shadow: 
+  box-shadow:
     inset 3px 3px 8px rgba(0, 0, 0, 0.08),
     inset -3px -3px 8px rgba(255, 255, 255, 0.9);
   border: 1.5px solid var(--color-border-light);
-  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  transition:
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
 }
 
 .clay-input:focus {
@@ -593,7 +607,9 @@ html[data-theme="dark"] .social-png-icon {
   border-radius: 20px;
   box-shadow: var(--shadow-clay);
   border: 1.5px solid rgba(255, 255, 255, 0.4);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
   background: var(--color-background-secondary);
 }
 
@@ -610,26 +626,50 @@ html[data-theme="dark"] .social-png-icon {
  * ============================================================================ */
 
 @keyframes liquid-shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
 }
 
 @keyframes liquid-border-rotate {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 @keyframes float-drift {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  25% { transform: translate(30px, -20px) scale(1.05); }
-  50% { transform: translate(-10px, 15px) scale(0.95); }
-  75% { transform: translate(20px, 10px) scale(1.02); }
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(30px, -20px) scale(1.05);
+  }
+  50% {
+    transform: translate(-10px, 15px) scale(0.95);
+  }
+  75% {
+    transform: translate(20px, 10px) scale(1.02);
+  }
 }
 
 @keyframes pulse-glow {
-  0%, 100% { opacity: 0.6; }
-  50% { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 .liquid-glass-card {
@@ -639,7 +679,7 @@ html[data-theme="dark"] .social-png-icon {
 }
 
 .liquid-glass-card::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   padding: 1.5px;
@@ -655,14 +695,16 @@ html[data-theme="dark"] .social-png-icon {
   );
   background-size: 400% 400%;
   animation: liquid-border-rotate 5s ease infinite;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;
 }
 
 .liquid-glass-card::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   border-radius: 30px;
@@ -670,7 +712,7 @@ html[data-theme="dark"] .social-png-icon {
     90deg,
     transparent 0%,
     rgba(167, 139, 250, 0.06) 20%,
-    rgba(255, 255, 255, 0.10) 40%,
+    rgba(255, 255, 255, 0.1) 40%,
     rgba(129, 140, 248, 0.08) 55%,
     rgba(167, 139, 250, 0.06) 70%,
     transparent 100%
@@ -681,7 +723,9 @@ html[data-theme="dark"] .social-png-icon {
 }
 
 .liquid-glass-orb {
-  animation: float-drift 10s ease-in-out infinite, pulse-glow 3s ease-in-out infinite;
+  animation:
+    float-drift 10s ease-in-out infinite,
+    pulse-glow 3s ease-in-out infinite;
 }
 
 /* Dark mode clay adjustments - BOLD EDITION */
@@ -690,16 +734,16 @@ html[data-theme="dark"] .social-png-icon {
   box-shadow:
     inset 2px 2px 5px rgba(255, 255, 255, 0.08),
     inset -2px -2px 4px rgba(0, 0, 0, 0.4),
-     10px 10px 30px rgba(0, 0, 0, 0.6);
+    10px 10px 30px rgba(0, 0, 0, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 [data-theme="dark"] .clay-card:hover,
 [data-theme="dark"] .clay-faq:hover {
   box-shadow:
-    inset 2px 2px 6px rgba(255, 255, 255, 0.10),
+    inset 2px 2px 6px rgba(255, 255, 255, 0.1),
     inset -2px -2px 5px rgba(0, 0, 0, 0.4),
-     14px 14px 38px rgba(0, 0, 0, 0.7);
+    14px 14px 38px rgba(0, 0, 0, 0.7);
   transform: translateY(-3px);
 }
 
@@ -707,7 +751,7 @@ html[data-theme="dark"] .social-png-icon {
   box-shadow:
     inset 2px 2px 4px rgba(255, 255, 255, 0.06),
     inset -2px -2px 3px rgba(0, 0, 0, 0.3),
-     6px 6px 20px rgba(0, 0, 0, 0.5);
+    6px 6px 20px rgba(0, 0, 0, 0.5);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 

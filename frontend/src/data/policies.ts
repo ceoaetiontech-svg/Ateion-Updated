@@ -16,17 +16,16 @@ export interface PolicyFramework {
 export interface PolicyEntry {
   id: string;
   country: string;
-  code: string;       // 3-letter display badge
-  flag: string;       // emoji (used in detail page)
+  code: string; // 3-letter display badge
+  flag: string; // emoji (used in detail page)
   region: string;
   accentColor: string;
-  featured: boolean;  // shown on Ateion homepage (5 cards)
+  featured: boolean; // shown on Ateion homepage (5 cards)
   frameworks: PolicyFramework[];
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 export const policies: PolicyEntry[] = [
-
   // ═══════════════════════════════════════════════════════
   // FEATURED 5 — shown on Ateion homepage
   // ═══════════════════════════════════════════════════════
@@ -42,7 +41,8 @@ export const policies: PolicyEntry[] = [
     frameworks: [
       {
         name: "Smart Nation 2025",
-        shortDescription: "Singapore's bold national digital-transformation agenda.",
+        shortDescription:
+          "Singapore's bold national digital-transformation agenda.",
         description:
           "Smart Nation 2025 envisions Singapore as a world-leading digital economy powered by AI, data, and connectivity — transforming education, health, and governance at scale.",
         alignmentText:
@@ -54,7 +54,8 @@ export const policies: PolicyEntry[] = [
       },
       {
         name: "SkillsFuture Framework",
-        shortDescription: "Lifelong learning and skills mastery for every Singaporean.",
+        shortDescription:
+          "Lifelong learning and skills mastery for every Singaporean.",
         description:
           "SkillsFuture promotes a national culture of lifelong learning, enabling every citizen to develop their fullest potential through continuous skills upgrading and mastery.",
         alignmentText:
@@ -78,7 +79,8 @@ export const policies: PolicyEntry[] = [
     frameworks: [
       {
         name: "National Core Curriculum 2016",
-        shortDescription: "Phenomenon-based learning centred on thinking and creativity.",
+        shortDescription:
+          "Phenomenon-based learning centred on thinking and creativity.",
         description:
           "Finland's National Core Curriculum emphasises transversal competencies — critical thinking, creativity, collaboration, and communication — over rote memorisation, making it a global benchmark.",
         alignmentText:
@@ -90,7 +92,8 @@ export const policies: PolicyEntry[] = [
       },
       {
         name: "Finland's National AI Strategy",
-        shortDescription: "Building a human-centred AI ecosystem for education and work.",
+        shortDescription:
+          "Building a human-centred AI ecosystem for education and work.",
         description:
           "Finland's national AI strategy focuses on AI literacy for all citizens, responsible AI deployment, and integrating AI thinking into education at every level.",
         alignmentText:
@@ -138,7 +141,8 @@ export const policies: PolicyEntry[] = [
     frameworks: [
       {
         name: "National Education Policy 2020",
-        shortDescription: "India's most comprehensive education reform in 34 years.",
+        shortDescription:
+          "India's most comprehensive education reform in 34 years.",
         description:
           "NEP 2020 transforms Indian education with holistic, multidisciplinary learning — emphasising critical thinking, creativity, experiential learning, and a dramatic reduction in rote-based curriculum load.",
         alignmentText:
@@ -150,7 +154,8 @@ export const policies: PolicyEntry[] = [
       },
       {
         name: "NIPUN Bharat",
-        shortDescription: "Foundational literacy and numeracy for every Indian child.",
+        shortDescription:
+          "Foundational literacy and numeracy for every Indian child.",
         description:
           "NIPUN Bharat ensures every child acquires robust foundational literacy and numeracy skills by Grade 3, forming the cognitive bedrock for all future academic and life success.",
         alignmentText:
@@ -174,7 +179,8 @@ export const policies: PolicyEntry[] = [
     frameworks: [
       {
         name: "UAE National Education Strategy",
-        shortDescription: "Building a world-class education system for UAE's knowledge economy.",
+        shortDescription:
+          "Building a world-class education system for UAE's knowledge economy.",
         description:
           "The UAE National Education Strategy produces graduates with 21st-century skills — innovation, critical thinking, and digital fluency — aligned with UAE Centennial 2071.",
         alignmentText:
@@ -202,7 +208,8 @@ export const policies: PolicyEntry[] = [
     frameworks: [
       {
         name: "Every Student Succeeds Act (ESSA)",
-        shortDescription: "Empowering states with flexible, equity-focused education standards.",
+        shortDescription:
+          "Empowering states with flexible, equity-focused education standards.",
         description:
           "ESSA shifts education accountability to individual states, focusing on well-rounded education, safe schools, and targeted support for historically underserved students.",
         alignmentText:
@@ -214,7 +221,8 @@ export const policies: PolicyEntry[] = [
       },
       {
         name: "National AI Initiative",
-        shortDescription: "Coordinating US AI research, education, and workforce development.",
+        shortDescription:
+          "Coordinating US AI research, education, and workforce development.",
         description:
           "The US National AI Initiative Act coordinates AI R&D, promotes AI education from K-12 through workforce level, and ensures America's global AI leadership.",
         alignmentText:
@@ -238,7 +246,8 @@ export const policies: PolicyEntry[] = [
     frameworks: [
       {
         name: "Digital Pact for Schools",
-        shortDescription: "€5 billion investment in Germany's digital education infrastructure.",
+        shortDescription:
+          "€5 billion investment in Germany's digital education infrastructure.",
         description:
           "The Digital Pact funds digital equipment, high-speed internet, and digital learning environments across all German schools — preparing students for the digital economy.",
         alignmentText:
@@ -262,7 +271,8 @@ export const policies: PolicyEntry[] = [
     frameworks: [
       {
         name: "2022 Revised Curriculum",
-        shortDescription: "Competency-based learning for South Korea's digital future.",
+        shortDescription:
+          "Competency-based learning for South Korea's digital future.",
         description:
           "South Korea's 2022 Revised National Curriculum shifts decisively toward competency-based education, digital literacy, and personalised learning pathways — moving away from rote-focused instruction.",
         alignmentText:
@@ -286,7 +296,8 @@ export const policies: PolicyEntry[] = [
     frameworks: [
       {
         name: "European Education Area 2025",
-        shortDescription: "Building a borderless, high-quality education space across Europe.",
+        shortDescription:
+          "Building a borderless, high-quality education space across Europe.",
         description:
           "The European Education Area initiative aims to break down barriers to learning across EU member states, promote mutual recognition of qualifications, and build a lifelong learning culture.",
         alignmentText:
@@ -294,7 +305,8 @@ export const policies: PolicyEntry[] = [
         hoverMessage:
           "Ateion's borderless assessment model supports the EU's vision of a unified European education space.",
         tags: ["Inclusion", "Lifelong Learning", "Qualifications"],
-        policyLink: "https://education.ec.europa.eu/education-levels/european-education-area",
+        policyLink:
+          "https://education.ec.europa.eu/education-levels/european-education-area",
       },
     ],
   },
@@ -310,7 +322,8 @@ export const policies: PolicyEntry[] = [
     frameworks: [
       {
         name: "Education for Sustainable Development (ESD)",
-        shortDescription: "Empowering learners to transform themselves and the world.",
+        shortDescription:
+          "Empowering learners to transform themselves and the world.",
         description:
           "UNESCO's Education for Sustainable Development framework equips learners with the knowledge, skills, values, and attitudes to address global challenges like climate change, biodiversity, and social equity.",
         alignmentText:
@@ -318,7 +331,8 @@ export const policies: PolicyEntry[] = [
         hoverMessage:
           "Ateion develops the transformative thinking UNESCO's ESD framework says the world urgently needs.",
         tags: ["Sustainability", "Global Citizenship", "Values"],
-        policyLink: "https://www.unesco.org/en/education-sustainable-development",
+        policyLink:
+          "https://www.unesco.org/en/education-sustainable-development",
       },
     ],
   },
@@ -334,7 +348,8 @@ export const policies: PolicyEntry[] = [
     frameworks: [
       {
         name: "Future of Jobs 2023 — Education Skills",
-        shortDescription: "The skills the world economy needs by 2027 and beyond.",
+        shortDescription:
+          "The skills the world economy needs by 2027 and beyond.",
         description:
           "The WEF Future of Jobs Report identifies the critical skills employers will demand by 2027 — analytical thinking, creative thinking, AI literacy, systems thinking, and motivation — forming a global blueprint for future-ready education.",
         alignmentText:
@@ -342,7 +357,8 @@ export const policies: PolicyEntry[] = [
         hoverMessage:
           "Ateion measures the exact skills the WEF says the global economy will demand most by 2027.",
         tags: ["Future Skills", "Analytical Thinking", "AI Literacy"],
-        policyLink: "https://www.weforum.org/publications/the-future-of-jobs-report-2023",
+        policyLink:
+          "https://www.weforum.org/publications/the-future-of-jobs-report-2023",
       },
     ],
   },
@@ -358,7 +374,8 @@ export const policies: PolicyEntry[] = [
     frameworks: [
       {
         name: "Levelling Up Education",
-        shortDescription: "Closing the attainment gap across all regions of the UK.",
+        shortDescription:
+          "Closing the attainment gap across all regions of the UK.",
         description:
           "The UK's Levelling Up agenda focuses on education equity — ensuring every child, regardless of geography or socio-economic background, achieves their full cognitive potential.",
         alignmentText:
@@ -366,7 +383,8 @@ export const policies: PolicyEntry[] = [
         hoverMessage:
           "Ateion's fair, prep-free model levels the playing field — core to the UK's Levelling Up mission.",
         tags: ["Equity", "Inclusion", "Access"],
-        policyLink: "https://www.gov.uk/government/publications/levelling-up-the-united-kingdom",
+        policyLink:
+          "https://www.gov.uk/government/publications/levelling-up-the-united-kingdom",
       },
     ],
   },

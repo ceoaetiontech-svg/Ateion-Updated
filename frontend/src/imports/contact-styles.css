@@ -91,7 +91,9 @@
   padding: 40px;
   box-shadow: var(--shadow-clay);
   border: 1px solid rgba(255, 255, 255, 0.3);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
 }
 
 .contact-form-clay:hover {

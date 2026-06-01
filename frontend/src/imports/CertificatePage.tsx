@@ -7,15 +7,12 @@ import imgImage7 from "../assets/e985b07ea1f916546c05a06ca93558ef62ecc870.png";
 export default function CertificatePage() {
   return (
     <div className="min-h-screen bg-[var(--color-background-primary)] overflow-x-hidden">
-
       {/* NAVBAR */}
       <SharedNavbar />
 
       {/* PAGE */}
       <div className="px-6 md:px-20 pt-32 pb-20">
-
         <div className="max-w-7xl mx-auto">
-
           {/* TITLE */}
           <h1
             className="text-[40px] md:text-[60px] font-bold text-black mb-6"
@@ -33,38 +30,30 @@ export default function CertificatePage() {
 
           {/* CARDS */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-
             {/* CARD 1 */}
             <div className="bg-[var(--color-background-secondary)] clay-card p-10">
-
               <img
                 src={imgImage9}
                 alt="certificate"
                 className="w-full rounded-2xl"
               />
-
             </div>
 
             {/* CARD 2 */}
             <div className="bg-[var(--color-background-secondary)] clay-card p-10">
-
               <img
                 src={imgImage7}
                 alt="certificate"
                 className="w-full rounded-2xl"
               />
-
             </div>
-
           </div>
-
         </div>
-
       </div>
 
       {/* FOOTER */}
       <SharedFooter />
-
     </div>
   );
 }
+

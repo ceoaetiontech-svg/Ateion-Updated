@@ -4,20 +4,20 @@ import { useNavigate } from "react-router";
 import { featuredPolicies, PolicyEntry } from "../../data/policies";
 
 // ─── Policy images (all featured countries) ────────────────────────────────────
-import singaporeImg  from "../../assets/policies/singapore.png";
-import finlandImg    from "../../assets/policies/finland.png";
-import japanImg      from "../../assets/policies/japan.png";
-import indiaImg      from "../../assets/gco/education-ministry-logo.jpg";
-import uaeImg        from "../../assets/gco/logo-education.png";
+import singaporeImg from "../../assets/policies/singapore.png";
+import finlandImg from "../../assets/policies/finland.png";
+import japanImg from "../../assets/policies/japan.png";
+import indiaImg from "../../assets/gco/education-ministry-logo.jpg";
+import uaeImg from "../../assets/gco/logo-education.png";
 
 import "../../styles/gco/PolicyAlignment.css";
 
 const policyImages: Record<string, string> = {
   singapore: singaporeImg,
-  finland:   finlandImg,
-  japan:     japanImg,
-  india:     indiaImg,
-  uae:       uaeImg,
+  finland: finlandImg,
+  japan: japanImg,
+  india: indiaImg,
+  uae: uaeImg,
 };
 
 // ─── PolicyCard ────────────────────────────────────────────────────────────────
@@ -85,7 +85,8 @@ function PolicyCard({ policy, index }: { policy: PolicyEntry; index: number }) {
               className="policy-strip-fw"
               style={{ color: policy.accentColor }}
             >
-              {policy.frameworks.length} framework{policy.frameworks.length > 1 ? "s" : ""}
+              {policy.frameworks.length} framework
+              {policy.frameworks.length > 1 ? "s" : ""}
             </span>
           </div>
         </div>
@@ -179,7 +180,8 @@ export default function PolicyAlignmentSection() {
           viewport={{ once: true }}
           transition={{ duration: 0.55, delay: 0.2 }}
         >
-          Our ecosystem supports future-ready education frameworks across the world.
+          Our ecosystem supports future-ready education frameworks across the
+          world.
         </motion.p>
       </div>
 

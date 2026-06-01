@@ -37,8 +37,6 @@ function HeroSection() {
   const isMouseInSection = useIsMouseInSection(heroRef);
   const [disableTrail, setDisableTrail] = useState(false);
 
-
-
   const images = [trail2, trail4, trail5];
 
   return (
@@ -46,28 +44,48 @@ function HeroSection() {
       {/* ─── Upper part: text + buttons + logos ─── */}
       <div className="hero-overlay">
         <div className="hero-content">
-          <h1 className="hero-title" style={{ fontFamily: "'OV Soge', sans-serif" }}>
+          <h1
+            className="hero-title"
+            style={{ fontFamily: "'OV Soge', sans-serif" }}
+          >
             Global Capability Olympiad
           </h1>
-          
+
           <p className="hero-subtitle mb-8 md:mb-12">
-            The Global Capability Olympiad is the world&apos;s first preparation-free,
-            syllabus-free, AI-integrated Master Olympiad designed to measure
-            thinking, not memory.
+            The Global Capability Olympiad is the world&apos;s first
+            preparation-free, syllabus-free, AI-integrated Master Olympiad
+            designed to measure thinking, not memory.
           </p>
 
           <div className="hero-buttons">
-            <button type="button" className="btn-secondary" onClick={() => navigate('/contact')} onMouseEnter={() => setDisableTrail(true)} onMouseLeave={() => setDisableTrail(false)}>Contact us</button>
-            <button type="button" className="btn-black" onClick={() => navigate('/gco')} onMouseEnter={() => setDisableTrail(true)} onMouseLeave={() => setDisableTrail(false)}>Explore more</button>
+            <button
+              type="button"
+              className="btn-secondary"
+              onClick={() => navigate("/contact")}
+              onMouseEnter={() => setDisableTrail(true)}
+              onMouseLeave={() => setDisableTrail(false)}
+            >
+              Contact us
+            </button>
+            <button
+              type="button"
+              className="btn-black"
+              onClick={() => navigate("/gco")}
+              onMouseEnter={() => setDisableTrail(true)}
+              onMouseLeave={() => setDisableTrail(false)}
+            >
+              Explore more
+            </button>
           </div>
-
-
         </div>
       </div>
 
       {/* ─── Bottom zone: ImageTrail ─── */}
       <div className="hero-trail-zone" ref={trailZoneRef}>
-        <ImageTrail containerRef={trailZoneRef} disabled={!isMouseInSection || disableTrail}>
+        <ImageTrail
+          containerRef={trailZoneRef}
+          disabled={!isMouseInSection || disableTrail}
+        >
           {images.map((url, index) => (
             <div
               key={index}

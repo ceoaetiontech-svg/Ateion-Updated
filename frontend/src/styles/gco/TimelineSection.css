@@ -2,7 +2,7 @@
   min-height: auto;
   background-color: var(--color-background-primary);
   padding: 4rem 0;
-  font-family: 'SF Pro Display', sans-serif;
+  font-family: "SF Pro Display", sans-serif;
 }
 
 .timeline-container {
@@ -18,12 +18,14 @@
   letter-spacing: -0.02em;
   color: var(--color-text-primary);
   margin-bottom: 0.75rem;
-  font-family: 'OV Soge', sans-serif;
+  font-family: "OV Soge", sans-serif;
   text-align: center;
   margin-bottom: 96px;
 }
 
-.timeline-relative { position: relative; }
+.timeline-relative {
+  position: relative;
+}
 
 .timeline-line-bg {
   position: absolute;
@@ -43,7 +45,9 @@
   top: 0;
 }
 
-.timeline-steps-wrapper { position: relative; }
+.timeline-steps-wrapper {
+  position: relative;
+}
 
 .timeline-step {
   position: relative;
@@ -80,14 +84,18 @@
   color: var(--color-text-secondary);
 }
 
-.text-right { text-align: right; }
-.text-left  { text-align: left; }
+.text-right {
+  text-align: right;
+}
+.text-left {
+  text-align: left;
+}
 
 .timeline-icon-container {
   width: 5rem;
   height: 5rem;
   border-radius: 50%;
-  background-color: #D4CDB7;
+  background-color: #d4cdb7;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -120,12 +128,16 @@
 
 /* ─── Tablet ≤768px ──────────────────────────── */
 @media (max-width: 768px) {
-  .timeline-section { padding: 3rem 0; }
+  .timeline-section {
+    padding: 3rem 0;
+  }
   .timeline-container {
     width: 100%;
     padding: 0 1.25rem;
   }
-  .timeline-title { margin-bottom: 2.5rem; }
+  .timeline-title {
+    margin-bottom: 2.5rem;
+  }
 
   .timeline-line-bg,
   .timeline-line-fill {
@@ -186,7 +198,9 @@
 
 /* ─── Mobile ≤600px ──────────────────────────── */
 @media (max-width: 600px) {
-  .timeline-container { padding: 0 1rem; }
+  .timeline-container {
+    padding: 0 1rem;
+  }
   .timeline-title {
     font-size: clamp(1.85rem, 8vw, 2.4rem);
     margin-bottom: 2rem;
@@ -248,8 +262,12 @@
 
 @media (max-width: 768px) {
   [data-theme="dark"] .timeline-mobile-card {
-    background: linear-gradient(180deg, var(--color-background-secondary) 0%, #151517 100%);
-    border: 1px solid rgba(255,255,255,0.08);
+    background: linear-gradient(
+      180deg,
+      var(--color-background-secondary) 0%,
+      #151517 100%
+    );
+    border: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow: 0 18px 40px rgba(0, 0, 0, 0.3);
   }
 
