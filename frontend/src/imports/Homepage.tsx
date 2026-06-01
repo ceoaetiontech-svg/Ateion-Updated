@@ -109,24 +109,78 @@ function HeroHeaderSection() {
 /* ─────────────────────────────────────────────
    FEATURE CARDS (capability + global + red)
 ───────────────────────────────────────────── */
+const capabilityMessages = [
+  {
+    title: "Because marks measure memory.",
+    highlight: "Capability measures the future.",
+  },
+  {
+    title: "Degrees don't guarantee readiness.",
+    highlight: "Capability does.",
+  },
+  {
+    title: "The world rewards problem-solvers.",
+    highlight: "Not memorisers.",
+  },
+  {
+    title: "Education should create thinkers.",
+    highlight: "Not test-takers.",
+  },
+];
 
 function PurpleCapabilityCardInner() {
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % capabilityMessages.length);
+    }, 3500);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <div className="clay-card bg-[var(--color-grey-card)] flex h-[400px] sm:h-[450px] md:h-[504px] items-start p-[24px] sm:p-[32px] md:p-[40px] relative shrink-0 w-full md:w-[32%] lg:w-[28%] md:max-w-none">
-      <div className="flex flex-col gap-[24px] sm:gap-[32px] items-start justify-center relative shrink-0 w-full md:max-w-[300px]">
-        <p className="font-['Inter',sans-serif] leading-[1.4] text-[16px] sm:text-[18px] text-[var(--color-text-primary)]">
-          Because <strong>marks</strong> measure memory.<br />
-          <strong className="font-['IBM Plex Sans',sans-serif] italic text-[18px] sm:text-[20px]">Capability</strong>{" "}
-          <strong className="font-['IBM Plex Sans',sans-serif] italic">measures the future.</strong>
-        </p>
-        <p className="font-['Inter',sans-serif] leading-[1.6] text-[13px] sm:text-[14px] text-[var(--color-text-primary)] w-full">
-          Ateion is the world's leading Capability-First Education ecosystem integrating AI literacy, innovation, and measurable readiness into modern schooling.
-        </p>
+    <div className="clay-card bg-white border border-blue-100 flex h-[420px] items-start p-[32px] relative w-full overflow-hidden rounded-[24px] shadow-lg">
+
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={current}
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -40 }}
+          transition={{ duration: 0.8 }}
+          className="flex flex-col justify-center h-full"
+        >
+          <p className="text-[26px] font-medium leading-[1.3] text-black">
+            {capabilityMessages[current].title}
+
+            <span className="block mt-3 text-[34px] font-extrabold italic text-blue-500">
+              {capabilityMessages[current].highlight}
+            </span>
+          </p>
+
+          <p className="mt-8 text-[18px] leading-[1.7] text-black/80">
+            Ateion is the world's leading Capability-First Education ecosystem,
+            integrating AI literacy, innovation, and measurable readiness into modern schooling.
+          </p>
+        </motion.div>
+      </AnimatePresence>
+
+      {/* dots */}
+      <div className="absolute bottom-6 left-6 flex gap-2">
+        {capabilityMessages.map((_, i) => (
+          <div
+            key={i}
+            className={`h-2 rounded-full transition-all ${
+              i === current ? "w-8 bg-blue-500" : "w-2 bg-gray-300"
+            }`}
+          />
+        ))}
       </div>
+
     </div>
   );
 }
-
 function PurpleCapabilityCardOuter() {
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -134,11 +188,9 @@ function PurpleCapabilityCardOuter() {
     const video = videoRef.current;
     if (!video) return;
 
-    // Start muted so autoplay is allowed by the browser
     video.muted = true;
-    video.play().catch(() => { });
+    video.play().catch(() => {});
 
-    // Unmute on first click anywhere on the page
     const handleFirstClick = () => {
       if (videoRef.current) {
         videoRef.current.muted = false;
@@ -149,38 +201,40 @@ function PurpleCapabilityCardOuter() {
     window.addEventListener("click", handleFirstClick);
     return () => window.removeEventListener("click", handleFirstClick);
   }, []);
+
   return (
-    <div className="flex flex-col items-start justify-start relative shrink-0 w-full px-[16px] sm:px-[24px] md:px-0">
-      <div className="content-stretch flex flex-col md:flex-row items-stretch relative shrink-0 w-full gap-[16px] sm:gap-[24px]">
+    <div className="w-full flex flex-col items-center gap-10">
 
-        <div className="w-full flex justify-center">
-          <div className="w-full max-w-[900px] h-[300px] sm:h-[400px] md:h-[500px] bg-black rounded-[20px] overflow-hidden">
-
-            <video
-              ref={videoRef}
-              autoPlay
-              muted
-              loop
-              controls
-              playsInline
-              className="w-full h-full"
-              style={{ objectFit: "cover" }}
-              onLoadedMetadata={(e) => {
-                e.currentTarget.playbackRate = 1.5;
-              }}
-            >
-              <source src="/video.mp4" type="video/mp4" />
-            </video>
-
-          </div>
+      {/* ── CAPABILITY CARD (CENTER) ── */}
+      <div className="w-full flex justify-center">
+        <div className="w-full max-w-[650px]">
+          <PurpleCapabilityCardInner />
         </div>
-        <PurpleCapabilityCardInner />
-
       </div>
+
+      {/* ── VIDEO (BELOW CARD) ── */}
+      <div className="w-full flex justify-center">
+        <div className="w-full max-w-[1200px] h-[550px] rounded-[24px] overflow-hidden shadow-xl">
+          <video
+            ref={videoRef}
+            autoPlay
+            muted
+            loop
+            controls
+            playsInline
+            className="w-full h-full object-cover"
+            onLoadedMetadata={(e) => {
+              e.currentTarget.playbackRate = 1.5;
+            }}
+          >
+            <source src="/video.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+
     </div>
   );
 }
-
 
 function HeroMetricsRow() {
   return (
