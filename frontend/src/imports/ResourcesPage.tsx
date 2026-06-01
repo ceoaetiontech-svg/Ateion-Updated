@@ -246,6 +246,47 @@ export default function ResourcesPage() {
               <SidebarHeader 
           className="px-4 py-6 cursor-pointer hover:opacity-80 transition-opacity"
           onClick={() => setActiveView("Dashboard")}
+        >
+          <div className="flex items-center gap-3">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-primary)] text-[#ffffff]">
+              <Rocket size={24} />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xl font-bold text-[#ffffff] tracking-wide" style={{ fontFamily: "'OV Soge', sans-serif" }}>Ateion</span>
+              <span className="text-[10px] text-[#ffffff]/60 tracking-widest font-bold uppercase">Playground</span>
+            </div>
+          </div>
+        </SidebarHeader>
+
+              {/* MENU */}
+              <SidebarContent className="px-2">
+                {navigationSections.map((section) => (
+    <Collapsible key={section.title} defaultOpen className="group/collapsible">
+      <SidebarGroup>
+        <SidebarGroupLabel asChild>
+          <CollapsibleTrigger className="flex w-full items-center text-[#ffffff]/70 hover:text-[#ffffff]">
+            <section.icon className="mr-2 h-4 w-4" />
+            {section.title}
+            <ChevronRight className="ml-auto h-4 w-4 transition-transform group-data-[state=open]/collapsible:rotate-90" />
+          </CollapsibleTrigger>
+        </SidebarGroupLabel>
+        <CollapsibleContent>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {section.items.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton 
+                    className={`text-[#ffffff]/70 hover:text-[#ffffff] hover:bg-[#ffffff]/10 transition-colors ${activeView === item.title ? 'bg-[#ffffff]/20 text-[#ffffff] font-bold' : ''}`}
+                    onClick={() => setActiveView(item.title)} // <--- ADD THIS ONCLICK
+    <SidebarProvider>
+      <div className="flex h-screen w-full bg-[var(--color-background-primary)]">
+        {/* SIDEBAR */}
+        <Sidebar variant="sidebar" collapsible="icon" className="border-r-0">
+          <div className="flex h-screen flex-col bg-[#1E1632] text-[#ffffff]">
+            {/* LOGO */}
+            <SidebarHeader
+              className="px-4 py-6 cursor-pointer hover:opacity-80 transition-opacity"
+              onClick={() => setActiveView("Dashboard")}
             >
               <div className="flex items-center gap-3">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-primary)] text-[#ffffff]">
