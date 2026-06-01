@@ -8,7 +8,7 @@
   align-items: center;
   gap: 48px;
   background-color: var(--color-background-primary);
-  font-family: 'SF Pro Display', sans-serif;
+  font-family: "SF Pro Display", sans-serif;
 }
 
 .circle-hero-number {
@@ -23,7 +23,7 @@
   letter-spacing: -0.02em;
   color: var(--color-text-primary);
   margin-bottom: 0.75rem;
-  font-family: 'OV Soge', sans-serif;
+  font-family: "OV Soge", sans-serif;
 }
 
 .circle-hero-tags {
@@ -237,3 +237,4 @@
     4px 4px 12px rgba(0, 0, 0, 0.35);
   border-color: rgba(255, 255, 255, 0.1);
 }
+

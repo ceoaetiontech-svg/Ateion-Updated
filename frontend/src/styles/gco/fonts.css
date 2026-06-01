@@ -1,6 +1,6 @@
 @font-face {
-  font-family: 'OVSoge';
-  src: url('../../assets/fonts/ov-soge/OVSoge-Bold.otf') format('opentype');
+  font-family: "OVSoge";
+  src: url("../../assets/fonts/ov-soge/OVSoge-Bold.otf") format("opentype");
   font-weight: bold;
   font-style: normal;
 }

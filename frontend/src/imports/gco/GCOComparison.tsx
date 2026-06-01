@@ -1,33 +1,33 @@
-import React from 'react';
-import '../../styles/gco/index.css';
-import '../../styles/gco/GCOComparison.css';
+import React from "react";
+import "../../styles/gco/index.css";
+import "../../styles/gco/GCOComparison.css";
 
 const comparisonData = [
   {
     feature: "Focus",
     traditional: "Subject-based",
-    gco: "Scenario-based"
+    gco: "Scenario-based",
   },
   {
     feature: "Preparation",
     traditional: "Coaching dependent",
-    gco: "Preparation-free"
+    gco: "Preparation-free",
   },
   {
     feature: "Evaluation",
     traditional: "One correct answer",
-    gco: "Multiple reasoning paths"
+    gco: "Multiple reasoning paths",
   },
   {
     feature: "Ranking",
     traditional: "Local ranking",
-    gco: "Globally normalized"
+    gco: "Globally normalized",
   },
   {
     feature: "Innovation",
     traditional: "Penalizes deviation",
-    gco: "Rewards originality"
-  }
+    gco: "Rewards originality",
+  },
 ];
 
 const GCOComparison = () => {
@@ -35,7 +35,9 @@ const GCOComparison = () => {
     <section className="gco-comparison-section">
       <div className="gco-comparison-header">
         <h2 className="gco-comparison-title">What Makes GCO Different</h2>
-        <p className="gco-comparison-subtitle">Traditional Exams vs Global Olympiad</p>
+        <p className="gco-comparison-subtitle">
+          Traditional Exams vs Global Olympiad
+        </p>
       </div>
 
       <div className="gco-comparison-grid">
@@ -47,9 +49,24 @@ const GCOComparison = () => {
           </div>
           <ul className="comparison-list">
             {comparisonData.map((item, index) => (
-              <li key={`trad-${index}`} className="comparison-list-item muted-item">
+              <li
+                key={`trad-${index}`}
+                className="comparison-list-item muted-item"
+              >
                 <div className="icon-cross">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
                 </div>
                 <span>{item.traditional}</span>
               </li>
@@ -65,20 +82,34 @@ const GCOComparison = () => {
           </div>
           <ul className="comparison-list">
             {comparisonData.map((item, index) => (
-              <li key={`gco-${index}`} className="comparison-list-item vibrant-item">
+              <li
+                key={`gco-${index}`}
+                className="comparison-list-item vibrant-item"
+              >
                 <div className="icon-check">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="3"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
                 </div>
                 <span>{item.gco}</span>
               </li>
             ))}
           </ul>
-          
+
           <div className="modern-summary-box">
             <p className="gco-summary">
-              GCO redefines assessment by valuing creativity, adaptability,
-              and global fairness—empowering learners to showcase
-              originality beyond traditional boundaries.
+              GCO redefines assessment by valuing creativity, adaptability, and
+              global fairness—empowering learners to showcase originality beyond
+              traditional boundaries.
             </p>
           </div>
         </div>

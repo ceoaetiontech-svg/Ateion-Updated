@@ -20,22 +20,22 @@ export default defineConfig({
 
   // File types to support raw imports. Never add .css, .tsx, or .ts files to this.
   assetsInclude: ["**/*.svg", "**/*.csv"],
-  
+
   // Fix for motion-dom and lucide-react build issues
   build: {
     chunkSizeWarningLimit: 1600,
     rollupOptions: {
       output: {
         manualChunks: {
-          'react-vendor': ['react', 'react-dom', 'react-router'],
-          'ui-vendor': ['framer-motion', 'lucide-react', 'recharts', 'd3'],
-          'radix-vendor': [
-            '@radix-ui/react-accordion',
-            '@radix-ui/react-dialog',
-            '@radix-ui/react-dropdown-menu',
-            '@radix-ui/react-popover',
-            '@radix-ui/react-select'
-          ]
+          "react-vendor": ["react", "react-dom", "react-router"],
+          "ui-vendor": ["framer-motion", "lucide-react", "recharts", "d3"],
+          "radix-vendor": [
+            "@radix-ui/react-accordion",
+            "@radix-ui/react-dialog",
+            "@radix-ui/react-dropdown-menu",
+            "@radix-ui/react-popover",
+            "@radix-ui/react-select",
+          ],
         },
       },
     },
@@ -44,6 +44,6 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ['lucide-react'],
+    include: ["lucide-react"],
   },
 });

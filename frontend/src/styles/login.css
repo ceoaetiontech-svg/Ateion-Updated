@@ -1,34 +1,33 @@
-.login-container{
+.login-container {
   position: fixed;
   inset: 0;
 
-  display:flex;
-  justify-content:center;
-  align-items:center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
-  background: rgba(255,255,255,0.10);
+  background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(4px);
 
-  z-index:999;
+  z-index: 999;
 
   font-family: Arial, Helvetica, sans-serif;
-  overflow-y: auto ;
-  padding:40px 20px;
-
+  overflow-y: auto;
+  padding: 40px 20px;
 }
 
-.login-card{
+.login-card {
   position: relative;
 
-  width:950px;
-  min-height:500px;
+  width: 950px;
+  min-height: 500px;
 
-  display:flex;
-  overflow:hidden;
+  display: flex;
+  overflow: hidden;
 
-  border-radius:30px;
+  border-radius: 30px;
 
-  background:white;
+  background: white;
 
   box-shadow: var(--shadow-clay);
   border: 1px solid rgba(255, 255, 255, 0.3);
@@ -37,191 +36,189 @@
   margin: auto;
 }
 
-@keyframes popup{
-
-  from{
-    opacity:0;
+@keyframes popup {
+  from {
+    opacity: 0;
     transform: translateY(40px);
   }
 
-  to{
-    opacity:1;
+  to {
+    opacity: 1;
     transform: translateY(0);
   }
-
 }
 
-.left-side{
-  width:40%;
+.left-side {
+  width: 40%;
 
-  background:#f5f1ea;
+  background: #f5f1ea;
 
-  padding:60px;
+  padding: 60px;
 
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.left-side h1{
-  font-size:58px;
-  line-height:1.1;
+.left-side h1 {
+  font-size: 58px;
+  line-height: 1.1;
 
   color: var(--color-text-primary);
 
-  margin-bottom:25px;
+  margin-bottom: 25px;
 }
 
-.left-side p{
-  font-size:18px;
-  line-height:1.7;
+.left-side p {
+  font-size: 18px;
+  line-height: 1.7;
 
   color: var(--color-text-secondary);
 }
 
-.right-side{
-  width:60%;
+.right-side {
+  width: 60%;
 
-  padding:55px;
+  padding: 55px;
 
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.right-side h2{
-  font-size:34px;
-  margin-bottom:30px;
+.right-side h2 {
+  font-size: 34px;
+  margin-bottom: 30px;
 
   color: var(--color-text-primary);
 }
 
-.right-side input{
-  width:100%;
+.right-side input {
+  width: 100%;
 
-  padding:17px;
-  margin:10px 0;
+  padding: 17px;
+  margin: 10px 0;
 
-  border-radius:14px;
-  border:1px solid #e5e7eb;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
 
-  background:#faf7f2;
+  background: #faf7f2;
 
-  font-size:15px;
-  outline:none;
+  font-size: 15px;
+  outline: none;
 }
 
-.right-side input:focus{
-  border:1px solid var(--color-primary);
+.right-side input:focus {
+  border: 1px solid var(--color-primary);
 }
 
-.login-btn{
-  width:100%;
+.login-btn {
+  width: 100%;
 
-  padding:17px;
+  padding: 17px;
 
-  margin-top:15px;
+  margin-top: 15px;
 
-  border:none;
-  border-radius:14px;
+  border: none;
+  border-radius: 14px;
 
-  background:var(--color-primary);
+  background: var(--color-primary);
   color: var(--color-background-primary);
 
-  font-size:16px;
-  font-weight:600;
+  font-size: 16px;
+  font-weight: 600;
 
-  cursor:pointer;
+  cursor: pointer;
 
-  transition:0.3s;
+  transition: 0.3s;
 }
 
-.login-btn:hover{
+.login-btn:hover {
   transform: translateY(-2px);
 }
 
-.divider{
-  text-align:center;
+.divider {
+  text-align: center;
 
-  margin-top:25px;
-  margin-bottom:5px;
+  margin-top: 25px;
+  margin-bottom: 5px;
 
-  color:#6b7280;
-  font-size:14px;
+  color: #6b7280;
+  font-size: 14px;
 }
 
 .google-btn,
 .linkedin-btn,
-.github-btn{
-  width:100%;
+.github-btn {
+  width: 100%;
 
-  padding:16px;
+  padding: 16px;
 
-  margin-top:14px;
+  margin-top: 14px;
 
-  border:none;
-  border-radius:14px;
+  border: none;
+  border-radius: 14px;
 
-  cursor:pointer;
+  cursor: pointer;
 
-  font-size:15px;
-  font-weight:500;
+  font-size: 15px;
+  font-weight: 500;
 
-  transition:0.3s;
+  transition: 0.3s;
 }
 
-.google-btn{
-  background:#f3f4f6;
+.google-btn {
+  background: #f3f4f6;
   color: var(--color-text-primary);
 }
 
-.linkedin-btn{
-  background:#0077b5;
+.linkedin-btn {
+  background: #0077b5;
   color: var(--color-background-primary);
 }
 
-.github-btn{
-  background:#111827;
+.github-btn {
+  background: #111827;
   color: var(--color-background-primary);
 }
 
 .google-btn:hover,
 .linkedin-btn:hover,
-.github-btn:hover{
+.github-btn:hover {
   transform: translateY(-2px);
 }
 
-.close-btn{
-  position:absolute;
+.close-btn {
+  position: absolute;
 
-  top:20px;
-  right:20px;
+  top: 20px;
+  right: 20px;
 
-  width:42px;
-  height:42px;
+  width: 42px;
+  height: 42px;
 
-  border:none;
-  border-radius:50%;
+  border: none;
+  border-radius: 50%;
 
-  background:#f3f4f6;
+  background: #f3f4f6;
 
-  font-size:22px;
+  font-size: 22px;
 
-  cursor:pointer;
+  cursor: pointer;
 
-  transition:0.3s;
+  transition: 0.3s;
 }
 
-.close-btn:hover{
-  background:#e5e7eb;
+.close-btn:hover {
+  background: #e5e7eb;
 }
 
 /* ===== DARK MODE OVERRIDES ===== */
-[data-theme="dark"] .login-container{
-  background: rgba(0, 0, 0, 0.60);
+[data-theme="dark"] .login-container {
+  background: rgba(0, 0, 0, 0.6);
 }
 
-[data-theme="dark"] .login-card{
+[data-theme="dark"] .login-card {
   background: var(--color-background-secondary);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
@@ -229,145 +226,144 @@
   box-shadow: var(--shadow-modal);
 }
 
-[data-theme="dark"] .login-card .left-side{
+[data-theme="dark"] .login-card .left-side {
   background: transparent;
 }
 
-[data-theme="dark"] .login-card .left-side h1{
+[data-theme="dark"] .login-card .left-side h1 {
   color: var(--color-text-primary);
 }
 
-[data-theme="dark"] .login-card .left-side p{
+[data-theme="dark"] .login-card .left-side p {
   color: var(--color-text-tertiary);
 }
 
-[data-theme="dark"] .login-card .right-side h2{
+[data-theme="dark"] .login-card .right-side h2 {
   color: var(--color-text-primary);
 }
 
-[data-theme="dark"] .login-card .right-side input{
+[data-theme="dark"] .login-card .right-side input {
   background: var(--color-background-tertiary);
   border: 1px solid rgba(255, 255, 255, 0.12);
   color: var(--color-text-primary);
 }
 
-[data-theme="dark"] .login-card .right-side input:focus{
+[data-theme="dark"] .login-card .right-side input:focus {
   border: 1px solid var(--color-primary);
 }
 
-[data-theme="dark"] .login-card .right-side input::placeholder{
+[data-theme="dark"] .login-card .right-side input::placeholder {
   color: var(--color-text-muted);
 }
 
-[data-theme="dark"] .login-card .login-btn{
+[data-theme="dark"] .login-card .login-btn {
   background: var(--color-primary);
   color: var(--color-background-primary);
 }
 
-[data-theme="dark"] .login-card .divider{
+[data-theme="dark"] .login-card .divider {
   color: var(--color-text-muted);
 }
 
-[data-theme="dark"] .login-card .google-btn{
+[data-theme="dark"] .login-card .google-btn {
   background: var(--color-background-tertiary);
   color: var(--color-text-primary);
 }
 
-[data-theme="dark"] .login-card .google-btn:hover{
+[data-theme="dark"] .login-card .google-btn:hover {
   background: #3a3a3e;
 }
 
-[data-theme="dark"] .login-card .linkedin-btn{
+[data-theme="dark"] .login-card .linkedin-btn {
   background: #0077b5;
   color: var(--color-background-primary);
 }
 
-[data-theme="dark"] .login-card .github-btn{
+[data-theme="dark"] .login-card .github-btn {
   background: var(--color-text-primary);
   color: var(--color-background-primary);
 }
 
-[data-theme="dark"] .login-card .github-btn:hover{
+[data-theme="dark"] .login-card .github-btn:hover {
   background: #d4d4d8;
 }
 
-[data-theme="dark"] .login-card .close-btn{
+[data-theme="dark"] .login-card .close-btn {
   background: var(--color-background-tertiary);
   color: var(--color-text-primary);
 }
 
-[data-theme="dark"] .login-card .close-btn:hover{
+[data-theme="dark"] .login-card .close-btn:hover {
   background: #3a3a3e;
 }
 
 /* ================= MOBILE RESPONSIVE ================= */
 
-@media screen and (max-width: 768px){
-
-  .login-container{
-    padding:20px 12px;
-    align-items:flex-start;
+@media screen and (max-width: 768px) {
+  .login-container {
+    padding: 20px 12px;
+    align-items: flex-start;
   }
 
-  .login-card{
-    width:100%;
-    min-height:auto;
+  .login-card {
+    width: 100%;
+    min-height: auto;
 
-    flex-direction:column;
+    flex-direction: column;
 
-    border-radius:22px;
+    border-radius: 22px;
   }
 
-  .left-side{
-    width:100%;
+  .left-side {
+    width: 100%;
 
-    padding:35px 25px;
-    text-align:center;
+    padding: 35px 25px;
+    text-align: center;
   }
 
-  .left-side h1{
-    font-size:40px;
-    line-height:1.1;
-    margin-bottom:15px;
+  .left-side h1 {
+    font-size: 40px;
+    line-height: 1.1;
+    margin-bottom: 15px;
   }
 
-  .left-side p{
-    font-size:15px;
-    line-height:1.6;
+  .left-side p {
+    font-size: 15px;
+    line-height: 1.6;
   }
 
-  .right-side{
-    width:100%;
+  .right-side {
+    width: 100%;
 
-    padding:30px 25px;
+    padding: 30px 25px;
   }
 
-  .right-side h2{
-    text-align:center;
-    font-size:28px;
-    margin-bottom:22px;
+  .right-side h2 {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 22px;
   }
 
-  .right-side input{
-    padding:15px;
-    font-size:14px;
+  .right-side input {
+    padding: 15px;
+    font-size: 14px;
   }
 
   .login-btn,
   .google-btn,
   .linkedin-btn,
-  .github-btn{
-    padding:15px;
-    font-size:14px;
+  .github-btn {
+    padding: 15px;
+    font-size: 14px;
   }
 
-  .close-btn{
-    width:38px;
-    height:38px;
-    font-size:18px;
+  .close-btn {
+    width: 38px;
+    height: 38px;
+    font-size: 18px;
 
-    top:12px;
-    right:12px;
+    top: 12px;
+    right: 12px;
   }
-
 }
+

@@ -52,8 +52,6 @@ export default function ThemeProvider({
     }
   }, [theme]);
 
-
-
   const toggleTheme = useCallback(() => {
     setThemeState((prev) => (prev === "light" ? "dark" : "light"));
   }, []);

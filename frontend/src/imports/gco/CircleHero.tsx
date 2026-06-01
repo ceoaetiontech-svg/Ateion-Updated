@@ -1,5 +1,5 @@
-import React from 'react';
-import '../../styles/gco/CircleHero.css';
+import React from "react";
+import "../../styles/gco/CircleHero.css";
 
 const CircleHero = () => {
   return (
@@ -7,7 +7,8 @@ const CircleHero = () => {
       <div className="circle-hero-left">
         <p className="circle-hero-number">(01)</p>
         <h1 className="circle-hero-title">
-          Global Capability<br />
+          Global Capability
+          <br />
           Olympiad
         </h1>
         <div className="circle-hero-tags">
@@ -15,9 +16,7 @@ const CircleHero = () => {
           <span>Brand Framing</span>
           <span>Tagline</span>
         </div>
-        <button className="circle-hero-btn">
-          View More →
-        </button>
+        <button className="circle-hero-btn">View More →</button>
       </div>
 
       <div className="circle-hero-right">
@@ -30,7 +29,7 @@ const CircleHero = () => {
         <div className="center-circle playground">
           <p>Playground</p>
         </div>
-        
+
         <div className="center-circle vouch">
           <p>Vouch</p>
         </div>

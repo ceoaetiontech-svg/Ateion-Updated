@@ -1,21 +1,35 @@
-import React, { useEffect, useRef, useState } from 'react';
-import * as d3 from 'd3';
-import * as topojson from 'topojson-client';
-import { motion } from 'framer-motion';
+import React, { useEffect, useRef, useState } from "react";
+import * as d3 from "d3";
+import * as topojson from "topojson-client";
+import { motion } from "framer-motion";
 
 const nodesData = [
-  { id: 'uk', label: 'United Kingdom', coords: [-2, 53] as [number, number] },
-  { id: 'france', label: 'France', coords: [2, 46] as [number, number] },
-  { id: 'middle-east', label: 'United Arab Emirates', coords: [55, 25] as [number, number] },
-  { id: 'india', label: 'India', coords: [78, 20] as [number, number] },
-  { id: 'singapore', label: 'Singapore', coords: [103.8, 1.3] as [number, number] },
-  { id: 'australia', label: 'Australia', coords: [151, -33] as [number, number] },
+  { id: "uk", label: "United Kingdom", coords: [-2, 53] as [number, number] },
+  { id: "france", label: "France", coords: [2, 46] as [number, number] },
+  {
+    id: "middle-east",
+    label: "United Arab Emirates",
+    coords: [55, 25] as [number, number],
+  },
+  { id: "india", label: "India", coords: [78, 20] as [number, number] },
+  {
+    id: "singapore",
+    label: "Singapore",
+    coords: [103.8, 1.3] as [number, number],
+  },
+  {
+    id: "australia",
+    label: "Australia",
+    coords: [151, -33] as [number, number],
+  },
 ];
 
 export default function DotMap() {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [nodePositions, setNodePositions] = useState<{id: string, label: string, x: number, y: number}[]>([]);
+  const [nodePositions, setNodePositions] = useState<
+    { id: string; label: string; x: number; y: number }[]
+  >([]);
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
 
   useEffect(() => {
@@ -23,7 +37,7 @@ export default function DotMap() {
 
     const container = containerRef.current;
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     let animationFrameId: number;
@@ -45,44 +59,52 @@ export default function DotMap() {
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
 
-      const ctx = canvas.getContext('2d');
+      const ctx = canvas.getContext("2d");
       if (!ctx) return;
       ctx.scale(dpr, dpr);
 
       try {
         if (!cachedWorld) {
-          const response = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json');
-          if (!response.ok) throw new Error('Failed to fetch map data');
+          const response = await fetch(
+            "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json",
+          );
+          if (!response.ok) throw new Error("Failed to fetch map data");
           cachedWorld = await response.json();
         }
 
         const world = cachedWorld;
         if (!isMounted || !world) return;
 
-        const countries = topojson.feature(world, world.objects.countries as any) as any;
+        const countries = topojson.feature(
+          world,
+          world.objects.countries as any,
+        ) as any;
         if (!countries || !countries.features) return;
 
-        countries.features = countries.features.filter((d: any) => d.id !== '010');
+        countries.features = countries.features.filter(
+          (d: any) => d.id !== "010",
+        );
 
-        const projection = d3.geoEquirectangular()
+        const projection = d3
+          .geoEquirectangular()
           .fitSize([width, height], countries);
 
-        const positions = nodesData.map(node => {
+        const positions = nodesData.map((node) => {
           const [x, y] = projection(node.coords) || [0, 0];
           return { ...node, x, y };
         });
 
         if (isMounted) setNodePositions(positions);
 
-        const offCanvas = document.createElement('canvas');
+        const offCanvas = document.createElement("canvas");
         offCanvas.width = width;
         offCanvas.height = height;
-        const offCtx = offCanvas.getContext('2d');
+        const offCtx = offCanvas.getContext("2d");
         if (!offCtx) return;
 
         const path = d3.geoPath().projection(projection).context(offCtx);
 
-        offCtx.fillStyle = '#fff';
+        offCtx.fillStyle = "#fff";
         offCtx.beginPath();
         path(countries);
         offCtx.fill();
@@ -92,7 +114,7 @@ export default function DotMap() {
         const imgWidth = imageData.width;
 
         ctx.clearRect(0, 0, width, height);
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+        ctx.fillStyle = "rgba(255, 255, 255, 0.4)";
 
         const step = 8;
         const dotRadius = 1.5;
@@ -157,14 +179,14 @@ export default function DotMap() {
         }
       `}</style>
 
-      {nodePositions.map(node => (
+      {nodePositions.map((node) => (
         <div
           key={node.id}
           className="absolute z-10 cursor-pointer"
           style={{
             left: `${node.x}px`,
             top: `${node.y}px`,
-            transform: 'translate(-50%, -50%)'
+            transform: "translate(-50%, -50%)",
           }}
           onMouseEnter={() => setHoveredNode(node.id)}
           onMouseLeave={() => setHoveredNode(null)}
@@ -172,12 +194,18 @@ export default function DotMap() {
           {/* Tooltip */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9, y: 10 }}
-            animate={hoveredNode === node.id ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.9, y: 10 }}
+            animate={
+              hoveredNode === node.id
+                ? { opacity: 1, scale: 1, y: 0 }
+                : { opacity: 0, scale: 0.9, y: 10 }
+            }
             transition={{ duration: 0.2, ease: "easeOut" }}
             className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 pointer-events-none"
           >
             <div className="bg-[#ffffff]/95 backdrop-blur-md px-3 py-1.5 rounded-lg shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-[#ffffff]/20 whitespace-nowrap">
-              <span className="text-[#000000] text-[13px] font-semibold tracking-tight uppercase">{node.label}</span>
+              <span className="text-[#000000] text-[13px] font-semibold tracking-tight uppercase">
+                {node.label}
+              </span>
               {/* Tooltip Arrow */}
               <div className="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-[#ffffff]/95" />
             </div>

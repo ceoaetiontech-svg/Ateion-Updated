@@ -1,7 +1,21 @@
 import { ShieldCheck } from "lucide-react";
+import { useState } from "react";
+import { useNavigate } from "react-router";
 import "../styles/adminstyle.css";
 
 export default function AdminLoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email && password) {
+      localStorage.setItem("admin", JSON.stringify({ email }));
+      navigate("/admin/dashboard");
+    }
+  };
+
   return (
     <div
       className="
@@ -19,7 +33,6 @@ animated-gradient
     >
       {/* Animated Background */}
 
-
       {/* Background Blur Effects */}
       <div className="absolute top-0 left-0 w-72 h-72 bg-white/20 rounded-full blur-3xl" />
       <div className="absolute bottom-0 right-0 w-72 h-72 bg-white/20 rounded-full blur-3xl" />
@@ -30,11 +43,11 @@ animated-gradient
           w-full
           max-w-md
           md:max-w-lg
-          bg-white/20
+          bg-white/10
           backdrop-blur-[30px]
           border
-          border-white/30
-          shadow-[0_8px_32px_rgba(255,255,255,0.12)]
+          border-white/20
+          shadow-xl
           rounded-[32px]
           p-6
           sm:p-8
@@ -45,7 +58,7 @@ animated-gradient
         "
       >
         {/* Glass Reflection */}
-        <div className="absolute top-0 left-0 w-full h-24 bg-white/20 blur-xl"></div>
+        <div className="absolute top-0 left-0 w-full h-24 bg-[var(--color-white)]/10 blur-xl"></div>
 
         {/* Logo */}
         <div className="flex justify-center mb-4">
@@ -60,10 +73,7 @@ animated-gradient
               shadow-[0_0_20px_rgba(212,175,55,0.4)]
             "
           >
-            <ShieldCheck
-              size={42}
-              className="text-[#1E3A8A]"
-            />
+            <ShieldCheck size={42} className="text-[#1E3A8A]" />
           </div>
         </div>
 
@@ -86,7 +96,7 @@ animated-gradient
         </p>
 
         {/* Form */}
-        <form className="space-y-5">
+        <form onSubmit={handleLogin} className="space-y-5">
           {/* Email */}
           <div>
             <label className="block text-white mb-2 text-sm sm:text-base font-medium">
@@ -101,18 +111,21 @@ animated-gradient
                 px-4
                 py-3
                 rounded-xl
-                bg-white/15
+                bg-white/10
                 backdrop-blur-md
                 border-2
                 border-[#D4AF37]/80
-                text-slate-800
-                placeholder-slate-500
+                text-white
+                placeholder-white/60
                 outline-none
                 shadow-[0_0_10px_rgba(212,175,55,0.15)]
                 focus:border-[#FFD700]
                 focus:shadow-[0_0_20px_rgba(212,175,55,0.4)]
                 transition-all
               "
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
 
@@ -130,18 +143,21 @@ animated-gradient
                 px-4
                 py-3
                 rounded-xl
-                bg-white/15
+                bg-white/10
                 backdrop-blur-md
                 border-2
                 border-[#D4AF37]/80
-                text-slate-800
-                placeholder-slate-500
+                text-white
+                placeholder-white/60
                 outline-none
                 shadow-[0_0_10px_rgba(212,175,55,0.15)]
                 focus:border-[#FFD700]
                 focus:shadow-[0_0_20px_rgba(212,175,55,0.4)]
                 transition-all
               "
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </div>
 
