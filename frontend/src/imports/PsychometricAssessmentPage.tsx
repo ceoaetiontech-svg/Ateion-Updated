@@ -50,7 +50,7 @@ export default function PsychometricAssessmentPage() {
     doc.text(
       "30-Day Roadmap: Practice leadership exercises and critical thinking tasks.",
       20,
-      130,
+      130
     );
 
     doc.save("Psychometric_Report.pdf");

@@ -16,6 +16,9 @@
   margin-bottom: 48px;
   flex-wrap: wrap;
   gap: 32px;
+
+  /* NEW */
+  padding: 24px 30px;
 }
 
 .title {
@@ -26,6 +29,9 @@
   line-height: 1.3;
   margin-bottom: 0.75rem;
   font-family: "OV Soge", sans-serif;
+
+  /* NEW */
+  margin-left: 10px;
 }
 
 .description {
@@ -58,12 +64,19 @@
     padding: 2.5rem 5%;
     min-height: auto;
   }
+
   .top-section {
     flex-direction: column;
+    padding: 20px 24px;
   }
+
   .title,
   .description {
     max-width: 100%;
+  }
+
+  .title {
+    margin-left: 0;
   }
 }
 
@@ -72,7 +85,14 @@
   .slide {
     padding: 2rem 5%;
   }
+
   .top-section {
     gap: 1rem;
+    padding: 18px 20px;
+  }
+
+  .title {
+    font-size: 1.6rem;
+    margin-left: 0;
   }
 }
