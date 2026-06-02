@@ -130,7 +130,7 @@ const DashboardPage = () => {
             </span>
             Analytics
           </li>
-          <li onClick={() => navigate("/contact")}>
+          <li onClick={() => navigate("/profile")}>
             <span className="sidebar-icon">
               <svg
                 width="20"

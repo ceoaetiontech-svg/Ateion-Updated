@@ -30,6 +30,8 @@ import TeacherLayout from "../imports/teacher/layouts/TeacherLayout";
 import TeacherDashboardPage from "../imports/teacher/pages/TeacherDashboardPage";
 import TeacherStudentsPage from "../imports/teacher/pages/TeacherStudentsPage";
 import TeacherSettingsPage from "../imports/teacher/pages/TeacherSettingsPage";
+import ProfilePage from "../imports/ProfilePage";
+import ResetPasswordPage from "../imports/ResetPasswordPage";
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -242,6 +244,24 @@ function AnimatedRoutes() {
             }
           />
         </Route>
+
+        <Route
+  path="/profile"
+  element={
+    <PageTransition>
+      <ProfilePage />
+    </PageTransition>
+  }
+/>
+
+<Route
+  path="/reset-password"
+  element={
+    <PageTransition>
+      <ResetPasswordPage />
+    </PageTransition>
+  }
+/>
       </Routes>
     </AnimatePresence>
   );
