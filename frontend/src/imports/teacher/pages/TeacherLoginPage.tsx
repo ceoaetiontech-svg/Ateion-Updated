@@ -67,8 +67,8 @@ export default function TeacherLoginPage() {
               bg-white/15
               backdrop-blur-md
               border-2
-              border-[#3B82F6]
-              shadow-[0_0_20px_rgba(59,130,246,0.4)]
+              border-[#D4AF37]
+              shadow-[0_0_20px_rgba(212,175,55,0.4)]
             "
           >
             <BookOpen size={42} className="text-[#3B82F6]" />
@@ -110,13 +110,13 @@ export default function TeacherLoginPage() {
                 bg-white/10
                 backdrop-blur-md
                 border-2
-                border-[#3B82F6]/80
+                border-[#D4AF37]/80
                 text-white
                 placeholder-white/60
                 outline-none
-                shadow-[0_0_10px_rgba(59,130,246,0.15)]
-                focus:border-[#60A5FA]
-                focus:shadow-[0_0_20px_rgba(59,130,246,0.4)]
+                shadow-[0_0_10px_rgba(212,175,55,0.15)]
+                focus:border-[#F5C71A]
+                focus:shadow-[0_0_20px_rgba(212,175,55,0.4)]
                 transition-all
               "
               value={email}
@@ -142,13 +142,13 @@ export default function TeacherLoginPage() {
                 bg-white/10
                 backdrop-blur-md
                 border-2
-                border-[#3B82F6]/80
+                border-[#D4AF37]/80
                 text-white
                 placeholder-white/60
                 outline-none
-                shadow-[0_0_10px_rgba(59,130,246,0.15)]
-                focus:border-[#60A5FA]
-                focus:shadow-[0_0_20px_rgba(59,130,246,0.4)]
+                shadow-[0_0_10px_rgba(212,175,55,0.15)]
+                focus:border-[#F5C71A]
+                focus:shadow-[0_0_20px_rgba(212,175,55,0.4)]
                 transition-all
               "
               value={password}
@@ -170,9 +170,9 @@ export default function TeacherLoginPage() {
               text-white
               font-semibold
               border-2
-              border-[#3B82F6]
-              shadow-[0_0_15px_rgba(59,130,246,0.35)]
-              hover:shadow-[0_0_25px_rgba(59,130,246,0.6)]
+              border-[#D4AF37]
+              shadow-[0_0_15px_rgba(212,175,55,0.35)]
+              hover:shadow-[0_0_25px_rgba(212,175,55,0.6)]
               hover:scale-[1.02]
               transition-all
               duration-300

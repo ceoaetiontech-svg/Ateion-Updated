@@ -21,12 +21,12 @@ const navTextClass = "font-bold text-[13px] whitespace-nowrap font-manrope";
  */
 function NavButton({
   children,
-  variant = "default" as "default" | "muted" | "primary" | "white",
+  variant = "default" as "default" | "muted" | "primary" | "white" | "outline-dark",
   onClick,
   href,
 }: {
   children: React.ReactNode;
-  variant?: "default" | "muted" | "primary" | "white";
+  variant?: "default" | "muted" | "primary" | "white" | "outline-dark";
   onClick?: () => void;
   href?: string;
 }) {
