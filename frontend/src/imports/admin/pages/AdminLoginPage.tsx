@@ -19,23 +19,21 @@ export default function AdminLoginPage() {
   return (
     <div
       className="
-min-h-screen
-flex
-items-center
-justify-center
-px-4
-sm:px-6
-lg:px-8
-relative
-overflow-hidden
-animated-gradient
-"
+        min-h-screen
+        flex
+        items-center
+        justify-center
+        px-4
+        sm:px-6
+        lg:px-8
+        relative
+        overflow-hidden
+        bg-[#f2f4f8]
+      "
     >
-      {/* Animated Background */}
-
-      {/* Background Blur Effects */}
-      <div className="absolute top-0 left-0 w-72 h-72 bg-white/20 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 right-0 w-72 h-72 bg-white/20 rounded-full blur-3xl" />
+      {/* Background Orbs for Light Mode */}
+      <div className="absolute top-0 left-0 w-96 h-96 bg-blue-400/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-amber-400/20 rounded-full blur-3xl pointer-events-none" />
 
       {/* Login Card */}
       <div
@@ -43,11 +41,11 @@ animated-gradient
           w-full
           max-w-md
           md:max-w-lg
-          bg-white/10
-          backdrop-blur-[30px]
+          bg-white/90
+          backdrop-blur-xl
           border
-          border-white/20
-          shadow-xl
+          border-white
+          shadow-[0_8px_30px_rgb(0,0,0,0.08)]
           rounded-[32px]
           p-6
           sm:p-8
@@ -57,20 +55,16 @@ animated-gradient
           overflow-hidden
         "
       >
-        {/* Glass Reflection */}
-        <div className="absolute top-0 left-0 w-full h-24 bg-[var(--color-white)]/10 blur-xl"></div>
-
         {/* Logo */}
         <div className="flex justify-center mb-4">
           <div
             className="
               p-4
               rounded-full
-              bg-white/15
-              backdrop-blur-md
+              bg-white
               border-2
               border-[#D4AF37]
-              shadow-[0_0_20px_rgba(212,175,55,0.4)]
+              shadow-[0_0_15px_rgba(212,175,55,0.2)]
             "
           >
             <ShieldCheck size={42} className="text-[#1E3A8A]" />
@@ -84,14 +78,13 @@ animated-gradient
             text-3xl
             sm:text-4xl
             font-bold
-            text-white
-            drop-shadow-[0_0_15px_rgba(255,255,255,0.7)]
+            text-[#1a2235]
           "
         >
           Ateion
         </h1>
 
-        <p className="text-center text-white/90 mt-2 mb-8">
+        <p className="text-center text-gray-500 mt-2 mb-8 font-medium">
           Master Admin Portal
         </p>
 
@@ -99,7 +92,7 @@ animated-gradient
         <form onSubmit={handleLogin} className="space-y-5">
           {/* Email */}
           <div>
-            <label className="block text-white mb-2 text-sm sm:text-base font-medium">
+            <label className="block text-[#1a2235] mb-2 text-sm sm:text-base font-bold">
               Email Address
             </label>
 
@@ -111,16 +104,15 @@ animated-gradient
                 px-4
                 py-3
                 rounded-xl
-                bg-white/10
-                backdrop-blur-md
+                bg-[#f8fafc]
                 border-2
-                border-[#D4AF37]/80
-                text-white
-                placeholder-white/60
+                border-gray-200
+                text-[#1a2235]
+                placeholder-gray-400
                 outline-none
-                shadow-[0_0_10px_rgba(212,175,55,0.15)]
-                focus:border-[#FFD700]
-                focus:shadow-[0_0_20px_rgba(212,175,55,0.4)]
+                focus:bg-white
+                focus:border-[#D4AF37]
+                focus:shadow-[0_0_15px_rgba(212,175,55,0.15)]
                 transition-all
               "
               value={email}
@@ -131,7 +123,7 @@ animated-gradient
 
           {/* Password */}
           <div>
-            <label className="block text-white mb-2 text-sm sm:text-base font-medium">
+            <label className="block text-[#1a2235] mb-2 text-sm sm:text-base font-bold">
               Password
             </label>
 
@@ -143,16 +135,15 @@ animated-gradient
                 px-4
                 py-3
                 rounded-xl
-                bg-white/10
-                backdrop-blur-md
+                bg-[#f8fafc]
                 border-2
-                border-[#D4AF37]/80
-                text-white
-                placeholder-white/60
+                border-gray-200
+                text-[#1a2235]
+                placeholder-gray-400
                 outline-none
-                shadow-[0_0_10px_rgba(212,175,55,0.15)]
-                focus:border-[#FFD700]
-                focus:shadow-[0_0_20px_rgba(212,175,55,0.4)]
+                focus:bg-white
+                focus:border-[#D4AF37]
+                focus:shadow-[0_0_15px_rgba(212,175,55,0.15)]
                 transition-all
               "
               value={password}
@@ -166,27 +157,26 @@ animated-gradient
             type="submit"
             className="
               w-full
-              py-3
+              py-3.5
+              mt-2
               rounded-xl
               bg-gradient-to-r
-              from-[#4D6CFF]
-              to-[#7B8FFF]
+              from-[#1E3A8A]
+              to-[#3B82F6]
               text-white
-              font-semibold
-              border-2
-              border-[#D4AF37]
-              shadow-[0_0_15px_rgba(212,175,55,0.35)]
-              hover:shadow-[0_0_25px_rgba(212,175,55,0.6)]
+              font-bold
+              shadow-[0_8px_20px_rgba(59,130,246,0.3)]
+              hover:shadow-[0_10px_25px_rgba(59,130,246,0.4)]
               hover:scale-[1.02]
               transition-all
               duration-300
             "
           >
-            Login
+            Access Portal
           </button>
         </form>
 
-        <p className="mt-6 text-center text-xs sm:text-sm text-white/80">
+        <p className="mt-6 text-center text-xs sm:text-sm text-gray-400 font-medium">
           Authorized Personnel Only
         </p>
       </div>
