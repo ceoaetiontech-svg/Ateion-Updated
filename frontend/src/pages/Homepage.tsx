@@ -296,12 +296,29 @@ function HeroFeatureCardsRow() {
 ───────────────────────────────────────────── */
 function GlobalPresenceMapSection() {
   return (
-    <div className="w-full flex flex-col items-center justify-center relative bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] pt-10 sm:pt-14 pb-0 overflow-hidden rounded-[32px] mx-[16px] sm:mx-[24px] md:mx-[64px] max-w-[calc(100%-32px)] md:max-w-[calc(100%-128px)] mx-auto my-12 shadow-sm">
+    <div className="w-full flex flex-col items-center justify-center relative bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] pt-12 sm:pt-16 pb-0 overflow-hidden rounded-[32px] mx-[16px] sm:mx-[24px] md:mx-[64px] max-w-[calc(100%-32px)] md:max-w-[calc(100%-128px)] mx-auto my-12 shadow-sm">
+      {/* Decorative top accent */}
+      <div
+        className="absolute top-0 left-[10%] right-[10%] h-[3px] rounded-full"
+        style={{ background: "linear-gradient(90deg, transparent, var(--color-accent), transparent)" }}
+      />
+
       <div className="z-10 text-center mb-8 sm:mb-12 px-4 relative">
-        <h2 className="text-[32px] sm:text-[40px] md:text-[48px] font-bold text-[var(--color-text-primary)] mb-4 tracking-[-0.03em] leading-[1.1]" style={{ fontFamily: "var(--font-display)" }}>
-          Our Global Reach
+        <div className="flex items-center justify-center gap-3 mb-5">
+          <div className="w-[40px] sm:w-[60px] h-[2px] rounded-full" style={{ background: "var(--color-accent)" }} />
+          <span
+            className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.2em]"
+            style={{ color: "var(--color-accent)", fontFamily: "var(--font-body)" }}
+          >
+            Global Footprint
+          </span>
+          <div className="w-[40px] sm:w-[60px] h-[2px] rounded-full" style={{ background: "var(--color-accent)" }} />
+        </div>
+        <h2 className="font-bold text-[var(--color-text-primary)] mb-4 tracking-[-0.03em] leading-[1.1]" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(32px, 5vw, 52px)" }}>
+          Our{" "}
+          <span style={{ color: "var(--color-accent)" }}>Global</span> Reach
         </h2>
-        <p className="text-[var(--color-text-secondary)] max-w-2xl mx-auto text-lg font-medium">
+        <p className="text-[var(--color-text-muted)] max-w-2xl mx-auto text-[15px] sm:text-[17px] font-medium leading-relaxed" style={{ fontFamily: "var(--font-body)" }}>
           Connecting capability-based education ecosystems across multiple continents.
         </p>
       </div>
