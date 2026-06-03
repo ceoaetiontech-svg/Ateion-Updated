@@ -6,27 +6,27 @@
  * ============================================================================
  */
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, Link, useLocation } from "react-router";
-import { Sun, Moon } from "lucide-react";
+import { Sun, Moon, LogOut } from "lucide-react";
 import { useTheme } from "./ThemeProvider";
 
 import logo from "../../assets/logo.png";
 
-const navTextClass = "font-bold text-[13px] whitespace-nowrap font-manrope";
+const navTextClass = "font-bold text-[13px] whitespace-nowrap font-manrope m-0 leading-none";
 
 /**
  * Unified NavButton component with 3 variants
  */
 function NavButton({
   children,
-  variant = "default" as "default" | "muted" | "primary" | "white" | "outline-dark",
+  variant = "default" as "default" | "muted" | "primary" | "accent" | "white" | "outline-dark",
   onClick,
   href,
 }: {
   children: React.ReactNode;
-  variant?: "default" | "muted" | "primary" | "white" | "outline-dark";
+  variant?: "default" | "muted" | "primary" | "accent" | "white" | "outline-dark";
   onClick?: () => void;
   href?: string;
 }) {
@@ -34,9 +34,11 @@ function NavButton({
 
   const variantClasses = {
     default:
-      "bg-[var(--color-background-secondary)] border border-[var(--color-primary)] text-[var(--color-primary)] hover:bg-[var(--color-primary_light)]",
+      "bg-[var(--color-background-secondary)] border border-[var(--color-accent)] text-[var(--color-accent)] hover:bg-[var(--color-accent-light)]",
     primary:
-      "bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-hover)]",
+      "bg-[var(--color-primary)] border border-transparent text-white hover:bg-[var(--color-primary-hover)]",
+    accent:
+      "bg-[var(--color-accent)] border border-transparent text-[var(--color-background-secondary)] hover:bg-[var(--color-accent-hover)]",
     white:
       "bg-[var(--color-background-secondary)] border border-[var(--color-border-medium)] text-[var(--color-text-primary)] hover:bg-[var(--color-background-tertiary)]",
     "outline-dark":
@@ -110,7 +112,7 @@ function LogoContainer() {
         <img
           src={logo}
           alt="Ateion Logo"
-          className={`h-[50px] md:h-[60px] object-contain w-auto transition-all duration-300 ${
+          className={`h-[76px] object-contain w-auto transition-all duration-300 ${
             shouldInvert ? "brightness-0 invert" : ""
           }`}
         />
@@ -135,7 +137,7 @@ function HomeBtn({ onClick }: { onClick?: () => void }) {
         navigate("/");
       }}
     >
-      <p className={`${navTextClass}`}>Home</p>
+      <span className={`${navTextClass}`}>Home</span>
     </NavButton>
   );
 }
@@ -156,9 +158,9 @@ function GlobalOlympiadBtn({ onClick }: { onClick?: () => void }) {
         navigate("/gco");
       }}
     >
-      <p className={`${navTextClass}`}>
+      <span className={`${navTextClass}`}>
         Global Olympiad
-      </p>
+      </span>
     </NavButton>
   );
 }
@@ -179,9 +181,9 @@ function ResourcesBtn({ onClick }: { onClick?: () => void }) {
         navigate("/playground");
       }}
     >
-      <p className={`${navTextClass}`}>
+      <span className={`${navTextClass}`}>
         PlayGround
-      </p>
+      </span>
     </NavButton>
   );
 }
@@ -202,9 +204,9 @@ function PsychometricTestBtn({ onClick }: { onClick?: () => void }) {
         navigate("/psychometric-assessment");
       }}
     >
-      <p className={`${navTextClass}`}>
+      <span className={`${navTextClass}`}>
         Psychometric Test
-      </p>
+      </span>
     </NavButton>
   );
 }
@@ -229,9 +231,9 @@ function DashboardBtn({
         navigate("/dashboard");
       }}
     >
-      <p className={`${navTextClass}`}>
+      <span className={`${navTextClass}`}>
         Dashboard
-      </p>
+      </span>
     </NavButton>
   );
 }
@@ -266,9 +268,9 @@ function GetConnectedBtn({ onClick }: { onClick?: () => void }) {
     >
       <div className="flex items-center gap-2">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-        <p className={`${navTextClass}`}>
+        <span className={`${navTextClass}`}>
           Get Connected
-        </p>
+        </span>
       </div>
     </NavButton>
   );
@@ -301,9 +303,9 @@ function SignInBtn({ onClick }: { onClick?: () => void }) {
     >
       <div className="flex items-center gap-2 group">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:text-[var(--color-background-primary)]"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-        <p className={`${navTextClass}`}>
+        <span className={`${navTextClass}`}>
           Sign In
-        </p>
+        </span>
       </div>
     </NavButton>
   );
@@ -336,9 +338,32 @@ function SignUpBtn({ onClick }: { onClick?: () => void }) {
     >
       <div className="flex items-center gap-2">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
-        <p className={`${navTextClass}`}>
+        <span className={`${navTextClass}`}>
           Sign Up
-        </p>
+        </span>
+      </div>
+    </NavButton>
+  );
+}
+
+/**
+ * LOGOUT BUTTON
+ */
+function LogoutBtn({ onClick }: { onClick?: () => void }) {
+  return (
+    <NavButton
+      variant="outline-dark"
+      onClick={() => {
+        localStorage.removeItem("token");
+        window.location.reload(); // Refresh to wipe state completely
+        if (onClick) onClick();
+      }}
+    >
+      <div className="flex items-center gap-2 group">
+        <LogOut size={16} className="group-hover:text-[var(--color-background-primary)]" />
+        <span className={`${navTextClass}`}>
+          Logout
+        </span>
       </div>
     </NavButton>
   );
@@ -440,10 +465,33 @@ function ThemeToggleBtn() {
 
 export default function SharedNavbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  
   const isNavbarOnDark = useNavbarOnDark();
-
   const navigate = useNavigate();
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // Check auth state
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsAuthenticated(!!token);
+  }, []);
+
+  // Handle click outside to close mobile menu
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMobileMenuOpen(false);
+      }
+    }
+    
+    if (isMobileMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isMobileMenuOpen]);
 
   const handleNavClick = (path: string) => {
     setIsMobileMenuOpen(false);
@@ -455,6 +503,7 @@ export default function SharedNavbar() {
       className="fixed top-0 left-0 right-0 z-[100] bg-transparent"
       role="navigation"
       aria-label="Main navigation"
+      ref={menuRef}
     >
       <div className="flex items-center justify-between px-[16px] md:px-[32px] xl:px-[48px] py-[12px] lg:py-[20px] w-full gap-[24px]">
         
@@ -471,8 +520,18 @@ export default function SharedNavbar() {
         <div className="hidden lg:flex items-center justify-end ml-auto gap-[8px] xl:gap-[12px]">
           <ThemeToggleBtn />
           <GetConnectedBtn />
-          <SignInBtn />
-          <SignUpBtn />
+          
+          {isAuthenticated ? (
+            <>
+              <DashboardBtn />
+              <LogoutBtn />
+            </>
+          ) : (
+            <>
+              <SignInBtn />
+              <SignUpBtn />
+            </>
+          )}
         </div>
 
         {/* MOBILE MENU BUTTON */}
@@ -491,51 +550,32 @@ export default function SharedNavbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="lg:hidden bg-[var(--color-background-primary)] border-t border-[var(--color-border-light)] overflow-hidden"
+            className="lg:hidden bg-[var(--color-background-primary)] border-t border-[var(--color-border-light)] overflow-hidden absolute w-full shadow-lg"
           >
             <div className="flex flex-col gap-[12px] px-[24px] py-[24px]">
               
-              <HomeBtn
-                onClick={() => handleNavClick("/")}
-              />
-
-              <DashboardBtn
-                onClick={() => handleNavClick("/dashboard")}
-              />
-
-              <GlobalOlympiadBtn
-                onClick={() => handleNavClick("/gco")}
-              />
-
-              <PsychometricTestBtn
-                onClick={() => handleNavClick("/psychometric-assessment")}
-              />
-
-              <ResourcesBtn
-                onClick={() => handleNavClick("/playground")}
-              />
+              <HomeBtn onClick={() => handleNavClick("/")} />
+              <GlobalOlympiadBtn onClick={() => handleNavClick("/gco")} />
+              <PsychometricTestBtn onClick={() => handleNavClick("/psychometric-assessment")} />
+              <ResourcesBtn onClick={() => handleNavClick("/playground")} />
 
               <div className="h-[1px] bg-[var(--color-border-light)] my-[4px]" />
 
-              <GetConnectedBtn
-                onClick={() => handleNavClick("/contact")}
-              />
+              <GetConnectedBtn onClick={() => handleNavClick("/contact")} />
 
               <div className="h-[1px] bg-[var(--color-border-light)] my-[4px]" />
 
-              <SignInBtn
-                onClick={() => {
-                  setIsMobileMenuOpen(false);
-                  window.dispatchEvent(new CustomEvent("open-login"));
-                }}
-              />
-
-              <SignUpBtn
-                onClick={() => {
-                  setIsMobileMenuOpen(false);
-                  window.dispatchEvent(new CustomEvent("open-register"));
-                }}
-              />
+              {isAuthenticated ? (
+                <>
+                  <DashboardBtn onClick={() => handleNavClick("/dashboard")} />
+                  <LogoutBtn />
+                </>
+              ) : (
+                <>
+                  <SignInBtn onClick={() => { setIsMobileMenuOpen(false); window.dispatchEvent(new CustomEvent("open-login")); }} />
+                  <SignUpBtn onClick={() => { setIsMobileMenuOpen(false); window.dispatchEvent(new CustomEvent("open-register")); }} />
+                </>
+              )}
 
               <ThemeToggleBtn />
             </div>

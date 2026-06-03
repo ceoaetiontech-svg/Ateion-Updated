@@ -1,0 +1,81 @@
+/* ─── OV Soge (Brand Heading Font) ──────────── */
+@font-face {
+  font-family: "OV_Soge";
+  src: url("../../../assets/fonts/ov-soge/OVSoge-Black.otf") format("opentype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "OV_Soge";
+  src: url("../../../assets/fonts/ov-soge/OVSoge-ExtraBold.otf") format("opentype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "OV_Soge";
+  src: url("../../../assets/fonts/ov-soge/OVSoge-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "OV_Soge";
+  src: url("../../../assets/fonts/ov-soge/OVSoge-SemiBold.otf") format("opentype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "OV_Soge";
+  src: url("../../../assets/fonts/ov-soge/OVSoge-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "OV_Soge";
+  src: url("../../../assets/fonts/ov-soge/OVSoge-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "OV_Soge";
+  src: url("../../../assets/fonts/ov-soge/OVSoge-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ─── SF Pro Display (Admin Body Font) ──────── */
+@font-face {
+  font-family: "SF Pro Display";
+  src: url("../../../assets/fonts/SFProDisplay-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SF Pro Display";
+  src: url("../../../assets/fonts/SFProDisplay-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "SF Pro Display";
+  src: url("../../../assets/fonts/SFProDisplay-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}

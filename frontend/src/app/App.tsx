@@ -1,37 +1,39 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense, lazy } from "react";
+import LoadingSpinner from "./components/LoadingSpinner";
 import { AnimatePresence } from "framer-motion";
 
-import Homepage from "../imports/Homepage";
-import GCOPage from "../imports/GCOPage";
-import ContactPage from "../imports/ContactPage";
-import ResourcesPage from "../imports/ResourcesPage";
-import CertificatePage from "../imports/CertificatePage";
-import AssessmentDemoPage from "../imports/AssessmentDemoPage";
-import DashboardPage from "../imports/DashboardPage";
-import PsychometricAssessmentPage from "../imports/PsychometricAssessmentPage";
+const Homepage = lazy(() => import("../pages/Homepage"));
+const GCOPage = lazy(() => import("../pages/GCOPage"));
+const ContactPage = lazy(() => import("../pages/ContactPage"));
+const ResourcesPage = lazy(() => import("../pages/ResourcesPage"));
+const CertificatePage = lazy(() => import("../pages/CertificatePage"));
+const AssessmentDemoPage = lazy(() => import("../pages/AssessmentDemoPage"));
+const DashboardPage = lazy(() => import("../pages/DashboardPage"));
+const PsychometricAssessmentPage = lazy(() => import("../pages/PsychometricAssessmentPage"));
+const NotFoundPage = lazy(() => import("../pages/NotFoundPage"));
 
-import RegisterPage from "../imports/RegisterPage";
-import LoginPage from "../imports/LoginPage";
-import PoliciesPage from "../imports/PoliciesPage";
-import PolicyDetailPage from "../imports/PolicyDetailPage";
-import AdminDashboardPage from "../imports/admin/pages/AdminDashboardPage";
-import AdminLayout from "../imports/admin/layouts/AdminLayout";
-import CourseListView from "../imports/admin/components/CourseListView";
-import CourseUploadView from "../imports/admin/components/CourseUploadView";
-import UsersPage from "../imports/admin/pages/UsersPage";
-import SettingsPage from "../imports/admin/pages/SettingsPage";
+const RegisterPage = lazy(() => import("../pages/RegisterPage"));
+const LoginPage = lazy(() => import("../pages/LoginPage"));
+const PoliciesPage = lazy(() => import("../pages/PoliciesPage"));
+const PolicyDetailPage = lazy(() => import("../pages/PolicyDetailPage"));
+const AdminDashboardPage = lazy(() => import("../pages/admin/pages/AdminDashboardPage"));
+const AdminLayout = lazy(() => import("../pages/admin/layouts/AdminLayout"));
+const CourseListView = lazy(() => import("../pages/admin/components/CourseListView"));
+const CourseUploadView = lazy(() => import("../pages/admin/components/CourseUploadView"));
+const UsersPage = lazy(() => import("../pages/admin/pages/UsersPage"));
+const SettingsPage = lazy(() => import("../pages/admin/pages/SettingsPage"));
 import ThemeProvider from "./components/ThemeProvider";
 import PageTransition from "./components/PageTransition";
 
-import AdminLoginPage from "../imports/admin/pages/AdminLoginPage";
-import TeacherLoginPage from "../imports/teacher/pages/TeacherLoginPage";
-import TeacherLayout from "../imports/teacher/layouts/TeacherLayout";
-import TeacherDashboardPage from "../imports/teacher/pages/TeacherDashboardPage";
-import TeacherStudentsPage from "../imports/teacher/pages/TeacherStudentsPage";
-import TeacherSettingsPage from "../imports/teacher/pages/TeacherSettingsPage";
-import ProfilePage from "../imports/ProfilePage";
-import ResetPasswordPage from "../imports/ResetPasswordPage";
+const AdminLoginPage = lazy(() => import("../pages/admin/pages/AdminLoginPage"));
+const TeacherLoginPage = lazy(() => import("../pages/teacher/pages/TeacherLoginPage"));
+const TeacherLayout = lazy(() => import("../pages/teacher/layouts/TeacherLayout"));
+const TeacherDashboardPage = lazy(() => import("../pages/teacher/pages/TeacherDashboardPage"));
+const TeacherStudentsPage = lazy(() => import("../pages/teacher/pages/TeacherStudentsPage"));
+const TeacherSettingsPage = lazy(() => import("../pages/teacher/pages/TeacherSettingsPage"));
+const ProfilePage = lazy(() => import("../pages/ProfilePage"));
+const ResetPasswordPage = lazy(() => import("../pages/ResetPasswordPage"));
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -67,7 +69,7 @@ function AnimatedRoutes() {
         />
 
         <Route
-          path="/PlayGround"
+          path="/playground"
           element={
             <PageTransition>
               <ResourcesPage />
@@ -262,6 +264,15 @@ function AnimatedRoutes() {
     </PageTransition>
   }
 />
+
+<Route
+  path="*"
+  element={
+    <PageTransition>
+      <NotFoundPage />
+    </PageTransition>
+  }
+/>
       </Routes>
     </AnimatePresence>
   );
@@ -287,6 +298,7 @@ export default function App() {
   return (
     <ThemeProvider>
       <BrowserRouter>
+        <Suspense fallback={<LoadingSpinner />}>
         <AnimatedRoutes />
 
         {showRegister && (
@@ -306,6 +318,7 @@ export default function App() {
             }}
           />
         )}
+              </Suspense>
       </BrowserRouter>
     </ThemeProvider>
   );

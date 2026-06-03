@@ -24,55 +24,65 @@
    * COLOR PALETTE
    * ────────────────────────────────────────────────────────────────────────── */
 
-  /* Primary Brand - Electric Blue */
-  --color-primary: #2563eb;
-  --color-primary-hover: #1d55d4;
-  --color-primary_active: #1e40af;
-  --color-primary_light: rgba(37, 99, 235, 0.08);
-  --color-primary_lighter: rgba(37, 99, 235, 0.04);
+  /* Ateion Brand: Pristine + Navy — Light/Clean */
+
+  /* Primary Brand - Navy */
+  --color-primary: #1A1833;
+  --color-primary-hover: #2E2C40;
+  --color-primary_active: #0E0D1E;
+  --color-primary_light: #C8C5DC;
+  --color-primary_lighter: rgba(26, 24, 51, 0.08);
+
+  /* Accent Brand - Coral */
+  --color-accent: #E8856A;
+  --color-accent-hover: #D97A60;
+  --color-accent_light: rgba(232, 133, 106, 0.15);
 
   /* Neutral Grays */
-  --color-white: #ffffff;
-  --color-gray-50: #f2f4f8;
-  --color-gray-100: #e4e9f4;
-  --color-gray-200: #d4d9e6;
-  --color-gray-300: #aab5cc;
-  --color-gray-400: #6a7a9a;
-  --color-gray-500: #4a5570;
-  --color-gray-600: #334060;
-  --color-gray-700: #1a2235;
-  --color-gray-800: #141e30;
-  --color-gray-900: #0e1320;
-  --color-black: #080d18;
+  --color-white: #F8F8F4;
+  --color-gray-50: #F4F4EE;
+  --color-gray-100: #EBEAE6;
+  --color-gray-200: #D6D4E0;
+  --color-gray-300: #C8C5DC;
+  --color-gray-400: #9894B0;
+  --color-gray-500: #6B6878;
+  --color-gray-600: #4A4855;
+  --color-gray-700: #2E2C40;
+  --color-gray-800: #1A1833;
+  --color-gray-900: #0E0D1E;
+  --color-black: #1C1C1A;
 
   /* Brand Backgrounds */
-  --color-background-primary: #f2f4f8;
-  --color-background-secondary: #ffffff;
-  --color-background-tertiary: #e4e9f4;
-  --color-background-dark: #1a2235;
-  --color-background-black: #0e1320;
+  --color-background-primary: #F4F4EE;
+  --color-background-secondary: #F8F8F4;
+  --color-background-tertiary: #C8C5DC;
+  --color-background-dark: #1A1833;
+  --color-background-deep: #12111F;
+  --color-background-black: #1C1C1A;
 
   /* Navigation */
-  --color-nav-button: rgba(235, 235, 235, 0.8);
-  --color-nav-button-hover: rgba(215, 215, 215, 0.95);
-  --color-nav-button-active: rgba(200, 200, 200, 0.85);
+  --color-nav-button: rgba(26, 24, 51, 0.05);
+  --color-nav-button-hover: rgba(26, 24, 51, 0.1);
+  --color-nav-button-active: rgba(26, 24, 51, 0.15);
 
   /* Text Colors */
-  --color-text-primary: #1a2235;
-  --color-text-secondary: #334060;
-  --color-text-tertiary: #4a5570;
-  --color-text-muted: rgba(26, 34, 53, 0.55);
-  --color-text-subtle: rgba(26, 34, 53, 0.35);
-  --color-text-inverse: #ffffff;
-  --color-text-link: #2563eb;
-  --color-text-link-hover: #1d55d4;
+  --color-text-primary: #1A1833;
+  --color-text-secondary: #4A4770;
+  --color-text-tertiary: #9894B0;
+  --color-text-muted: rgba(26, 24, 51, 0.55);
+  --color-text-subtle: rgba(26, 24, 51, 0.35);
+  --color-text-inverse: #F8F8F4;
+  --color-text-muted-dark: #9ca3af;
+
+  --color-text-link: #1A1833;
+  --color-text-link-hover: #2E2C40;
 
   /* Border Colors */
-  --color-border-light: rgba(26, 34, 53, 0.08);
-  --color-border-medium: rgba(26, 34, 53, 0.14);
-  --color-border-dark: rgba(26, 34, 53, 0.22);
-  --color-border-input: rgba(26, 34, 53, 0.14);
-  --color-border-focus: rgba(37, 99, 235, 0.5);
+  --color-border-light: rgba(26, 24, 51, 0.1);
+  --color-border-medium: rgba(26, 24, 51, 0.2);
+  --color-border-dark: rgba(26, 24, 51, 0.35);
+  --color-border-input: rgba(26, 24, 51, 0.2);
+  --color-border-focus: rgba(26, 24, 51, 0.6);
 
   /* Semantic Colors */
   --color-success: #16a34a;
@@ -92,24 +102,28 @@
   --color-info_dark: #1d4ed8;
 
   /* Product Colors */
-  --color-gco: #2563eb;
-  --color-gco_dark: #3b82f6;
-  --color-playground: #0891b2;
-  --color-playground_dark: #22d3ee;
-  --color-vouch: #64748b;
-  --color-vouch_dark: #94a3b8;
+  --color-gco: #1A1833;
+  --color-gco_dark: #2E2C40;
+  --color-playground: #E8856A;
+  --color-playground_dark: #D97A60;
+  --color-vouch: #6B6878;
+  --color-vouch_dark: #9894B0;
 
   /* ──────────────────────────────────────────────────────────────────────────
    * TYPOGRAPHY - EVEN NUMBERS ONLY
    * ────────────────────────────────────────────────────────────────────────── */
 
   /* Font Families */
+  --font-display: "Archivo", sans-serif;
+  --font-body: "Barlow", sans-serif;
+  --font-alt: "Barlow", sans-serif;
+  
   --font-family-heading:
-    "OV Soge", -apple-system, BlinkMacSystemFont, sans-serif;
+    "Archivo", -apple-system, BlinkMacSystemFont, sans-serif;
   --font-family-body:
-    "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    "Barlow", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-family-accent:
-    "Manrope", -apple-system, BlinkMacSystemFont, sans-serif;
+    "Barlow", -apple-system, BlinkMacSystemFont, sans-serif;
   --font-family-mono: "SF Pro Display", "Courier New", monospace;
   --font-family-footer: "Lato", -apple-system, BlinkMacSystemFont, sans-serif;
 
@@ -223,27 +237,27 @@
   --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
 
   /* Custom Shadows (Premium Diffused) */
-  --shadow-button: 0 4px 14px rgba(37, 99, 235, 0.25);
-  --shadow-button-hover: 0 8px 24px rgba(37, 99, 235, 0.4);
+  --shadow-button: 0 4px 14px rgba(232, 133, 106, 0.25);
+  --shadow-button-hover: 0 8px 24px rgba(232, 133, 106, 0.4);
   --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.04);
   --shadow-card-hover: 0 12px 40px rgba(0, 0, 0, 0.08);
   --shadow-nav: 0 2px 20px rgba(0, 0, 0, 0.04);
   --shadow-modal: 0 24px 60px 0 rgba(0, 0, 0, 0.12);
 
-  /* Claymorphism Shadows - BOLD EDITION */
+  /* Claymorphism Shadows - VIOLET & PEACH EDITION */
   --shadow-clay:
-    inset 3px 3px 6px rgba(255, 255, 255, 0.7),
-    inset -2px -2px 5px rgba(0, 0, 0, 0.08), 10px 10px 28px rgba(0, 0, 0, 0.18);
+    inset 3px 3px 6px rgba(248, 248, 244, 0.8),
+    inset -2px -2px 5px rgba(26, 24, 51, 0.08), 10px 10px 28px rgba(26, 24, 51, 0.12);
   --shadow-clay-hover:
-    inset 3px 3px 7px rgba(255, 255, 255, 0.8),
-    inset -2px -2px 5px rgba(0, 0, 0, 0.1), 14px 14px 36px rgba(0, 0, 0, 0.25);
+    inset 3px 3px 7px rgba(248, 248, 244, 0.9),
+    inset -2px -2px 5px rgba(26, 24, 51, 0.12), 14px 14px 36px rgba(26, 24, 51, 0.18);
   --shadow-clay-pressed:
-    inset 3px 3px 8px rgba(0, 0, 0, 0.12),
-    inset -2px -2px 4px rgba(255, 255, 255, 0.5),
-    4px 4px 12px rgba(0, 0, 0, 0.15);
+    inset 3px 3px 8px rgba(26, 24, 51, 0.1),
+    inset -2px -2px 4px rgba(248, 248, 244, 0.6),
+    4px 4px 12px rgba(26, 24, 51, 0.1);
   --shadow-clay-button:
-    inset 3px 3px 5px rgba(255, 255, 255, 0.6),
-    inset -2px -2px 4px rgba(0, 0, 0, 0.06), 6px 6px 18px rgba(0, 0, 0, 0.14);
+    inset 3px 3px 5px rgba(248, 248, 244, 0.6),
+    inset -2px -2px 4px rgba(26, 24, 51, 0.08), 6px 6px 18px rgba(26, 24, 51, 0.12);
 
   /* ──────────────────────────────────────────────────────────────────────────
    * TRANSITIONS - EVEN NUMBERS ONLY
@@ -345,7 +359,7 @@
   /* Focus Ring - EVEN NUMBERS */
   --focus-ring-width: 2px;
   --focus-ring-offset: 2px;
-  --focus-ring-color: rgba(37, 99, 235, 0.5);
+  --focus-ring-color: rgba(26, 24, 51, 0.5);
   --focus-ring: var(--focus-ring-width) solid var(--focus-ring-color);
   --focus-ring-offset-style: var(--focus-ring-offset) solid
     var(--color-background-primary);
@@ -376,55 +390,64 @@
  * ============================================================================ */
 
 [data-theme="dark"] {
-  /* Primary Brand - Electric Blue */
-  --color-primary: #3b82f6;
-  --color-primary-hover: #60a5fa;
-  --color-primary_active: #2563eb;
-  --color-primary_light: rgba(59, 130, 246, 0.15);
-  --color-primary_lighter: rgba(59, 130, 246, 0.08);
+  /* Ateion Brand: Slate Navy + Coral + White — Primary */
 
-  /* Neutral Grays */
-  --color-white: #080d18;
-  --color-gray-50: #0e1320;
-  --color-gray-100: #141e30;
-  --color-gray-200: #1a2235;
-  --color-gray-300: #334060;
-  --color-gray-400: #4a5570;
-  --color-gray-500: #6a7a9a;
-  --color-gray-600: #aab5cc;
-  --color-gray-700: #c8d4ec;
-  --color-gray-800: #e4e9f4;
-  --color-gray-900: #f2f4f8;
-  --color-black: #ffffff;
+  /* Primary Brand - Slate white (clean, no purple) */
+  --color-primary: #E2E8F0;
+  --color-primary-hover: #F8FAFC;
+  --color-primary_active: #CBD5E1;
+  --color-primary_light: rgba(226, 232, 240, 0.12);
+  --color-primary_lighter: rgba(226, 232, 240, 0.06);
 
-  /* Brand Backgrounds - Deep Slate */
-  --color-background-primary: #0e1320;
-  --color-background-secondary: #141e30;
-  --color-background-tertiary: rgba(255, 255, 255, 0.07);
-  --color-background-dark: #1a2235;
-  --color-background-black: #080d18;
+  /* Accent Brand - Coral (same as light mode) */
+  --color-accent: #E8856A;
+  --color-accent-hover: #F0957C;
+  --color-accent_light: rgba(232, 133, 106, 0.15);
+
+  /* Neutral Grays - Clean slate scale (higher number = lighter) */
+  --color-white: #0F172A;
+  --color-gray-50: #111827;
+  --color-gray-100: #1E293B;
+  --color-gray-200: #334155;
+  --color-gray-300: #475569;
+  --color-gray-400: #64748B;
+  --color-gray-500: #94A3B8;
+  --color-gray-600: #CBD5E1;
+  --color-gray-700: #E2E8F0;
+  --color-gray-800: #F1F5F9;
+  --color-gray-900: #F8FAFC;
+  --color-black: #F8F8F4;
+
+  /* Brand Backgrounds - Clean Slate */
+  --color-background-primary: #0F172A;
+  --color-background-secondary: #1E293B;
+  --color-background-tertiary: #334155;
+  --color-background-dark: #111827;
+  --color-background-deep: #080C16;
+  --color-background-black: #0B1120;
 
   /* Navigation */
-  --color-nav-button: rgba(255, 255, 255, 0.05);
-  --color-nav-button-hover: rgba(255, 255, 255, 0.1);
-  --color-nav-button-active: rgba(255, 255, 255, 0.15);
+  --color-nav-button: rgba(226, 232, 240, 0.05);
+  --color-nav-button-hover: rgba(226, 232, 240, 0.1);
+  --color-nav-button-active: rgba(226, 232, 240, 0.15);
 
   /* Text Colors */
-  --color-text-primary: #e0e8f8;
-  --color-text-secondary: #c8d4ec;
-  --color-text-tertiary: #aab5cc;
-  --color-text-muted: rgba(200, 212, 236, 0.5);
-  --color-text-subtle: rgba(200, 212, 236, 0.3);
-  --color-text-inverse: #0e1320;
-  --color-text-link: #3b82f6;
-  --color-text-link-hover: #60a5fa;
+  --color-text-primary: #E2E8F0;
+  --color-text-secondary: #94A3B8;
+  --color-text-tertiary: #64748B;
+  --color-text-muted: rgba(226, 232, 240, 0.5);
+  --color-text-subtle: rgba(226, 232, 240, 0.3);
+  --color-text-inverse: #0F172A;
+
+  --color-text-link: #CBD5E1;
+  --color-text-link-hover: #F8FAFC;
 
   /* Border Colors */
-  --color-border-light: rgba(255, 255, 255, 0.06);
-  --color-border-medium: rgba(255, 255, 255, 0.1);
-  --color-border-dark: rgba(255, 255, 255, 0.16);
-  --color-border-input: rgba(255, 255, 255, 0.1);
-  --color-border-focus: rgba(59, 130, 246, 0.6);
+  --color-border-light: rgba(226, 232, 240, 0.08);
+  --color-border-medium: rgba(226, 232, 240, 0.15);
+  --color-border-dark: rgba(226, 232, 240, 0.25);
+  --color-border-input: rgba(226, 232, 240, 0.15);
+  --color-border-focus: rgba(226, 232, 240, 0.5);
 
   /* Semantic Colors */
   --color-success: #16a34a;
@@ -439,20 +462,20 @@
   --color-error_light: rgba(220, 38, 38, 0.15);
   --color-error_dark: #b91c1c;
 
-  --color-info: #3b82f6;
-  --color-info_light: rgba(59, 130, 246, 0.15);
-  --color-info_dark: #2563eb;
+  --color-info: #2563eb;
+  --color-info_light: rgba(37, 99, 235, 0.15);
+  --color-info_dark: #1d4ed8;
 
   /* Product Colors */
-  --color-gco: #3b82f6;
-  --color-gco_dark: #3b82f6;
-  --color-playground: #22d3ee;
-  --color-playground_dark: #22d3ee;
-  --color-vouch: #94a3b8;
-  --color-vouch_dark: #94a3b8;
+  --color-gco: #94A3B8;
+  --color-gco_dark: #CBD5E1;
+  --color-playground: #E8856A;
+  --color-playground_dark: #F0957C;
+  --color-vouch: #64748B;
+  --color-vouch_dark: #94A3B8;
   --color-red-card_dark: #ff2a3a;
-  --color-grey-card: rgba(255, 255, 255, 0.03);
-  --color-grey-card_dark: rgba(255, 255, 255, 0.05);
+  --color-grey-card: rgba(226, 232, 240, 0.03);
+  --color-grey-card_dark: rgba(226, 232, 240, 0.05);
 
   /* Shadows - Ambient Glows instead of hard shadows */
   --shadow-xs: 0 4px 12px 0 rgba(0, 0, 0, 0.4);
@@ -464,8 +487,8 @@
   --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.2);
 
   /* Custom Shadows (Premium Diffused Dark) */
-  --shadow-button: 0 4px 20px rgba(56, 189, 248, 0.25);
-  --shadow-button-hover: 0 8px 32px rgba(56, 189, 248, 0.4);
+  --shadow-button: 0 4px 20px rgba(232, 133, 106, 0.25);
+  --shadow-button-hover: 0 8px 32px rgba(232, 133, 106, 0.4);
   --shadow-card: 0 12px 40px rgba(0, 0, 0, 0.4);
   --shadow-card-hover: 0 16px 50px rgba(0, 0, 0, 0.6);
   --shadow-nav: 0 4px 30px rgba(0, 0, 0, 0.4);
@@ -480,15 +503,15 @@
 html[data-theme="dark"] .bg-\[var\(--color-background-secondary\)\] {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(226, 232, 240, 0.06);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 1px 0 rgba(226, 232, 240, 0.08),
     0 8px 32px 0 rgba(0, 0, 0, 0.3);
 }
 
 /* Make body background a rich radial gradient in dark mode */
 html[data-theme="dark"] body {
-  background: radial-gradient(circle at 50% 0%, #141e30 0%, #0e1320 100%);
+  background: radial-gradient(circle at 50% 0%, #1E293B 0%, #0F172A 100%);
   background-attachment: fixed;
 }
 
@@ -556,11 +579,13 @@ html[data-theme="dark"] .social-png-icon {
   border: 1.5px solid rgba(255, 255, 255, 0.45);
   transition:
     box-shadow 0.3s ease,
-    transform 0.3s ease;
+    transform 0.3s ease,
+    border-color 0.3s ease;
 }
 
 .clay-card:hover {
   box-shadow: var(--shadow-clay-hover);
+  border-color: var(--color-accent);
   transform: translateY(-3px);
 }
 
@@ -686,12 +711,12 @@ html[data-theme="dark"] .social-png-icon {
   border-radius: 30px;
   background: linear-gradient(
     120deg,
-    rgba(99, 102, 241, 0.7),
-    rgba(139, 92, 246, 0.7),
-    rgba(56, 189, 248, 0.6),
-    rgba(167, 139, 250, 0.8),
-    rgba(129, 140, 248, 0.7),
-    rgba(99, 102, 241, 0.7)
+    rgba(232, 133, 106, 0.6),
+    rgba(200, 197, 220, 0.7),
+    rgba(232, 133, 106, 0.5),
+    rgba(200, 197, 220, 0.8),
+    rgba(232, 133, 106, 0.6),
+    rgba(200, 197, 220, 0.7)
   );
   background-size: 400% 400%;
   animation: liquid-border-rotate 5s ease infinite;
@@ -711,10 +736,10 @@ html[data-theme="dark"] .social-png-icon {
   background: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(167, 139, 250, 0.06) 20%,
-    rgba(255, 255, 255, 0.1) 40%,
-    rgba(129, 140, 248, 0.08) 55%,
-    rgba(167, 139, 250, 0.06) 70%,
+    rgba(200, 197, 220, 0.06) 20%,
+    rgba(248, 248, 244, 0.1) 40%,
+    rgba(232, 133, 106, 0.08) 55%,
+    rgba(200, 197, 220, 0.06) 70%,
     transparent 100%
   );
   background-size: 200% 100%;
@@ -728,36 +753,46 @@ html[data-theme="dark"] .social-png-icon {
     pulse-glow 3s ease-in-out infinite;
 }
 
-/* Dark mode clay adjustments - BOLD EDITION */
+/* Dark mode clay adjustments - NAVY EDITION */
 [data-theme="dark"] .clay-card,
 [data-theme="dark"] .clay-faq {
   box-shadow:
-    inset 2px 2px 5px rgba(255, 255, 255, 0.08),
-    inset -2px -2px 4px rgba(0, 0, 0, 0.4),
-    10px 10px 30px rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+    inset 2px 2px 5px rgba(226, 232, 240, 0.05),
+    inset -2px -2px 4px rgba(15, 23, 42, 0.6),
+    10px 10px 30px rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(226, 232, 240, 0.08);
 }
 
 [data-theme="dark"] .clay-card:hover,
 [data-theme="dark"] .clay-faq:hover {
   box-shadow:
-    inset 2px 2px 6px rgba(255, 255, 255, 0.1),
-    inset -2px -2px 5px rgba(0, 0, 0, 0.4),
-    14px 14px 38px rgba(0, 0, 0, 0.7);
+    inset 2px 2px 6px rgba(226, 232, 240, 0.08),
+    inset -2px -2px 5px rgba(15, 23, 42, 0.6),
+    14px 14px 38px rgba(15, 23, 42, 0.9);
   transform: translateY(-3px);
 }
 
 [data-theme="dark"] .clay-button {
   box-shadow:
-    inset 2px 2px 4px rgba(255, 255, 255, 0.06),
-    inset -2px -2px 3px rgba(0, 0, 0, 0.3),
-    6px 6px 20px rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+    inset 2px 2px 4px rgba(226, 232, 240, 0.05),
+    inset -2px -2px 3px rgba(15, 23, 42, 0.5),
+    6px 6px 20px rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(226, 232, 240, 0.08);
 }
 
 [data-theme="dark"] .clay-input {
   box-shadow:
-    inset 2px 2px 6px rgba(0, 0, 0, 0.4),
-    inset -2px -2px 3px rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+    inset 2px 2px 6px rgba(15, 23, 42, 0.6),
+    inset -2px -2px 3px rgba(226, 232, 240, 0.03);
+  border: 1px solid rgba(226, 232, 240, 0.08);
+}
+
+/* Angled divider between sections */
+.dark-section::before {
+  content: "";
+  display: block;
+  height: 80px;
+  background: var(--color-background-primary);
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+  margin-bottom: -1px;
 }

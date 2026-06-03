@@ -117,7 +117,7 @@ export default function PolicyGridCard({ policy, index }: { policy: PolicyEntry;
             }}
             className="absolute inset-0 rounded-[var(--radius-lg)] solid-hover-overlay pt-5 px-[18px] pb-[18px] flex flex-col overflow-hidden"
           >
-            <p className="font-['Manrope',sans-serif] text-[0.58rem] font-extrabold tracking-[0.16em] uppercase text-[#bbb] m-0 mb-2">
+            <p className="font-['Manrope',sans-serif] text-[0.58rem] font-extrabold tracking-[0.16em] uppercase text-[var(--color-text-tertiary)] m-0 mb-2">
               HOW ATEION ALIGNS
             </p>
 

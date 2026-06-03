@@ -1,5 +1,5 @@
 import React from "react";
-import svgPaths from "../../imports/svg-paths";
+import svgPaths from "../../pages/svg-paths";
 import { Link } from "react-router";
 
 function SocialIcon({
@@ -76,7 +76,7 @@ export default function SharedFooter() {
               <Link
                 key={label}
                 to={to}
-                className="text-[14px] text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors font-['Inter',sans-serif]"
+                className="text-[14px] text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors font-['Inter',sans-serif]"
               >
                 {label}
               </Link>
@@ -110,7 +110,7 @@ export default function SharedFooter() {
             {["Terms of Use", "Privacy Policy", "Data Collection & Consent"].map((item) => (
               <p
                 key={item}
-                className="text-[14px] text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors cursor-pointer font-['Inter',sans-serif]"
+                className="text-[14px] text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] transition-colors cursor-pointer font-['Inter',sans-serif]"
               >
                 {item}
               </p>

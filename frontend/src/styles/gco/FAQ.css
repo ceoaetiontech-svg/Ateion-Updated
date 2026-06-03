@@ -10,7 +10,7 @@
   letter-spacing: -0.02em;
   color: var(--color-text-primary);
   margin-bottom: 0.75rem;
-  font-family: "OV Soge", sans-serif;
+  font-family: var(--font-family-heading);
 }
 
 .faq-list {

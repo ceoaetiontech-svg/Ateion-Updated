@@ -1,13 +1,13 @@
 :root {
-  --primary-color: #1a2235;
-  --bg-color: #f2f4f8;
-  --accent-color: #2563eb;
-  --text-color: #1a2235;
+  --primary-color: #1A1833;
+  --bg-color: #F4F4EE;
+  --accent-color: #E8856A;
+  --text-color: #1A1833;
 }
 
 [data-theme="dark"] {
-  --primary-color: #e0e8f8;
-  --bg-color: #0e1320;
-  --accent-color: #3b82f6;
-  --text-color: #e0e8f8;
+  --primary-color: #E2E8F0;
+  --bg-color: #0F172A;
+  --accent-color: #E8856A;
+  --text-color: #E2E8F0;
 }
