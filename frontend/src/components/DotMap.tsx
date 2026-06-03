@@ -24,8 +24,6 @@ const nodesData = [
   },
 ];
 
-let globalCachedWorld: any = null;
-
 export default function DotMap() {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -39,9 +37,12 @@ export default function DotMap() {
 
     const container = containerRef.current;
     const canvas = canvasRef.current;
-    
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
     let animationFrameId: number;
     let isMounted = true;
+    let cachedWorld: any = null;
 
     const renderMap = async () => {
       if (!isMounted || !containerRef.current || !canvasRef.current) return;
@@ -51,6 +52,7 @@ export default function DotMap() {
 
       if (width <= 0 || height <= 0) return;
 
+      // Set canvas size for high DPI
       const dpr = window.devicePixelRatio || 1;
       canvas.width = width * dpr;
       canvas.height = height * dpr;
@@ -62,15 +64,15 @@ export default function DotMap() {
       ctx.scale(dpr, dpr);
 
       try {
-        if (!globalCachedWorld) {
+        if (!cachedWorld) {
           const response = await fetch(
             "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json",
           );
           if (!response.ok) throw new Error("Failed to fetch map data");
-          globalCachedWorld = await response.json();
+          cachedWorld = await response.json();
         }
 
-        const world = globalCachedWorld;
+        const world = cachedWorld;
         if (!isMounted || !world) return;
 
         const countries = topojson.feature(
@@ -102,10 +104,7 @@ export default function DotMap() {
 
         const path = d3.geoPath().projection(projection).context(offCtx);
 
-        // Theme Support for Canvas
-        const isDark = document.documentElement.getAttribute("data-theme") === "dark";
-        
-        offCtx.fillStyle = isDark ? "#fff" : "#000";
+        offCtx.fillStyle = "#fff";
         offCtx.beginPath();
         path(countries);
         offCtx.fill();
@@ -115,9 +114,7 @@ export default function DotMap() {
         const imgWidth = imageData.width;
 
         ctx.clearRect(0, 0, width, height);
-        
-        // Theme Support for Canvas Dots
-        ctx.fillStyle = isDark ? "rgba(255, 255, 255, 0.4)" : "rgba(0, 0, 0, 0.5)";
+        ctx.fillStyle = "rgba(255, 255, 255, 0.4)";
 
         const step = 8;
         const dotRadius = 1.5;
@@ -139,37 +136,27 @@ export default function DotMap() {
 
     renderMap();
 
+    // Handle resize
     const resizeObserver = new ResizeObserver(() => {
+      // Debounce resize
       cancelAnimationFrame(animationFrameId);
       animationFrameId = requestAnimationFrame(renderMap);
     });
 
     resizeObserver.observe(container);
 
-    // Re-render when theme changes so canvas updates
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.attributeName === "data-theme") {
-          cancelAnimationFrame(animationFrameId);
-          animationFrameId = requestAnimationFrame(renderMap);
-        }
-      });
-    });
-    
-    observer.observe(document.documentElement, { attributes: true });
-
     return () => {
       isMounted = false;
       resizeObserver.disconnect();
-      observer.disconnect();
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
 
   return (
-    <div ref={containerRef} className="relative w-full h-full bg-transparent">
+    <div ref={containerRef} className="relative w-full h-full bg-[#000000]">
       <canvas ref={canvasRef} className="absolute inset-0" />
 
+      {/* Add ripple animation styles */}
       <style>{`
         @keyframes ripple {
           0% {
@@ -195,7 +182,7 @@ export default function DotMap() {
       {nodePositions.map((node) => (
         <div
           key={node.id}
-          className="absolute z-10 cursor-pointer group"
+          className="absolute z-10 cursor-pointer"
           style={{
             left: `${node.x}px`,
             top: `${node.y}px`,
@@ -215,23 +202,23 @@ export default function DotMap() {
             transition={{ duration: 0.2, ease: "easeOut" }}
             className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 pointer-events-none"
           >
-            <div className="bg-[var(--color-background-primary)] px-3 py-1.5 rounded-lg shadow-lg border border-[var(--color-border-medium)] whitespace-nowrap">
-              <span className="text-[var(--color-text-primary)] text-[13px] font-semibold tracking-tight uppercase">
+            <div className="bg-[#ffffff]/95 backdrop-blur-md px-3 py-1.5 rounded-lg shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-[#ffffff]/20 whitespace-nowrap">
+              <span className="text-[#000000] text-[13px] font-semibold tracking-tight uppercase">
                 {node.label}
               </span>
-              <div className="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-[var(--color-border-medium)]" />
-              <div className="absolute top-[calc(100%-1px)] left-1/2 -translate-x-1/2 border-8 border-transparent border-t-[var(--color-background-primary)]" />
+              {/* Tooltip Arrow */}
+              <div className="absolute top-full left-1/2 -translate-x-1/2 border-8 border-transparent border-t-[#ffffff]/95" />
             </div>
           </motion.div>
 
           {/* Node core */}
-          <div className="relative w-3 h-3 bg-[var(--color-accent)] rounded-full shadow-[0_0_15px_4px_var(--color-accent-light)] transition-transform duration-300 group-hover:scale-125" />
+          <div className="relative w-3 h-3 bg-[#ffffff] rounded-full shadow-[0_0_15px_4px_rgba(255,255,255,0.3)] transition-transform duration-300 group-hover:scale-125" />
 
           {/* Ripples */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="absolute w-12 h-12 border border-[var(--color-accent)]/40 rounded-full animate-ripple" />
-            <div className="absolute w-12 h-12 border border-[var(--color-accent)]/30 rounded-full animate-ripple animate-ripple-delay-1" />
-            <div className="absolute w-12 h-12 border border-[var(--color-accent)]/20 rounded-full animate-ripple animate-ripple-delay-2" />
+            <div className="absolute w-12 h-12 border border-[var(--color-primary)]/40 rounded-full animate-ripple" />
+            <div className="absolute w-12 h-12 border border-[var(--color-primary)]/30 rounded-full animate-ripple animate-ripple-delay-1" />
+            <div className="absolute w-12 h-12 border border-[var(--color-primary)]/20 rounded-full animate-ripple animate-ripple-delay-2" />
           </div>
         </div>
       ))}

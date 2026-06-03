@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://ateion.com/sitemap.xml

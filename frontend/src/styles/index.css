@@ -16,12 +16,3 @@ body {
 html[data-theme="dark"] .solid-hover-overlay {
   background-color: var(--color-background-primary);
 }
-
-.logo-footer {
-  filter: brightness(0);
-  transition: filter 0.3s ease;
-}
-
-html[data-theme="dark"] .logo-footer {
-  filter: brightness(0) invert(1);
-}

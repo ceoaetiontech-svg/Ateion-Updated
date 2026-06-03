@@ -1,25 +1,21 @@
 import React from "react";
-import { motion } from "framer-motion";
-import svgPaths from "../../pages/svg-paths";
+import svgPaths from "../../imports/svg-paths";
 import { Link } from "react-router";
-import logo from "../../assets/logo.png";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i = 0) => ({ opacity: 1, y: 0, transition: { duration: 0.5, delay: i * 0.06, ease: [0.21, 0.45, 0.32, 0.9] } }),
-};
-
-function SocialIcon({ svgPath, href }: { svgPath: string; href?: string }) {
-  const IconContainer = href ? "a" : "div";
+function SocialIcon({
+  svgPath,
+  href,
+}: {
+  svgPath: string;
+  href?: string;
+}) {
+  const IconContainer = href ? "a" : ("div" as any);
   const linkProps = href ? { href, target: "_blank", rel: "noopener noreferrer" } : {};
 
   return (
     <IconContainer
       {...linkProps}
-      className="w-9 h-9 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 group"
-      style={{ backgroundColor: "rgba(232,133,106,0.08)" }}
-      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "var(--color-accent)"; e.currentTarget.style.transform = "scale(1.1)"; }}
-      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "rgba(232,133,106,0.08)"; e.currentTarget.style.transform = "scale(1)"; }}
+      className="w-[36px] h-[36px] rounded-full bg-[var(--color-background-tertiary)] hover:bg-[var(--color-primary)] flex items-center justify-center cursor-pointer transition-all duration-200 group"
     >
       <svg className="w-[18px] h-[18px]" fill="none" viewBox="0 0 22.2726 22.2726">
         <path d={svgPath} className="fill-[var(--color-text-secondary)] group-hover:fill-white transition-colors" />
@@ -32,10 +28,7 @@ function MailIcon({ href }: { href: string }) {
   return (
     <a
       href={href}
-      className="w-9 h-9 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 group"
-      style={{ backgroundColor: "rgba(232,133,106,0.08)" }}
-      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "var(--color-accent)"; e.currentTarget.style.transform = "scale(1.1)"; }}
-      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "rgba(232,133,106,0.08)"; e.currentTarget.style.transform = "scale(1)"; }}
+      className="w-[36px] h-[36px] rounded-full bg-[var(--color-background-tertiary)] hover:bg-[var(--color-primary)] flex items-center justify-center cursor-pointer transition-all duration-200 group"
     >
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
         <path d="M4 6H20V18H4V6Z" className="stroke-[var(--color-text-secondary)] group-hover:stroke-white transition-colors" strokeWidth="2" strokeLinejoin="round" />
@@ -45,111 +38,95 @@ function MailIcon({ href }: { href: string }) {
   );
 }
 
-const navLinks = [
-  { label: "Home", to: "/" },
-  { label: "Dashboard", to: "/dashboard" },
-  { label: "Global Olympiad", to: "/gco" },
-  { label: "PlayGround", to: "/playground" },
-  { label: "Get Connected", to: "/contact" },
-];
-
-const legalLinks = ["Terms of Use", "Privacy Policy", "Data Collection & Consent"];
-
 export default function SharedFooter() {
   return (
-    <motion.footer
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-50px" }}
-      className="w-full border-t relative"
-      style={{ backgroundColor: "var(--color-background-secondary)", borderColor: "var(--color-border-light)", boxShadow: "var(--shadow-clay)" }}
-    >
-      {/* Top accent line */}
-      <div className="h-[3px] w-full" style={{ background: "linear-gradient(90deg, var(--color-accent), rgba(232,133,106,0.1))" }} />
+    <footer className="w-full bg-[var(--color-background-secondary)] border-t border-[var(--color-border-tertiary)]" style={{ boxShadow: 'var(--shadow-clay)' }}>
 
+      {/* Main Footer Body */}
       <div className="w-full max-w-[1280px] mx-auto px-[24px] sm:px-[40px] md:px-[64px] py-[48px] sm:py-[64px]">
         <div className="flex flex-col md:flex-row items-start justify-between gap-[48px] md:gap-[32px]">
-          {/* Brand */}
-          <motion.div className="flex flex-col gap-[20px] flex-[1.5]" variants={fadeUp} custom={0}>
-            <Link to="/">
-              <img src={logo} alt="Ateion" className="h-[52px] w-auto object-contain logo-footer" />
-            </Link>
-            <p className="text-[14px] leading-[1.7] max-w-[300px]" style={{ color: "var(--color-text-secondary)", fontFamily: "Inter, sans-serif" }}>
-              The world&apos;s leading Capability-First Education ecosystem — integrating AI literacy, innovation, and measurable readiness into modern schooling.
+
+          {/* Brand Column */}
+          <div className="flex flex-col gap-[20px] flex-[1.5]">
+            <p className="font-bold text-[22px] text-[var(--color-primary)] font-manrope tracking-tight">
+              Ateion Pvt. Ltd.
             </p>
+            <p className="text-[14px] text-[var(--color-text-secondary)] leading-[1.7] max-w-[280px] font-['Inter',sans-serif]">
+              The world's leading Capability-First Education ecosystem — integrating AI literacy, innovation, and measurable readiness into modern schooling.
+            </p>
+            {/* Social Icons */}
             <div className="flex gap-[10px] items-center mt-[4px]">
               <SocialIcon svgPath={svgPaths.peb98800} href="https://www.linkedin.com/company/ateion/" />
               <MailIcon href="mailto:destiny@ateion.info?subject=Hello%20Ateion" />
             </div>
-          </motion.div>
+          </div>
 
-          {/* Navigate */}
-          <motion.div className="flex flex-col gap-[16px] flex-[1]" variants={fadeUp} custom={1}>
-            <p className="text-[12px] font-bold uppercase tracking-[0.12em] font-manrope" style={{ color: "var(--color-accent)" }}>
+          {/* Navigation Column */}
+          <div className="flex flex-col gap-[16px] flex-[1]">
+            <p className="text-[12px] font-bold uppercase tracking-[0.1em] text-[var(--color-text-muted)] font-manrope">
               Navigate
             </p>
-            {navLinks.map(({ label, to }) => (
+            {[
+              { label: "Home", to: "/" },
+              { label: "Dashboard", to: "/dashboard" },
+              { label: "Global Olympiad", to: "/gco" },
+              { label: "PlayGround", to: "/playground" },
+              { label: "Get Connected", to: "/contact" },
+            ].map(({ label, to }) => (
               <Link
                 key={label}
                 to={to}
-                className="text-[14px] transition-colors duration-200"
-                style={{ color: "var(--color-text-secondary)", fontFamily: "Inter, sans-serif" }}
-                onMouseEnter={(e) => e.currentTarget.style.color = "var(--color-accent)"}
-                onMouseLeave={(e) => e.currentTarget.style.color = "var(--color-text-secondary)"}
+                className="text-[14px] text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors font-['Inter',sans-serif]"
               >
                 {label}
               </Link>
             ))}
-          </motion.div>
+          </div>
 
-          {/* Contact */}
-          <motion.div className="flex flex-col gap-[16px] flex-[1]" variants={fadeUp} custom={2}>
-            <p className="text-[12px] font-bold uppercase tracking-[0.12em] font-manrope" style={{ color: "var(--color-accent)" }}>
+          {/* Contact Column */}
+          <div className="flex flex-col gap-[16px] flex-[1]">
+            <p className="text-[12px] font-bold uppercase tracking-[0.1em] text-[var(--color-text-muted)] font-manrope">
               Contact
             </p>
-            <p className="text-[14px] leading-[1.6]" style={{ color: "var(--color-text-secondary)", fontFamily: "Inter, sans-serif" }}>
+            <p className="text-[14px] text-[var(--color-text-secondary)] leading-[1.6] font-['Inter',sans-serif]">
               PCMC, Pune, Maharashtra - 500034
             </p>
-            <p className="text-[14px]" style={{ color: "var(--color-text-secondary)", fontFamily: "Inter, sans-serif" }}>
+            <p className="text-[14px] text-[var(--color-text-secondary)] font-['Inter',sans-serif]">
               +91 93569 76878
             </p>
             <a
               href="mailto:destiny@ateion.info"
-              className="text-[14px] transition-colors duration-200"
-              style={{ color: "var(--color-accent)", fontFamily: "Inter, sans-serif" }}
-              onMouseEnter={(e) => e.currentTarget.style.textDecoration = "underline"}
-              onMouseLeave={(e) => e.currentTarget.style.textDecoration = "none"}
+              className="text-[14px] text-[var(--color-primary)] hover:underline transition-colors font-['Inter',sans-serif]"
             >
               destiny@ateion.info
             </a>
-          </motion.div>
+          </div>
 
-          {/* Legal */}
-          <motion.div className="flex flex-col gap-[16px] flex-[1]" variants={fadeUp} custom={3}>
-            <p className="text-[12px] font-bold uppercase tracking-[0.12em] font-manrope" style={{ color: "var(--color-accent)" }}>
+          {/* Legal Column */}
+          <div className="flex flex-col gap-[16px] flex-[1]">
+            <p className="text-[12px] font-bold uppercase tracking-[0.1em] text-[var(--color-text-muted)] font-manrope">
               Legal
             </p>
-            {legalLinks.map((item) => (
+            {["Terms of Use", "Privacy Policy", "Data Collection & Consent"].map((item) => (
               <p
                 key={item}
-                className="text-[14px] transition-colors duration-200 cursor-pointer"
-                style={{ color: "var(--color-text-secondary)", fontFamily: "Inter, sans-serif" }}
-                onMouseEnter={(e) => e.currentTarget.style.color = "var(--color-accent)"}
-                onMouseLeave={(e) => e.currentTarget.style.color = "var(--color-text-secondary)"}
+                className="text-[14px] text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] transition-colors cursor-pointer font-['Inter',sans-serif]"
               >
                 {item}
               </p>
             ))}
-          </motion.div>
+          </div>
+
         </div>
       </div>
 
-      {/* Copyright */}
-      <div className="w-full py-[18px] flex items-center justify-center px-[24px]" style={{ backgroundColor: "var(--color-background-primary)", borderTop: "1px solid var(--color-border-light)" }}>
-        <p className="text-[13px] text-center" style={{ color: "var(--color-text-secondary)", fontFamily: "Inter, sans-serif" }}>
-          Copyright &copy; Ateion Pvt. Ltd. 2026. All Rights Reserved.
+      {/* Copyright Strip */}
+      <div className="w-full bg-[var(--color-background-primary)] py-[16px] sm:py-[20px] flex items-center justify-center px-[24px] border-t border-[var(--color-border-tertiary)]">
+        <p className="text-[13px] text-[var(--color-text-secondary)] text-center font-['Inter',sans-serif]">
+          Copyright © Ateion Pvt. Ltd. 2026. All Rights Reserved.
         </p>
       </div>
-    </motion.footer>
+
+    </footer>
   );
 }

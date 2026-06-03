@@ -6,127 +6,37 @@
  * ============================================================================
  */
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, Link, useLocation } from "react-router";
-import { Sun, Moon, LogOut, User as UserIcon, Settings, ChevronDown } from "lucide-react";
+import { Sun, Moon } from "lucide-react";
 import { useTheme } from "./ThemeProvider";
 
 import logo from "../../assets/logo.png";
-import "../../styles/shared-nav.css";
 
-const navTextClass = "font-bold text-[13px] whitespace-nowrap font-manrope m-0 leading-none";
-
-/**
- * USER PROFILE DROPDOWN
- */
-function UserProfileDropdown({ user, onLogout }: { user: any; onLogout: () => void }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  const firstName = user.firstName || user.fullName?.split(" ")[0] || "User";
-
-  return (
-    <div className="relative" ref={dropdownRef}>
-      <motion.button
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[var(--color-background-secondary)] border border-[var(--color-border-medium)] hover:border-[var(--color-accent)] transition-all cursor-pointer"
-      >
-        <div className="w-7 h-7 rounded-full bg-[var(--color-accent)] flex items-center justify-center text-white text-xs font-bold overflow-hidden">
-          {user.profilePic ? (
-            <img src={user.profilePic} alt={firstName} className="w-full h-full object-cover" />
-          ) : (
-            <span>{firstName[0].toUpperCase()}</span>
-          )}
-        </div>
-        <span className="text-sm font-bold text-[var(--color-text-primary)] hidden sm:inline">
-          {firstName}
-        </span>
-        <ChevronDown size={14} className={`text-[var(--color-text-tertiary)] transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
-      </motion.button>
-
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: 10, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 10, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className="absolute right-0 mt-2 w-48 rounded-2xl bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] shadow-xl overflow-hidden z-[110]"
-          >
-            <div className="p-3 border-b border-[var(--color-border-light)] bg-[var(--color-background-primary)]/50">
-              <p className="text-xs font-bold text-[var(--color-text-tertiary)] uppercase tracking-wider">Account</p>
-              <p className="text-sm font-bold text-[var(--color-text-primary)] truncate">{user.email}</p>
-            </div>
-            <div className="p-1">
-              <button
-                onClick={() => { setIsOpen(false); navigate("/profile"); }}
-                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-[var(--color-text-primary)] hover:bg-[var(--color-accent-light)] hover:text-[var(--color-accent)] transition-colors text-left"
-              >
-                <UserIcon size={16} />
-                Profile
-              </button>
-              <button
-                onClick={() => { setIsOpen(false); navigate("/dashboard"); }}
-                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-[var(--color-text-primary)] hover:bg-[var(--color-accent-light)] hover:text-[var(--color-accent)] transition-colors text-left"
-              >
-                <Settings size={16} />
-                Dashboard
-              </button>
-              <div className="h-[1px] bg-[var(--color-border-light)] my-1" />
-              <button
-                onClick={() => { setIsOpen(false); onLogout(); }}
-                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold text-[var(--color-error)] hover:bg-[var(--color-error_light)] transition-colors text-left"
-              >
-                <LogOut size={16} />
-                Logout
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
+const navTextClass = "font-bold text-[13px] whitespace-nowrap font-manrope";
 
 /**
  * Unified NavButton component with 3 variants
  */
 function NavButton({
   children,
-  variant = "default" as "default" | "muted" | "primary" | "accent" | "white" | "outline-dark",
+  variant = "default" as "default" | "muted" | "primary" | "white" | "outline-dark",
   onClick,
   href,
-  isActive = false,
 }: {
   children: React.ReactNode;
-  variant?: "default" | "muted" | "primary" | "accent" | "white" | "outline-dark";
+  variant?: "default" | "muted" | "primary" | "white" | "outline-dark";
   onClick?: () => void;
   href?: string;
-  isActive?: boolean;
 }) {
   const navigate = useNavigate();
 
   const variantClasses = {
     default:
-      "bg-[var(--color-background-secondary)] border border-[var(--color-accent)] text-[var(--color-accent)] hover:bg-[var(--color-accent-light)]",
+      "bg-[var(--color-background-secondary)] border border-[var(--color-primary)] text-[var(--color-primary)] hover:bg-[var(--color-primary_light)]",
     primary:
-      "bg-[var(--color-primary)] border border-transparent text-white hover:bg-[var(--color-primary-hover)]",
-    accent:
-      "bg-[var(--color-accent)] border border-transparent text-[var(--color-background-secondary)] hover:bg-[var(--color-accent-hover)]",
+      "bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-hover)]",
     white:
       "bg-[var(--color-background-secondary)] border border-[var(--color-border-medium)] text-[var(--color-text-primary)] hover:bg-[var(--color-background-tertiary)]",
     "outline-dark":
@@ -144,8 +54,7 @@ function NavButton({
       whileTap={{ scale: 0.95 }}
       transition={{ type: "spring", stiffness: 400, damping: 17 }}
       onClick={handleClick}
-      data-active={isActive}
-      className={`clay-button nav-btn ${variantClasses[variant]} rounded-full flex h-[36px] items-center justify-center px-[16px] xl:px-[24px] shrink-0 cursor-pointer transition-colors relative`}
+      className={`clay-button ${variantClasses[variant]} rounded-full flex h-[36px] items-center justify-center px-[16px] xl:px-[24px] shrink-0 cursor-pointer transition-colors`}
     >
       {children}
     </motion.div>
@@ -201,7 +110,7 @@ function LogoContainer() {
         <img
           src={logo}
           alt="Ateion Logo"
-          className={`h-[76px] object-contain w-auto transition-all duration-300 ${
+          className={`h-[50px] md:h-[60px] object-contain w-auto transition-all duration-300 ${
             shouldInvert ? "brightness-0 invert" : ""
           }`}
         />
@@ -221,13 +130,12 @@ function HomeBtn({ onClick }: { onClick?: () => void }) {
   return (
     <NavButton
       variant={isActive ? "primary" : "default"}
-      isActive={isActive}
       onClick={() => {
         if (onClick) onClick();
         navigate("/");
       }}
     >
-      <span className={`${navTextClass}`}>Home</span>
+      <p className={`${navTextClass}`}>Home</p>
     </NavButton>
   );
 }
@@ -243,15 +151,14 @@ function GlobalOlympiadBtn({ onClick }: { onClick?: () => void }) {
   return (
     <NavButton
       variant={isActive ? "primary" : "default"}
-      isActive={isActive}
       onClick={() => {
         if (onClick) onClick();
         navigate("/gco");
       }}
     >
-      <span className={`${navTextClass}`}>
+      <p className={`${navTextClass}`}>
         Global Olympiad
-      </span>
+      </p>
     </NavButton>
   );
 }
@@ -267,15 +174,14 @@ function ResourcesBtn({ onClick }: { onClick?: () => void }) {
   return (
     <NavButton
       variant={isActive ? "primary" : "default"}
-      isActive={isActive}
       onClick={() => {
         if (onClick) onClick();
         navigate("/playground");
       }}
     >
-      <span className={`${navTextClass}`}>
+      <p className={`${navTextClass}`}>
         PlayGround
-      </span>
+      </p>
     </NavButton>
   );
 }
@@ -291,15 +197,14 @@ function PsychometricTestBtn({ onClick }: { onClick?: () => void }) {
   return (
     <NavButton
       variant={isActive ? "primary" : "default"}
-      isActive={isActive}
       onClick={() => {
         if (onClick) onClick();
         navigate("/psychometric-assessment");
       }}
     >
-      <span className={`${navTextClass}`}>
+      <p className={`${navTextClass}`}>
         Psychometric Test
-      </span>
+      </p>
     </NavButton>
   );
 }
@@ -319,15 +224,14 @@ function DashboardBtn({
   return (
     <NavButton
       variant={isActive ? "primary" : "default"}
-      isActive={isActive}
       onClick={() => {
         if (onClick) onClick();
         navigate("/dashboard");
       }}
     >
-      <span className={`${navTextClass}`}>
+      <p className={`${navTextClass}`}>
         Dashboard
-      </span>
+      </p>
     </NavButton>
   );
 }
@@ -362,9 +266,9 @@ function GetConnectedBtn({ onClick }: { onClick?: () => void }) {
     >
       <div className="flex items-center gap-2">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-        <span className={`${navTextClass}`}>
+        <p className={`${navTextClass}`}>
           Get Connected
-        </span>
+        </p>
       </div>
     </NavButton>
   );
@@ -397,9 +301,9 @@ function SignInBtn({ onClick }: { onClick?: () => void }) {
     >
       <div className="flex items-center gap-2 group">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:text-[var(--color-background-primary)]"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-        <span className={`${navTextClass}`}>
+        <p className={`${navTextClass}`}>
           Sign In
-        </span>
+        </p>
       </div>
     </NavButton>
   );
@@ -432,32 +336,9 @@ function SignUpBtn({ onClick }: { onClick?: () => void }) {
     >
       <div className="flex items-center gap-2">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
-        <span className={`${navTextClass}`}>
+        <p className={`${navTextClass}`}>
           Sign Up
-        </span>
-      </div>
-    </NavButton>
-  );
-}
-
-/**
- * LOGOUT BUTTON
- */
-function LogoutBtn({ onClick }: { onClick?: () => void }) {
-  return (
-    <NavButton
-      variant="outline-dark"
-      onClick={() => {
-        localStorage.removeItem("token");
-        window.location.reload(); // Refresh to wipe state completely
-        if (onClick) onClick();
-      }}
-    >
-      <div className="flex items-center gap-2 group">
-        <LogOut size={16} className="group-hover:text-[var(--color-background-primary)]" />
-        <span className={`${navTextClass}`}>
-          Logout
-        </span>
+        </p>
       </div>
     </NavButton>
   );
@@ -559,79 +440,10 @@ function ThemeToggleBtn() {
 
 export default function SharedNavbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState<any>(null);
-  const [scrolled, setScrolled] = useState(false);
 
   const isNavbarOnDark = useNavbarOnDark();
+
   const navigate = useNavigate();
-  const menuRef = useRef<HTMLDivElement>(null);
-
-  // Check auth state
-  useEffect(() => {
-    const checkAuth = () => {
-      const token = localStorage.getItem("token");
-      const userData = localStorage.getItem("user");
-      setIsAuthenticated(!!token);
-      if (userData) {
-        try {
-          setUser(JSON.parse(userData));
-        } catch (e) {
-          setUser(null);
-        }
-      } else {
-        setUser(null);
-      }
-    };
-
-    checkAuth();
-
-    // Listen for custom events that might trigger re-auth check
-    window.addEventListener("close-login", checkAuth);
-    window.addEventListener("close-register", checkAuth);
-
-    return () => {
-      window.removeEventListener("close-login", checkAuth);
-      window.removeEventListener("close-register", checkAuth);
-    };
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    setIsAuthenticated(false);
-    setUser(null);
-    window.location.href = "/"; // Redirect to home on logout
-  };
-
-  // Handle scroll for frosted glass effect
-  useEffect(() => {
-    const onScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-
-    window.addEventListener("scroll", onScroll, { passive: true });
-    // Initial check
-    onScroll();
-
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  // Handle click outside to close mobile menu
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsMobileMenuOpen(false);
-      }
-    }
-
-    if (isMobileMenuOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isMobileMenuOpen]);
 
   const handleNavClick = (path: string) => {
     setIsMobileMenuOpen(false);
@@ -640,19 +452,12 @@ export default function SharedNavbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-300 ${
-        scrolled 
-          ? "nav-scrolled" 
-          : "bg-transparent"
-      }`}
+      className="fixed top-0 left-0 right-0 z-[100] bg-transparent"
       role="navigation"
       aria-label="Main navigation"
-      ref={menuRef}
     >
-      <div className={`flex items-center justify-between px-[16px] md:px-[32px] xl:px-[48px] transition-all duration-300 w-full gap-[24px] ${
-        scrolled ? "py-[8px] lg:py-[12px]" : "py-[12px] lg:py-[20px]"
-      }`}>
-
+      <div className="flex items-center justify-between px-[16px] md:px-[32px] xl:px-[48px] py-[12px] lg:py-[20px] w-full gap-[24px]">
+        
         {/* LEFT SIDE */}
         <div className="flex items-center justify-start">
           <LogoContainer />
@@ -665,16 +470,9 @@ export default function SharedNavbar() {
         {/* RIGHT SIDE */}
         <div className="hidden lg:flex items-center justify-end ml-auto gap-[8px] xl:gap-[12px]">
           <ThemeToggleBtn />
-
-          {isAuthenticated && user ? (
-            <UserProfileDropdown user={user} onLogout={handleLogout} />
-          ) : (
-            <>
-              <GetConnectedBtn />
-              <SignInBtn />
-              <SignUpBtn />
-            </>
-          )}
+          <GetConnectedBtn />
+          <SignInBtn />
+          <SignUpBtn />
         </div>
 
         {/* MOBILE MENU BUTTON */}
@@ -693,45 +491,53 @@ export default function SharedNavbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="lg:hidden bg-[var(--color-background-primary)] border-t border-[var(--color-border-light)] overflow-hidden absolute w-full shadow-lg"
+            className="lg:hidden bg-[var(--color-background-primary)] border-t border-[var(--color-border-light)] overflow-hidden"
           >
             <div className="flex flex-col gap-[12px] px-[24px] py-[24px]">
+              
+              <HomeBtn
+                onClick={() => handleNavClick("/")}
+              />
 
-              <HomeBtn onClick={() => handleNavClick("/")} />
-              <GlobalOlympiadBtn onClick={() => handleNavClick("/gco")} />
-              <PsychometricTestBtn onClick={() => handleNavClick("/psychometric-assessment")} />
-              <ResourcesBtn onClick={() => handleNavClick("/playground")} />
+              <DashboardBtn
+                onClick={() => handleNavClick("/dashboard")}
+              />
+
+              <GlobalOlympiadBtn
+                onClick={() => handleNavClick("/gco")}
+              />
+
+              <PsychometricTestBtn
+                onClick={() => handleNavClick("/psychometric-assessment")}
+              />
+
+              <ResourcesBtn
+                onClick={() => handleNavClick("/playground")}
+              />
+
+              <div className="h-[1px] bg-[var(--color-border-light)] my-[4px]" />
+
+              <GetConnectedBtn
+                onClick={() => handleNavClick("/contact")}
+              />
 
               <div className="h-[1px] bg-[var(--color-border-light)] my-[4px]" />
 
-              {isAuthenticated && user ? (
-                <div className="flex flex-col gap-3">
-                  <div className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-[var(--color-background-secondary)] border border-[var(--color-border-light)]">
-                    <div className="w-10 h-10 rounded-full bg-[var(--color-accent)] flex items-center justify-center text-white font-bold">
-                      {user.firstName ? user.firstName[0] : user.fullName[0]}
-                    </div>
-                    <div>
-                      <p className="text-sm font-bold text-[var(--color-text-primary)]">{user.fullName}</p>
-                      <p className="text-xs text-[var(--color-text-tertiary)]">{user.email}</p>
-                    </div>
-                  </div>
-                  <NavButton variant="default" onClick={() => handleNavClick("/profile")}>Profile</NavButton>
-                  <NavButton variant="default" onClick={() => handleNavClick("/dashboard")}>Dashboard</NavButton>
-                  <NavButton variant="outline-dark" onClick={handleLogout}>Logout</NavButton>
-                </div>
-              ) : (
-                <>
-                  <GetConnectedBtn onClick={() => handleNavClick("/contact")} />
-                  <div className="h-[1px] bg-[var(--color-border-light)] my-[4px]" />
-                  <SignInBtn onClick={() => { setIsMobileMenuOpen(false); window.dispatchEvent(new CustomEvent("open-login")); }} />
-                  <SignUpBtn onClick={() => { setIsMobileMenuOpen(false); window.dispatchEvent(new CustomEvent("open-register")); }} />
-                </>
-              )}
+              <SignInBtn
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  window.dispatchEvent(new CustomEvent("open-login"));
+                }}
+              />
 
-              <div className="h-[1px] bg-[var(--color-border-light)] my-[4px]" />
-              <div className="flex justify-center">
-                <ThemeToggleBtn />
-              </div>
+              <SignUpBtn
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  window.dispatchEvent(new CustomEvent("open-register"));
+                }}
+              />
+
+              <ThemeToggleBtn />
             </div>
           </motion.div>
         )}

@@ -1,12 +1,10 @@
 
 services:
   frontend:
-    image: node:20-alpine
-    working_dir: /app
-    volumes:
-      - .:/app
-    command: sh -c "npm install && npm run dev"
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "3000:80"
     container_name: ateion-frontend
     restart: unless-stopped
