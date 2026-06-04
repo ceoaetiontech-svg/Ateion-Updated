@@ -33,7 +33,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <>
+    <React.Fragment>
       <Helmet>
         <title>Admin Settings | Ateion</title>
         <meta name="description" content="Manage Ateion platform settings, billing, and security preferences." />
@@ -177,6 +177,7 @@ export default function SettingsPage() {
         </motion.div>
       </div>
     </motion.div>
+    </React.Fragment>
   );
 }
 
@@ -220,8 +221,7 @@ function ToggleRow({
             checked ? "translate-x-5" : "translate-x-0"
           }`}
         />
-      </button>
-    </motion.div>
-    </>
+        </button>
+      </motion.div>
   );
 }

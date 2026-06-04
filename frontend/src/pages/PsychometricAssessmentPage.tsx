@@ -48,20 +48,10 @@ const itemVariants = {
 
 function BackgroundGlows() {
   return (
-            <>
-              <Helmet>
-                <title>Psychometric Assessment | Ateion</title>
-                <meta name="description" content="Take Ateion's psychometric assessment to discover your capability profile across multiple dimensions of intelligence." />
-              </Helmet>
-              <BackgroundGlows />
-
-              <motion.div
-      initial={{ scaleX: 0 }}
-      animate={{ scaleX: 1 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className="w-14 h-[3px] rounded-full bg-[var(--color-accent)] mb-5"
-      style={{ transformOrigin: "center" }}
-    />
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-[var(--color-accent)] opacity-10 blur-3xl" />
+      <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-[var(--color-primary_light)] opacity-10 blur-3xl" />
+    </div>
   );
 }
 
