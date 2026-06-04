@@ -55,6 +55,18 @@ function BackgroundGlows() {
   );
 }
 
+function AccentBars() {
+  return (
+    <motion.div
+      initial={{ scaleX: 0 }}
+      animate={{ scaleX: 1 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="w-14 h-[3px] rounded-full bg-[var(--color-accent)] mb-5"
+      style={{ transformOrigin: "center" }}
+    />
+  );
+}
+
 export default function PsychometricAssessmentPage() {
   const [round, setRound] = useState(1);
   const [answer, setAnswer] = useState("");
