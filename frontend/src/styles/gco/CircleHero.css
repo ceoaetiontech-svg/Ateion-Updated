@@ -1,6 +1,6 @@
 .circle-hero-container {
   width: 90%;
-  max-width: 1200px;
+  max-width: var(--max-width);
   margin: auto;
   padding: 64px 1.5rem;
   display: grid;

@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import React, { useState } from 'react';
 import { User, Bell, Shield, Wallet, Save } from 'lucide-react';
 
@@ -5,6 +6,11 @@ export default function TeacherSettingsPage() {
   const [activeTab, setActiveTab] = useState('profile');
 
   return (
+    <>
+      <Helmet>
+        <title>Instructor Settings | Ateion</title>
+        <meta name="description" content="Manage your instructor profile, payout methods, and notification preferences on Ateion." />
+      </Helmet>
     <div className="w-full max-w-4xl mx-auto animate-fade-in pb-20">
       
       <div className="mb-8">
@@ -160,5 +166,6 @@ export default function TeacherSettingsPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

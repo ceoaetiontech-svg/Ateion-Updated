@@ -67,7 +67,7 @@ export default function SharedFooter() {
       {/* Top accent line */}
       <div className="h-[3px] w-full" style={{ background: "linear-gradient(90deg, var(--color-accent), rgba(232,133,106,0.1))" }} />
 
-      <div className="w-full max-w-[1280px] mx-auto px-[24px] sm:px-[40px] md:px-[64px] py-[48px] sm:py-[64px]">
+      <div className="w-full max-w-[var(--max-width)] mx-auto px-[24px] sm:px-[40px] md:px-[64px] py-[48px] sm:py-[64px]">
         <div className="flex flex-col md:flex-row items-start justify-between gap-[48px] md:gap-[32px]">
           {/* Brand */}
           <motion.div className="flex flex-col gap-[20px] flex-[1.5]" variants={fadeUp} custom={0}>

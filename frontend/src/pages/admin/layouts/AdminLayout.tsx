@@ -141,7 +141,7 @@ export default function AdminLayout() {
         </header>
 
         {/* DYNAMIC CONTENT (Pages are injected here) */}
-        <div className="p-8 max-w-[1200px] mx-auto w-full flex-1">
+        <div className="p-8 max-w-[var(--max-width)] mx-auto w-full flex-1">
           <Outlet />
         </div>
       </main>

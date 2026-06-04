@@ -30,6 +30,7 @@ import {
   Milestone
 } from "lucide-react";
 import React, { useState, useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import {
   SidebarProvider,
   Sidebar,
@@ -233,6 +234,11 @@ export default function ResourcesPage() {
     fetchUserDataFromDB();
   }, [navigate]);
   return (
+    <>
+      <Helmet>
+        <title>Playground | Ateion</title>
+        <meta name="description" content="Explore Ateion's interactive learning resources, tools, and activities designed to build real-world capabilities." />
+      </Helmet>
     <SidebarProvider>
       <div className="flex h-screen w-full bg-[var(--color-background-primary)]">
         {/* SIDEBAR */}
@@ -1450,6 +1456,7 @@ export default function ResourcesPage() {
         </SidebarInset>
       </div>
     </SidebarProvider>
+    </>
   );
 }
 

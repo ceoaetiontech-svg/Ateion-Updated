@@ -1,12 +1,15 @@
-import { ShieldCheck } from "lucide-react";
+import { ShieldCheck, Sun, Moon } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { motion, AnimatePresence } from "framer-motion";
+import { useTheme } from "../../../app/components/ThemeProvider";
 import "../styles/adminstyle.css";
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { theme, toggleTheme } = useTheme();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,39 +35,55 @@ animated-gradient
 bg-[var(--color-background-primary)]
 "
     >
-      {/* Animated Background */}
+      {/* Theme Toggle — top right */}
+      <motion.button
+        type="button"
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        onClick={toggleTheme}
+        className="absolute top-6 right-6 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-background-secondary)] border border-[var(--color-border-medium)] text-[var(--color-text-primary)] cursor-pointer"
+        style={{ backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}
+        aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+        title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+      >
+        <AnimatePresence mode="wait" initial={false}>
+          {theme === "dark" ? (
+            <motion.div
+              key="sun"
+              initial={{ rotate: -90, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: 90, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <Sun size={20} className="text-[var(--color-text-secondary)]" />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="moon"
+              initial={{ rotate: 90, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              exit={{ rotate: -90, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <Moon size={20} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.button>
 
-      {/* Background orbs */}
-      <div className="absolute top-[-100px] left-[-100px] w-[300px] h-[300px] rounded-full"
-        style={{ background: "var(--color-accent)", opacity: 0.15, filter: "blur(80px)" }}
+      {/* Background orbs — overlap card for frosted glass visibility */}
+      <div className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full"
+        style={{ background: "var(--color-accent)", opacity: 0.25, filter: "blur(120px)" }}
       />
-      <div className="absolute bottom-[-100px] right-[-100px] w-[300px] h-[300px] rounded-full"
-        style={{ background: "var(--color-primary_light)", opacity: 0.15, filter: "blur(80px)" }}
+      <div className="absolute top-1/2 left-2/3 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full"
+        style={{ background: "var(--color-background-tertiary)", opacity: 0.2, filter: "blur(120px)" }}
       />
 
       {/* Login Card — Frosted Glass */}
-      <div
-        className="w-full max-w-md md:max-w-lg z-10 relative overflow-hidden"
-        style={{
-          background: "var(--color-background-secondary)",
-          backdropFilter: "blur(12px)",
-          WebkitBackdropFilter: "blur(12px)",
-          borderRadius: "24px",
-          border: "1px solid var(--color-border-medium)",
-          padding: "40px",
-          boxShadow: "var(--shadow-lg)",
-        }}
-      >
+      <div className="admin-glass-card w-full max-w-md md:max-w-lg z-10 relative">
         {/* Logo */}
         <div className="flex justify-center mb-4">
-          <div
-            className="p-4 rounded-full"
-            style={{
-              background: "var(--color-background-tertiary)",
-              backdropFilter: "blur(8px)",
-              WebkitBackdropFilter: "blur(8px)",
-            }}
-          >
+          <div className="admin-glass-icon p-4 rounded-full">
             <ShieldCheck size={42} className="text-[var(--color-text-primary)]" />
           </div>
         </div>
@@ -86,13 +105,7 @@ bg-[var(--color-background-primary)]
             <input
               type="email"
               placeholder="admin@ateion.com"
-              className="w-full px-4 py-3 rounded-xl outline-none transition-all text-[var(--color-text-primary)] placeholder-[var(--color-text-muted)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]"
-              style={{
-                background: "var(--color-background-primary)",
-                border: "1px solid var(--color-border-input)",
-                backdropFilter: "blur(8px)",
-                WebkitBackdropFilter: "blur(8px)",
-              }}
+              className="w-full px-4 py-3 rounded-xl outline-none transition-all text-[var(--color-text-primary)] placeholder-[var(--color-text-muted)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] admin-input"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -106,13 +119,7 @@ bg-[var(--color-background-primary)]
             <input
               type="password"
               placeholder="••••••••"
-              className="w-full px-4 py-3 rounded-xl outline-none transition-all text-[var(--color-text-primary)] placeholder-[var(--color-text-muted)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]"
-              style={{
-                background: "var(--color-background-primary)",
-                border: "1px solid var(--color-border-input)",
-                backdropFilter: "blur(8px)",
-                WebkitBackdropFilter: "blur(8px)",
-              }}
+              className="w-full px-4 py-3 rounded-xl outline-none transition-all text-[var(--color-text-primary)] placeholder-[var(--color-text-muted)] focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)] admin-input"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -121,11 +128,7 @@ bg-[var(--color-background-primary)]
 
           <button
             type="submit"
-            className="w-full py-3 rounded-xl text-[var(--color-text-inverse)] font-semibold transition-all duration-300 hover:scale-[1.02]"
-            style={{
-              background: "var(--color-primary)",
-              border: "1px solid transparent",
-            }}
+            className="w-full py-3 rounded-xl text-[var(--color-text-inverse)] font-semibold transition-all duration-300 hover:scale-[1.02] admin-btn"
           >
             Login
           </button>

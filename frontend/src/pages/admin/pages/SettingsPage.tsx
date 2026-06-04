@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Save, Globe, Shield, CreditCard, Bell } from "lucide-react";
@@ -32,6 +33,11 @@ export default function SettingsPage() {
   };
 
   return (
+    <>
+      <Helmet>
+        <title>Admin Settings | Ateion</title>
+        <meta name="description" content="Manage Ateion platform settings, billing, and security preferences." />
+      </Helmet>
     <motion.div
       className="pb-20"
       variants={containerVariants}
@@ -216,5 +222,6 @@ function ToggleRow({
         />
       </button>
     </motion.div>
+    </>
   );
 }

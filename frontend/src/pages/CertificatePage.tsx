@@ -1,4 +1,6 @@
+import { Helmet } from "react-helmet-async";
 import SharedNavbar from "../app/components/SharedNavbar";
+import NavbarSpacer from "../app/components/NavbarSpacer";
 import SharedFooter from "../app/components/SharedFooter";
 
 import imgImage9 from "../assets/3aab4451afd875f66a83eb26e0ca2d6f58abce98.png";
@@ -6,12 +8,18 @@ import imgImage7 from "../assets/e985b07ea1f916546c05a06ca93558ef62ecc870.png";
 
 export default function CertificatePage() {
   return (
+    <>
+      <Helmet>
+        <title>Certificate | Ateion</title>
+        <meta name="description" content="Generate and download your verified capability certificate from Ateion." />
+      </Helmet>
     <div className="min-h-screen bg-[var(--color-background-primary)] overflow-x-hidden">
       {/* NAVBAR */}
       <SharedNavbar />
+      <NavbarSpacer />
 
       {/* PAGE */}
-      <div className="px-6 md:px-20 pt-32 pb-20">
+      <div className="px-6 md:px-20 pb-20">
         <div className="max-w-7xl mx-auto">
           {/* TITLE */}
           <h1
@@ -54,6 +62,7 @@ export default function CertificatePage() {
       {/* FOOTER */}
       <SharedFooter />
     </div>
+    </>
   );
 }
 

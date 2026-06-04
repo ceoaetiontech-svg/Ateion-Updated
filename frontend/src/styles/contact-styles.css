@@ -29,12 +29,150 @@
 }
 
 .contact-main {
-  padding: 120px 16px 48px;
+  padding: 0 16px 48px;
 }
 
 .contact-container {
-  max-width: 800px;
+  max-width: var(--max-width);
   margin: 0 auto;
+}
+
+/* ─── Two-column layout ──────────────────── */
+.contact-layout {
+  display: flex;
+  gap: 48px;
+  align-items: flex-start;
+}
+
+.contact-form-wrap {
+  flex: 1 1 0%;
+  min-width: 0;
+}
+
+.contact-sidebar {
+  flex: 0 0 340px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: sticky;
+  top: 100px;
+}
+
+/* ─── Sidebar cards ──────────────────────── */
+.contact-sidebar-card {
+  background: var(--color-background-secondary);
+  border: 1px solid var(--color-border-light);
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: var(--shadow-clay);
+  transition: box-shadow 0.3s ease;
+}
+
+.contact-sidebar-card:hover {
+  box-shadow: var(--shadow-clay-hover);
+}
+
+/* ─── Stat ───────────────────────────────── */
+.contact-sidebar-stat {
+  text-align: center;
+  padding: 8px 0;
+}
+
+.contact-sidebar-stat-number {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 4vw, 3rem);
+  font-weight: 800;
+  color: var(--color-accent);
+  display: block;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.contact-sidebar-stat-label {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+/* ─── Testimonial ────────────────────────── */
+.contact-sidebar-quote-icon {
+  color: var(--color-accent);
+  opacity: 0.4;
+  margin-bottom: 10px;
+}
+
+.contact-sidebar-quote-text {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+  font-style: italic;
+  margin: 0 0 16px;
+}
+
+.contact-sidebar-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.contact-sidebar-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.contact-sidebar-author-name {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.contact-sidebar-author-role {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin: 2px 0 0;
+}
+
+/* ─── Office ─────────────────────────────── */
+.contact-sidebar-office {
+  display: flex;
+  gap: 14px;
+}
+
+.contact-sidebar-office-icon {
+  color: var(--color-accent);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.contact-sidebar-office-name {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0 0 4px;
+}
+
+.contact-sidebar-office-addr {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+  margin: 0;
 }
 
 /* ─── Accent Bar ─────────────────────────── */
@@ -72,10 +210,6 @@
 }
 
 /* ─── Form Card ──────────────────────────── */
-.contact-form-wrap {
-  max-width: 700px;
-  margin: 0 auto;
-}
 
 .contact-form {
   background: var(--color-background-secondary);
@@ -334,6 +468,17 @@
 @media (max-width: 768px) {
   .contact-main {
     padding: 100px 16px 32px;
+  }
+
+  .contact-layout {
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .contact-sidebar {
+    flex: none;
+    width: 100%;
+    position: static;
   }
 
   .contact-form {

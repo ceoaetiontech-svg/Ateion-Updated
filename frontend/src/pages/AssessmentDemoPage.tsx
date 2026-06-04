@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Clock, Target, Sun, Moon } from "lucide-react";
@@ -65,6 +66,11 @@ export default function AssessmentDemoPage() {
   };
 
   return (
+    <>
+      <Helmet>
+        <title>Assessment Demo | Ateion</title>
+        <meta name="description" content="Try Ateion's capability assessment demo and experience a new way of measuring skills." />
+      </Helmet>
     <div
       className="min-h-screen overflow-x-hidden relative"
       style={{ background: "var(--color-background-primary)" }}
@@ -305,5 +311,6 @@ export default function AssessmentDemoPage() {
 
       <SharedFooter />
     </div>
+    </>
   );
 }

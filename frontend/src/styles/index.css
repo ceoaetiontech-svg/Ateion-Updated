@@ -2,12 +2,15 @@
 @import "./design-tokens.css";
 @import "./tailwind.css";
 
-html,
-body {
+html {
   overflow-x: hidden;
-  max-width: 100vw;
+  overflow-y: auto;
   background-color: var(--color-background-primary);
   color: var(--color-text-primary);
+}
+
+body {
+  overflow: visible;
 }
 
 .solid-hover-overlay {

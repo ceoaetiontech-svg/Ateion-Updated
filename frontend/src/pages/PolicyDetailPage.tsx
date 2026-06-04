@@ -1,7 +1,9 @@
+import { Helmet } from "react-helmet-async";
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useParams, useNavigate } from "react-router";
 import SharedNavbar from "../app/components/SharedNavbar";
+import NavbarSpacer from "../app/components/NavbarSpacer";
 import SharedFooter from "../app/components/SharedFooter";
 import { allPolicies, PolicyFramework } from "../data/policies";
 
@@ -151,7 +153,8 @@ export default function PolicyDetailPage() {
     return (
       <>
         <SharedNavbar />
-        <div className="bg-[var(--color-background-primary)] min-h-screen flex flex-col items-center justify-center pt-[60px] font-['Manrope',sans-serif] text-center">
+        <NavbarSpacer />
+        <div className="bg-[var(--color-background-primary)] min-h-screen flex flex-col items-center justify-center font-['Manrope',sans-serif] text-center">
           <p className="text-6xl mb-4">🌍</p>
           <h1 className="font-['OV_Soge',sans-serif] text-[2.2rem] font-bold text-[var(--color-text-primary)] mb-3">
             Policy Not Found
@@ -175,8 +178,13 @@ export default function PolicyDetailPage() {
 
   return (
     <>
+      <Helmet>
+        <title>{policy.country} — Policy Details | Ateion</title>
+        <meta name="description" content={`Learn about education policy alignment for ${policy.country} in the Ateion ecosystem.`} />
+      </Helmet>
       <SharedNavbar />
-      <div className="bg-[var(--color-background-primary)] min-h-screen overflow-x-hidden pt-[60px]">
+      <NavbarSpacer />
+      <div className="bg-[var(--color-background-primary)] min-h-screen overflow-x-hidden">
         {/* ── Hero ── */}
         <section className="pt-[72px] pb-16 px-[5%] relative overflow-hidden">
           <div

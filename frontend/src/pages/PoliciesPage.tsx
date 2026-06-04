@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router";
 import { Helmet } from "react-helmet-async";
 import SharedNavbar from "../app/components/SharedNavbar";
+import NavbarSpacer from "../app/components/NavbarSpacer";
 import SharedFooter from "../app/components/SharedFooter";
 import Skeleton from "../app/components/Skeleton";
 import { allPolicies, regions, PolicyEntry } from "../data/policies";
@@ -221,8 +222,9 @@ export default function PoliciesPage() {
         <meta name="description" content="Read the Terms of Service, Privacy Policy, and other legal documents for the Ateion ecosystem." />
       </Helmet>
       <SharedNavbar />
+      <NavbarSpacer />
 
-      <div className="bg-[var(--color-background-primary)] min-h-screen overflow-x-hidden pt-[60px]">
+      <div className="bg-[var(--color-background-primary)] min-h-screen overflow-x-hidden">
         {/* ── Hero header ── */}
         <section className="py-20 px-[5%] pb-16 text-center relative overflow-hidden">
           <div
@@ -352,7 +354,7 @@ export default function PoliciesPage() {
 
         {/* ── Cards grid ── */}
         <section className="px-[5%] pb-[100px]">
-          <div className="max-w-[1320px] mx-auto">
+          <div className="max-w-[var(--max-width)] mx-auto">
             {filtered.length === 0 ? (
               <motion.div
                 initial={{ opacity: 0 }}

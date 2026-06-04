@@ -1,6 +1,6 @@
 .grid-section-container {
   width: 90%;
-  max-width: 1200px;
+  max-width: var(--max-width);
   margin: auto;
   padding: 4rem 5%;
   background-color: var(--color-background-primary);

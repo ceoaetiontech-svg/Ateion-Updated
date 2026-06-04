@@ -18,6 +18,7 @@ import {
   Moon,
 } from "lucide-react";
 import { useNavigate } from "react-router";
+import { Helmet } from "react-helmet-async";
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useTheme } from "../app/components/ThemeProvider";
@@ -82,6 +83,11 @@ export default function ProfilePage() {
   };
 
   return (
+    <>
+      <Helmet>
+        <title>Profile | Ateion</title>
+        <meta name="description" content="Manage your Ateion profile, track your capability score, and view your learning progress." />
+      </Helmet>
     <div className="min-h-screen" style={{ backgroundColor: "var(--color-background-primary)" }}>
       {/* ─── TOP NAV BAR ─── */}
       <header
@@ -414,5 +420,6 @@ export default function ProfilePage() {
         </motion.div>
       </div>
     </div>
+    </>
   );
 }

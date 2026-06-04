@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import jsPDF from "jspdf";
@@ -47,16 +48,14 @@ const itemVariants = {
 
 function BackgroundGlows() {
   return (
-    <>
-      <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-[var(--color-accent)] opacity-10 blur-[100px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-[var(--color-accent)] opacity-10 blur-[100px] pointer-events-none" />
-    </>
-  );
-}
+            <>
+              <Helmet>
+                <title>Psychometric Assessment | Ateion</title>
+                <meta name="description" content="Take Ateion's psychometric assessment to discover your capability profile across multiple dimensions of intelligence." />
+              </Helmet>
+              <BackgroundGlows />
 
-function AccentBars() {
-  return (
-    <motion.div
+              <motion.div
       initial={{ scaleX: 0 }}
       animate={{ scaleX: 1 }}
       transition={{ duration: 0.6, ease: "easeOut" }}

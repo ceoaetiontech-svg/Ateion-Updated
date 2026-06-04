@@ -64,7 +64,7 @@ export default function GCOQuestionSection() {
     >
       <div
         style={{
-          maxWidth: 1350,
+          maxWidth: "var(--max-width)",
           width: "100%",
           display: "flex",
           flexDirection: isMobile ? "column" : "row",
@@ -245,18 +245,18 @@ export default function GCOQuestionSection() {
                 e.currentTarget.style.boxShadow = "0 4px 20px rgba(0,0,0,0.04)";
               }}
             >
-              {/* Number badge */}
+              {/* Large muted number behind title */}
               <div
                 style={{
                   position: "absolute",
-                  top: 16,
-                  right: 18,
+                  top: -8,
+                  left: 8,
                   fontFamily: "var(--font-display)",
-                  fontSize: "2.2rem",
-                  fontWeight: 800,
+                  fontSize: "clamp(5rem, 8vw, 7rem)",
+                  fontWeight: 900,
                   lineHeight: 1,
                   color: "var(--color-accent)",
-                  opacity: 0.15,
+                  opacity: 0.06,
                   userSelect: "none",
                   pointerEvents: "none",
                 }}

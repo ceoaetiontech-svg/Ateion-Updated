@@ -204,6 +204,7 @@
   --max-width-content: 64rem; /* 1024px */
   --max-width-narrow: 48rem; /* 768px */
   --max-width-text: 45rem; /* 720px */
+  --max-width: 80rem; /* 1280px — standard container width */
 
   /* ──────────────────────────────────────────────────────────────────────────
    * BORDER RADIUS - EVEN NUMBERS ONLY

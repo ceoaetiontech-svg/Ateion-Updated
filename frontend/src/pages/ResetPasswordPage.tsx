@@ -1,5 +1,12 @@
+import { Helmet } from "react-helmet-async";
+
 export default function ResetPasswordPage() {
   return (
+    <>
+      <Helmet>
+        <title>Reset Password | Ateion</title>
+        <meta name="description" content="Reset your Ateion account password securely." />
+      </Helmet>
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 w-full max-w-md">
         <h1 className="text-2xl font-bold mb-6">
@@ -23,5 +30,6 @@ export default function ResetPasswordPage() {
         </button>
       </div>
     </div>
+    </>
   );
 }

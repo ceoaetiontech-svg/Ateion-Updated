@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import React from 'react';
 import { TrendingUp, Users, DollarSign, Star, Activity, PlusCircle, MessageCircle, Megaphone, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router';
@@ -17,6 +18,11 @@ const TOP_COURSES = [
 
 export default function TeacherDashboardPage() {
   return (
+    <>
+      <Helmet>
+        <title>Teacher Dashboard | Ateion</title>
+        <meta name="description" content="Ateion instructor dashboard for managing courses, tracking student progress, and monitoring revenue." />
+      </Helmet>
     <div className="animate-fade-in pb-20 space-y-8">
       
       {/* Header */}
@@ -189,5 +195,6 @@ export default function TeacherDashboardPage() {
 
       </div>
     </div>
+    </>
   );
 }

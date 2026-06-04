@@ -145,7 +145,7 @@ function NavButton({
       transition={{ type: "spring", stiffness: 400, damping: 17 }}
       onClick={handleClick}
       data-active={isActive}
-      className={`clay-button nav-btn ${variantClasses[variant]} rounded-full flex h-[36px] items-center justify-center px-[16px] xl:px-[24px] shrink-0 cursor-pointer transition-colors relative`}
+      className={`clay-button nav-btn ${variantClasses[variant]} rounded-full flex h-[36px] items-center justify-center px-[12px] xl:px-[24px] shrink-0 cursor-pointer transition-colors relative`}
     >
       {children}
     </motion.div>
@@ -220,7 +220,7 @@ function HomeBtn({ onClick }: { onClick?: () => void }) {
 
   return (
     <NavButton
-      variant={isActive ? "primary" : "default"}
+      variant="default"
       isActive={isActive}
       onClick={() => {
         if (onClick) onClick();
@@ -242,7 +242,7 @@ function GlobalOlympiadBtn({ onClick }: { onClick?: () => void }) {
 
   return (
     <NavButton
-      variant={isActive ? "primary" : "default"}
+      variant="default"
       isActive={isActive}
       onClick={() => {
         if (onClick) onClick();
@@ -266,7 +266,7 @@ function ResourcesBtn({ onClick }: { onClick?: () => void }) {
 
   return (
     <NavButton
-      variant={isActive ? "primary" : "default"}
+      variant="default"
       isActive={isActive}
       onClick={() => {
         if (onClick) onClick();
@@ -290,7 +290,7 @@ function PsychometricTestBtn({ onClick }: { onClick?: () => void }) {
 
   return (
     <NavButton
-      variant={isActive ? "primary" : "default"}
+      variant="default"
       isActive={isActive}
       onClick={() => {
         if (onClick) onClick();
@@ -318,7 +318,7 @@ function DashboardBtn({
 
   return (
     <NavButton
-      variant={isActive ? "primary" : "default"}
+      variant="default"
       isActive={isActive}
       onClick={() => {
         if (onClick) onClick();
@@ -332,14 +332,44 @@ function DashboardBtn({
   );
 }
 
+const NAV_BUTTONS = [
+  HomeBtn,
+  DashboardBtn,
+  GlobalOlympiadBtn,
+  PsychometricTestBtn,
+  ResourcesBtn,
+] as const;
+
 function NavLinks({ onCloseMobile }: { onCloseMobile?: () => void }) {
+  const location = useLocation();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [underlinePos, setUnderlinePos] = useState({ left: 0, width: 0 });
+
+  useEffect(() => {
+    const activeEl = containerRef.current?.querySelector<HTMLElement>('[data-active="true"]');
+    if (activeEl && containerRef.current) {
+      const parentRect = containerRef.current.getBoundingClientRect();
+      const rect = activeEl.getBoundingClientRect();
+      setUnderlinePos({
+        left: rect.left - parentRect.left + 16,
+        width: rect.width - 32,
+      });
+    } else {
+      setUnderlinePos({ left: 0, width: 0 });
+    }
+  }, [location]);
+
   return (
-    <div className="flex gap-[8px] xl:gap-[16px] items-center shrink-0">
-      <HomeBtn onClick={onCloseMobile} />
-      <DashboardBtn onClick={onCloseMobile} />
-      <GlobalOlympiadBtn onClick={onCloseMobile} />
-      <PsychometricTestBtn onClick={onCloseMobile} />
-      <ResourcesBtn onClick={onCloseMobile} />
+    <div ref={containerRef} className="flex gap-[4px] xl:gap-[16px] items-center shrink-0 relative">
+      <motion.div
+        className="absolute bottom-[-2px] h-[3px] bg-[var(--color-accent)] rounded-full z-10"
+        animate={{ left: underlinePos.left, width: underlinePos.width, opacity: underlinePos.width > 0 ? 1 : 0 }}
+        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+        style={{ pointerEvents: "none" }}
+      />
+      {NAV_BUTTONS.map((Btn, i) => (
+        <Btn key={i} onClick={onCloseMobile} />
+      ))}
     </div>
   );
 }
@@ -657,13 +687,13 @@ export default function SharedNavbar() {
         <div className="flex items-center justify-start">
           <LogoContainer />
 
-          <div className="hidden lg:flex items-center ml-[16px] xl:ml-[32px] gap-[16px]">
+          <div className="hidden lg:flex items-center ml-[8px] xl:ml-[32px] gap-[8px]">
             <NavLinks />
           </div>
         </div>
 
         {/* RIGHT SIDE */}
-        <div className="hidden lg:flex items-center justify-end ml-auto gap-[8px] xl:gap-[12px]">
+        <div className="hidden lg:flex items-center justify-end ml-auto gap-[4px] xl:gap-[12px]">
           <ThemeToggleBtn />
 
           {isAuthenticated && user ? (
@@ -697,10 +727,9 @@ export default function SharedNavbar() {
           >
             <div className="flex flex-col gap-[12px] px-[24px] py-[24px]">
 
-              <HomeBtn onClick={() => handleNavClick("/")} />
-              <GlobalOlympiadBtn onClick={() => handleNavClick("/gco")} />
-              <PsychometricTestBtn onClick={() => handleNavClick("/psychometric-assessment")} />
-              <ResourcesBtn onClick={() => handleNavClick("/playground")} />
+              {NAV_BUTTONS.map((Btn, i) => (
+                <Btn key={i} onClick={() => setIsMobileMenuOpen(false)} />
+              ))}
 
               <div className="h-[1px] bg-[var(--color-border-light)] my-[4px]" />
 

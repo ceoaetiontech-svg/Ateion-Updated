@@ -55,6 +55,61 @@
   font-display: swap;
 }
 
+/* ─── Frosted Glass Card ──────────────────── */
+.admin-glass-card {
+  background: linear-gradient(145deg, rgba(248, 248, 244, 0.35), rgba(232, 133, 106, 0.06), rgba(245, 241, 234, 0.4));
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  padding: 40px;
+  box-shadow:
+    0 16px 48px rgba(26, 24, 51, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    inset 0 -1px 0 rgba(26, 24, 51, 0.05);
+  overflow: hidden;
+}
+
+.admin-glass-icon {
+  background: rgba(232, 133, 106, 0.15);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(232, 133, 106, 0.15);
+}
+
+.admin-input {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(26, 24, 51, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.admin-btn {
+  background: var(--color-primary);
+  border: 1px solid transparent;
+}
+
+[data-theme="dark"] .admin-glass-card {
+  background: linear-gradient(145deg, rgba(30, 41, 59, 0.35), rgba(232, 133, 106, 0.04), rgba(15, 23, 42, 0.4));
+  border: 1px solid rgba(226, 232, 240, 0.06);
+  box-shadow:
+    0 16px 48px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(226, 232, 240, 0.05);
+}
+
+[data-theme="dark"] .admin-glass-icon {
+  background: rgba(51, 65, 85, 0.5);
+}
+
+[data-theme="dark"] .admin-input {
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(226, 232, 240, 0.1);
+}
+
+[data-theme="dark"] .admin-btn {
+  background: var(--color-accent);
+}
+
 /* ─── SF Pro Display (Admin Body Font) ──────── */
 @font-face {
   font-family: "SF Pro Display";

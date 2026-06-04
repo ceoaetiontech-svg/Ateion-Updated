@@ -379,9 +379,9 @@ function EcosystemCluster({
         ml="274.69px"
         mt="137.18px"
         size="272.92px"
-        defaultColor="var(--color-accent)"
+        defaultColor="var(--color-primary)"
         staticTextColor="white"
-        hoverColor="var(--color-accent)"
+        hoverColor="var(--color-primary-hover)"
         isDark={true}
         gradientId="ateionGrad"
         title="Ateion"
@@ -399,8 +399,8 @@ function EcosystemCluster({
         mt="0px"
         size="274.68px"
         defaultColor="var(--color-accent)"
-        staticTextColor="var(--color-text-primary)"
-        hoverColor="var(--color-accent)"
+        staticTextColor="white"
+        hoverColor="var(--color-accent-hover)"
         isDark={true}
         gradientId="gcoGrad"
         title="GCO"
@@ -417,7 +417,9 @@ function EcosystemCluster({
         ml="468.38px"
         mt="369.61px"
         size="248.27px"
-        hoverColor="var(--color-accent)"
+        defaultColor="var(--color-text-secondary)"
+        staticTextColor="white"
+        hoverColor="var(--color-primary-hover)"
         isDark={true}
         gradientId="ateionGrad"
         title="Vouch"
@@ -433,8 +435,10 @@ function EcosystemCluster({
         ml="601.32px"
         mt="57.94px"
         size="333.67px"
-        hoverColor="var(--color-accent)"
-        isDark={true}
+        defaultColor="var(--color-primary_light)"
+        staticTextColor="var(--color-primary)"
+        hoverColor="var(--color-primary_light)"
+        isDark={false}
         gradientId="gcoGrad"
         title="PlayGround"
         description="Engaging, hands-on learning experiences designed to bridge theory with practical AI execution."
@@ -451,20 +455,25 @@ function EcosystemCluster({
 export default function EcosystemSection() {
   const [activeId, setActiveId] = useState("gco");
   const [desktopScale, setDesktopScale] = useState(1);
+  const [mobileScale, setMobileScale] = useState(0.85);
 
-  const MOBILE_CLUSTER_SCALE = 0.85;
-  const DESKTOP_CONTENT_WIDTH = 392 + 64 + CANVAS_WIDTH;
+  const CANVAS_WIDTH_PX = 935;
+  const CANVAS_HEIGHT_PX = 663;
+  const DESKTOP_CONTENT_WIDTH = 392 + 64 + CANVAS_WIDTH_PX;
 
   useEffect(() => {
-    const updateScale = () => {
-      const availableWidth = window.innerWidth - 64; // gutter allowance
-      setDesktopScale(Math.min(1, Math.max(0.7, availableWidth / DESKTOP_CONTENT_WIDTH)));
+    const updateScales = () => {
+      const dw = window.innerWidth - 64;
+      setDesktopScale(Math.min(1, Math.max(0.7, dw / DESKTOP_CONTENT_WIDTH)));
+
+      const mw = window.innerWidth - 48;
+      setMobileScale(Math.min(0.85, mw / CANVAS_WIDTH_PX));
     };
 
-    updateScale();
-    window.addEventListener("resize", updateScale);
-    return () => window.removeEventListener("resize", updateScale);
-  }, [DESKTOP_CONTENT_WIDTH]);
+    updateScales();
+    window.addEventListener("resize", updateScales);
+    return () => window.removeEventListener("resize", updateScales);
+  }, [DESKTOP_CONTENT_WIDTH, CANVAS_WIDTH_PX]);
 
   const ecosystemData = {
     gco: {
@@ -540,44 +549,19 @@ export default function EcosystemSection() {
       <div className="md:hidden flex flex-col items-start gap-[40px] px-6">
         <GcoFeatureBadge activeData={activeData} />
 
-        {/* Scroll hint */}
-        <p className="text-[11px] text-[var(--color-text-primary)] opacity-30 tracking-widest uppercase self-center">
-          ← scroll to explore →
-        </p>
-
-        {/* Horizontally scrollable cluster (mobile) with vertical scroll area and invisible scrollbars */}
-        <div
-          className="w-full overflow-x-auto overflow-y-auto pb-4"
-          style={{
-            WebkitOverflowScrolling: "touch",
-            scrollbarWidth: "none",
-            msOverflowStyle: "none",
-            maxHeight: "70vh",
-            minHeight: "40vh",
-          }}
-        >
-          {/* Hide scrollbars visually but keep content swipe-scrollable */}
-          <style>{`
-            .bubble-scroll { scrollbar-width: none; -ms-overflow-style: none; }
-            .bubble-scroll::-webkit-scrollbar { width: 0; height: 0; }
-            .bubble-scroll::-webkit-scrollbar-track { background: transparent; }
-            .bubble-scroll::-webkit-scrollbar-thumb { background: transparent; }
-          `}</style>
-          <div className="bubble-scroll w-full overflow-x-auto overflow-y-auto pb-4">
-            {/* Scale down the cluster on mobile, but keep bigger height to avoid vertical scrollbar */}
-            <div
-              style={{
-                width: CANVAS_WIDTH,
-                height: CANVAS_HEIGHT,
-                transform: `scale(${MOBILE_CLUSTER_SCALE})`,
-                transformOrigin: "top left",
-                minHeight: CANVAS_HEIGHT * MOBILE_CLUSTER_SCALE,
-                // The scaled element still occupies original space without this:
-                marginBottom: -(CANVAS_HEIGHT * (1 - MOBILE_CLUSTER_SCALE)),
-              }}
-            >
-              <EcosystemCluster onBubbleClick={setActiveId} />
-            </div>
+        {/* Mobile cluster — scaled to fit without scroll */}
+        <div className="w-full">
+          <div
+            style={{
+              width: CANVAS_WIDTH,
+              height: CANVAS_HEIGHT,
+              transform: `scale(${mobileScale})`,
+              transformOrigin: "top left",
+              marginBottom: -(CANVAS_HEIGHT * (1 - mobileScale)),
+              marginRight: -(CANVAS_WIDTH * (1 - mobileScale)),
+            }}
+          >
+            <EcosystemCluster onBubbleClick={setActiveId} />
           </div>
         </div>
       </div>

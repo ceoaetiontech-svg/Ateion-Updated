@@ -1,6 +1,8 @@
+import { Helmet } from "react-helmet-async";
 import React from "react";
 import { useNavigate } from "react-router";
 import SharedNavbar from "../app/components/SharedNavbar";
+import NavbarSpacer from "../app/components/NavbarSpacer";
 import SharedFooter from "../app/components/SharedFooter";
 
 export default function NotFoundPage() {
@@ -8,8 +10,13 @@ export default function NotFoundPage() {
 
   return (
     <>
+      <Helmet>
+        <title>404 — Page Not Found | Ateion</title>
+        <meta name="description" content="The page you are looking for does not exist. Return to Ateion's homepage." />
+      </Helmet>
       <SharedNavbar />
-      <div className="bg-[var(--color-background-primary)] w-full min-h-screen flex flex-col items-center justify-center relative overflow-hidden px-4">
+      <NavbarSpacer />
+      <div className="bg-[var(--color-background-primary)] w-full min-h-screen flex flex-col items-center justify-center relative overflow-hidden px-4" style={{ minHeight: "calc(100vh - 1px)" }}>
         {/* Background decorative elements */}
         <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-[var(--color-accent-light)] rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
         <div className="absolute top-1/3 right-1/4 w-64 h-64 bg-[var(--color-error)] rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>

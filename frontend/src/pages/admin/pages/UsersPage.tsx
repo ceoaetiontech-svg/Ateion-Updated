@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import {
@@ -39,6 +40,11 @@ export default function UsersPage() {
   );
 
   return (
+    <>
+      <Helmet>
+        <title>Manage Users | Ateion Admin</title>
+        <meta name="description" content="View and manage users in the Ateion admin portal." />
+      </Helmet>
     <motion.div
       className="pb-20"
       variants={containerVariants}
@@ -193,5 +199,6 @@ export default function UsersPage() {
         </div>
       </motion.div>
     </motion.div>
+    </>
   );
 }

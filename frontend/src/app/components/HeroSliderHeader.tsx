@@ -43,6 +43,7 @@ import hero8 from "../../assets/hero/hero8.png";
 import hero9 from "../../assets/hero/hero9.png";
 import certificate from "../../assets/hero/certificate.jpg";
 import SharedNavbar from "./SharedNavbar";
+import NavbarSpacer from "./NavbarSpacer";
 
 function MarqueeTrack({
   children,
@@ -82,6 +83,8 @@ function Item({ src, alt, width }: { src: string; alt: string; width?: string })
         src={src}
         className="w-full h-full object-cover"
         loading="lazy"
+        role="presentation"
+        aria-hidden="true"
       />
     </div>
   );
@@ -121,8 +124,9 @@ export default function HeroSliderHeader({
   return (
     <div className="flex flex-col w-full bg-[var(--color-background-primary)]">
       <style>{marqueeStyles}</style>
+      <NavbarSpacer />
       {/* 1. Content Above */}
-      <div className="w-full flex flex-col items-start pt-[100px] sm:pt-[120px] pb-[20px] md:pb-[32px]">
+      <div className="w-full flex flex-col items-start pb-[20px] md:pb-[32px]">
         {children}
       </div>
 
@@ -132,11 +136,7 @@ export default function HeroSliderHeader({
         <Frame66 />
       </div>
 
-      {showNavbar && (
-        <div className="fixed top-0 left-0 right-0 z-[100]">
-          <SharedNavbar />
-        </div>
-      )}
+      {showNavbar && <SharedNavbar />}
     </div>
   );
 }

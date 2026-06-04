@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
 import {
   BookOpen,
@@ -112,6 +113,11 @@ function AccentBar() {
 
 export default function AdminDashboardPage() {
   return (
+    <>
+      <Helmet>
+        <title>Admin Dashboard | Ateion</title>
+        <meta name="description" content="Ateion admin portal for managing courses, users, and platform settings." />
+      </Helmet>
     <motion.div
       className="pb-20"
       variants={containerVariants}
@@ -315,5 +321,6 @@ export default function AdminDashboardPage() {
         </div>
       </div>
     </motion.div>
+    </>
   );
 }

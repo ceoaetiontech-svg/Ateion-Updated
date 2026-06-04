@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useLocation } from "react-router";
+import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-router";
 import { useState, useEffect, Suspense, lazy } from "react";
 import LoadingSpinner from "./components/LoadingSpinner";
 import { AnimatePresence } from "framer-motion";
@@ -37,6 +37,7 @@ const ResetPasswordPage = lazy(() => import("../pages/ResetPasswordPage"));
 
 function AnimatedRoutes() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   return (
     <AnimatePresence mode="wait">
@@ -163,9 +164,7 @@ function AnimatedRoutes() {
             element={
               <PageTransition>
                 <CourseUploadView
-                  onUploadSuccess={() =>
-                    (window.location.href = "/admin/courses")
-                  }
+                  onUploadSuccess={() => navigate("/admin/courses")}
                 />
               </PageTransition>
             }
@@ -221,9 +220,7 @@ function AnimatedRoutes() {
             element={
               <PageTransition>
                 <CourseUploadView
-                  onUploadSuccess={() =>
-                    (window.location.href = "/teacher/courses")
-                  }
+                  onUploadSuccess={() => navigate("/teacher/courses")}
                 />
               </PageTransition>
             }

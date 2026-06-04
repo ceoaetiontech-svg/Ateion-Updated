@@ -62,7 +62,7 @@ export default function BeyondScoreClone() {
         <div
           style={{
             position: "relative",
-            maxWidth: "1400px",
+            maxWidth: "var(--max-width)",
             width: "100%",
             background:
               "linear-gradient(135deg, rgba(15,15,18,1) 0%, rgba(10,10,20,1) 50%, rgba(30,20,60,1) 100%)",
@@ -323,7 +323,7 @@ export default function BeyondScoreClone() {
                       >
                         <img
                           src={phone.image}
-                          alt=""
+                          alt={phone.title}
                           style={{
                             width: "100%",
                             height: "100%",
@@ -333,9 +333,6 @@ export default function BeyondScoreClone() {
                             objectPosition: "center",
                             position: "absolute",
                             inset: 0,
-                            opacity: phone.title.includes("future")
-                              ? 0.42
-                              : 0.95,
                           }}
                         />
                       </div>
@@ -394,7 +391,7 @@ export default function BeyondScoreClone() {
                       >
                         <img
                           src={phone.image}
-                          alt=""
+                          alt={phone.title}
                           style={{
                             width: "100%",
                             height: "100%",
@@ -402,7 +399,6 @@ export default function BeyondScoreClone() {
                             objectPosition: "center",
                             position: "absolute",
                             inset: 0,
-                            opacity: 0.95,
                           }}
                         />
                       </div>

@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router";
+import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
 import {
   Home,
@@ -76,6 +77,11 @@ const DashboardPage = () => {
   const navigate = useNavigate();
 
   return (
+    <>
+      <Helmet>
+        <title>Dashboard | Ateion</title>
+        <meta name="description" content="Track your capability journey and access Ateion's learning ecosystem from your dashboard." />
+      </Helmet>
     <div className="dashboard">
       <aside className="sidebar">
         <div className="logo" onClick={() => navigate("/")}>
@@ -189,6 +195,7 @@ const DashboardPage = () => {
         </motion.div>
       </main>
     </div>
+    </>
   );
 };
 

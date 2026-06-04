@@ -107,7 +107,7 @@ function PurpleCapabilityCardInner() {
 
   return (
     <div
-      className="clay-card flex h-[420px] items-start p-[32px] relative w-full overflow-hidden"
+      className="clay-card flex h-full items-start p-[20px] sm:p-[24px] md:p-[32px] relative w-full overflow-hidden"
       style={{
         background: "var(--color-background-secondary)",
         borderRadius: 20,
@@ -130,6 +130,7 @@ function PurpleCapabilityCardInner() {
 
       {/* Corner glow */}
       <div
+        className="hidden sm:block"
         style={{
           position: "absolute",
           top: -80,
@@ -149,17 +150,17 @@ function PurpleCapabilityCardInner() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -30 }}
           transition={{ duration: 0.5, ease: [0.21, 0.45, 0.32, 0.9] }}
-          className="flex flex-col justify-center h-full max-w-[800px] relative z-10"
+          className="flex flex-col justify-center h-full relative z-10"
         >
-          <p className="text-[24px] sm:text-[26px] font-medium leading-[1.35]" style={{ color: "var(--color-text-primary)" }}>
+          <p className="text-[20px] sm:text-[24px] md:text-[26px] font-medium leading-[1.35]" style={{ color: "var(--color-text-primary)" }}>
             {capabilityMessages[current].title}
 
-            <span className="block mt-3 text-[30px] sm:text-[34px] font-extrabold italic" style={{ color: "var(--color-accent)" }}>
+            <span className="block mt-2 sm:mt-3 text-[24px] sm:text-[30px] md:text-[34px] font-extrabold italic" style={{ color: "var(--color-accent)" }}>
               {capabilityMessages[current].highlight}
             </span>
           </p>
 
-          <p className="mt-8 text-[16px] sm:text-[18px] leading-[1.7]" style={{ color: "var(--color-text-secondary)" }}>
+          <p className="mt-4 sm:mt-6 md:mt-8 text-[14px] sm:text-[16px] md:text-[18px] leading-[1.6] sm:leading-[1.7]" style={{ color: "var(--color-text-secondary)" }}>
             Ateion is the world&apos;s leading Capability-First Education ecosystem,
             integrating AI literacy, innovation, and measurable readiness into modern schooling.
           </p>
@@ -207,30 +208,28 @@ function PurpleCapabilityCardOuter() {
   return (
     <div className="w-full flex flex-col items-center gap-10">
 
-      {/* ── CAPABILITY CARD (CENTER) ── */}
+      {/* ── CAPABILITY CARD + VIDEO SIDE BY SIDE ── */}
       <div className="w-full flex justify-center px-[16px] sm:px-[24px] md:px-0">
-        <div className="w-full">
-          <PurpleCapabilityCardInner />
-        </div>
-      </div>
-
-      {/* ── VIDEO (BELOW CARD) ── */}
-      <div className="w-full flex justify-center px-[16px] sm:px-[24px] md:px-0">
-        <div className="w-full h-[550px] rounded-[24px] overflow-hidden shadow-xl">
-          <video
-            ref={videoRef}
-            autoPlay
-            muted
-            loop
-            controls
-            playsInline
-            className="w-full h-full object-cover"
-            onLoadedMetadata={(e) => {
-              e.currentTarget.playbackRate = 1.5;
-            }}
-          >
-            <source src="/video.mp4" type="video/mp4" />
-          </video>
+        <div className="w-full flex flex-col lg:flex-row gap-[24px] items-stretch">
+          <div className="flex-none lg:flex-[1] rounded-[20px] overflow-hidden" style={{ height: "clamp(440px, 55vw, 600px)" }}>
+            <PurpleCapabilityCardInner />
+          </div>
+          <div className="flex-none lg:flex-[1.5] rounded-[24px] overflow-hidden shadow-xl aspect-video w-full">
+            <video
+              ref={videoRef}
+              autoPlay
+              muted
+              loop
+              controls
+              playsInline
+              className="w-full h-full object-contain"
+              onLoadedMetadata={(e) => {
+                e.currentTarget.playbackRate = 1.5;
+              }}
+            >
+              <source src="/video.mp4" type="video/mp4" />
+            </video>
+          </div>
         </div>
       </div>
 
@@ -251,25 +250,59 @@ function HeroMetricsRow() {
 
 function HeroFeatureCardsRow() {
   return (
-    <div className="content-stretch flex flex-col gap-[24px] items-start relative shrink-0 w-full">
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      variants={{
+        hidden: {},
+        visible: { transition: { staggerChildren: 0.25 } },
+      }}
+      className="content-stretch flex flex-col gap-[24px] items-start relative shrink-0 w-full"
+    >
       {/* Section heading */}
-      <div className="w-full flex flex-col items-center gap-3 pt-8 sm:pt-12">
+      <motion.div
+        variants={{
+          hidden: { opacity: 0, y: 30 },
+          visible: { opacity: 1, y: 0 },
+        }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        className="w-full flex flex-col items-center gap-3 pt-8 sm:pt-12"
+      >
         <p
           className="font-bold leading-[0.95] tracking-[-0.04em] text-center"
           style={{
             fontFamily: "var(--font-display)",
             fontSize: "clamp(32px, 5vw, 52px)",
-            color: "var(--color-text-primary)",
+            background: "linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-accent) 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
           }}
         >
-          Reimagining{" "}
-          <span style={{ color: "var(--color-accent)" }}>Education</span>
+          Reimagining Education
         </p>
         <div className="w-[60px] h-[3px] rounded-full" style={{ background: "var(--color-accent)" }} />
-      </div>
-      <PurpleCapabilityCardOuter />
-      <HeroMetricsRow />
-    </div>
+      </motion.div>
+      <motion.div
+        variants={{
+          hidden: { opacity: 0, y: 30 },
+          visible: { opacity: 1, y: 0 },
+        }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+      >
+        <PurpleCapabilityCardOuter />
+      </motion.div>
+      <motion.div
+        variants={{
+          hidden: { opacity: 0, y: 30 },
+          visible: { opacity: 1, y: 0 },
+        }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+      >
+        <HeroMetricsRow />
+      </motion.div>
+    </motion.div>
   );
 }
 
@@ -278,7 +311,7 @@ function HeroFeatureCardsRow() {
 ───────────────────────────────────────────── */
 function GlobalPresenceMapSection() {
   return (
-    <div className="w-full flex flex-col items-center justify-center relative bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] pt-12 sm:pt-16 pb-0 overflow-hidden rounded-[32px] mx-[16px] sm:mx-[24px] md:mx-[64px] max-w-[calc(100%-32px)] md:max-w-[calc(100%-128px)] mx-auto my-12 shadow-sm">
+    <div className="w-full flex flex-col items-center justify-center relative bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] pt-10 sm:pt-12 md:pt-16 pb-0 overflow-hidden rounded-[24px] sm:rounded-[32px] mx-[16px] sm:mx-[24px] md:mx-[64px] max-w-[calc(100%-32px)] md:max-w-[calc(100%-128px)] my-8 sm:my-10 md:my-12 shadow-sm">
       {/* Decorative top accent */}
       <div
         className="absolute top-0 left-[10%] right-[10%] h-[3px] rounded-full"
@@ -304,7 +337,36 @@ function GlobalPresenceMapSection() {
           Connecting capability-based education ecosystems across multiple continents.
         </p>
       </div>
-      <div className="w-full max-w-[1400px] relative px-0 aspect-[2/1] sm:aspect-[2.2/1] md:aspect-[2.5/1]">
+
+      {/* ── STAT COUNTERS ── */}
+      <div className="flex flex-wrap items-center justify-center gap-x-6 sm:gap-x-8 md:gap-x-12 gap-y-4 sm:gap-y-6 mb-8 sm:mb-10 md:mb-14 px-4 w-full max-w-[var(--max-width)]">
+        <div className="flex flex-col items-center gap-1">
+          <span className="font-bold tracking-[-0.02em] text-[clamp(28px,4vw,40px)]" style={{ fontFamily: "var(--font-display)", color: "var(--color-text-primary)" }}>
+            <Counter value={193} suffix="+" />
+          </span>
+          <span className="text-[13px] sm:text-[14px] font-medium" style={{ fontFamily: "var(--font-body)", color: "var(--color-text-muted)" }}>Countries</span>
+        </div>
+        <div className="flex flex-col items-center gap-1">
+          <span className="font-bold tracking-[-0.02em] text-[clamp(28px,4vw,40px)]" style={{ fontFamily: "var(--font-display)", color: "var(--color-text-primary)" }}>
+            <Counter value={200} suffix="+" />
+          </span>
+          <span className="text-[13px] sm:text-[14px] font-medium" style={{ fontFamily: "var(--font-body)", color: "var(--color-text-muted)" }}>Institutions</span>
+        </div>
+        <div className="flex flex-col items-center gap-1">
+          <span className="font-bold tracking-[-0.02em] text-[clamp(28px,4vw,40px)]" style={{ fontFamily: "var(--font-display)", color: "var(--color-text-primary)" }}>
+            <Counter value={50} suffix="K+" />
+          </span>
+          <span className="text-[13px] sm:text-[14px] font-medium" style={{ fontFamily: "var(--font-body)", color: "var(--color-text-muted)" }}>Students</span>
+        </div>
+        <div className="flex flex-col items-center gap-1">
+          <span className="font-bold tracking-[-0.02em] text-[clamp(28px,4vw,40px)]" style={{ fontFamily: "var(--font-display)", color: "var(--color-text-primary)" }}>
+            <Counter value={98} suffix="%" />
+          </span>
+          <span className="text-[13px] sm:text-[14px] font-medium" style={{ fontFamily: "var(--font-body)", color: "var(--color-text-muted)" }}>Satisfaction</span>
+        </div>
+      </div>
+
+      <div className="w-full max-w-[var(--max-width)] relative px-0 aspect-[2/1] sm:aspect-[2.2/1] md:aspect-[2.5/1]">
         <DotMap />
       </div>
     </div>
@@ -440,7 +502,7 @@ export function EducationStatusWrapper() {
       {/* ─── MAIN CLAY CARD ─── */}
       <div
         style={{
-          padding: "40px 28px 40px 32px",
+          padding: "28px 20px",
           background: "var(--color-background-secondary)",
           borderRadius: 20,
           border: "1px solid var(--color-border-light)",
@@ -448,7 +510,7 @@ export function EducationStatusWrapper() {
           position: "relative",
           overflow: "hidden",
         }}
-        className="clay-card content-stretch flex flex-col items-center justify-center w-full transition-shadow duration-300"
+        className="clay-card content-stretch flex flex-col items-center justify-center w-full transition-shadow duration-300 sm:p-[32px_28px_32px_28px] md:p-[40px_32px_40px_32px]"
         onMouseEnter={(e) => e.currentTarget.style.boxShadow = "0 8px 40px rgba(232,133,106,0.08), 0 2px 8px rgba(0,0,0,0.04)"}
         onMouseLeave={(e) => e.currentTarget.style.boxShadow = "0 4px 24px rgba(0,0,0,0.04), 0 1px 4px rgba(0,0,0,0.02)"}
       >
@@ -593,9 +655,23 @@ export function EducationStatusWrapper() {
       </motion.div>
 
       {/* ─── QUOTE CARDS ─── */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-[16px] sm:gap-[24px] w-full mt-[32px] sm:mt-[48px]">
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+        variants={{
+          hidden: {},
+          visible: { transition: { staggerChildren: 0.08 } },
+        }}
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-[16px] sm:gap-[24px] w-full mt-[32px] sm:mt-[48px]"
+      >
         {gridItems.map((item, i) => (
           <motion.a
+            variants={{
+              hidden: { opacity: 0, y: 24 },
+              visible: { opacity: 1, y: 0 },
+            }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
             whileHover={{ y: -6, transition: { duration: 0.3 } }}
             href={item.link}
             target="_blank"
@@ -626,7 +702,7 @@ export function EducationStatusWrapper() {
             </div>
           </motion.a>
         ))}
-      </div>
+      </motion.div>
     </div>
   );
 }
@@ -742,25 +818,59 @@ function FAQSectionContainer() {
   };
 
   return (
-    <div className="flex flex-col items-center w-full px-[16px] sm:px-[24px] md:px-[64px]">
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.1 }}
+      variants={{
+        hidden: {},
+        visible: { transition: { staggerChildren: 0.08 } },
+      }}
+      className="flex flex-col items-center w-full px-[16px] sm:px-[24px] md:px-[64px]"
+    >
       <div className="content-stretch flex flex-col gap-[32px] items-center relative shrink-0 w-full max-w-[1044px]">
         {/* Title */}
-        <p className="font-bold leading-[0.95] tracking-[-0.05em] text-[28px] sm:text-[36px] md:text-[44px] text-[var(--color-text-primary)] text-center" style={{ fontFamily: "var(--font-display)" }}>
-          Your Common Questions Answered
-        </p>
-        <div className="flex items-center gap-3">
-          <div className="w-[40px] sm:w-[60px] h-[3px] rounded-full" style={{ background: "var(--color-accent)" }} />
-          <div className="w-[8px] h-[8px] rounded-full" style={{ background: "var(--color-primary_light)" }} />
-          <div className="w-[40px] sm:w-[60px] h-[3px] rounded-full" style={{ background: "var(--color-accent)" }} />
-        </div>
+        <motion.div
+          variants={{
+            hidden: { opacity: 0, y: 20 },
+            visible: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
+          <p className="font-bold leading-[0.95] tracking-[-0.05em] text-[28px] sm:text-[36px] md:text-[44px] text-[var(--color-text-primary)] text-center" style={{ fontFamily: "var(--font-display)" }}>
+            Your Common Questions Answered
+          </p>
+        </motion.div>
+        <motion.div
+          variants={{
+            hidden: { opacity: 0, y: 20 },
+            visible: { opacity: 1, y: 0 },
+          }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-[40px] sm:w-[60px] h-[3px] rounded-full" style={{ background: "var(--color-accent)" }} />
+            <div className="w-[8px] h-[8px] rounded-full" style={{ background: "var(--color-primary_light)" }} />
+            <div className="w-[40px] sm:w-[60px] h-[3px] rounded-full" style={{ background: "var(--color-accent)" }} />
+          </div>
+        </motion.div>
         {/* Accordion */}
         <div className="content-stretch flex flex-col items-stretch relative shrink-0 w-full max-w-[900px]">
           {faqData.map((item, i) => (
-            <FAQItem key={i} question={item.question} answer={item.answer} isOpen={openStates[i]} toggle={() => toggle(i)} />
+            <motion.div
+              key={i}
+              variants={{
+                hidden: { opacity: 0, y: 16 },
+                visible: { opacity: 1, y: 0 },
+              }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
+            >
+              <FAQItem question={item.question} answer={item.answer} isOpen={openStates[i]} toggle={() => toggle(i)} />
+            </motion.div>
           ))}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

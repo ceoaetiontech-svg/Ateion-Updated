@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router";
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
 import SharedNavbar from "../app/components/SharedNavbar";
+import NavbarSpacer from "../app/components/NavbarSpacer";
 import SharedFooter from "../app/components/SharedFooter";
 
 import Slide from "../features/gco/Slide";
@@ -18,6 +20,7 @@ import { useInView } from "framer-motion";
 import { useRef } from "react";
 
 const GCOPage = () => {
+  const navigate = useNavigate();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -29,11 +32,12 @@ const GCOPage = () => {
         <meta name="description" content="The world's first preparation-free, syllabus-free, AI-integrated Master Olympiad designed to measure thinking, not memory." />
       </Helmet>
       <SharedNavbar />
+      <NavbarSpacer />
       <div
         id="gco-root"
-        className="bg-[var(--color-background-primary)] w-full min-h-screen overflow-x-hidden relative"
+        className="bg-[var(--color-background-primary)] w-full relative"
       >
-        <main className="mt-[60px] md:mt-[60px]">
+        <main>
 
           <section className="hero">
             <div className="hero-overlay">
@@ -97,7 +101,7 @@ const GCOPage = () => {
                       boxShadow: "0 0 0 rgba(232,133,106,0)",
                       transition: "box-shadow 0.4s ease, transform 0.3s ease",
                     }}
-                    onClick={() => window.location.href = "/contact"}
+                    onClick={() => navigate("/contact")}
                     onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 8px 30px rgba(232,133,106,0.25)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
                     onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 0 0 rgba(232,133,106,0)"; e.currentTarget.style.transform = "translateY(0)"; }}
                   >
@@ -114,7 +118,7 @@ const GCOPage = () => {
                       boxShadow: "0 0 0 rgba(232,133,106,0)",
                       transition: "box-shadow 0.4s ease, transform 0.3s ease",
                     }}
-                    onClick={() => window.location.href = "/gco"}
+                    onClick={() => navigate("/gco")}
                     onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 8px 30px rgba(232,133,106,0.3)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
                     onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 0 0 rgba(232,133,106,0)"; e.currentTarget.style.transform = "translateY(0)"; }}
                   >

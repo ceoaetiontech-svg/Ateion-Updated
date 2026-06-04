@@ -1,3 +1,4 @@
+import { Helmet } from "react-helmet-async";
 import React, { useState } from 'react';
 import { Search, Filter, Mail, Award, BookOpen } from 'lucide-react';
 
@@ -18,6 +19,11 @@ export default function TeacherStudentsPage() {
   );
 
   return (
+    <>
+      <Helmet>
+        <title>My Students | Ateion Teacher</title>
+        <meta name="description" content="Monitor student progress and manage enrollments in your Ateion courses." />
+      </Helmet>
     <div className="w-full max-w-6xl mx-auto animate-fade-in pb-20">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-4">
         <div>
@@ -120,5 +126,6 @@ export default function TeacherStudentsPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }
