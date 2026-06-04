@@ -269,19 +269,19 @@ export default function ResourcesPage() {
             height: `calc(100svh - ${navbarHeight}px)`,
           }}
         >
-          <div className="flex h-full flex-col bg-[#1E1632] text-[var(--color-text-inverse)]">
+          <div className="flex h-full flex-col bg-[var(--color-background-secondary)] text-[var(--color-text-primary)]">
             {/* LOGO */}
             <SidebarHeader
               className="px-4 py-6 cursor-pointer hover:opacity-80 transition-opacity"
               onClick={() => setActiveView("Dashboard")}
             >
               <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-accent)] text-[var(--color-text-inverse)]">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-accent)] text-white">
                   <Rocket size={24} />
                 </div>
                 <div className="flex flex-col">
                   <span
-                    className="text-xl font-bold text-[var(--color-text-inverse)] tracking-wide"
+                    className="text-xl font-bold text-[var(--color-text-primary)] tracking-wide"
                     style={{ fontFamily: "var(--font-display)" }}
                   >
                     Ateion
@@ -303,7 +303,7 @@ export default function ResourcesPage() {
                 >
                   <SidebarGroup>
                     <SidebarGroupLabel asChild>
-                      <CollapsibleTrigger className="flex w-full items-center text-[var(--color-text-inverse)]/70 hover:text-[var(--color-text-inverse)]">
+                      <CollapsibleTrigger className="flex w-full items-center text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]">
                         <section.icon className="mr-2 h-4 w-4" />
                         {section.title}
                         <ChevronRight className="ml-auto h-4 w-4 transition-transform group-data-[state=open]/collapsible:rotate-90" />
@@ -315,8 +315,8 @@ export default function ResourcesPage() {
                           {section.items.map((item) => (
                             <SidebarMenuItem key={item.title}>
                               <SidebarMenuButton
-                                className={`text-[var(--color-text-inverse)]/70 hover:text-[var(--color-text-inverse)] hover:bg-[var(--color-background-secondary)]/10 transition-colors ${activeView === item.title ? "bg-[var(--color-background-secondary)]/20 text-[var(--color-text-inverse)] font-bold" : ""}`}
-                                onClick={() => setActiveView(item.title)} // <--- ADD THIS ONCLICK
+                                className={`text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-background-tertiary)]/30 transition-colors ${activeView === item.title ? "bg-[var(--color-background-tertiary)]/40 text-[var(--color-text-primary)] font-bold" : ""}`}
+                                onClick={() => setActiveView(item.title)}
                               >
                                 <item.icon className="h-4 w-4" />
                                 <span>{item.title}</span>
@@ -336,11 +336,10 @@ export default function ResourcesPage() {
               {/* 1. DYNAMIC USER AVATAR BLOCK */}
               <SidebarMenu>
                 <SidebarMenuItem>
-                  {/* 🚨 Using asChild with a native <a> tag forces a guaranteed browser redirect 🚨 */}
                   <SidebarMenuButton
                     size="lg"
                     asChild
-                    className="hover:bg-[var(--color-background-secondary)]/10 text-[var(--color-text-inverse)] cursor-pointer p-1 h-auto mt-2"
+                    className="hover:bg-[var(--color-background-tertiary)]/30 text-[var(--color-text-primary)] cursor-pointer p-1 h-auto mt-2"
                   >
                     <a
                       href="/dashboard"
@@ -353,10 +352,10 @@ export default function ResourcesPage() {
                       </div>
 
                       <div className="flex flex-col text-left">
-                        <span className="text-sm font-semibold text-[var(--color-text-inverse)]">
+                        <span className="text-sm font-semibold text-[var(--color-text-primary)]">
                           {userProfile.fullName}
                         </span>
-                        <span className="text-xs text-[var(--color-text-inverse)]/60">
+                        <span className="text-xs text-[var(--color-text-secondary)]">
                           {userProfile.segmentText}
                         </span>
                       </div>
@@ -365,12 +364,12 @@ export default function ResourcesPage() {
                 </SidebarMenuItem>
               </SidebarMenu>
 
-              <SidebarSeparator className="bg-[var(--color-background-secondary)]/20 mx-4 my-2" />
+              <SidebarSeparator className="bg-[var(--color-border-light)] mx-4 my-2" />
 
               {/* 2. SYSTEM SETTINGS */}
               <SidebarMenu>
                 <SidebarMenuItem>
-                  <SidebarMenuButton className="text-[var(--color-text-inverse)] hover:bg-[var(--color-background-secondary)]/10">
+                  <SidebarMenuButton className="text-[var(--color-text-primary)] hover:bg-[var(--color-background-tertiary)]/30">
                     <Settings size={16} />
                     <span>Settings</span>
                   </SidebarMenuButton>
@@ -378,7 +377,7 @@ export default function ResourcesPage() {
 
                 <SidebarMenuItem>
                   <SidebarMenuButton
-                    className="text-[var(--color-text-inverse)] hover:bg-[var(--color-background-secondary)]/10 cursor-pointer"
+                    className="text-[var(--color-text-primary)] hover:bg-[var(--color-background-tertiary)]/30 cursor-pointer"
                     onClick={() => {
                       // 1. Delete the secure token from memory
                       localStorage.removeItem("token");
