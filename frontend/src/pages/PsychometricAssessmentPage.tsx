@@ -2,7 +2,8 @@ import { Helmet } from "react-helmet-async";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import jsPDF from "jspdf";
-import { Brain, ArrowRight, Download, CheckCircle2, ShieldCheck, Zap, Target, Lightbulb } from "lucide-react";
+import { Brain, ArrowRight, Download, CheckCircle2, ShieldCheck, Zap, Target, Lightbulb, Sun, Moon } from "lucide-react";
+import { useTheme } from "../app/components/ThemeProvider";
 
 const scenarios = [
   "You are inside a spaceship and suddenly lose communication with Earth. What do you do?",
@@ -52,6 +53,45 @@ function BackgroundGlows() {
       <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-[var(--color-accent)] opacity-10 blur-3xl" />
       <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-[var(--color-primary_light)] opacity-10 blur-3xl" />
     </div>
+  );
+}
+
+function ThemeToggleButton() {
+  const { theme, toggleTheme } = useTheme();
+  return (
+    <motion.button
+      type="button"
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.9 }}
+      onClick={toggleTheme}
+      className="absolute top-4 right-4 sm:top-6 sm:right-6 z-20 flex h-[40px] w-[40px] items-center justify-center rounded-full bg-[var(--color-background-secondary)] border border-[var(--color-border-medium)] text-[var(--color-text-primary)] shadow-lg cursor-pointer transition-colors"
+      aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+      title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+    >
+      <AnimatePresence mode="wait" initial={false}>
+        {theme === "dark" ? (
+          <motion.div
+            key="sun"
+            initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
+            animate={{ rotate: 0, opacity: 1, scale: 1 }}
+            exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Sun size={20} className="text-[var(--color-text-secondary)]" />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="moon"
+            initial={{ rotate: 90, opacity: 0, scale: 0.5 }}
+            animate={{ rotate: 0, opacity: 1, scale: 1 }}
+            exit={{ rotate: -90, opacity: 0, scale: 0.5 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Moon size={20} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.button>
   );
 }
 
@@ -116,6 +156,7 @@ export default function PsychometricAssessmentPage() {
         transition={{ duration: 0.6 }}
       >
         <BackgroundGlows />
+        <ThemeToggleButton />
 
         <motion.div
           className="clay-card bg-[var(--color-background-secondary)] p-8 md:p-12 rounded-3xl w-full max-w-3xl z-10 border border-[var(--color-border-light)] shadow-xl relative overflow-hidden"
@@ -246,6 +287,7 @@ export default function PsychometricAssessmentPage() {
         transition={{ duration: 0.6 }}
       >
         <BackgroundGlows />
+        <ThemeToggleButton />
 
         <motion.div
           className="w-full max-w-4xl z-10 flex flex-col gap-8 items-center text-center"
@@ -324,6 +366,7 @@ export default function PsychometricAssessmentPage() {
       transition={{ duration: 0.4 }}
     >
       <BackgroundGlows />
+      <ThemeToggleButton />
 
       <div className="w-full max-w-3xl z-10 flex flex-col gap-6">
         {/* Progress Header */}

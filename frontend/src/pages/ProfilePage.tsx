@@ -99,7 +99,7 @@ export default function ProfilePage() {
             <ShieldCheck size={18} className="text-white" />
           </div>
           <div>
-            <span className="font-bold font-['OV_Soge'] text-base" style={{ color: "var(--color-text-primary)" }}>Ateion</span>
+            <span className="font-bold" style={{ fontFamily: "var(--font-display)", color: "var(--color-text-primary)" }}>Ateion</span>
             <span className="text-xs ml-2 font-medium" style={{ color: "var(--color-text-tertiary)" }}>Profile</span>
           </div>
         </div>
@@ -222,7 +222,7 @@ export default function ProfilePage() {
             </motion.div>
 
             <div className="text-center sm:text-left pb-2">
-              <h1 className="text-3xl sm:text-4xl font-bold font-['OV_Soge']" style={{ color: "var(--color-text-primary)" }}>
+              <h1 className="text-3xl sm:text-4xl font-bold" style={{ fontFamily: "var(--font-display)", color: "var(--color-text-primary)" }}>
                 Test User
               </h1>
               <p className="mt-1 font-medium flex items-center gap-2 justify-center sm:justify-start" style={{ color: "var(--color-text-tertiary)" }}>
@@ -260,7 +260,7 @@ export default function ProfilePage() {
               style={{ backgroundColor: "var(--color-background-secondary)", border: "1px solid var(--color-border-light)" }}
               variants={item}
             >
-              <h3 className="text-sm font-bold font-['OV_Soge'] mb-4 flex items-center gap-2" style={{ color: "var(--color-text-primary)" }}>
+              <h3 className="text-sm font-bold mb-4 flex items-center gap-2" style={{ fontFamily: "var(--font-display)", color: "var(--color-text-primary)" }}>
                 <Zap size={14} style={{ color: "var(--color-accent)" }} />
                 Quick Stats
               </h3>
@@ -280,7 +280,7 @@ export default function ProfilePage() {
                         <Icon size={16} style={{ color: "var(--color-accent)" }} />
                       </div>
                       <div>
-                        <p className="text-lg font-bold font-['OV_Soge']" style={{ color: "var(--color-accent)" }}>{s.value}</p>
+                        <p className="text-lg font-bold" style={{ fontFamily: "var(--font-display)", color: "var(--color-accent)" }}>{s.value}</p>
                         <p className="text-xs font-medium" style={{ color: "var(--color-text-tertiary)" }}>{s.label}</p>
                       </div>
                     </div>
@@ -295,7 +295,7 @@ export default function ProfilePage() {
               style={{ backgroundColor: "var(--color-background-secondary)", border: "1px solid var(--color-border-light)" }}
               variants={item}
             >
-              <h3 className="text-sm font-bold font-['OV_Soge'] mb-4 flex items-center gap-2" style={{ color: "var(--color-text-primary)" }}>
+              <h3 className="text-sm font-bold mb-4 flex items-center gap-2" style={{ fontFamily: "var(--font-display)", color: "var(--color-text-primary)" }}>
                 <Sparkles size={14} style={{ color: "var(--color-accent)" }} />
                 Achievements
               </h3>
@@ -328,10 +328,10 @@ export default function ProfilePage() {
               variants={item}
             >
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold font-['OV_Soge']" style={{ color: "var(--color-text-primary)" }}>
+                <h2 className="text-xl font-bold" style={{ fontFamily: "var(--font-display)", color: "var(--color-text-primary)" }}>
                   Learning Progress
                 </h2>
-                <span className="text-2xl font-black font-['OV_Soge']" style={{ color: "var(--color-accent)" }}>68%</span>
+                <span className="text-2xl font-black" style={{ fontFamily: "var(--font-display)", color: "var(--color-accent)" }}>68%</span>
               </div>
 
               <div className="w-full h-4 rounded-full overflow-hidden" style={{ backgroundColor: "var(--color-border-light)" }}>
@@ -353,7 +353,7 @@ export default function ProfilePage() {
                     className="text-center p-4 rounded-xl"
                     style={{ backgroundColor: "var(--color-background-primary)" }}
                   >
-                    <p className="text-lg font-bold font-['OV_Soge']" style={{ color: "var(--color-text-primary)" }}>{d.v}</p>
+                    <p className="text-lg font-bold" style={{ fontFamily: "var(--font-display)", color: "var(--color-text-primary)" }}>{d.v}</p>
                     <p className="text-xs font-medium mt-1" style={{ color: "var(--color-text-tertiary)" }}>{d.l}</p>
                   </div>
                 ))}
@@ -366,7 +366,7 @@ export default function ProfilePage() {
               style={{ backgroundColor: "var(--color-background-secondary)", border: "1px solid var(--color-border-light)" }}
               variants={item}
             >
-              <h2 className="text-xl font-bold font-['OV_Soge'] mb-6" style={{ color: "var(--color-text-primary)" }}>
+              <h2 className="text-xl font-bold mb-6" style={{ fontFamily: "var(--font-display)", color: "var(--color-text-primary)" }}>
                 Account & Actions
               </h2>
 

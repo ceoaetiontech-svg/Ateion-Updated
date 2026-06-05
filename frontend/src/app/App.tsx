@@ -6,7 +6,7 @@ import { AnimatePresence } from "framer-motion";
 const Homepage = lazy(() => import("../pages/Homepage"));
 const GCOPage = lazy(() => import("../pages/GCOPage"));
 const ContactPage = lazy(() => import("../pages/ContactPage"));
-const ResourcesPage = lazy(() => import("../pages/ResourcesPage"));
+const ResourcesPage = lazy(() => import("../pages/playground/PlaygroundPage"));
 const CertificatePage = lazy(() => import("../pages/CertificatePage"));
 const AssessmentDemoPage = lazy(() => import("../pages/AssessmentDemoPage"));
 const DashboardPage = lazy(() => import("../pages/DashboardPage"));
