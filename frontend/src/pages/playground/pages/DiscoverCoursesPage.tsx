@@ -1,163 +1,391 @@
 import { motion } from "framer-motion";
-import { Compass, ChevronRight, Smile, Zap, Rocket, Heart, Star, User, Play, Bookmark, Share2, Sprout, Sparkles } from "lucide-react";
-import { staggerContainer, fadeUpItem, MY_COURSES_DATA } from "../shared/types";
+import { Heart, Star, X, Search, LayoutGrid, List, BookOpen, Compass, Sprout, Sparkles, Clock, Signal, BarChart2, PlayCircle, GraduationCap } from "lucide-react";
+import { staggerContainer, fadeUpItem } from "../shared/types";
+import { usePlayground } from "../shared/PlaygroundContext";
+import { useCourses } from "../hooks/useCourses";
+import { useNavigate } from "react-router";
+import { getTopicColor } from "../shared/topicColors";
+import { useState, useMemo } from "react";
+import FilterSidebar from "../components/FilterSidebar";
 
-interface DiscoverCoursesViewProps {
-  courseQuery: string;
-  setCourseQuery: (val: string) => void;
-  activeAgeGroup: string;
-  setActiveAgeGroup: (val: string) => void;
-  isLoadingCourses: boolean;
-}
+type SortOption = "popular" | "rating" | "newest" | "free";
+type ViewMode = "grid" | "list";
 
-export default function DiscoverCoursesPage({
-  courseQuery,
-  setCourseQuery,
-  activeAgeGroup,
-  setActiveAgeGroup,
-  isLoadingCourses,
-}: DiscoverCoursesViewProps) {
-  return (
-    <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="flex flex-col gap-6">
-        <div className="flex items-center justify-between mb-2">
-          <h3
-            className="text-2xl sm:text-3xl font-bold flex items-center gap-3 group"
-            style={{ fontFamily: "var(--font-display)" }}
-          >
-            <Compass size={28} className="text-[var(--color-accent)] group-hover:-rotate-12 transition-transform duration-300" />
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[var(--color-text-primary)] via-[var(--color-text-primary)] to-[var(--color-text-tertiary)] relative after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[3px] after:bg-gradient-to-r after:from-[var(--color-accent)] after:to-transparent group-hover:after:w-full after:transition-all after:duration-500">Discover Courses</span>
-          </h3>
+const AGE_GROUPS = [
+  { id: "All", label: "All", icon: <Compass size={18} /> },
+  { id: "Sproutlings (5–7)", label: "Sproutlings (5–7)", icon: <Sprout size={18} /> },
+  { id: "Saplings (7–14)", label: "Saplings (7–14)", icon: <Sprout size={18} /> },
+  { id: "Pathfinders (14–18)", label: "Pathfinders (14–18)", icon: <Compass size={18} /> },
+  { id: "Dreamers (18+)", label: "Dreamers (18+)", icon: <Sparkles size={18} /> },
+];
+
+const SORTS: { id: SortOption; label: string }[] = [
+  { id: "popular", label: "Most popular" },
+  { id: "rating", label: "Highest rated" },
+  { id: "newest", label: "Newest" },
+  { id: "free", label: "Free first" },
+];
+
+export default function DiscoverCoursesPage() {
+  const { courseQuery, setCourseQuery, activeAgeGroup, setActiveAgeGroup, savedIds, toggleSave } = usePlayground();
+  const { allCourses } = useCourses(courseQuery);
+  const navigate = useNavigate();
+  const [sortBy, setSortBy] = useState<SortOption>("popular");
+  const [viewMode, setViewMode] = useState<ViewMode>("grid");
+  const [selectedLevels, setSelectedLevels] = useState<string[]>([]);
+  const [selectedDurations, setSelectedDurations] = useState<string[]>([]);
+  const [selectedRatings, setSelectedRatings] = useState<string[]>([]);
+  const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
+  const [showFreeOnly, setShowFreeOnly] = useState(false);
+
+  const toggleArray = (arr: string[], val: string) =>
+    arr.includes(val) ? arr.filter(v => v !== val) : [...arr, val];
+
+  const allTopics = useMemo(() => [...new Set(allCourses.flatMap(c => c.topics))], [allCourses]);
+  const freeCount = allCourses.filter(c => c.isFree).length;
+
+  let displayCourses = allCourses.filter(c => {
+    const queryMatch = c.title.toLowerCase().includes(courseQuery.toLowerCase()) ||
+      c.instructor.toLowerCase().includes(courseQuery.toLowerCase());
+    const ageMatch = activeAgeGroup === "All" || c.level.includes(activeAgeGroup);
+    const levelMatch = !selectedLevels.length || selectedLevels.some(l => c.level.includes(l));
+    const durationMatch = !selectedDurations.length || selectedDurations.some(d => {
+      const hours = parseInt(c.duration);
+      if (isNaN(hours)) return true;
+      if (d === "Under 1h") return hours < 1;
+      if (d === "1–3h") return hours >= 1 && hours <= 3;
+      if (d === "3–10h") return hours >= 3 && hours <= 10;
+      if (d === "10h+") return hours >= 10;
+      return true;
+    });
+    const ratingMatch = !selectedRatings.length || selectedRatings.some(r => {
+      const threshold = parseFloat(r);
+      return c.rating >= threshold;
+    });
+    const topicMatch = !selectedTopics.length || c.topics.some(t => selectedTopics.includes(t));
+    const freeMatch = !showFreeOnly || c.isFree;
+    return queryMatch && ageMatch && levelMatch && durationMatch && ratingMatch && topicMatch && freeMatch;
+  });
+
+  switch (sortBy) {
+    case "popular": displayCourses = [...displayCourses].sort((a, b) => b.enrollments - a.enrollments); break;
+    case "rating": displayCourses = [...displayCourses].sort((a, b) => b.rating - a.rating); break;
+    case "newest": displayCourses = [...displayCourses].sort((a, b) => b.createdAt - a.createdAt); break;
+    case "free": displayCourses = [...displayCourses].sort((a, b) => Number(b.isFree) - Number(a.isFree)); break;
+  }
+
+  const chips: { label: string; onRemove: () => void }[] = [
+    ...selectedLevels.map(l => ({ label: l, onRemove: () => setSelectedLevels(selectedLevels.filter(v => v !== l)) })),
+    ...selectedDurations.map(d => ({ label: d, onRemove: () => setSelectedDurations(selectedDurations.filter(v => v !== d)) })),
+    ...selectedRatings.map(r => ({ label: `${r} stars`, onRemove: () => setSelectedRatings(selectedRatings.filter(v => v !== r)) })),
+    ...selectedTopics.map(t => ({ label: t, onRemove: () => setSelectedTopics(selectedTopics.filter(v => v !== t)) })),
+    ...(showFreeOnly ? [{ label: "Free only", onRemove: () => setShowFreeOnly(false) }] : []),
+  ];
+
+  const clearFilters = () => {
+    setSelectedLevels([]); setSelectedDurations([]); setSelectedRatings([]);
+    setSelectedTopics([]); setShowFreeOnly(false);
+  };
+
+  const renderStars = (rating: number, size = 12) => (
+    <div className="flex items-center gap-0.5">
+      {[...Array(5)].map((_, i) => (
+        <Star key={i} size={size} className="text-[var(--color-warning)]" fill={i < Math.round(rating) ? "var(--color-warning)" : "none"} />
+      ))}
+    </div>
+  );
+
+  const renderGridCard = (course: typeof allCourses[number]) => (
+    <motion.div
+      variants={fadeUpItem}
+      key={course.id}
+      className="bg-[var(--color-background-secondary)] rounded-3xl flex flex-col group cursor-pointer overflow-hidden border border-[var(--color-border-light)] border-t-[3px] shadow-md hover:border-[var(--color-accent)]/30 hover:shadow-xl hover:-translate-y-1.5 transition-transform duration-300"
+      style={{ borderTopColor: getTopicColor(course.topics) }}
+      onClick={() => navigate(`/playground/course/${course.id}`)}
+    >
+      <div className="relative h-[180px] w-full overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-t from-[#000000]/80 via-[#000000]/20 to-transparent z-10 opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
+        <img
+          src={course.image}
+          alt={course.title}
+          onError={(e) => { (e.currentTarget as HTMLElement).style.display = "none"; }}
+          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+        />
+        <div className="absolute top-4 left-4 z-20 flex items-center gap-2">
+          <div className="bg-[#ffffff]/10 backdrop-blur-md border border-[#ffffff]/20 text-[#ffffff] px-3 py-1.5 rounded-lg text-[11px] font-bold tracking-wider flex items-center gap-1.5 shadow-lg">
+            <Signal size={12} /> {course.level}
+          </div>
+          <div className="bg-[#ffffff]/10 backdrop-blur-md border border-[#ffffff]/20 text-[#ffffff] px-3 py-1.5 rounded-lg text-[11px] font-bold tracking-wider flex items-center gap-1.5 shadow-lg">
+            <Clock size={12} /> {course.duration}
+          </div>
+        </div>
+        <button
+          onClick={(e) => { e.stopPropagation(); toggleSave(course.id); }}
+          className="absolute top-4 right-4 z-20 bg-[#ffffff]/10 backdrop-blur-md border border-[#ffffff]/20 w-8 h-8 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+        >
+          <Heart size={16} className={savedIds.includes(course.id) ? "fill-red-500 text-red-500" : "text-[#fff]"} />
+        </button>
+        <div className="absolute bottom-4 left-4 z-20 right-4">
+          <h4 className="text-[16px] font-bold text-[#ffffff] line-clamp-2 leading-tight drop-shadow-md">
+            {course.title}
+          </h4>
+        </div>
+      </div>
+      <div className="p-5 flex flex-col flex-1 bg-[var(--color-background-secondary)] relative">
+        <div className="flex items-center gap-2 mt-1">
+          <img src={course.instructorAvatar} className="w-6 h-6 rounded-full object-cover" />
+          <span className="text-xs text-[var(--color-text-secondary)]">{course.instructor}</span>
         </div>
 
-        <div className="mb-2 relative max-w-xl group focus-within:scale-[1.01] transition-transform duration-300">
-          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[var(--color-text-tertiary)] group-focus-within:text-[var(--color-accent)] transition-colors group-focus-within:scale-110 group-focus-within:rotate-3">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
-            </svg>
+        <div className="flex items-center gap-1.5 mt-2">
+          <span className="text-xs font-bold text-[var(--color-warning)]">{course.rating}</span>
+          {renderStars(course.rating, 11)}
+          <span className="text-xs text-[var(--color-text-tertiary)]">
+            ({course.students >= 1000 ? `${(course.students / 1000).toFixed(1)}k` : course.students})
+          </span>
+        </div>
+
+        <div className="flex items-center gap-3 mt-2 flex-wrap text-[11px] text-[var(--color-text-tertiary)]">
+          <span className="flex items-center gap-1"><BarChart2 size={12} /> {course.level}</span>
+          <span className="flex items-center gap-1"><Clock size={12} /> {course.duration}</span>
+          <span className="flex items-center gap-1"><PlayCircle size={12} /> {course.lessons} lessons</span>
+        </div>
+
+        <div className="flex flex-wrap gap-1.5 mt-3">
+          {course.topics.slice(0, 3).map((topic) => (
+            <span
+              key={topic}
+              className="px-2 py-0.5 rounded-md text-[10px] font-bold"
+              style={{ backgroundColor: getTopicColor(course.topics) + "20", color: getTopicColor(course.topics) }}
+            >
+              {topic}
+            </span>
+          ))}
+        </div>
+
+        <div className="mt-auto pt-4">
+          <button
+            onClick={(e) => { e.stopPropagation(); navigate(`/playground/course/${course.id}`); }}
+            className="w-full bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] group-hover:bg-[var(--color-accent)] group-hover:border-[var(--color-accent)] group-hover:text-[#fff] text-[var(--color-text-primary)] py-3 rounded-xl text-[14px] font-bold transition-colors duration-300 flex items-center justify-center gap-2 shadow-sm group-hover:shadow-[0_8px_20px_rgba(232,133,106,0.3)] active:scale-95"
+          >
+            Enroll now <GraduationCap size={16} />
+          </button>
+        </div>
+      </div>
+    </motion.div>
+  );
+
+  const renderListCard = (course: typeof allCourses[number]) => (
+    <motion.div
+      variants={fadeUpItem}
+      key={course.id}
+      className="bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] border-l-[3px] rounded-2xl flex gap-4 p-4 items-start hover:shadow-md hover:-translate-y-0.5 transition-transform duration-300 cursor-pointer"
+      style={{ borderLeftColor: getTopicColor(course.topics) }}
+      onClick={() => navigate(`/playground/course/${course.id}`)}
+    >
+      <div className="w-[100px] h-[72px] rounded-xl shrink-0 overflow-hidden bg-[var(--color-background-primary)]">
+        <img
+          src={course.image}
+          alt={course.title}
+          onError={(e) => { (e.currentTarget as HTMLElement).style.display = "none"; }}
+          className="w-full h-full object-cover"
+        />
+      </div>
+      <div className="flex-1 min-w-0">
+        <h4 className="text-[15px] font-bold text-[var(--color-text-primary)] leading-tight truncate">{course.title}</h4>
+        <p className="text-[12px] text-[var(--color-text-tertiary)] truncate mt-0.5">
+          {course.instructor} · {course.level} · {course.duration} · {course.lessons} lessons
+        </p>
+        <div className="flex items-center gap-1.5 mt-1.5">
+          <span className="text-[11px] font-bold text-[var(--color-warning)]">{course.rating}</span>
+          {renderStars(course.rating, 10)}
+          <span className="text-[10px] text-[var(--color-text-tertiary)]">
+            ({course.students >= 1000 ? `${(course.students / 1000).toFixed(1)}k` : course.students})
+          </span>
+        </div>
+      </div>
+      <div className="flex flex-col items-end gap-2 shrink-0">
+        {course.isFree && (
+          <span className="text-[10px] font-bold text-[var(--color-success)] bg-[var(--color-success)]/10 px-2.5 py-0.5 rounded-full">Free</span>
+        )}
+        <button
+          onClick={(e) => { e.stopPropagation(); navigate(`/playground/course/${course.id}`); }}
+          className="px-4 py-2 rounded-xl bg-[var(--color-background-primary)] border border-[var(--color-border-light)] text-[12px] font-semibold text-[var(--color-text-primary)] hover:bg-[var(--color-accent)] hover:text-[#fff] hover:border-[var(--color-accent)] transition-colors whitespace-nowrap"
+        >
+          Enroll now
+        </button>
+      </div>
+    </motion.div>
+  );
+
+  const statCounts = [
+    { value: allCourses.length, label: "Courses" },
+    { value: allTopics.length, label: "Topics" },
+    { value: freeCount, label: "Free" },
+  ];
+
+  return (
+    <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+      {/* Page heading */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h3 className="text-2xl sm:text-3xl font-bold flex items-center gap-3" style={{ fontFamily: "var(--font-display)" }}>
+            <Compass size={28} className="text-[var(--color-accent)]" />
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-[var(--color-text-primary)] via-[var(--color-text-primary)] to-[var(--color-text-tertiary)]">
+              Discover courses
+            </span>
+          </h3>
+          <p className="text-sm text-[var(--color-text-secondary)] mt-1 ml-10">Expand your skills at your own pace</p>
+        </div>
+        <div className="flex items-center gap-6">
+          {statCounts.map((s) => (
+            <div key={s.label} className="flex flex-col items-center gap-0.5">
+              <span className="text-xl font-bold text-[var(--color-text-primary)]">{s.value}</span>
+              <span className="text-[10px] text-[var(--color-text-tertiary)] uppercase tracking-wider">{s.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Search + view toggle */}
+      <div className="flex items-center gap-3">
+        <div className="relative flex-1 max-w-lg group">
+          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[var(--color-text-tertiary)] group-focus-within:text-[var(--color-accent)] transition-colors">
+            <Search size={18} />
           </div>
           <input
             type="text"
-            placeholder="Search for new courses, skills, or instructors..."
+            placeholder="Search courses, skills, instructors..."
             value={courseQuery}
             onChange={(e) => setCourseQuery(e.target.value)}
-            className="w-full bg-[var(--color-background-secondary)] border-2 border-[var(--color-border-light)] hover:border-[var(--color-border-medium)] focus:border-[var(--color-accent)] pl-12 pr-4 py-3.5 rounded-2xl text-[15px] font-medium focus:outline-none focus:ring-4 focus:ring-[var(--color-accent)]/10 text-[var(--color-text-primary)] transition-all placeholder:text-[var(--color-text-tertiary)] placeholder:font-normal shadow-sm"
+            className="w-full bg-[var(--color-background-secondary)] border-2 border-[var(--color-border-light)] hover:border-[var(--color-border-medium)] focus:border-[var(--color-accent)] pl-12 pr-4 py-3.5 rounded-2xl text-[15px] font-medium focus:outline-none focus:ring-4 focus:ring-[var(--color-accent)]/10 text-[var(--color-text-primary)] transition-colors placeholder:text-[var(--color-text-tertiary)] placeholder:font-normal shadow-sm"
+          />
+        </div>
+        <div className="flex items-center gap-1 bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] rounded-xl p-1">
+          <button
+            onClick={() => setViewMode("grid")}
+            className={`p-2 rounded-lg transition-colors ${viewMode === "grid" ? "bg-[var(--color-background-primary)] text-[var(--color-accent)] shadow-sm" : "text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)]"}`}
+          >
+            <LayoutGrid size={16} />
+          </button>
+          <button
+            onClick={() => setViewMode("list")}
+            className={`p-2 rounded-lg transition-colors ${viewMode === "list" ? "bg-[var(--color-background-primary)] text-[var(--color-accent)] shadow-sm" : "text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)]"}`}
+          >
+            <List size={16} />
+          </button>
+        </div>
+      </div>
+
+      {/* Age group pills */}
+      <div className="flex overflow-x-auto hide-scrollbar gap-3 pb-1 px-0.5">
+        {AGE_GROUPS.map((g) => (
+          <button
+            key={g.id}
+            onClick={() => setActiveAgeGroup(g.id)}
+            className={`relative flex items-center gap-2.5 whitespace-nowrap px-6 py-3 rounded-2xl text-[14px] font-bold transition-colors duration-500 group overflow-hidden ${
+              activeAgeGroup === g.id
+                ? "text-[#fff] shadow-[0_8px_20px_rgba(0,0,0,0.12)] scale-105 border-transparent ring-4 ring-[var(--color-accent)]/10"
+                : "bg-[var(--color-background-secondary)] text-[var(--color-text-secondary)] border border-[var(--color-border-light)] hover:border-[var(--color-accent)]/30 hover:shadow-lg hover:-translate-y-1"
+            }`}
+          >
+            {activeAgeGroup === g.id && (
+              <div className="absolute inset-0 bg-gradient-to-br from-[#d97a60] via-[var(--color-accent)] to-[#ff9e88] z-0 opacity-90"></div>
+            )}
+            <div className={`relative z-10 flex items-center gap-2 ${activeAgeGroup === g.id ? "" : "group-hover:text-[var(--color-accent)] transition-colors duration-300"}`}>
+              <span className="shrink-0">{g.icon}</span>
+              {g.label}
+            </div>
+          </button>
+        ))}
+      </div>
+
+      {/* Sort row */}
+      <div className="flex items-center gap-2.5 flex-wrap">
+        <span className="text-xs text-[var(--color-text-tertiary)] font-bold">Sort by</span>
+        {SORTS.map((s) => (
+          <button
+            key={s.id}
+            onClick={() => setSortBy(s.id)}
+            className={`px-4 py-2 rounded-xl text-[13px] font-bold transition-colors ${
+              sortBy === s.id
+                ? "bg-[var(--color-accent)] text-[#fff] shadow-md"
+                : "bg-[var(--color-background-secondary)] text-[var(--color-text-secondary)] border border-[var(--color-border-light)] hover:border-[var(--color-accent)]/30"
+            }`}
+          >
+            {s.label}
+          </button>
+        ))}
+        <span className="ml-auto text-sm text-[var(--color-text-tertiary)]">{displayCourses.length} courses</span>
+      </div>
+
+      {/* Active filter chips */}
+      {chips.length > 0 && (
+        <div className="flex flex-wrap items-center gap-2">
+          {chips.map((chip) => (
+            <span
+              key={chip.label}
+              className="flex items-center gap-1 text-xs bg-[var(--color-accent)]/10 text-[var(--color-accent)] px-3 py-1.5 rounded-full font-bold"
+            >
+              {chip.label}
+              <X size={12} className="cursor-pointer hover:scale-110 transition-transform" onClick={chip.onRemove} />
+            </span>
+          ))}
+          <button onClick={clearFilters} className="text-xs text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] font-bold ml-1">Clear all</button>
+        </div>
+      )}
+
+      {/* Main content: sidebar + grid/list */}
+      <div className="flex gap-6">
+        <div className="hidden lg:block w-[220px] shrink-0">
+          <FilterSidebar
+            selectedLevels={selectedLevels}
+            toggleLevel={(v) => setSelectedLevels(toggleArray(selectedLevels, v))}
+            selectedDurations={selectedDurations}
+            toggleDuration={(v) => setSelectedDurations(toggleArray(selectedDurations, v))}
+            selectedRatings={selectedRatings}
+            toggleRating={(v) => setSelectedRatings(toggleArray(selectedRatings, v))}
+            showFreeOnly={showFreeOnly}
+            setShowFreeOnly={setShowFreeOnly}
+            selectedTopics={selectedTopics}
+            toggleTopic={(v) => setSelectedTopics(toggleArray(selectedTopics, v))}
+            allTopics={allTopics}
+            onClear={clearFilters}
           />
         </div>
 
-        {/* Age Segment Filter Tabs */}
-        <div className="flex overflow-x-auto hide-scrollbar gap-4 pb-4 mb-4 mt-2 px-1">
-          {[
-            { id: "All", icon: <Compass size={18} /> },
-            { id: "Sproutlings (5\u20137)", icon: <Sprout size={18} /> },
-            { id: "Saplings (7\u201314)", icon: <Sprout size={18} /> },
-            { id: "Pathfinders (14\u201318)", icon: <Compass size={18} /> },
-            { id: "Dreamers (18+)", icon: <Sparkles size={18} /> },
-          ].map((segment) => (
-            <button
-              key={segment.id}
-              onClick={() => setActiveAgeGroup(segment.id)}
-              className={`relative flex items-center gap-2.5 whitespace-nowrap px-6 py-3.5 rounded-2xl text-[15px] font-bold transition-all duration-500 group overflow-hidden ${
-                activeAgeGroup === segment.id
-                  ? "text-white shadow-[0_8px_20px_rgba(0,0,0,0.12)] scale-105 border-transparent ring-4 ring-[var(--color-accent)]/10"
-                  : "bg-[var(--color-background-secondary)] text-[var(--color-text-secondary)] border-2 border-[var(--color-border-light)] hover:border-[var(--color-accent)]/30 hover:shadow-lg hover:-translate-y-1"
-              }`}
-            >
-              {activeAgeGroup === segment.id && (
-                <div className="absolute inset-0 bg-gradient-to-br from-[#d97a60] via-[var(--color-accent)] to-[#ff9e88] z-0 opacity-90"></div>
+        <div className="flex-1 min-w-0">
+          {displayCourses.length === 0 ? (
+            <div className="flex flex-col items-center justify-center py-20 text-center bg-[var(--color-background-secondary)] rounded-3xl border border-dashed border-[var(--color-border-medium)]">
+              <div className="w-16 h-16 rounded-full bg-[var(--color-background-tertiary)] flex items-center justify-center text-[var(--color-text-tertiary)] mb-4">
+                <BookOpen size={32} />
+              </div>
+              <p className="text-[var(--color-text-primary)] font-bold text-lg mb-2">No courses match your filters</p>
+              <p className="text-sm text-[var(--color-text-secondary)] max-w-sm">Try adjusting your search or clearing filters</p>
+              {courseQuery && (
+                <button onClick={() => setCourseQuery("")} className="mt-4 text-sm font-bold text-[var(--color-accent)] hover:underline">Clear search</button>
               )}
-              <div className={`relative z-10 flex items-center gap-2 ${activeAgeGroup === segment.id ? "" : "group-hover:text-[var(--color-accent)] transition-colors duration-300"}`}>
-                {segment.icon}
-                {segment.id}
-              </div>
-            </button>
-          ))}
-        </div>
-
-        {/* Discovery Course Grid (Reusing mock data) */}
-        <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-          variants={staggerContainer}
-          initial="hidden"
-          animate="show"
-        >
-          {isLoadingCourses ? (
-            [1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={`skel-disc-${i}`} className="bg-[var(--color-background-secondary)] rounded-3xl flex flex-col overflow-hidden border border-[var(--color-border-light)] shadow-sm animate-pulse">
-                <div className="h-[200px] w-full bg-[var(--color-background-tertiary)] opacity-50"></div>
-                <div className="p-5 flex flex-col flex-1 gap-4 relative">
-                  <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[var(--color-border-light)] to-transparent opacity-50"></div>
-                  <div className="h-4 bg-[var(--color-background-tertiary)] rounded-md w-full opacity-50"></div>
-                  <div className="h-4 bg-[var(--color-background-tertiary)] rounded-md w-5/6 opacity-50"></div>
-                  <div className="h-4 bg-[var(--color-background-tertiary)] rounded-md w-2/3 opacity-50 mb-4"></div>
-                  <div className="mt-auto flex justify-between items-center">
-                    <div className="h-6 bg-[var(--color-background-tertiary)] rounded-full w-24 opacity-50"></div>
-                    <div className="h-8 bg-[var(--color-background-tertiary)] rounded-xl w-8 opacity-50"></div>
-                  </div>
-                </div>
-              </div>
-            ))
-          ) : MY_COURSES_DATA.filter(c =>
-            c.title.toLowerCase().includes(courseQuery.toLowerCase()) ||
-            c.instructor.toLowerCase().includes(courseQuery.toLowerCase())
-          ).map((course) => (
-            <motion.div variants={fadeUpItem} key={course.id} className="bg-[var(--color-background-secondary)] rounded-3xl flex flex-col group cursor-pointer overflow-hidden border border-[var(--color-border-light)] shadow-md hover:border-[var(--color-accent)]/30 hover:shadow-xl hover:-translate-y-1.5 transition-all duration-500">
-              <div className="relative h-[200px] w-full overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-t from-[#000000]/80 via-[#000000]/20 to-transparent z-10 opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
-                <img
-                  src={course.image}
-                  alt={course.title}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                />
-                {/* HOVER QUICK ACTIONS */}
-                <div className="absolute inset-0 z-30 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto bg-[#000000]/40 backdrop-blur-[2px]">
-                  <button className="p-2.5 bg-[#ffffff]/20 hover:bg-[#ffffff]/40 backdrop-blur-md rounded-full text-[#ffffff] transition-transform hover:scale-110 shadow-lg" title="Preview">
-                    <Play size={18} className="fill-[#ffffff]" />
-                  </button>
-                  <button className="p-2.5 bg-[#ffffff]/20 hover:bg-[#ffffff]/40 backdrop-blur-md rounded-full text-[#ffffff] transition-transform hover:scale-110 shadow-lg" title="Bookmark">
-                    <Bookmark size={18} />
-                  </button>
-                  <button className="p-2.5 bg-[#ffffff]/20 hover:bg-[#ffffff]/40 backdrop-blur-md rounded-full text-[#ffffff] transition-transform hover:scale-110 shadow-lg" title="Share">
-                    <Share2 size={18} />
-                  </button>
-                </div>
-                <div className="absolute top-4 left-4 bg-[#ffffff]/10 backdrop-blur-md border border-[#ffffff]/20 text-[#ffffff] px-3 py-1.5 rounded-lg text-[11px] font-bold tracking-wider flex items-center gap-1.5 shadow-lg z-20">
-                  <Star size={14} className="text-[var(--color-warning)]" /> FEATURED
-                </div>
-                <div className="absolute top-4 right-4 bg-[var(--color-background-primary)] text-[var(--color-text-primary)] w-8 h-8 rounded-full flex items-center justify-center shadow-lg z-20 hover:scale-110 transition-transform">
-                  <Heart size={16} />
-                </div>
-                <div className="absolute bottom-4 left-4 z-20 right-4">
-                  <h4 className="text-[18px] font-bold text-[#ffffff] mb-1 line-clamp-2 leading-tight drop-shadow-md">
-                    {course.title}
-                  </h4>
-                  <div className="flex items-center justify-between">
-                    <p className="text-[13px] text-[#ffffff]/80 font-medium flex items-center gap-1.5">
-                      <User size={12} /> {course.instructor}
-                    </p>
-                    <div className="flex items-center gap-1 text-[var(--color-warning)] text-xs font-bold">
-                      <Star size={12} fill="currentColor" /> 4.9 (12k)
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="p-5 flex flex-col flex-1 bg-[var(--color-background-secondary)] relative">
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[var(--color-border-light)] to-transparent opacity-50"></div>
-
-                <p className="text-[13px] text-[var(--color-text-secondary)] line-clamp-2 mb-4 leading-relaxed">
-                  Learn the fundamentals and advanced techniques in this comprehensive course tailored for {activeAgeGroup !== "All" ? activeAgeGroup : "your specific learning path"}.
-                </p>
-
-                <div className="mt-auto">
-                  <button className="w-full bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/20 text-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-white py-3 rounded-xl text-[14px] font-bold transition-all duration-300 flex items-center justify-center gap-2 shadow-sm">
-                    View Details
-                    <ChevronRight size={16} className="transition-all" />
-                  </button>
-                </div>
-              </div>
+            </div>
+          ) : viewMode === "grid" ? (
+            <motion.div
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6"
+              variants={staggerContainer}
+              initial="hidden"
+              animate="show"
+            >
+              {displayCourses.map(renderGridCard)}
             </motion.div>
-          ))}
-        </motion.div>
+          ) : (
+            <motion.div
+              className="flex flex-col gap-4"
+              variants={staggerContainer}
+              initial="hidden"
+              animate="show"
+            >
+              {displayCourses.map(renderListCard)}
+            </motion.div>
+          )}
+        </div>
       </div>
     </div>
   );

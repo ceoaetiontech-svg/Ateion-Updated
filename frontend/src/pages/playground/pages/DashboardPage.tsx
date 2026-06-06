@@ -1,12 +1,26 @@
 import { motion } from "framer-motion";
-import { Compass, Sparkles, ChevronRight, BookOpen, TrendingUp, Clock, Award } from "lucide-react";
+import { Compass, Sparkles, ChevronRight, BookOpen, TrendingUp, Clock, Award, Play } from "lucide-react";
 import { staggerContainer, fadeUpItem } from "../shared/types";
+import { usePlayground } from "../shared/PlaygroundContext";
+import { useCourses } from "../hooks/useCourses";
+import { useNavigate } from "react-router";
 
-interface DashboardViewProps {
-  userProfile: { fullName: string; firstName: string; segmentText: string; isPremium: boolean };
+function parseHours(duration: string): number {
+  const h = parseInt(duration);
+  return isNaN(h) ? 0 : h;
 }
 
-export default function DashboardPage({ userProfile }: DashboardViewProps) {
+export default function DashboardPage() {
+  const { userProfile, streak, xp } = usePlayground();
+  const { allCourses, lastResume } = useCourses("");
+  const navigate = useNavigate();
+
+  const activeCourses = allCourses.filter(c => c.progress > 0 && c.progress < 100).length;
+  const completedCourses = allCourses.filter(c => c.progress === 100).length;
+  const totalHours = allCourses
+    .filter(c => c.progress > 0)
+    .reduce((sum, c) => sum + parseHours(c.duration), 0);
+
   return (
     <>
       {/* VIBRANT APP-LIKE WELCOME BANNER */}
@@ -46,11 +60,14 @@ export default function DashboardPage({ userProfile }: DashboardViewProps) {
             </p>
 
             <div className="flex flex-wrap gap-4">
-              <button className="bg-[var(--color-accent)] hover:bg-[var(--color-accent)]/90 text-[#ffffff] px-8 py-3.5 rounded-2xl font-bold shadow-[0_0_20px_rgba(232,133,106,0.3)] hover:shadow-[0_0_30px_rgba(232,133,106,0.5)] hover:-translate-y-1 transition-all flex items-center gap-2 border border-transparent">
-                Resume Learning <ChevronRight size={18} />
+              <button
+                onClick={() => navigate(lastResume ? `/playground/course/${lastResume.id}` : "/playground/discover")}
+                className="bg-[var(--color-accent)] hover:bg-[var(--color-accent)]/90 text-[#ffffff] px-8 py-3.5 rounded-2xl font-bold shadow-[0_0_20px_rgba(232,133,106,0.3)] hover:shadow-[0_0_30px_rgba(232,133,106,0.5)] hover:-translate-y-1 transition-all flex items-center gap-2 border border-transparent"
+              >
+                {lastResume ? <><Play size={18} /> Resume Learning</> : <><Compass size={18} /> Discover Courses</>} <ChevronRight size={18} />
               </button>
               <button className="bg-[var(--color-background-primary)]/80 backdrop-blur-md text-[var(--color-text-primary)] border border-[var(--color-border-medium)] px-6 py-3.5 rounded-2xl font-bold hover:bg-[var(--color-background-tertiary)] transition-all flex items-center gap-2 shadow-sm">
-                <span className="text-xl animate-pulse">🔥</span> 7 Day Streak!
+                <span className="text-xl animate-pulse">🔥</span> {streak} Day Streak!
               </button>
             </div>
           </div>
@@ -70,7 +87,7 @@ export default function DashboardPage({ userProfile }: DashboardViewProps) {
                 </div>
               </div>
               <p className="text-[11px] font-bold text-[var(--color-text-primary)] mt-3 bg-[var(--color-background-secondary)]/80 px-3 py-1.5 rounded-full border border-[var(--color-border-medium)] shadow-sm backdrop-blur-md">
-                2,450 / 3,000 XP
+                {xp.toLocaleString()} / 3,000 XP
               </p>
             </div>
           </div>
@@ -110,7 +127,7 @@ export default function DashboardPage({ userProfile }: DashboardViewProps) {
             <div className="flex items-end justify-between mt-2">
               <div>
                 <p className="text-3xl font-bold text-[var(--color-text-primary)] mb-1 font-['Inter',sans-serif] tracking-tight">
-                  4
+                  {activeCourses}
                 </p>
                 <p className="text-[var(--color-text-tertiary)] text-sm font-bold">
                   Active Courses
@@ -139,7 +156,7 @@ export default function DashboardPage({ userProfile }: DashboardViewProps) {
             <div className="flex items-end justify-between mt-2">
               <div>
                 <p className="text-3xl font-bold text-[var(--color-text-primary)] mb-1 font-['Inter',sans-serif] tracking-tight">
-                  127
+                  {totalHours}
                 </p>
                 <p className="text-[var(--color-text-tertiary)] text-sm font-bold">
                   Hours Learned
@@ -168,10 +185,10 @@ export default function DashboardPage({ userProfile }: DashboardViewProps) {
             <div className="flex items-end justify-between mt-2">
               <div>
                 <p className="text-3xl font-bold text-[var(--color-text-primary)] mb-1 font-['Inter',sans-serif] tracking-tight">
-                  23
+                  {completedCourses}
                 </p>
                 <p className="text-[var(--color-text-tertiary)] text-sm font-bold">
-                  Achievements
+                  Completed
                 </p>
               </div>
               {/* Sparkline */}
@@ -197,7 +214,7 @@ export default function DashboardPage({ userProfile }: DashboardViewProps) {
             <div className="flex items-end justify-between mt-2">
               <div>
                 <p className="text-3xl font-bold text-[var(--color-text-primary)] mb-1 font-['Inter',sans-serif] tracking-tight flex items-baseline gap-1">
-                  7 <span className="text-sm font-bold text-[var(--color-text-tertiary)]">Days</span>
+                  {streak} <span className="text-sm font-bold text-[var(--color-text-tertiary)]">Days</span>
                 </p>
                 <p className="text-[var(--color-text-tertiary)] text-sm font-bold">
                   Active Streak

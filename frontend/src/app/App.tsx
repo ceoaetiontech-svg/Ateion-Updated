@@ -70,7 +70,7 @@ function AnimatedRoutes() {
         />
 
         <Route
-          path="/playground"
+          path="/playground/*"
           element={
             <PageTransition>
               <ResourcesPage />

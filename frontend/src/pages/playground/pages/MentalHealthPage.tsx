@@ -1,13 +1,11 @@
 import { motion } from "framer-motion";
 import { Smile, Heart, Brain, Activity, Wind, Clock, ChevronRight } from "lucide-react";
 import { staggerContainer, fadeUpItem } from "../shared/types";
+import { usePlayground } from "../shared/PlaygroundContext";
 
-interface MentalHealthViewProps {
-  selectedMood: string;
-  setSelectedMood: (mood: string) => void;
-}
+export default function MentalHealthPage() {
+  const { selectedMood, setSelectedMood } = usePlayground();
 
-export default function MentalHealthPage({ selectedMood, setSelectedMood }: MentalHealthViewProps) {
   return (
     <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="flex justify-between items-center">
@@ -31,14 +29,12 @@ export default function MentalHealthPage({ selectedMood, setSelectedMood }: Ment
         initial="hidden"
         animate="show"
       >
-        {/* A. Mood Check-in (Fully Interactive & Professionalized) */}
         <motion.div variants={fadeUpItem} className="clay-card flex flex-col h-full bg-[var(--color-background-primary)]">
           <h4 className="text-[16px] font-bold text-[var(--color-text-primary)] mb-6 flex items-center gap-2">
             <Smile className="text-[var(--color-warning)]" size={20} />
             How are you feeling today?
           </h4>
           <div className="flex justify-between items-center gap-3 mb-6">
-            {/* Stressed Button */}
             <button
               onClick={() => setSelectedMood("Stressed")}
               className={`flex-1 py-5 flex flex-col items-center gap-3 rounded-2xl border transition-all duration-300 group relative overflow-hidden ${
@@ -54,7 +50,6 @@ export default function MentalHealthPage({ selectedMood, setSelectedMood }: Ment
               </span>
             </button>
 
-            {/* Okay Button */}
             <button
               onClick={() => setSelectedMood("Okay")}
               className={`flex-1 py-5 flex flex-col items-center gap-3 rounded-2xl border transition-all duration-300 group relative overflow-hidden ${
@@ -70,7 +65,6 @@ export default function MentalHealthPage({ selectedMood, setSelectedMood }: Ment
               </span>
             </button>
 
-            {/* Good Button */}
             <button
               onClick={() => setSelectedMood("Good")}
               className={`flex-1 py-5 flex flex-col items-center gap-3 rounded-2xl border transition-all duration-300 group relative overflow-hidden ${
@@ -86,7 +80,6 @@ export default function MentalHealthPage({ selectedMood, setSelectedMood }: Ment
               </span>
             </button>
 
-            {/* Great Button */}
             <button
               onClick={() => setSelectedMood("Great")}
               className={`flex-1 py-5 flex flex-col items-center gap-3 rounded-2xl border transition-all duration-300 group relative overflow-hidden ${
@@ -103,7 +96,6 @@ export default function MentalHealthPage({ selectedMood, setSelectedMood }: Ment
             </button>
           </div>
 
-          {/* NEW FEATURE: Contextual Tags (Slides down when any mood is active) */}
           <div className={`transition-all duration-500 overflow-hidden ${selectedMood ? "max-h-40 opacity-100 mb-6" : "max-h-0 opacity-0 mb-0"}`}>
             <p className="text-xs font-bold text-[var(--color-text-secondary)] mb-3 uppercase tracking-wider">
               What's contributing to your mood?
@@ -127,7 +119,6 @@ export default function MentalHealthPage({ selectedMood, setSelectedMood }: Ment
             </div>
           </div>
 
-          {/* DYNAMIC AI Insight Box */}
           <div className="p-5 bg-gradient-to-br from-[var(--color-background-secondary)] to-[var(--color-background-primary)] rounded-2xl border border-[var(--color-border-light)] mt-auto relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--color-accent)] opacity-[0.03] rounded-full blur-2xl group-hover:opacity-10 transition-opacity duration-500"></div>
             <p className="text-sm font-bold text-[var(--color-text-primary)] mb-2 flex items-center gap-2">
@@ -148,14 +139,12 @@ export default function MentalHealthPage({ selectedMood, setSelectedMood }: Ment
           </div>
         </motion.div>
 
-        {/* B. Recommended Exercises */}
         <motion.div variants={fadeUpItem} className="clay-card flex flex-col bg-[var(--color-background-secondary)]">
           <h4 className="text-[16px] font-bold text-[var(--color-text-primary)] mb-6 flex items-center gap-2">
             <Activity size={20} className="text-[var(--color-info)]" />
             Quick Relief Exercises
           </h4>
           <div className="flex flex-col gap-4">
-            {/* Exercise 1 */}
             <div className="flex items-center justify-between p-4 rounded-2xl bg-[var(--color-background-primary)] border border-[var(--color-border-light)] hover:border-[var(--color-info)]/40 hover:shadow-md transition-all duration-300 cursor-pointer group hover:-translate-y-1">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-xl bg-[var(--color-info)]/10 text-[var(--color-info)] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
@@ -175,7 +164,6 @@ export default function MentalHealthPage({ selectedMood, setSelectedMood }: Ment
               </div>
             </div>
 
-            {/* Exercise 2 */}
             <div className="flex items-center justify-between p-4 rounded-2xl bg-[var(--color-background-primary)] border border-[var(--color-border-light)] hover:border-[var(--color-success)]/40 hover:shadow-md transition-all duration-300 cursor-pointer group hover:-translate-y-1">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-xl bg-[var(--color-success)]/10 text-[var(--color-success)] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
@@ -195,7 +183,6 @@ export default function MentalHealthPage({ selectedMood, setSelectedMood }: Ment
               </div>
             </div>
 
-            {/* Exercise 3 */}
             <div className="flex items-center justify-between p-4 rounded-2xl bg-[var(--color-background-primary)] border border-[var(--color-border-light)] hover:border-[var(--color-accent)]/40 hover:shadow-md transition-all duration-300 cursor-pointer group hover:-translate-y-1">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-xl bg-[var(--color-accent)]/10 text-[var(--color-accent)] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">

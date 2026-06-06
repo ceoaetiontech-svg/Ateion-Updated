@@ -28,6 +28,7 @@ import {
 export interface NavItem {
   title: string;
   icon: React.ComponentType<{ size?: number }>;
+  path: string;
 }
 
 export interface NavSection {
@@ -41,54 +42,66 @@ export const navigationSections: NavSection[] = [
     title: "Courses",
     icon: BookOpen,
     items: [
-      { title: "My Courses", icon: BookMarked },
-      { title: "Discover Courses", icon: Compass },
-      { title: "Learning Paths", icon: Map },
-      { title: "Completed Courses", icon: Award },
+      { title: "My Courses", icon: BookMarked, path: "/playground/my-courses" },
+      { title: "Saved Courses", icon: Heart, path: "/playground/saved" },
+      { title: "Discover Courses", icon: Compass, path: "/playground/discover" },
+      { title: "Learning Paths", icon: Map, path: "/playground/learning-paths" },
+      { title: "Completed Courses", icon: Award, path: "/playground/completed" },
     ],
   },
   {
     title: "Upskill",
     icon: Rocket,
     items: [
-      { title: "Skill Playlists", icon: ListVideo },
-      { title: "Trending Skills", icon: TrendingUp },
-      { title: "Certifications", icon: Award },
-      { title: "Quick Learning", icon: Zap },
-      { title: "AI Skills", icon: Sparkles },
+      { title: "Skill Playlists", icon: ListVideo, path: "/playground/playlists" },
+      { title: "Trending Skills", icon: TrendingUp, path: "/playground/trending" },
+      { title: "Certifications", icon: Award, path: "/playground/certifications" },
+      { title: "Quick Learning", icon: Zap, path: "/playground/quick-learning" },
+      { title: "AI Skills", icon: Sparkles, path: "/playground/ai-skills" },
     ],
   },
   {
     title: "Evolve",
     icon: Sprout,
     items: [
-      { title: "Wellness Hub", icon: Heart },
-      { title: "Mental Health", icon: Brain },
-      { title: "Growth Mindset", icon: Lightbulb },
-      { title: "Confidence Building", icon: Smile },
-      { title: "Stress Management", icon: Wind },
-      { title: "Daily Reflection", icon: StickyNote },
+      { title: "Wellness Hub", icon: Heart, path: "/playground/wellness" },
+      { title: "Mental Health", icon: Brain, path: "/playground/mental-health" },
+      { title: "Growth Mindset", icon: Lightbulb, path: "/playground/growth-mindset" },
+      { title: "Confidence Building", icon: Smile, path: "/playground/confidence" },
+      { title: "Stress Management", icon: Wind, path: "/playground/stress" },
+      { title: "Daily Reflection", icon: StickyNote, path: "/playground/reflection" },
     ],
   },
   {
     title: "Organise",
     icon: FolderKanban,
     items: [
-      { title: "Tasks", icon: CheckSquare },
-      { title: "Calendar", icon: Calendar },
-      { title: "Notes", icon: FileText },
-      { title: "Goal Planning", icon: Target },
-      { title: "Resources", icon: FolderOpen },
+      { title: "Tasks", icon: CheckSquare, path: "/playground/tasks" },
+      { title: "Calendar", icon: Calendar, path: "/playground/calendar" },
+      { title: "Notes", icon: FileText, path: "/playground/notes" },
+      { title: "Goal Planning", icon: Target, path: "/playground/goal-planning" },
+      { title: "Resources", icon: FolderOpen, path: "/playground/resources" },
     ],
   },
   {
     title: "Pillar",
     icon: Milestone,
     items: [
-      { title: "Sproutlings (5–7)", icon: Sprout },
-      { title: "Saplings (7–14)", icon: Sprout },
-      { title: "Pathfinders (14–18)", icon: Compass },
-      { title: "Dreamers (18+)", icon: Sparkles },
+      { title: "Sproutlings (5-7)", icon: Sprout, path: "/playground/sproutlings" },
+      { title: "Saplings (7-14)", icon: Sprout, path: "/playground/saplings" },
+      { title: "Pathfinders (14-18)", icon: Compass, path: "/playground/pathfinders" },
+      { title: "Dreamers (18+)", icon: Sparkles, path: "/playground/dreamers" },
     ],
   },
 ];
+
+const pathToTitle: Record<string, string> = {};
+for (const section of navigationSections) {
+  for (const item of section.items) {
+    pathToTitle[item.path] = item.title;
+  }
+}
+
+export function getActiveView(pathname: string): string {
+  return pathToTitle[pathname] ?? "Dashboard";
+}
