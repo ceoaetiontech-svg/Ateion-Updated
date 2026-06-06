@@ -1,12 +1,11 @@
 import { motion } from "framer-motion";
 import { StickyNote, FileText, BookMarked } from "lucide-react";
 import { staggerContainer, fadeUpItem } from "../shared/types";
+import { usePlayground } from "../shared/PlaygroundContext";
 
-interface NotesViewProps {
-  userProfile: { fullName: string; firstName: string; segmentText: string; isPremium: boolean };
-}
+export default function NotesPage() {
+  const { userProfile } = usePlayground();
 
-export default function NotesPage({ userProfile }: NotesViewProps) {
   return (
     <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="flex justify-between items-center">
@@ -31,7 +30,6 @@ export default function NotesPage({ userProfile }: NotesViewProps) {
         initial="hidden"
         animate="show"
       >
-        {/* Note 1 */}
         <motion.div variants={fadeUpItem} className="clay-card flex flex-col group cursor-pointer hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-300 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-transparent to-[var(--color-accent)] opacity-10 rounded-bl-full pointer-events-none transition-transform group-hover:scale-110"></div>
           <div className="flex justify-between items-start mb-4">
@@ -60,7 +58,6 @@ export default function NotesPage({ userProfile }: NotesViewProps) {
           </div>
         </motion.div>
 
-        {/* Note 2 */}
         <motion.div variants={fadeUpItem} className="clay-card flex flex-col group cursor-pointer hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-300 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-transparent to-[var(--color-info)] opacity-10 rounded-bl-full pointer-events-none transition-transform group-hover:scale-110"></div>
           <div className="flex justify-between items-start mb-4">
@@ -89,7 +86,6 @@ export default function NotesPage({ userProfile }: NotesViewProps) {
           </div>
         </motion.div>
 
-        {/* Note 3 */}
         <motion.div variants={fadeUpItem} className="clay-card flex flex-col group cursor-pointer hover:-translate-y-1 hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] transition-all duration-300 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-transparent to-[var(--color-success)] opacity-10 rounded-bl-full pointer-events-none transition-transform group-hover:scale-110"></div>
           <div className="flex justify-between items-start mb-4">

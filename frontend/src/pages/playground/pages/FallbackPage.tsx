@@ -1,10 +1,11 @@
 import { Lock, Compass, TrendingUp } from "lucide-react";
+import { useLocation } from "react-router";
+import { getActiveView } from "../shared/navigationData";
 
-interface FallbackViewProps {
-  activeView: string;
-}
+export default function FallbackPage() {
+  const location = useLocation();
+  const activeView = getActiveView(location.pathname);
 
-export default function FallbackPage({ activeView }: FallbackViewProps) {
   return (
     <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="flex items-center justify-between mb-2">

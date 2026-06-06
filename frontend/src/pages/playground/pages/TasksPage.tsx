@@ -1,33 +1,13 @@
 import { motion } from "framer-motion";
 import { CheckSquare, Target, Calendar, Zap } from "lucide-react";
 import { staggerContainer, fadeUpItem } from "../shared/types";
+import { usePlayground } from "../shared/PlaygroundContext";
 
-interface TasksViewProps {
-  tasks: any[];
-  setTasks: (tasks: any[]) => void;
-  toggleTask: (id: number) => void;
-  showAddTask: boolean;
-  setShowAddTask: (val: boolean) => void;
-  newTask: { title: string; date: string; priority: string };
-  setNewTask: (val: { title: string; date: string; priority: string }) => void;
-  handleAddTask: () => void;
-  userProfile: { fullName: string; firstName: string; segmentText: string; isPremium: boolean };
-}
+export default function TasksPage() {
+  const { tasks, toggleTask, showAddTask, setShowAddTask, newTask, setNewTask, handleAddTask, userProfile } = usePlayground();
 
-export default function TasksPage({
-  tasks,
-  setTasks,
-  toggleTask,
-  showAddTask,
-  setShowAddTask,
-  newTask,
-  setNewTask,
-  handleAddTask,
-  userProfile,
-}: TasksViewProps) {
   return (
     <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      {/* HEADER WITH BUTTON */}
       <div className="flex justify-between items-center">
         <h3
           className="text-2xl sm:text-3xl font-bold flex items-center gap-3 group"
@@ -46,7 +26,6 @@ export default function TasksPage({
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left: Task List */}
         <div className="lg:col-span-2">
           <div className="clay-card flex flex-col h-full bg-[var(--color-background-primary)]">
             <div className="flex justify-between items-center mb-6 border-b border-[var(--color-border-light)] pb-4">
@@ -65,7 +44,6 @@ export default function TasksPage({
               initial="hidden"
               animate="show"
             >
-              {/* DYNAMIC INTERACTIVE TASKS */}
               {tasks.map((task: any) => (
                 <motion.div
                   variants={fadeUpItem}
@@ -80,7 +58,6 @@ export default function TasksPage({
                   }`}
                 >
                   <div className="flex items-center gap-4">
-                    {/* Checkbox */}
                     <div
                       className={`relative w-6 h-6 rounded-md flex items-center justify-center transition-all duration-300 ${
                         task.completed
@@ -90,7 +67,6 @@ export default function TasksPage({
                             : "border-2 border-[var(--color-border-medium)] group-hover:border-[var(--color-accent)] group-hover:bg-[var(--color-accent)] group-hover:text-white text-transparent"
                       }`}
                     >
-                      {/* Confetti burst for high-priority completions */}
                       {task.completed && task.priority === "high" && (
                         <>
                           <div className="absolute w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] -top-3 left-1/2 animate-[ping_0.6s_ease-out_forwards]"></div>
@@ -102,7 +78,6 @@ export default function TasksPage({
                       <CheckSquare size={14} className={task.completed ? "block animate-in zoom-in duration-300" : "hidden group-hover:block opacity-50"} />
                     </div>
 
-                    {/* Task Content */}
                     <div className="flex flex-col relative transition-all duration-500">
                       <p className={`text-[15px] font-bold mb-1 relative inline-block w-fit transition-colors duration-300 ${task.completed ? "text-[var(--color-text-tertiary)]" : "text-[var(--color-text-primary)]"}`}>
                         {task.title}
@@ -136,7 +111,6 @@ export default function TasksPage({
           </div>
         </div>
 
-        {/* Right: Task Progress Stats */}
         <motion.div variants={staggerContainer} initial="hidden" animate="show" className="flex flex-col gap-6">
           <motion.div variants={fadeUpItem} className="clay-card flex flex-col items-center justify-center text-center bg-gradient-to-b from-[var(--color-background-secondary)] to-[var(--color-background-primary)] relative overflow-hidden">
             <div className="absolute -top-10 -right-10 w-32 h-32 bg-[var(--color-success)] opacity-10 rounded-full blur-2xl"></div>
@@ -195,7 +169,6 @@ export default function TasksPage({
           </motion.div>
         </motion.div>
       </div>
-      {/* ADD TASK MODAL */}
       {showAddTask && (
         <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/40 backdrop-blur-sm">
           <div className="bg-[var(--color-background-secondary)] p-6 rounded-xl w-[320px] shadow-xl">

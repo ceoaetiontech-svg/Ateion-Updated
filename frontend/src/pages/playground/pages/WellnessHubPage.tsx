@@ -10,8 +10,45 @@ import {
   Lock,
   Award,
   Smile,
+  type LucideIcon,
 } from "lucide-react";
 import { staggerContainer, fadeUpItem } from "../shared/types";
+
+interface BadgeConfig {
+  label: string;
+  icon: LucideIcon | string;
+  color: string;
+  status: string;
+}
+
+const badges: BadgeConfig[] = [
+  { label: "Course Master", icon: Award, color: "accent", status: "Unlocked" },
+  { label: "7 Day Streak", icon: "🔥", color: "warning", status: "In Progress" },
+  { label: "Rising Star", icon: TrendingUp, color: "success", status: "Unlocked" },
+  { label: "Goal Crusher", icon: Target, color: "info", status: "Locked" },
+];
+
+function BadgeCard({ label, icon, color, status }: BadgeConfig) {
+  const cssVar = `var(--color-${color})`;
+  const isLocked = status === "Locked";
+  return (
+    <div
+      className="flex flex-col items-center justify-center p-6 rounded-2xl border border-[var(--color-border-light)] bg-[var(--color-background-primary)] hover:shadow-lg transition-all duration-300 cursor-pointer group hover:-translate-y-1 relative overflow-hidden"
+      style={{ borderColor: isLocked ? undefined : cssVar + "40" }}
+    >
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ background: `linear-gradient(135deg, ${cssVar}0d, transparent)` }} />
+      {typeof icon === "string" ? (
+        <span className="text-4xl mb-4 group-hover:scale-125 group-hover:-rotate-12 transition-transform duration-300 relative z-10 drop-shadow-sm">
+          {icon}
+        </span>
+      ) : (
+        <icon className="mb-4 group-hover:scale-125 group-hover:rotate-12 transition-transform duration-300 relative z-10" size={36} style={{ color: cssVar }} />
+      )}
+      <p className="text-[15px] font-bold text-[var(--color-text-primary)] text-center relative z-10">{label}</p>
+      <p className="text-[10px] text-[var(--color-text-tertiary)] font-bold uppercase tracking-wider mt-1 relative z-10">{status}</p>
+    </div>
+  );
+}
 
 const WellnessHubView = () => {
   return (
@@ -195,49 +232,7 @@ const WellnessHubView = () => {
             Achievements
           </h4>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="flex flex-col items-center justify-center p-6 rounded-2xl border border-[var(--color-border-light)] bg-[var(--color-background-primary)] hover:border-[var(--color-accent)]/50 hover:shadow-lg transition-all duration-300 cursor-pointer group hover:-translate-y-1 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-accent)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <Award
-                className="text-[var(--color-accent)] mb-4 group-hover:scale-125 group-hover:rotate-12 transition-transform duration-300 relative z-10"
-                size={36}
-              />
-              <p className="text-[15px] font-bold text-[var(--color-text-primary)] text-center relative z-10">
-                Course Master
-              </p>
-              <p className="text-[10px] text-[var(--color-text-tertiary)] font-bold uppercase tracking-wider mt-1 relative z-10">Unlocked</p>
-            </div>
-            <div className="flex flex-col items-center justify-center p-6 rounded-2xl border border-[var(--color-border-light)] bg-[var(--color-background-primary)] hover:border-[var(--color-warning)]/50 hover:shadow-lg transition-all duration-300 cursor-pointer group hover:-translate-y-1 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-warning)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <span className="text-4xl mb-4 group-hover:scale-125 group-hover:-rotate-12 transition-transform duration-300 relative z-10 drop-shadow-sm">
-                🔥
-              </span>
-              <p className="text-[15px] font-bold text-[var(--color-text-primary)] text-center relative z-10">
-                7 Day Streak
-              </p>
-              <p className="text-[10px] text-[var(--color-text-tertiary)] font-bold uppercase tracking-wider mt-1 relative z-10">In Progress</p>
-            </div>
-            <div className="flex flex-col items-center justify-center p-6 rounded-2xl border border-[var(--color-border-light)] bg-[var(--color-background-primary)] hover:border-[var(--color-success)]/50 hover:shadow-lg transition-all duration-300 cursor-pointer group hover:-translate-y-1 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-success)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <TrendingUp
-                className="text-[var(--color-success)] mb-4 group-hover:scale-125 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300 relative z-10"
-                size={36}
-              />
-              <p className="text-[15px] font-bold text-[var(--color-text-primary)] text-center relative z-10">
-                Rising Star
-              </p>
-              <p className="text-[10px] text-[var(--color-text-tertiary)] font-bold uppercase tracking-wider mt-1 relative z-10">Unlocked</p>
-            </div>
-            <div className="flex flex-col items-center justify-center p-6 rounded-2xl border border-[var(--color-border-light)] bg-[var(--color-background-primary)] hover:border-[var(--color-info)]/50 hover:shadow-lg transition-all duration-300 cursor-pointer group hover:-translate-y-1 relative overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-info)]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              <Target
-                className="text-[var(--color-info)] mb-4 group-hover:scale-125 transition-transform duration-300 relative z-10"
-                size={36}
-              />
-              <p className="text-[15px] font-bold text-[var(--color-text-primary)] text-center relative z-10">
-                Goal Crusher
-              </p>
-              <p className="text-[10px] text-[var(--color-text-tertiary)] font-bold uppercase tracking-wider mt-1 relative z-10">Locked</p>
-            </div>
+            {badges.map((b) => <BadgeCard key={b.label} {...b} />)}
           </div>
         </motion.div>
       </motion.div>

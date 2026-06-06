@@ -1,12 +1,11 @@
 import { motion } from "framer-motion";
 import { Compass, Sparkles, ChevronRight, BookOpen, TrendingUp, Clock, Award } from "lucide-react";
 import { staggerContainer, fadeUpItem } from "../shared/types";
+import { usePlayground } from "../shared/PlaygroundContext";
 
-interface DashboardViewProps {
-  userProfile: { fullName: string; firstName: string; segmentText: string; isPremium: boolean };
-}
+export default function DashboardPage() {
+  const { userProfile, streak, xp } = usePlayground();
 
-export default function DashboardPage({ userProfile }: DashboardViewProps) {
   return (
     <>
       {/* VIBRANT APP-LIKE WELCOME BANNER */}
@@ -50,7 +49,7 @@ export default function DashboardPage({ userProfile }: DashboardViewProps) {
                 Resume Learning <ChevronRight size={18} />
               </button>
               <button className="bg-[var(--color-background-primary)]/80 backdrop-blur-md text-[var(--color-text-primary)] border border-[var(--color-border-medium)] px-6 py-3.5 rounded-2xl font-bold hover:bg-[var(--color-background-tertiary)] transition-all flex items-center gap-2 shadow-sm">
-                <span className="text-xl animate-pulse">🔥</span> 7 Day Streak!
+                <span className="text-xl animate-pulse">🔥</span> {streak} Day Streak!
               </button>
             </div>
           </div>
@@ -70,7 +69,7 @@ export default function DashboardPage({ userProfile }: DashboardViewProps) {
                 </div>
               </div>
               <p className="text-[11px] font-bold text-[var(--color-text-primary)] mt-3 bg-[var(--color-background-secondary)]/80 px-3 py-1.5 rounded-full border border-[var(--color-border-medium)] shadow-sm backdrop-blur-md">
-                2,450 / 3,000 XP
+                {xp.toLocaleString()} / 3,000 XP
               </p>
             </div>
           </div>
@@ -197,7 +196,7 @@ export default function DashboardPage({ userProfile }: DashboardViewProps) {
             <div className="flex items-end justify-between mt-2">
               <div>
                 <p className="text-3xl font-bold text-[var(--color-text-primary)] mb-1 font-['Inter',sans-serif] tracking-tight flex items-baseline gap-1">
-                  7 <span className="text-sm font-bold text-[var(--color-text-tertiary)]">Days</span>
+                  {streak} <span className="text-sm font-bold text-[var(--color-text-tertiary)]">Days</span>
                 </p>
                 <p className="text-[var(--color-text-tertiary)] text-sm font-bold">
                   Active Streak
