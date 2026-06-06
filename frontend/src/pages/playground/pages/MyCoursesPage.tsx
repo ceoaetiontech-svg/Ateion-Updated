@@ -50,10 +50,14 @@ export default function MyCoursesPage() {
   return (
     <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       {/* Hero Banner */}
-      <div className="relative overflow-hidden rounded-3xl min-h-[200px] md:min-h-[220px]">
+      <div
+        className="relative overflow-hidden rounded-3xl min-h-[200px] md:min-h-[220px] cursor-pointer group bg-black"
+        onClick={() => lastResume && navigate(`/playground/course/${lastResume.id}`)}
+        style={lastResume ? { borderTop: `3px solid ${getTopicColor(lastResume.topics)}` } : undefined}
+      >
         {lastResume ? (
           <>
-            <img src={lastResume.image} alt={lastResume.title} className="absolute inset-0 w-full h-full object-cover" />
+            <img src={lastResume.image} alt={lastResume.title} onError={(e) => { (e.currentTarget as HTMLElement).style.display = "none"; }} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#000000]/90 via-[#000000]/60 to-[#000000]/30" />
           </>
         ) : (
@@ -62,26 +66,33 @@ export default function MyCoursesPage() {
         <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
         <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2" />
         <div className="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-6 p-8 md:p-12 min-h-[200px] md:min-h-[220px]">
-          <div>
-            <div className="flex items-center gap-2 text-white/80 text-sm font-bold mb-2">
+          <div className="flex-1">
+            <div className="flex items-center gap-2 text-[#ffffffcc] text-sm font-bold mb-2">
               <Rocket size={16} /> {lastResume ? "Continue where you left off" : "Welcome back, Explorer"}
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-2" style={{ fontFamily: "var(--font-display)" }}>
+            <h2 className="text-3xl md:text-4xl font-bold text-[#fff] mb-3" style={{ fontFamily: "var(--font-display)" }}>
               {lastResume ? lastResume.title : "Continue Your Journey"}
             </h2>
-            <p className="text-white/80 text-sm max-w-md">
-              {lastResume
-                ? `Lesson ${lastResume.currentLesson} · ${lastResume.progress}% complete`
-                : "Start a new course and build your skills today"}
-            </p>
+            {lastResume ? (
+              <div className="max-w-xs">
+                <div className="flex justify-between items-center mb-1.5">
+                  <span className="text-[#ffffffb3] text-xs font-medium">Lesson {lastResume.currentLesson} · {lastResume.progress}% complete</span>
+                </div>
+                <div className="w-full h-1.5 bg-white/20 rounded-full overflow-hidden">
+                  <div className="h-full bg-[var(--color-accent)] rounded-full transition-[width] duration-500" style={{ width: `${lastResume.progress}%` }} />
+                </div>
+              </div>
+            ) : (
+              <p className="text-[#ffffffcc] text-sm max-w-md">Start a new course and build your skills today</p>
+            )}
           </div>
           <div className="flex gap-3">
             {lastResume && (
               <button
-                onClick={() => navigate(`/playground/course/${lastResume.id}`)}
-                className="flex items-center gap-2 bg-white text-[var(--color-accent)] px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all"
+                onClick={(e) => { e.stopPropagation(); navigate(`/playground/course/${lastResume.id}`); }}
+                className="flex items-center gap-2 bg-[#fff] text-[var(--color-accent)] px-6 py-3 rounded-xl font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-transform duration-300"
               >
-                <Play size={18} fill="currentColor" /> Resume — Lesson {lastResume.currentLesson}
+                <PlayCircle size={18} /> Resume
               </button>
             )}
           </div>
@@ -130,7 +141,7 @@ export default function MyCoursesPage() {
             placeholder="Search for courses, skills, or instructors..."
             value={courseQuery}
             onChange={(e) => setCourseQuery(e.target.value)}
-            className="w-full bg-[var(--color-background-secondary)] border-2 border-[var(--color-border-light)] hover:border-[var(--color-border-medium)] focus:border-[var(--color-accent)] pl-12 pr-4 py-3.5 rounded-2xl text-[15px] font-medium focus:outline-none focus:ring-4 focus:ring-[var(--color-accent)]/10 text-[var(--color-text-primary)] transition-all placeholder:text-[var(--color-text-tertiary)] placeholder:font-normal shadow-sm"
+            className="w-full bg-[var(--color-background-secondary)] border-2 border-[var(--color-border-light)] hover:border-[var(--color-border-medium)] focus:border-[var(--color-accent)] pl-12 pr-4 py-3.5 rounded-2xl text-[15px] font-medium focus:outline-none focus:ring-4 focus:ring-[var(--color-accent)]/10 text-[var(--color-text-primary)] transition-colors placeholder:text-[var(--color-text-tertiary)] placeholder:font-normal shadow-sm"
           />
         </div>
 
@@ -144,9 +155,9 @@ export default function MyCoursesPage() {
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-colors ${
                 tab === t.id
-                  ? "bg-[var(--color-accent)] text-white shadow-md"
+                  ? "bg-[var(--color-accent)] text-[#fff] shadow-md"
                   : "bg-[var(--color-background-secondary)] text-[var(--color-text-secondary)] border border-[var(--color-border-light)] hover:border-[var(--color-accent)]/30"
               }`}
             >
@@ -168,9 +179,9 @@ export default function MyCoursesPage() {
             <button
               key={segment.id}
               onClick={() => setActiveAgeGroup(segment.id)}
-              className={`relative flex items-center gap-2.5 whitespace-nowrap px-6 py-3.5 rounded-2xl text-[15px] font-bold transition-all duration-500 group overflow-hidden ${
+              className={`relative flex items-center gap-2.5 whitespace-nowrap px-6 py-3.5 rounded-2xl text-[15px] font-bold transition-colors duration-500 group overflow-hidden ${
                 activeAgeGroup === segment.id
-                  ? "text-white shadow-[0_8px_20px_rgba(0,0,0,0.12)] scale-105 border-transparent ring-4 ring-[var(--color-accent)]/10"
+                  ? "text-[#fff] shadow-[0_8px_20px_rgba(0,0,0,0.12)] scale-105 border-transparent ring-4 ring-[var(--color-accent)]/10"
                   : "bg-[var(--color-background-secondary)] text-[var(--color-text-secondary)] border-2 border-[var(--color-border-light)] hover:border-[var(--color-accent)]/30 hover:shadow-lg hover:-translate-y-1"
               }`}
             >
@@ -208,6 +219,7 @@ export default function MyCoursesPage() {
                   <img
                     src={course.image}
                     alt={course.title}
+                    onError={(e) => { (e.currentTarget as HTMLElement).style.display = "none"; }}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
                   <div className="absolute top-4 left-4 z-20 flex items-center gap-2">
@@ -222,32 +234,30 @@ export default function MyCoursesPage() {
                     onClick={(e) => { e.stopPropagation(); toggleSave(course.id); }}
                     className="absolute top-4 right-4 z-20 bg-[#ffffff]/10 backdrop-blur-md border border-[#ffffff]/20 w-8 h-8 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
                   >
-                    <Heart size={16} className={savedIds.includes(course.id) ? "fill-red-500 text-red-500" : "text-white"} />
+                    <Heart size={16} className={savedIds.includes(course.id) ? "fill-red-500 text-red-500" : "text-[#fff]"} />
                   </button>
                     <div className="absolute bottom-4 left-4 z-20 right-4">
                     <h4 className="text-[16px] font-bold text-[#ffffff] mb-1 line-clamp-2 leading-tight drop-shadow-md">
                       {course.title}
                     </h4>
-                    <div className="flex items-center gap-2">
-                      <img src={course.instructorAvatar} className="w-5 h-5 rounded-full object-cover border border-white/30" />
-                      <span className="text-[12px] text-[#ffffff]/90 font-medium truncate">{course.instructor}</span>
-                    </div>
                   </div>
                 </div>
                 <div className="p-5 flex flex-col flex-1 bg-[var(--color-background-secondary)] relative">
                   <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[var(--color-border-light)] to-transparent opacity-50"></div>
 
-                  <div className="flex items-center gap-2 mt-1">
-                    <div className="flex items-center gap-1">
-                      <span className="text-xs font-bold text-[var(--color-warning)]">{course.rating}</span>
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} size={11} className="text-[var(--color-warning)]" fill={i < Math.round(course.rating) ? "var(--color-warning)" : "none"} />
-                      ))}
-                      <span className="text-xs text-[var(--color-text-tertiary)]">
-                        ({course.students >= 1000 ? `${(course.students / 1000).toFixed(1)}k` : course.students})
-                      </span>
-                    </div>
-                    <span className="text-[10px] text-[var(--color-text-tertiary)] ml-auto">{course.language}</span>
+                  <div className="flex items-center gap-2 mt-3">
+                    <img src={course.instructorAvatar} className="w-6 h-6 rounded-full object-cover" />
+                    <span className="text-xs text-[var(--color-text-secondary)]">{course.instructor}</span>
+                  </div>
+
+                  <div className="flex items-center gap-1 mt-1">
+                    <span className="text-xs font-bold text-[var(--color-warning)]">{course.rating}</span>
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={11} className="text-[var(--color-warning)]" fill="currentColor" />
+                    ))}
+                    <span className="text-xs text-[var(--color-text-tertiary)]">
+                      ({course.students >= 1000 ? `${(course.students / 1000).toFixed(1)}k` : course.students})
+                    </span>
                   </div>
 
                   <div className="flex flex-wrap gap-1.5 mb-3">
@@ -262,7 +272,7 @@ export default function MyCoursesPage() {
                     ))}
                   </div>
 
-                  <div className="flex items-center gap-3 mb-3 flex-wrap">
+                  <div className="flex items-center gap-3 mt-2 flex-wrap">
                     <span className="flex items-center gap-1 text-[11px] text-[var(--color-text-tertiary)]">
                       <BarChart2 size={11} /> {course.level}
                     </span>
@@ -270,7 +280,7 @@ export default function MyCoursesPage() {
                       <Clock size={11} /> {course.duration}
                     </span>
                     <span className="flex items-center gap-1 text-[11px] text-[var(--color-text-tertiary)]">
-                      <PlayCircle size={11} /> {course.total} lessons
+                      <PlayCircle size={11} /> {course.lessons} lessons
                     </span>
                   </div>
 
@@ -286,7 +296,7 @@ export default function MyCoursesPage() {
                       </div>
                       <div className="w-full h-[10px] rounded-full bg-[var(--color-border-light)] overflow-hidden shadow-inner">
                         <div
-                          className="h-full rounded-full bg-gradient-to-r from-[var(--color-accent)] to-[#ff9e88] transition-all duration-700 ease-out"
+                          className="h-full rounded-full bg-gradient-to-r from-[var(--color-accent)] to-[#ff9e88] transition-[width] duration-700 ease-out"
                           style={{ width: `${course.progress}%` }}
                         />
                       </div>
@@ -309,10 +319,10 @@ export default function MyCoursesPage() {
                   <div className="mt-auto">
                     <button
                       onClick={(e) => { e.stopPropagation(); navigate(`/playground/course/${course.id}`); }}
-                      className="w-full bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] group-hover:bg-[var(--color-accent)] group-hover:border-[var(--color-accent)] group-hover:text-white text-[var(--color-text-primary)] py-3 rounded-xl text-[14px] font-bold transition-all duration-300 flex items-center justify-center gap-2 shadow-sm group-hover:shadow-[0_8px_20px_rgba(232,133,106,0.3)] active:scale-95"
+                      className="w-full bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] group-hover:bg-[var(--color-accent)] group-hover:border-[var(--color-accent)] group-hover:text-[#fff] text-[var(--color-text-primary)] py-3 rounded-xl text-[14px] font-bold transition-colors duration-300 flex items-center justify-center gap-2 shadow-sm group-hover:shadow-[0_8px_20px_rgba(232,133,106,0.3)] active:scale-95"
                     >
                       {course.progress === 100 ? "View Certificate" : course.progress > 0 ? "Continue Learning" : "Start Course"}
-                      <ChevronRight size={16} className="opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
+                      <ChevronRight size={16} className="opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-[opacity,transform]" />
                     </button>
                   </div>
                 </div>

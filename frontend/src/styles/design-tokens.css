@@ -516,16 +516,6 @@ html[data-theme="dark"] body {
   background-attachment: fixed;
 }
 
-/* Smooth theme transition */
-html[data-theme] *,
-html[data-theme] *::before,
-html[data-theme] *::after {
-  transition:
-    background-color 0.4s ease,
-    color 0.3s ease,
-    border-color 0.4s ease,
-    box-shadow 0.4s ease;
-}
 /* Exclude elements that should not animate */
 html[data-theme] video,
 html[data-theme] canvas,

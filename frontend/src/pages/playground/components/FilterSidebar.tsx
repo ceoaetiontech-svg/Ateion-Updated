@@ -36,7 +36,7 @@ function FilterGroup({ label, options, selected, toggle, colorMap }: {
             <button
               key={opt}
               onClick={() => toggle(opt)}
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-all text-left ${
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-colors text-left ${
                 active
                   ? "bg-[var(--color-accent)]/10 text-[var(--color-accent)] font-bold"
                   : "text-[var(--color-text-secondary)] hover:bg-[var(--color-background-tertiary)]"
@@ -47,7 +47,7 @@ function FilterGroup({ label, options, selected, toggle, colorMap }: {
                   active ? "border-[var(--color-accent)] bg-[var(--color-accent)]" : "border-[var(--color-border-medium)]"
                 }`}
               >
-                {active && <X size={10} className="text-white" strokeWidth={3} />}
+                {active && <X size={10} className="text-[#fff]" strokeWidth={3} />}
               </div>
               <span style={colorMap && active ? { color: colorMap(opt) } : undefined}>{opt}</span>
             </button>
@@ -62,7 +62,7 @@ export default function FilterSidebar(props: FilterSidebarProps) {
   const count = props.selectedLevels.length + props.selectedDurations.length + props.selectedRatings.length + props.selectedTopics.length + (props.showFreeOnly ? 1 : 0);
 
   return (
-    <div className="bg-[var(--color-background-secondary)] rounded-2xl border border-[var(--color-border-light)] p-5">
+    <div className="bg-[var(--color-background-secondary)] rounded-2xl border border-[var(--color-border-light)] p-6 shadow-sm">
       <div className="flex items-center justify-between mb-4">
         <h4 className="text-sm font-bold text-[var(--color-text-primary)]">Filters</h4>
         {count > 0 && (
@@ -80,7 +80,7 @@ export default function FilterSidebar(props: FilterSidebarProps) {
         <p className="text-xs font-bold text-[var(--color-text-secondary)] uppercase tracking-wider mb-2.5">Price</p>
         <button
           onClick={() => props.setShowFreeOnly(!props.showFreeOnly)}
-          className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-all text-left w-full ${
+          className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-colors text-left w-full ${
             props.showFreeOnly
               ? "bg-[var(--color-success)]/10 text-[var(--color-success)] font-bold"
               : "text-[var(--color-text-secondary)] hover:bg-[var(--color-background-tertiary)]"
@@ -91,7 +91,7 @@ export default function FilterSidebar(props: FilterSidebarProps) {
               props.showFreeOnly ? "border-[var(--color-success)] bg-[var(--color-success)]" : "border-[var(--color-border-medium)]"
             }`}
           >
-            {props.showFreeOnly && <X size={10} className="text-white" strokeWidth={3} />}
+            {props.showFreeOnly && <X size={10} className="text-[#fff]" strokeWidth={3} />}
           </div>
           Free only
         </button>
@@ -106,9 +106,9 @@ export default function FilterSidebar(props: FilterSidebarProps) {
               <button
                 key={topic}
                 onClick={() => props.toggleTopic(topic)}
-                className={`px-2.5 py-1.5 rounded-lg text-[10px] font-bold transition-all ${
+                className={`px-2.5 py-1.5 rounded-lg text-[10px] font-bold transition-colors ${
                   active
-                    ? "text-white shadow-sm"
+                    ? "text-[#fff] shadow-sm"
                     : "bg-[var(--color-background-primary)] text-[var(--color-text-secondary)] border border-[var(--color-border-light)] hover:border-[var(--color-accent)]/30"
                 }`}
                 style={active ? { backgroundColor: `var(--color-${["React", "TypeScript", "Frontend", "Mobile"].includes(topic) ? "info" : ["Design", "Figma", "UX"].includes(topic) ? "accent" : ["Python", "AI"].includes(topic) ? "warning" : "success"})` } : undefined}
