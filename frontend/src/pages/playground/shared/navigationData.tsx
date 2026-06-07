@@ -55,9 +55,7 @@ export const navigationSections: NavSection[] = [
     items: [
       { title: "Skill Playlists", icon: ListVideo, path: "/playground/playlists" },
       { title: "Trending Skills", icon: TrendingUp, path: "/playground/trending" },
-      { title: "Certifications", icon: Award, path: "/playground/certifications" },
       { title: "Quick Learning", icon: Zap, path: "/playground/quick-learning" },
-      { title: "AI Skills", icon: Sparkles, path: "/playground/ai-skills" },
     ],
   },
   {
@@ -65,10 +63,7 @@ export const navigationSections: NavSection[] = [
     icon: Sprout,
     items: [
       { title: "Wellness Hub", icon: Heart, path: "/playground/wellness" },
-      { title: "Mental Health", icon: Brain, path: "/playground/mental-health" },
       { title: "Growth Mindset", icon: Lightbulb, path: "/playground/growth-mindset" },
-      { title: "Confidence Building", icon: Smile, path: "/playground/confidence" },
-      { title: "Stress Management", icon: Wind, path: "/playground/stress" },
       { title: "Daily Reflection", icon: StickyNote, path: "/playground/reflection" },
     ],
   },

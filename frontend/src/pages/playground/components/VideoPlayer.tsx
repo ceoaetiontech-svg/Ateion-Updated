@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect, memo } from "react";
 import { Play, Pause, Volume2, Maximize, SkipBack, SkipForward } from "lucide-react";
 
 const SPEEDS = [0.5, 1, 1.25, 1.5, 2];
@@ -15,7 +15,7 @@ interface VideoPlayerProps {
   onComplete?: () => void;
 }
 
-export default function VideoPlayer({ title, duration, onComplete }: VideoPlayerProps) {
+const VideoPlayer = memo(function VideoPlayer({ title, duration, onComplete }: VideoPlayerProps) {
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [speed, setSpeed] = useState(1);
@@ -210,4 +210,6 @@ export default function VideoPlayer({ title, duration, onComplete }: VideoPlayer
       </div>
     </div>
   );
-}
+});
+
+export default VideoPlayer;

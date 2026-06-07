@@ -2,16 +2,16 @@ import { useState, useMemo } from "react";
 import { MY_COURSES_DATA } from "../shared/mockData";
 import type { Course } from "../shared/types";
 
-export function useCourses(query: string = "", enrolledIds?: number[]) {
+export function useCourses(query: string = "", enrolledIds?: number[], courseAccess?: Record<number, number>) {
   const [courses] = useState(MY_COURSES_DATA);
 
   const allCourses = useMemo(() => {
-    if (!enrolledIds) return courses;
     return courses.map(c => ({
       ...c,
-      isEnrolled: enrolledIds.includes(c.id),
+      isEnrolled: enrolledIds?.includes(c.id) ?? c.isEnrolled,
+      lastAccessedAt: courseAccess?.[c.id] ?? c.lastAccessedAt,
     }));
-  }, [courses, enrolledIds]);
+  }, [courses, enrolledIds, courseAccess]);
 
   const filtered = allCourses.filter(
     (c) =>

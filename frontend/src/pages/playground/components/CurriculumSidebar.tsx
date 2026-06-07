@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { CheckCircle, Lock, Play, Download, FileText, ChevronDown } from "lucide-react";
 
 export interface Lesson {
@@ -215,7 +215,7 @@ interface CurriculumSidebarProps {
   onLessonSelect: (lesson: Lesson) => void;
 }
 
-export default function CurriculumSidebar({ sections, currentLessonId, completedIds, onLessonSelect }: CurriculumSidebarProps) {
+const CurriculumSidebar = memo(function CurriculumSidebar({ sections, currentLessonId, completedIds, onLessonSelect }: CurriculumSidebarProps) {
   const [expanded, setExpanded] = useState<Record<string, boolean>>(() => {
     const initial: Record<string, boolean> = {};
     for (const s of sections) {
@@ -307,4 +307,6 @@ export default function CurriculumSidebar({ sections, currentLessonId, completed
       </div>
     </div>
   );
-}
+});
+
+export default CurriculumSidebar;

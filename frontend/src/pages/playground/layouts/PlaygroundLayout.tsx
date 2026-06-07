@@ -41,7 +41,7 @@ const viewMap: Record<string, LazyExoticComponent<ComponentType<any>>> = {
   "Calendar": lazy(() => import("../pages/CalendarPage")),
   "Notes": lazy(() => import("../pages/NotesPage")),
   "Wellness Hub": lazy(() => import("../pages/WellnessHubPage")),
-  "Mental Health": lazy(() => import("../pages/MentalHealthPage")),
+  "Growth Mindset": lazy(() => import("../pages/GrowthMindsetPage")),
 };
 
 function PlaygroundInner() {

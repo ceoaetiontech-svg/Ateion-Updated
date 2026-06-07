@@ -32,8 +32,8 @@ import { getTopicColor } from "../shared/topicColors";
 import CoursePreviewPopover from "../components/CoursePreviewPopover";
 
 export default function MyCoursesPage() {
-  const { courseQuery, setCourseQuery, activeAgeGroup, setActiveAgeGroup, savedIds, toggleSave, enrolledIds } = usePlayground();
-  const { allCourses, lastResume, myCourses } = useCourses(courseQuery, enrolledIds);
+  const { courseQuery, setCourseQuery, activeAgeGroup, setActiveAgeGroup, savedIds, toggleSave, enrolledIds, courseAccess } = usePlayground();
+  const { allCourses, lastResume, myCourses } = useCourses(courseQuery, enrolledIds, courseAccess);
   const navigate = useNavigate();
 
   const filtered = allCourses.filter(c =>
@@ -42,7 +42,7 @@ export default function MyCoursesPage() {
     (activeAgeGroup === "All" || c.level.includes(activeAgeGroup))
   );
 
-  const inProgress = myCourses.filter(c => c.progress > 0 && c.progress < 100);
+  const inProgress = myCourses.filter(c => c.progress < 100);
   const savedCourses = filtered.filter(c => savedIds.includes(c.id));
   const completedCourses = myCourses.filter(c => c.progress === 100);
   const [tab, setTab] = useState<"in-progress" | "saved" | "completed">("in-progress");

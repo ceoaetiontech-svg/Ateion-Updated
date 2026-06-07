@@ -35,6 +35,8 @@ interface PlaygroundContextValue {
   removeEvent: (id: number) => void;
   selectedDate: string;
   setSelectedDate: (d: string) => void;
+  courseAccess: Record<number, number>;
+  touchCourse: (id: number) => void;
 }
 
 const PlaygroundContext = createContext<PlaygroundContextValue | null>(null);
@@ -137,6 +139,9 @@ export function PlaygroundProvider({ children }: { children: ReactNode }) {
     const d = new Date();
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
   });
+  const [courseAccess, setCourseAccess] = useState<Record<number, number>>(() => {
+    try { return JSON.parse(localStorage.getItem("ateion_access") || "{}"); } catch { return {}; }
+  });
 
   useEffect(() => {
     localStorage.setItem("ateion_tasks", JSON.stringify(tasks));
@@ -165,6 +170,14 @@ export function PlaygroundProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     localStorage.setItem("ateion_notes", JSON.stringify(notes));
   }, [notes]);
+
+  useEffect(() => {
+    localStorage.setItem("ateion_access", JSON.stringify(courseAccess));
+  }, [courseAccess]);
+
+  const touchCourse = useCallback((id: number) => {
+    setCourseAccess(prev => ({ ...prev, [id]: Date.now() }));
+  }, []);
 
   const addNote = useCallback((n: Omit<Note, "id" | "createdAt">) => {
     const note: Note = { ...n, id: Date.now(), createdAt: new Date().toISOString() };
@@ -240,6 +253,7 @@ export function PlaygroundProvider({ children }: { children: ReactNode }) {
         notes, addNote, deleteNote,
         events, addEvent, removeEvent,
         selectedDate, setSelectedDate,
+        courseAccess, touchCourse,
       }}
     >
       {children}
