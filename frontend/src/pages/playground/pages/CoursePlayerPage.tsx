@@ -114,7 +114,7 @@ export default function CoursePlayerPage() {
           <span className="text-sm text-[var(--color-text-primary)] font-medium truncate max-w-[200px]">{currentLesson.title}</span>
         </div>
 
-        <div className="relative">
+        <div className="relative max-h-[45vh] shrink-0">
           <VideoPlayer title={currentLesson.title} key={currentLesson.id} duration={parseDuration(currentLesson.duration)} onComplete={() => markComplete(currentLesson.id)} />
           <AnimatePresence>
             {xpFloats.map(f => (
@@ -173,7 +173,7 @@ export default function CoursePlayerPage() {
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-6">
+        <div className="flex-1 overflow-y-auto p-6 min-h-0">
           {activeTab === "overview" && (
             <div className="max-w-3xl space-y-6">
               <div>
