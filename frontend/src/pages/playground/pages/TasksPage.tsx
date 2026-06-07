@@ -183,7 +183,7 @@ export default function TasksPage() {
               onChange={(e) =>
                 setNewTask({ ...newTask, title: e.target.value })
               }
-              className="w-full border p-2 rounded mb-3 outline-none focus:ring-2 focus:ring-[var(--color-primary)]"
+              className="w-full bg-[var(--color-background-primary)] border border-[var(--color-border-medium)] p-2.5 rounded-lg mb-3 outline-none focus:border-[var(--color-accent)] focus:ring-2 focus:ring-[var(--color-accent)]/10 text-[var(--color-text-primary)] placeholder:text-[var(--color-text-tertiary)] text-sm"
             />
 
             <input
@@ -192,7 +192,7 @@ export default function TasksPage() {
               onChange={(e) =>
                 setNewTask({ ...newTask, date: e.target.value })
               }
-              className="w-full border p-2 rounded mb-3 outline-none"
+              className="w-full bg-[var(--color-background-primary)] border border-[var(--color-border-medium)] p-2.5 rounded-lg mb-3 outline-none focus:border-[var(--color-accent)] focus:ring-2 focus:ring-[var(--color-accent)]/10 text-[var(--color-text-primary)] text-sm"
             />
 
             <select
@@ -200,7 +200,7 @@ export default function TasksPage() {
               onChange={(e) =>
                 setNewTask({ ...newTask, priority: e.target.value })
               }
-              className="w-full border p-2 rounded mb-4"
+              className="w-full bg-[var(--color-background-primary)] border border-[var(--color-border-medium)] p-2.5 rounded-lg mb-4 outline-none focus:border-[var(--color-accent)] text-[var(--color-text-primary)] text-sm"
             >
               <option value="low">Low</option>
               <option value="medium">Medium</option>

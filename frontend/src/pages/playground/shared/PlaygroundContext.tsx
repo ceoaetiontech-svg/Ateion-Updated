@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from "react";
-import { UserProfile, Task, NewTask, CalendarEvent } from "./types";
+import { UserProfile, Task, NewTask, CalendarEvent, Note } from "./types";
 
 interface PlaygroundContextValue {
   courseQuery: string;
@@ -19,8 +19,17 @@ interface PlaygroundContextValue {
   handleAddTask: () => void;
   savedIds: number[];
   toggleSave: (id: number) => void;
+  enrolledIds: number[];
+  enrollCourse: (id: number, title: string) => void;
+  toastMessage: string | null;
+  setToastMessage: (val: string | null) => void;
   streak: number;
+  incrementStreak: () => void;
   xp: number;
+  addXp: (amount: number) => void;
+  notes: Note[];
+  addNote: (note: Omit<Note, "id" | "createdAt">) => void;
+  deleteNote: (id: number) => void;
   events: CalendarEvent[];
   addEvent: (e: CalendarEvent) => void;
   removeEvent: (id: number) => void;
@@ -56,6 +65,16 @@ function loadSavedIds(): number[] {
   }
 }
 
+function loadEnrolledIds(): number[] {
+  try {
+    const raw = localStorage.getItem("ateion_enrolled");
+    if (raw) return JSON.parse(raw);
+  } catch {
+    /* ignore */
+  }
+  return [1, 2, 4];
+}
+
 function loadStreak(): number {
   const saved = localStorage.getItem(STREAK_KEY);
   if (saved) {
@@ -67,7 +86,7 @@ function loadStreak(): number {
       if (date === yesterday) return count;
     } catch { /* ignore */ }
   }
-  return 7;
+  return 0;
 }
 
 function saveStreak(count: number) {
@@ -88,20 +107,31 @@ export function PlaygroundProvider({ children }: { children: ReactNode }) {
   const [showAddTask, setShowAddTask] = useState(false);
   const [newTask, setNewTask] = useState<NewTask>({ title: "", date: "", priority: "medium" });
   const [savedIds, setSavedIds] = useState<number[]>(loadSavedIds);
+  const [enrolledIds, setEnrolledIds] = useState<number[]>(loadEnrolledIds);
   const [streak, setStreak] = useState(loadStreak);
-  const [xp] = useState(2840);
+  const [xp, setXp] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("ateion_xp") || "2840"); } catch { return 2840; }
+  });
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [events, setEvents] = useState<CalendarEvent[]>(() => {
     const saved = localStorage.getItem("ateion_events");
     if (saved) try { return JSON.parse(saved); } catch {}
+    const d = (n: number) => {
+      const dt = new Date(Date.now() + 86400000 * n);
+      return `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, "0")}-${String(dt.getDate()).padStart(2, "0")}`;
+    };
     return [
-      { id: 1, title: "Team Standup & Sync", date: "2026-05-27", time: "10:00", endTime: "11:30", type: "meeting" as const, description: "Weekly team sync" },
-      { id: 2, title: "1:1 Mentoring Session", date: "2026-05-27", time: "13:00", endTime: "14:00", type: "mentoring" as const, link: "Google Meet" },
-      { id: 3, title: "Focus Work: React Course", date: "2026-05-27", time: "16:00", endTime: "17:30", type: "focus" as const, description: "Chapter 4: Advanced State" },
-      { id: 4, title: "Project Proposal Deadline", date: "2026-05-30", time: "23:59", endTime: "23:59", type: "deadline" as const },
-      { id: 5, title: "Data Science Lecture", date: "2026-05-29", time: "14:00", endTime: "15:30", type: "focus" as const },
-      { id: 6, title: "Design Review", date: "2026-06-02", time: "11:00", endTime: "12:00", type: "meeting" as const },
-      { id: 7, title: "Mindfulness Session", date: "2026-06-04", time: "09:00", endTime: "09:30", type: "focus" as const },
+      { id: 1, title: "Team Standup & Sync", date: d(1), time: "10:00", endTime: "11:30", type: "meeting" as const, description: "Weekly team sync" },
+      { id: 2, title: "1:1 Mentoring Session", date: d(1), time: "13:00", endTime: "14:00", type: "mentoring" as const, link: "Google Meet" },
+      { id: 3, title: "Focus Work: React Course", date: d(1), time: "16:00", endTime: "17:30", type: "focus" as const, description: "Chapter 4: Advanced State" },
+      { id: 4, title: "Project Proposal Deadline", date: d(4), time: "23:59", endTime: "23:59", type: "deadline" as const },
+      { id: 5, title: "Data Science Lecture", date: d(3), time: "14:00", endTime: "15:30", type: "focus" as const },
+      { id: 6, title: "Design Review", date: d(7), time: "11:00", endTime: "12:00", type: "meeting" as const },
+      { id: 7, title: "Mindfulness Session", date: d(9), time: "09:00", endTime: "09:30", type: "focus" as const },
     ];
+  });
+  const [notes, setNotes] = useState<Note[]>(() => {
+    try { return JSON.parse(localStorage.getItem("ateion_notes") || "null") ?? []; } catch { return []; }
   });
   const [selectedDate, setSelectedDate] = useState(() => {
     const d = new Date();
@@ -117,12 +147,33 @@ export function PlaygroundProvider({ children }: { children: ReactNode }) {
   }, [savedIds]);
 
   useEffect(() => {
+    localStorage.setItem("ateion_enrolled", JSON.stringify(enrolledIds));
+  }, [enrolledIds]);
+
+  useEffect(() => {
     saveStreak(streak);
   }, [streak]);
 
   useEffect(() => {
+    localStorage.setItem("ateion_xp", JSON.stringify(xp));
+  }, [xp]);
+
+  useEffect(() => {
     localStorage.setItem("ateion_events", JSON.stringify(events));
   }, [events]);
+
+  useEffect(() => {
+    localStorage.setItem("ateion_notes", JSON.stringify(notes));
+  }, [notes]);
+
+  const addNote = useCallback((n: Omit<Note, "id" | "createdAt">) => {
+    const note: Note = { ...n, id: Date.now(), createdAt: new Date().toISOString() };
+    setNotes(prev => [...prev, note]);
+  }, []);
+
+  const deleteNote = useCallback((id: number) => {
+    setNotes(prev => prev.filter(n => n.id !== id));
+  }, []);
 
   const addEvent = useCallback((e: CalendarEvent) => {
     setEvents(prev => [...prev, e]);
@@ -135,6 +186,21 @@ export function PlaygroundProvider({ children }: { children: ReactNode }) {
   const toggleSave = useCallback((id: number) => {
     setSavedIds(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
   }, []);
+
+  const incrementStreak = useCallback(() => {
+    setStreak(prev => prev + 1);
+  }, []);
+
+  const addXp = useCallback((amount: number) => {
+    setXp(prev => prev + amount);
+  }, []);
+
+  const enrollCourse = useCallback((id: number, title: string) => {
+    setEnrolledIds(prev => prev.includes(id) ? prev : [...prev, id]);
+    addXp(50);
+    setToastMessage(`Enrolled in "${title}"! +50 XP`);
+    setTimeout(() => setToastMessage(null), 3500);
+  }, [addXp]);
 
   const toggleTask = useCallback((id: number) => {
     setTasks((prev) =>
@@ -168,7 +234,10 @@ export function PlaygroundProvider({ children }: { children: ReactNode }) {
         newTask, setNewTask,
         handleAddTask,
         savedIds, toggleSave,
-        streak, xp,
+        enrolledIds, enrollCourse,
+        toastMessage, setToastMessage,
+        streak, incrementStreak, xp, addXp,
+        notes, addNote, deleteNote,
         events, addEvent, removeEvent,
         selectedDate, setSelectedDate,
       }}

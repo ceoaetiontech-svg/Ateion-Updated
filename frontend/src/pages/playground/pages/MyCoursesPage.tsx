@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import {
   BookMarked,
@@ -32,8 +32,8 @@ import { getTopicColor } from "../shared/topicColors";
 import CoursePreviewPopover from "../components/CoursePreviewPopover";
 
 export default function MyCoursesPage() {
-  const { courseQuery, setCourseQuery, activeAgeGroup, setActiveAgeGroup, savedIds, toggleSave } = usePlayground();
-  const { allCourses, lastResume } = useCourses(courseQuery);
+  const { courseQuery, setCourseQuery, activeAgeGroup, setActiveAgeGroup, savedIds, toggleSave, enrolledIds } = usePlayground();
+  const { allCourses, lastResume, myCourses } = useCourses(courseQuery, enrolledIds);
   const navigate = useNavigate();
 
   const filtered = allCourses.filter(c =>
@@ -42,13 +42,13 @@ export default function MyCoursesPage() {
     (activeAgeGroup === "All" || c.level.includes(activeAgeGroup))
   );
 
-  const inProgress = filtered.filter(c => c.progress > 0 && c.progress < 100);
+  const inProgress = myCourses.filter(c => c.progress > 0 && c.progress < 100);
   const savedCourses = filtered.filter(c => savedIds.includes(c.id));
-  const completedCourses = filtered.filter(c => c.progress === 100);
+  const completedCourses = myCourses.filter(c => c.progress === 100);
   const [tab, setTab] = useState<"in-progress" | "saved" | "completed">("in-progress");
 
   return (
-    <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="flex flex-col gap-6">
       {/* Hero Banner */}
       <div
         className="relative overflow-hidden rounded-3xl min-h-[200px] md:min-h-[220px] cursor-pointer group bg-black"
@@ -79,7 +79,12 @@ export default function MyCoursesPage() {
                   <span className="text-[#ffffffb3] text-xs font-medium">Lesson {lastResume.currentLesson} · {lastResume.progress}% complete</span>
                 </div>
                 <div className="w-full h-1.5 bg-white/20 rounded-full overflow-hidden">
-                  <div className="h-full bg-[var(--color-accent)] rounded-full transition-[width] duration-500" style={{ width: `${lastResume.progress}%` }} />
+                  <motion.div
+                    className="h-full bg-[var(--color-accent)] rounded-full"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${lastResume.progress}%` }}
+                    transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
+                  />
                 </div>
               </div>
             ) : (
@@ -102,7 +107,7 @@ export default function MyCoursesPage() {
       {/* Stats Row */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { label: "Enrolled", value: allCourses.length, icon: BookMarked, color: "var(--color-info)" },
+          { label: "Enrolled", value: myCourses.length, icon: BookMarked, color: "var(--color-info)" },
           { label: "In Progress", value: inProgress.length, icon: Clock, color: "var(--color-warning)" },
           { label: "Completed", value: completedCourses.length, icon: CheckCircle, color: "var(--color-success)" },
           { label: "Saved", value: savedCourses.length, icon: Bookmark, color: "var(--color-accent)" },
@@ -197,11 +202,14 @@ export default function MyCoursesPage() {
         </div>
 
         {/* Course Grid */}
+        <AnimatePresence mode="wait">
         <motion.div
+          key={tab}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
           variants={staggerContainer}
           initial="hidden"
           animate="show"
+          exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.15 } }}
         >
           {(() => {
             const courses = tab === "saved" ? savedCourses : tab === "completed" ? completedCourses : inProgress;
@@ -209,7 +217,8 @@ export default function MyCoursesPage() {
               <motion.div
                 variants={fadeUpItem}
                 key={course.id}
-                className="bg-[var(--color-background-secondary)] rounded-3xl flex flex-col group cursor-pointer overflow-hidden border border-[var(--color-border-light)] border-t-[3px] shadow-md hover:border-[var(--color-accent)]/30 hover:shadow-xl hover:-translate-y-1.5 transition-transform transition-shadow duration-300"
+                exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.15 } }}
+                className="bg-[var(--color-background-secondary)] rounded-3xl flex flex-col group cursor-pointer overflow-hidden border border-[var(--color-border-light)] border-t-[3px] shadow-md hover:border-[var(--color-accent)]/30 hover:shadow-xl hover:-translate-y-1 transition-[transform,box-shadow] duration-200 ease-out"
                     style={{ borderTopColor: getTopicColor(course.topics) }}
                 onClick={() => navigate(`/playground/course/${course.id}`)}
               >
@@ -295,9 +304,12 @@ export default function MyCoursesPage() {
                         </span>
                       </div>
                       <div className="w-full h-[10px] rounded-full bg-[var(--color-border-light)] overflow-hidden shadow-inner">
-                        <div
-                          className="h-full rounded-full bg-gradient-to-r from-[var(--color-accent)] to-[#ff9e88] transition-[width] duration-700 ease-out"
-                          style={{ width: `${course.progress}%` }}
+                        <motion.div
+                          className="h-full rounded-full bg-gradient-to-r from-[var(--color-accent)] to-[#ff9e88]"
+                          initial={{ width: 0 }}
+                          whileInView={{ width: `${course.progress}%` }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
                         />
                       </div>
                     </div>
@@ -329,7 +341,12 @@ export default function MyCoursesPage() {
               </CoursePreviewPopover>
               </motion.div>
             )) : (
-              <div className="col-span-full py-20 flex flex-col items-center justify-center text-center bg-[var(--color-background-secondary)] rounded-3xl border border-dashed border-[var(--color-border-medium)]">
+              <motion.div
+                key="empty"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="col-span-full py-20 flex flex-col items-center justify-center text-center bg-[var(--color-background-secondary)] rounded-3xl border border-dashed border-[var(--color-border-medium)]"
+              >
                 <div className="w-16 h-16 rounded-full bg-[var(--color-background-tertiary)] flex items-center justify-center text-[var(--color-text-tertiary)] mb-4">
                   <BookMarked size={32} />
                 </div>
@@ -348,10 +365,11 @@ export default function MyCoursesPage() {
                     Clear search
                   </button>
                 )}
-              </div>
+              </motion.div>
             );
           })()}
         </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   );

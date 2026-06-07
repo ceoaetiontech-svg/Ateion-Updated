@@ -40,11 +40,19 @@ export default function NotificationDropdown() {
     <div className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="relative p-2 rounded-lg hover:bg-[var(--color-background-secondary)] transition-colors"
+        className="relative p-2 rounded-lg hover:bg-[var(--color-background-secondary)] transition-colors group/bell"
         aria-label="Notifications"
       >
-        <Bell size={20} className="text-[var(--color-text-primary)]" />
-        {unreadCount > 0 && (
+        <Bell size={20} className="text-[var(--color-text-primary)] group-hover/bell:scale-110 transition-transform duration-200" />
+        {unreadCount > 0 && !open && (
+          <span className="absolute -top-0.5 -right-0.5 flex h-4 w-4">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
+            <span className="relative inline-flex w-4 h-4 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center shadow-sm">
+              {unreadCount}
+            </span>
+          </span>
+        )}
+        {unreadCount > 0 && open && (
           <span className="absolute -top-0.5 -right-0.5 w-4 h-4 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center shadow-sm">
             {unreadCount}
           </span>

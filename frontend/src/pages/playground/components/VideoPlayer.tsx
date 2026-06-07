@@ -1,7 +1,6 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { Play, Pause, Volume2, Maximize, SkipBack, SkipForward } from "lucide-react";
 
-const TOTAL_DURATION = 45 * 60 + 20; // 45:20
 const SPEEDS = [0.5, 1, 1.25, 1.5, 2];
 
 function formatTime(seconds: number): string {
@@ -12,25 +11,51 @@ function formatTime(seconds: number): string {
 
 interface VideoPlayerProps {
   title: string;
+  duration: number;
+  onComplete?: () => void;
 }
 
-export default function VideoPlayer({ title }: VideoPlayerProps) {
+export default function VideoPlayer({ title, duration, onComplete }: VideoPlayerProps) {
   const [playing, setPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(12 * 60 + 34); // 12:34 default
+  const [currentTime, setCurrentTime] = useState(0);
   const [speed, setSpeed] = useState(1);
   const [showSpeedMenu, setShowSpeedMenu] = useState(false);
   const [hover, setHover] = useState(false);
   const progressRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const completedRef = useRef(false);
 
-  const progress = (currentTime / TOTAL_DURATION) * 100;
+  const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
+
+  useEffect(() => {
+    if (!playing) return;
+    const id = setInterval(() => {
+      setCurrentTime(t => {
+        const next = t + speed;
+        if (next >= duration) {
+          setPlaying(false);
+          if (!completedRef.current) {
+            completedRef.current = true;
+            onComplete?.();
+          }
+          return duration;
+        }
+        return next;
+      });
+    }, 1000);
+    return () => clearInterval(id);
+  }, [playing, speed, duration, onComplete]);
+
+  useEffect(() => {
+    completedRef.current = false;
+  }, [duration]);
 
   const seek = useCallback((clientX: number) => {
     if (!progressRef.current) return;
     const rect = progressRef.current.getBoundingClientRect();
     const pct = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
-    setCurrentTime(pct * TOTAL_DURATION);
-  }, []);
+    setCurrentTime(pct * duration);
+  }, [duration]);
 
   const handleProgressClick = (e: React.MouseEvent) => seek(e.clientX);
 
@@ -42,10 +67,15 @@ export default function VideoPlayer({ title }: VideoPlayerProps) {
     seek(e.clientX);
   };
 
-  const togglePlay = () => setPlaying(p => !p);
+  const togglePlay = () => {
+    if (currentTime >= duration) {
+      setCurrentTime(0);
+    }
+    setPlaying(p => !p);
+  };
 
   const skip = (delta: number) => {
-    setCurrentTime(t => Math.max(0, Math.min(TOTAL_DURATION, t + delta)));
+    setCurrentTime(t => Math.max(0, Math.min(duration, t + delta)));
   };
 
   const toggleFullscreen = () => {
@@ -138,7 +168,7 @@ export default function VideoPlayer({ title }: VideoPlayerProps) {
               <SkipForward size={16} />
             </button>
             <span className="text-white/60 text-xs font-medium tabular-nums ml-1">
-              {formatTime(currentTime)} / {formatTime(TOTAL_DURATION)}
+              {formatTime(currentTime)} / {formatTime(duration)}
             </span>
           </div>
 

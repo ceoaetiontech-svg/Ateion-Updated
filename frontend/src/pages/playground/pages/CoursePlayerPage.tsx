@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useState, useCallback, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useParams, useNavigate } from "react-router";
-import { BookOpen, StickyNote, MessageCircle, Download, ArrowLeft, Star, Clock, BarChart2, PlayCircle, Users, Copy, ThumbsUp, MessageSquare, Paperclip, ExternalLink, FileText, CheckCircle } from "lucide-react";
+import { BookOpen, StickyNote, MessageCircle, Download, ArrowLeft, Star, Clock, BarChart2, PlayCircle, Users, Copy, ThumbsUp, MessageSquare, Paperclip, ExternalLink, FileText, CheckCircle, Zap, X } from "lucide-react";
 import VideoPlayer from "../components/VideoPlayer";
-import CurriculumSidebar, { SECTIONS, Lesson } from "../components/CurriculumSidebar";
+import CurriculumSidebar, { COURSE_SECTIONS, SECTIONS, Lesson } from "../components/CurriculumSidebar";
 import { MY_COURSES_DATA } from "../shared/mockData";
+import { usePlayground } from "../shared/PlaygroundContext";
 
 type TabId = "overview" | "notes" | "qa" | "resources";
 
@@ -20,26 +22,63 @@ const TABS: TabDef[] = [
   { id: "resources", label: "Resources", icon: Download },
 ];
 
+function parseDuration(d: string): number {
+  const [m, s] = d.split(":").map(Number);
+  return m * 60 + s;
+}
+
 export default function CoursePlayerPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { addXp, incrementStreak, addNote, deleteNote, notes } = usePlayground();
   const [activeTab, setActiveTab] = useState<TabId>("overview");
   const [noteInput, setNoteInput] = useState("");
-  const [notes, setNotes] = useState<string[]>([
-    "Important: the dependency injection pattern is core to this module — timestamp 12:34",
-    "Review the architecture diagram in lesson 4 for the system design question",
-  ]);
 
   const courseId = Number(id);
   const course = MY_COURSES_DATA.find((c) => c.id === courseId);
+  const sections = COURSE_SECTIONS[courseId] ?? SECTIONS;
 
-  const allLessons = SECTIONS.flatMap(s => s.lessons);
+  const allLessons = sections.flatMap(s => s.lessons);
+  const totalLessons = allLessons.length;
   const firstUnlocked = allLessons.find(l => !l.isLocked) || allLessons[0];
   const [currentLesson, setCurrentLesson] = useState<Lesson>(firstUnlocked);
-  const [completedIds, setCompletedIds] = useState<Set<number>>(new Set([1, 2]));
+
+  const progressKey = `ateion_progress_${courseId}`;
+  const [completedIds, setCompletedIds] = useState<Set<number>>(() => {
+    try {
+      return new Set(JSON.parse(localStorage.getItem(progressKey) || "[]"));
+    } catch {
+      return new Set<number>();
+    }
+  });
+
+  const [xpFloats, setXpFloats] = useState<{ id: number; x: number; y: number }[]>([]);
+  const xpIdRef = useRef(0);
+
+  const derivedProgress = Math.round((completedIds.size / totalLessons) * 100);
+
+  const persistCompleted = useCallback((ids: Set<number>) => {
+    localStorage.setItem(progressKey, JSON.stringify([...ids]));
+  }, [progressKey]);
+
+  const addXpFloat = useCallback(() => {
+    const id = ++xpIdRef.current;
+    const x = 120 + Math.random() * 40;
+    const y = 60 + Math.random() * 20;
+    setXpFloats(prev => [...prev, { id, x, y }]);
+    setTimeout(() => setXpFloats(prev => prev.filter(f => f.id !== id)), 1200);
+  }, []);
 
   const markComplete = (lessonId: number) => {
-    setCompletedIds(prev => new Set([...prev, lessonId]));
+    setCompletedIds(prev => {
+      const next = new Set(prev);
+      next.add(lessonId);
+      persistCompleted(next);
+      return next;
+    });
+    addXpFloat();
+    addXp(50);
+    incrementStreak();
   };
 
   if (!course) {
@@ -57,7 +96,7 @@ export default function CoursePlayerPage() {
 
   const handleAddNote = () => {
     if (!noteInput.trim()) return;
-    setNotes((prev) => [...prev, `${noteInput} — at "${currentLesson.title}"`]);
+    addNote({ courseId, lessonId: currentLesson.id, text: `${noteInput} — at "${currentLesson.title}"` });
     setNoteInput("");
   };
 
@@ -65,16 +104,33 @@ export default function CoursePlayerPage() {
     <div className="flex h-full">
       <div className="flex-1 flex flex-col min-w-0">
         <div className="flex items-center gap-3 px-6 py-3 border-b border-[var(--color-border-light)] bg-[var(--color-background-secondary)]/50">
-          <button onClick={() => navigate(-1)} className="flex items-center gap-1.5 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors">
+          <button onClick={() => navigate("/playground/my-courses")} className="flex items-center gap-1.5 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors">
             <ArrowLeft size={16} />
-            Back
+            My Courses
           </button>
-          <span className="text-sm text-[var(--color-text-tertiary)]">/</span>
-          <span className="text-sm text-[var(--color-text-primary)] font-medium truncate">{course.title}</span>
+          <span className="text-sm text-[var(--color-text-tertiary)]">›</span>
+          <span className="text-sm text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] transition-colors cursor-pointer truncate max-w-[200px]" onClick={() => navigate(`/playground/course/${course.id}`)}>{course.title}</span>
+          <span className="text-sm text-[var(--color-text-tertiary)]">›</span>
+          <span className="text-sm text-[var(--color-text-primary)] font-medium truncate max-w-[200px]">{currentLesson.title}</span>
         </div>
 
         <div className="relative">
-          <VideoPlayer title={currentLesson.title} key={currentLesson.id} />
+          <VideoPlayer title={currentLesson.title} key={currentLesson.id} duration={parseDuration(currentLesson.duration)} onComplete={() => markComplete(currentLesson.id)} />
+          <AnimatePresence>
+            {xpFloats.map(f => (
+              <motion.div
+                key={f.id}
+                initial={{ opacity: 1, y: 0, scale: 0.5 }}
+                animate={{ opacity: 0, y: -60, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                className="absolute z-20 flex items-center gap-1 text-[var(--color-accent)] font-bold text-sm pointer-events-none drop-shadow-lg"
+                style={{ top: f.y, right: f.x }}
+              >
+                <Zap size={16} /> +50 XP
+              </motion.div>
+            ))}
+          </AnimatePresence>
           <div className="absolute top-4 right-4 z-10 flex items-center gap-2">
             {!completedIds.has(currentLesson.id) && (
               <button
@@ -110,7 +166,7 @@ export default function CoursePlayerPage() {
                 >
                   <Icon size={15} />
                   {tab.label}
-                  {activeTab === tab.id && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-[var(--color-accent)]" />}
+                  {activeTab === tab.id && <motion.div layoutId="tab-underline" className="absolute bottom-0 left-0 right-0 h-0.5 bg-[var(--color-accent)]" />}
                 </button>
               );
             })}
@@ -136,13 +192,31 @@ export default function CoursePlayerPage() {
                   <Clock size={14} /> {course.duration}
                 </div>
                 <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[var(--color-background-tertiary)] text-xs text-[var(--color-text-secondary)]">
-                  <PlayCircle size={14} /> {course.lessons} lessons
+                  <PlayCircle size={14} /> {totalLessons} lessons
                 </div>
                 <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[var(--color-background-tertiary)] text-xs text-[var(--color-text-secondary)]">
                   <Users size={14} /> {course.enrollments.toLocaleString()} enrolled
                 </div>
                 <div className="flex items-center gap-1 px-3 py-2 rounded-lg bg-[var(--color-warning)]/10 text-xs text-[var(--color-warning)] font-bold">
                   <Star size={14} fill="currentColor" /> {course.rating.toFixed(1)}
+                </div>
+              </div>
+
+              <div>
+                <h3 className="text-md font-bold text-[var(--color-text-primary)] mb-3">Your Progress</h3>
+                <div className="p-4 rounded-xl bg-[var(--color-background-secondary)] border border-[var(--color-border-light)]">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-sm font-semibold text-[var(--color-text-primary)]">{derivedProgress}% complete</span>
+                    <span className="text-xs text-[var(--color-text-tertiary)]">{completedIds.size} / {totalLessons} lessons</span>
+                  </div>
+                  <div className="w-full h-2.5 rounded-full bg-[var(--color-border-light)] overflow-hidden shadow-inner">
+                    <motion.div
+                      className="h-full rounded-full bg-gradient-to-r from-[var(--color-accent)] to-[#ff9e88]"
+                      initial={{ width: 0 }}
+                      animate={{ width: `${derivedProgress}%` }}
+                      transition={{ duration: 0.8, ease: "easeOut" }}
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -177,15 +251,27 @@ export default function CoursePlayerPage() {
                 </button>
               </div>
               <div className="space-y-2">
-                {notes.map((note, i) => (
-                  <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] group">
-                    <StickyNote size={16} className="shrink-0 mt-0.5 text-[var(--color-accent)]" />
-                    <p className="flex-1 text-sm text-[var(--color-text-secondary)]">{note}</p>
-                    <button className="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-[var(--color-background-tertiary)] rounded">
-                      <Copy size={14} className="text-[var(--color-text-tertiary)]" />
-                    </button>
-                  </div>
-                ))}
+                {notes.filter(n => n.courseId === courseId).map(note => {
+                  const lessonName = note.text.includes('"') ? note.text.split('"')[1] : "";
+                  return (
+                    <div key={note.id} className="flex items-start gap-3 p-3 rounded-lg bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] group hover:border-[var(--color-accent)]/20 transition-colors">
+                      <StickyNote size={16} className="shrink-0 mt-0.5 text-[var(--color-accent)]" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm text-[var(--color-text-secondary)]">{note.text}</p>
+                        <div className="flex items-center gap-2 mt-1.5">
+                          <span className="text-[10px] text-[var(--color-text-tertiary)]">{new Date(note.createdAt).toLocaleDateString()}</span>
+                          {lessonName && <span className="text-[9px] font-medium text-[var(--color-accent)] bg-[var(--color-accent)]/10 px-1.5 py-0.5 rounded">{lessonName}</span>}
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => deleteNote(note.id)}
+                        className="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-red-500/10 rounded text-[var(--color-text-tertiary)] hover:text-red-500"
+                      >
+                        <X size={14} />
+                      </button>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -248,6 +334,7 @@ export default function CoursePlayerPage() {
 
       <aside className="w-80 border-l border-[var(--color-border-light)] overflow-y-auto shrink-0 hidden lg:block">
         <CurriculumSidebar
+          sections={sections}
           currentLessonId={currentLesson.id}
           completedIds={completedIds}
           onLessonSelect={(lesson) => { if (!lesson.isLocked) setCurrentLesson(lesson); }}
