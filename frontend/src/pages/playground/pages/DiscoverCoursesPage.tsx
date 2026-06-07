@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Star, X, Search, LayoutGrid, List, BookOpen, Compass, Sprout, Sparkles, Clock, Signal, BarChart2, PlayCircle, GraduationCap } from "lucide-react";
 import { staggerContainer, fadeUpItem } from "../shared/types";
 import { usePlayground } from "../shared/PlaygroundContext";
@@ -7,6 +7,7 @@ import { useNavigate } from "react-router";
 import { getTopicColor } from "../shared/topicColors";
 import { useState, useMemo } from "react";
 import FilterSidebar from "../components/FilterSidebar";
+import CoursePreviewPopover from "../components/CoursePreviewPopover";
 
 type SortOption = "popular" | "rating" | "newest" | "free";
 type ViewMode = "grid" | "list";
@@ -27,8 +28,8 @@ const SORTS: { id: SortOption; label: string }[] = [
 ];
 
 export default function DiscoverCoursesPage() {
-  const { courseQuery, setCourseQuery, activeAgeGroup, setActiveAgeGroup, savedIds, toggleSave } = usePlayground();
-  const { allCourses } = useCourses(courseQuery);
+  const { courseQuery, setCourseQuery, activeAgeGroup, setActiveAgeGroup, savedIds, toggleSave, enrolledIds, enrollCourse } = usePlayground();
+  const { allCourses, discoverCourses } = useCourses(courseQuery, enrolledIds);
   const navigate = useNavigate();
   const [sortBy, setSortBy] = useState<SortOption>("popular");
   const [viewMode, setViewMode] = useState<ViewMode>("grid");
@@ -44,7 +45,7 @@ export default function DiscoverCoursesPage() {
   const allTopics = useMemo(() => [...new Set(allCourses.flatMap(c => c.topics))], [allCourses]);
   const freeCount = allCourses.filter(c => c.isFree).length;
 
-  let displayCourses = allCourses.filter(c => {
+  let displayCourses = discoverCourses.filter(c => {
     const queryMatch = c.title.toLowerCase().includes(courseQuery.toLowerCase()) ||
       c.instructor.toLowerCase().includes(courseQuery.toLowerCase());
     const ageMatch = activeAgeGroup === "All" || c.level.includes(activeAgeGroup);
@@ -99,7 +100,10 @@ export default function DiscoverCoursesPage() {
     <motion.div
       variants={fadeUpItem}
       key={course.id}
-      className="bg-[var(--color-background-secondary)] rounded-3xl flex flex-col group cursor-pointer overflow-hidden border border-[var(--color-border-light)] border-t-[3px] shadow-md hover:border-[var(--color-accent)]/30 hover:shadow-xl hover:-translate-y-1.5 transition-transform duration-300"
+    >
+    <CoursePreviewPopover course={course} onEnroll={() => { enrollCourse(course.id, course.title); navigate(`/playground/my-courses`); }}>
+    <div
+      className="bg-[var(--color-background-secondary)] rounded-3xl flex flex-col group cursor-pointer overflow-hidden border border-[var(--color-border-light)] border-t-[3px] shadow-md hover:border-[var(--color-accent)]/30 hover:shadow-xl hover:-translate-y-1 transition-[transform,box-shadow] duration-200 ease-out"
       style={{ borderTopColor: getTopicColor(course.topics) }}
       onClick={() => navigate(`/playground/course/${course.id}`)}
     >
@@ -163,15 +167,23 @@ export default function DiscoverCoursesPage() {
           ))}
         </div>
 
+        {!course.isFree && course.price && (
+          <div className="mt-3 flex items-baseline gap-1.5">
+            <span className="text-sm font-bold text-[var(--color-text-primary)]">{course.price}</span>
+            {course.originalPrice && <span className="text-[11px] text-[var(--color-text-tertiary)] line-through">{course.originalPrice}</span>}
+          </div>
+        )}
         <div className="mt-auto pt-4">
           <button
-            onClick={(e) => { e.stopPropagation(); navigate(`/playground/course/${course.id}`); }}
+            onClick={(e) => { e.stopPropagation(); enrollCourse(course.id, course.title); navigate(`/playground/my-courses`); }}
             className="w-full bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] group-hover:bg-[var(--color-accent)] group-hover:border-[var(--color-accent)] group-hover:text-[#fff] text-[var(--color-text-primary)] py-3 rounded-xl text-[14px] font-bold transition-colors duration-300 flex items-center justify-center gap-2 shadow-sm group-hover:shadow-[0_8px_20px_rgba(232,133,106,0.3)] active:scale-95"
           >
-            Enroll now <GraduationCap size={16} />
+            {course.isEnrolled ? "Continue Learning" : "Enroll now"} <GraduationCap size={16} />
           </button>
         </div>
       </div>
+    </div>
+    </CoursePreviewPopover>
     </motion.div>
   );
 
@@ -179,7 +191,7 @@ export default function DiscoverCoursesPage() {
     <motion.div
       variants={fadeUpItem}
       key={course.id}
-      className="bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] border-l-[3px] rounded-2xl flex gap-4 p-4 items-start hover:shadow-md hover:-translate-y-0.5 transition-transform duration-300 cursor-pointer"
+      className="bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] border-l-[3px] rounded-2xl flex gap-4 p-4 items-start hover:shadow-md hover:-translate-y-0.5 transition-[transform,box-shadow] duration-200 ease-out cursor-pointer"
       style={{ borderLeftColor: getTopicColor(course.topics) }}
       onClick={() => navigate(`/playground/course/${course.id}`)}
     >
@@ -205,27 +217,32 @@ export default function DiscoverCoursesPage() {
         </div>
       </div>
       <div className="flex flex-col items-end gap-2 shrink-0">
-        {course.isFree && (
+        {course.isFree ? (
           <span className="text-[10px] font-bold text-[var(--color-success)] bg-[var(--color-success)]/10 px-2.5 py-0.5 rounded-full">Free</span>
+        ) : course.price && (
+          <div className="flex items-baseline gap-1">
+            <span className="text-xs font-bold text-[var(--color-text-primary)]">{course.price}</span>
+            {course.originalPrice && <span className="text-[10px] text-[var(--color-text-tertiary)] line-through">{course.originalPrice}</span>}
+          </div>
         )}
         <button
-          onClick={(e) => { e.stopPropagation(); navigate(`/playground/course/${course.id}`); }}
+          onClick={(e) => { e.stopPropagation(); enrollCourse(course.id, course.title); navigate(`/playground/my-courses`); }}
           className="px-4 py-2 rounded-xl bg-[var(--color-background-primary)] border border-[var(--color-border-light)] text-[12px] font-semibold text-[var(--color-text-primary)] hover:bg-[var(--color-accent)] hover:text-[#fff] hover:border-[var(--color-accent)] transition-colors whitespace-nowrap"
         >
-          Enroll now
+          {course.isEnrolled ? "Continue" : "Enroll now"}
         </button>
       </div>
     </motion.div>
   );
 
   const statCounts = [
-    { value: allCourses.length, label: "Courses" },
+    { value: discoverCourses.length, label: "Available" },
     { value: allTopics.length, label: "Topics" },
     { value: freeCount, label: "Free" },
   ];
 
   return (
-    <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="flex flex-col gap-6">
       {/* Page heading */}
       <div className="flex items-center justify-between">
         <div>
@@ -366,24 +383,32 @@ export default function DiscoverCoursesPage() {
                 <button onClick={() => setCourseQuery("")} className="mt-4 text-sm font-bold text-[var(--color-accent)] hover:underline">Clear search</button>
               )}
             </div>
-          ) : viewMode === "grid" ? (
-            <motion.div
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6"
-              variants={staggerContainer}
-              initial="hidden"
-              animate="show"
-            >
-              {displayCourses.map(renderGridCard)}
-            </motion.div>
           ) : (
-            <motion.div
-              className="flex flex-col gap-4"
-              variants={staggerContainer}
-              initial="hidden"
-              animate="show"
-            >
-              {displayCourses.map(renderListCard)}
-            </motion.div>
+            <AnimatePresence mode="wait">
+            {viewMode === "grid" ? (
+              <motion.div
+                key="grid"
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6"
+                variants={staggerContainer}
+                initial="hidden"
+                animate="show"
+                exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.15 } }}
+              >
+                {displayCourses.map(renderGridCard)}
+              </motion.div>
+            ) : (
+              <motion.div
+                key="list"
+                className="flex flex-col gap-4"
+                variants={staggerContainer}
+                initial="hidden"
+                animate="show"
+                exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.15 } }}
+              >
+                {displayCourses.map(renderListCard)}
+              </motion.div>
+            )}
+            </AnimatePresence>
           )}
         </div>
       </div>

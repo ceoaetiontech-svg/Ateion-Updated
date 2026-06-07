@@ -37,9 +37,20 @@ export interface Course {
   rating: number;
   language: string;
   isFree: boolean;
+  price?: string;
+  originalPrice?: string;
   topics: string[];
   enrollments: number;
   createdAt: number;
+  isEnrolled?: boolean;
+}
+
+export interface Note {
+  id: number;
+  courseId: number;
+  lessonId: number;
+  text: string;
+  createdAt: string;
 }
 
 export interface CalendarEvent {
@@ -57,15 +68,24 @@ export const staggerContainer = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
-    transition: { staggerChildren: 0.1 }
-  }
+    transition: { staggerChildren: 0.05 },
+  },
 };
 
 export const fadeUpItem = {
   hidden: { opacity: 0, y: 20 },
-  show: { 
-    opacity: 1, 
-    y: 0, 
-    transition: { type: "spring", stiffness: 300, damping: 24 } 
-  }
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { type: "spring", stiffness: 300, damping: 24 },
+  },
+};
+
+export const slideInItem = {
+  hidden: { opacity: 0, x: -8 },
+  show: {
+    opacity: 1,
+    x: 0,
+    transition: { type: "spring", stiffness: 300, damping: 26 },
+  },
 };

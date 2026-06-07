@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { Rocket, User, Settings, LogOut, Sun, Moon, Compass, BookMarked, Search, Flame } from "lucide-react";
 import { useState, useEffect, lazy, Suspense, type LazyExoticComponent, type ComponentType } from "react";
 import { Helmet } from "react-helmet-async";
@@ -24,6 +25,9 @@ import UserAvatar from "../shared/UserAvatar";
 import { PlaygroundProvider, usePlayground } from "../shared/PlaygroundContext";
 import GlobalSearch from "../components/GlobalSearch";
 import NotificationDropdown from "../components/NotificationDropdown";
+import Toast from "../components/Toast";
+import { slideInItem } from "../shared/types";
+import SkeletonCourseCard from "../components/SkeletonCourseCard";
 
 const CoursePlayerPage = lazy(() => import("../pages/CoursePlayerPage"));
 const FallbackPage = lazy(() => import("../pages/FallbackPage"));
@@ -41,7 +45,7 @@ const viewMap: Record<string, LazyExoticComponent<ComponentType<any>>> = {
 };
 
 function PlaygroundInner() {
-  const { userProfile, setUserProfile, streak, xp, courseQuery, setCourseQuery } = usePlayground();
+  const { userProfile, setUserProfile, streak, xp, courseQuery, setCourseQuery, toastMessage, setToastMessage } = usePlayground();
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   const location = useLocation();
@@ -144,29 +148,39 @@ function PlaygroundInner() {
               </SidebarHeader>
 
               <SidebarContent className="px-2">
-                {navigationSections.map((section) => (
-                  <SidebarGroup key={section.title} className="mb-2">
-                    <SidebarGroupLabel className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-tertiary)] flex items-center mb-1">
-                      <section.icon className="mr-2 h-3.5 w-3.5" />
-                      {section.title}
-                    </SidebarGroupLabel>
-                    <SidebarGroupContent>
-                      <SidebarMenu>
-                        {section.items.map((item) => (
-                          <SidebarMenuItem key={item.title}>
-                            <SidebarMenuButton
-                              className={`group/btn relative overflow-hidden text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-background-tertiary)] transition-all duration-300 py-2.5 ${location.pathname === item.path ? "bg-[var(--color-accent_light)] text-[var(--color-accent)] font-bold shadow-sm border-l-[3px] border-[var(--color-accent)] rounded-r-xl rounded-l-none pl-3" : "rounded-xl pl-3 hover:translate-x-1"}`}
-                              onClick={() => navigate(item.path)}
-                              aria-current={location.pathname === item.path ? "page" : undefined}
+                {navigationSections.map((section, si) => (
+                  <div key={section.title}>
+                    <SidebarGroup className="mb-2">
+                      <SidebarGroupLabel className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-tertiary)] flex items-center mb-1">
+                        <section.icon className="mr-2 h-3.5 w-3.5" />
+                        {section.title}
+                      </SidebarGroupLabel>
+                      <SidebarGroupContent>
+                        <SidebarMenu>
+                          {section.items.map((item, ii) => (
+                            <motion.div
+                              key={item.title}
+                              variants={slideInItem}
+                              initial="hidden"
+                              animate="show"
+                              transition={{ delay: si * 0.04 + ii * 0.04, type: "spring", stiffness: 300, damping: 26 }}
                             >
-                              <item.icon className="h-4 w-4 mr-2 group-hover/btn:scale-110 group-hover/btn:-rotate-6 transition-transform duration-300" />
-                              <span>{item.title}</span>
-                            </SidebarMenuButton>
-                          </SidebarMenuItem>
-                        ))}
-                      </SidebarMenu>
-                    </SidebarGroupContent>
-                  </SidebarGroup>
+                              <SidebarMenuItem>
+                                <SidebarMenuButton
+                                  className={`group/btn relative overflow-hidden text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-background-tertiary)] transition-all duration-300 py-2.5 ${location.pathname === item.path ? "bg-[var(--color-accent_light)] text-[var(--color-accent)] font-bold shadow-sm border-l-[3px] border-[var(--color-accent)] rounded-r-xl rounded-l-none pl-3" : "rounded-xl pl-3 hover:translate-x-1"}`}
+                                  onClick={() => navigate(item.path)}
+                                  aria-current={location.pathname === item.path ? "page" : undefined}
+                                >
+                                  <item.icon className="h-4 w-4 mr-2 group-hover/btn:scale-110 group-hover/btn:-rotate-6 transition-transform duration-300" />
+                                  <span>{item.title}</span>
+                                </SidebarMenuButton>
+                              </SidebarMenuItem>
+                            </motion.div>
+                          ))}
+                        </SidebarMenu>
+                      </SidebarGroupContent>
+                    </SidebarGroup>
+                  </div>
                 ))}
               </SidebarContent>
 
@@ -276,8 +290,8 @@ function PlaygroundInner() {
                   <Search size={18} className="text-[var(--color-text-primary)]" />
                 </button>
 
-                <div className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-[var(--color-background-secondary)] border border-[var(--color-border-light)]">
-                  <Flame size={14} className="text-orange-500" />
+                <div className="flex items-center gap-1 px-3 py-1.5 rounded-full bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] group/streak">
+                  <Flame size={14} className={`text-orange-500 ${streak > 0 ? "animate-[bounce_2s_ease-in-out_infinite]" : ""}`} />
                   <span className="text-xs font-bold text-[var(--color-text-primary)]">{streak}</span>
                   <span className="text-xs text-[var(--color-text-tertiary)] hidden sm:inline">day streak</span>
                 </div>
@@ -310,11 +324,21 @@ function PlaygroundInner() {
             )}
 
             <GlobalSearch open={searchOpen} onOpenChange={setSearchOpen} />
+            <Toast message={toastMessage} onDismiss={() => setToastMessage(null)} />
 
             <main className={`flex-1 ${location.pathname.startsWith("/playground/course/") ? "p-0 overflow-hidden" : "overflow-y-auto p-6 lg:p-10"}`}>
               <Suspense fallback={
-                <div className="flex items-center justify-center h-64">
-                  <div className="animate-spin rounded-full h-10 w-10 border-2 border-[var(--color-accent)] border-t-transparent" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {[...Array(6)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.05, duration: 0.3 }}
+                    >
+                      <SkeletonCourseCard key={i} />
+                    </motion.div>
+                  ))}
                 </div>
               }>
                 {location.pathname.startsWith("/playground/course/") ? (
@@ -322,12 +346,17 @@ function PlaygroundInner() {
                     <Route path="course/:id" element={<CoursePlayerPage />} />
                   </Routes>
                 ) : (
-                  <div className="max-w-6xl mx-auto flex flex-col gap-8">
+                  <motion.div
+                    className="max-w-6xl mx-auto flex flex-col gap-8"
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                  >
                     {(() => {
                       const ViewComponent = viewMap[activeView] ?? FallbackPage;
                       return <ViewComponent />;
                     })()}
-                  </div>
+                  </motion.div>
                 )}
               </Suspense>
             </main>

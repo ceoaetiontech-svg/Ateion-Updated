@@ -4,6 +4,7 @@ import { staggerContainer, fadeUpItem } from "../shared/types";
 import { usePlayground } from "../shared/PlaygroundContext";
 import { useCourses } from "../hooks/useCourses";
 import { useNavigate } from "react-router";
+import { useCountUp } from "../shared/useCountUp";
 
 function parseHours(duration: string): number {
   const h = parseInt(duration);
@@ -11,15 +12,20 @@ function parseHours(duration: string): number {
 }
 
 export default function DashboardPage() {
-  const { userProfile, streak, xp } = usePlayground();
-  const { allCourses, lastResume } = useCourses("");
+  const { userProfile, streak, xp, enrolledIds } = usePlayground();
+  const { myCourses, lastResume } = useCourses("", enrolledIds);
   const navigate = useNavigate();
 
-  const activeCourses = allCourses.filter(c => c.progress > 0 && c.progress < 100).length;
-  const completedCourses = allCourses.filter(c => c.progress === 100).length;
-  const totalHours = allCourses
-    .filter(c => c.progress > 0)
-    .reduce((sum, c) => sum + parseHours(c.duration), 0);
+  const activeCourses = myCourses.filter(c => c.progress > 0 && c.progress < 100).length;
+  const completedCourses = myCourses.filter(c => c.progress === 100).length;
+  const totalHours = myCourses.reduce(
+    (sum, c) => sum + (c.progress / 100) * parseHours(c.duration),
+    0,
+  );
+
+  const countActiveCourses = useCountUp(activeCourses);
+  const countHours = useCountUp(totalHours);
+  const countCompleted = useCountUp(completedCourses);
 
   return (
     <>
@@ -62,12 +68,12 @@ export default function DashboardPage() {
             <div className="flex flex-wrap gap-4">
               <button
                 onClick={() => navigate(lastResume ? `/playground/course/${lastResume.id}` : "/playground/discover")}
-                className="bg-[var(--color-accent)] hover:bg-[var(--color-accent)]/90 text-[#ffffff] px-8 py-3.5 rounded-2xl font-bold shadow-[0_0_20px_rgba(232,133,106,0.3)] hover:shadow-[0_0_30px_rgba(232,133,106,0.5)] hover:-translate-y-1 transition-all flex items-center gap-2 border border-transparent"
+                className="bg-[var(--color-accent)] hover:bg-[var(--color-accent)]/90 text-[#ffffff] px-8 py-3.5 rounded-2xl font-bold shadow-[0_0_20px_rgba(232,133,106,0.3)] hover:shadow-[0_0_30px_rgba(232,133,106,0.5)] hover:-translate-y-1 transition-[transform,box-shadow,background-color] duration-200 ease-out flex items-center gap-2 border border-transparent"
               >
                 {lastResume ? <><Play size={18} /> Resume Learning</> : <><Compass size={18} /> Discover Courses</>} <ChevronRight size={18} />
               </button>
               <button className="bg-[var(--color-background-primary)]/80 backdrop-blur-md text-[var(--color-text-primary)] border border-[var(--color-border-medium)] px-6 py-3.5 rounded-2xl font-bold hover:bg-[var(--color-background-tertiary)] transition-all flex items-center gap-2 shadow-sm">
-                <span className="text-xl animate-pulse">🔥</span> {streak} Day Streak!
+                <span className="text-xl animate-[bounce_2s_ease-in-out_infinite]">🔥</span> {streak} Day Streak!
               </button>
             </div>
           </div>
@@ -114,7 +120,7 @@ export default function DashboardPage() {
           viewport={{ once: true, margin: "-50px" }}
         >
           {/* Stat Card 1: Courses */}
-          <motion.div variants={fadeUpItem} className="clay-card flex flex-col justify-between bg-[var(--color-background-primary)] border-2 border-[var(--color-border-light)] shadow-[0_4px_0_0_var(--color-border-light)] hover:shadow-[0_6px_0_0_var(--color-info),0_15px_20px_rgba(0,0,0,0.05)] hover:-translate-y-1 transition-all duration-300 group overflow-hidden relative">
+          <motion.div variants={fadeUpItem} className="clay-card flex flex-col justify-between bg-[var(--color-background-primary)] border-2 border-[var(--color-border-light)] shadow-[0_4px_0_0_var(--color-border-light)] hover:shadow-[0_6px_0_0_var(--color-info),0_15px_20px_rgba(0,0,0,0.05)] hover:-translate-y-1 transition-[transform,box-shadow] duration-200 ease-out group overflow-hidden relative">
             <div className="absolute top-0 right-0 w-24 h-24 bg-[var(--color-info)] opacity-5 rounded-bl-full group-hover:scale-110 transition-transform"></div>
             <div className="flex items-start justify-between mb-4">
               <div className="h-12 w-12 rounded-2xl bg-[var(--color-info)]/10 text-[var(--color-info)] flex items-center justify-center group-hover:scale-110 group-hover:-rotate-12 transition-transform duration-300">
@@ -127,7 +133,7 @@ export default function DashboardPage() {
             <div className="flex items-end justify-between mt-2">
               <div>
                 <p className="text-3xl font-bold text-[var(--color-text-primary)] mb-1 font-['Inter',sans-serif] tracking-tight">
-                  {activeCourses}
+                  {countActiveCourses}
                 </p>
                 <p className="text-[var(--color-text-tertiary)] text-sm font-bold">
                   Active Courses
@@ -143,7 +149,7 @@ export default function DashboardPage() {
           </motion.div>
 
           {/* Stat Card 2: Hours */}
-          <motion.div variants={fadeUpItem} className="clay-card flex flex-col justify-between bg-[var(--color-background-primary)] border-2 border-[var(--color-border-light)] shadow-[0_4px_0_0_var(--color-border-light)] hover:shadow-[0_6px_0_0_var(--color-accent),0_15px_20px_rgba(0,0,0,0.05)] hover:-translate-y-1 transition-all duration-300 group overflow-hidden relative">
+          <motion.div variants={fadeUpItem} className="clay-card flex flex-col justify-between bg-[var(--color-background-primary)] border-2 border-[var(--color-border-light)] shadow-[0_4px_0_0_var(--color-border-light)] hover:shadow-[0_6px_0_0_var(--color-accent),0_15px_20px_rgba(0,0,0,0.05)] hover:-translate-y-1 transition-[transform,box-shadow] duration-200 ease-out group overflow-hidden relative">
             <div className="absolute top-0 right-0 w-24 h-24 bg-[var(--color-accent)] opacity-5 rounded-bl-full group-hover:scale-110 transition-transform"></div>
             <div className="flex items-start justify-between mb-4">
               <div className="h-12 w-12 rounded-2xl bg-[var(--color-warning)]/10 text-[var(--color-warning)] flex items-center justify-center group-hover:scale-110 group-hover:rotate-12 transition-transform duration-300">
@@ -156,7 +162,7 @@ export default function DashboardPage() {
             <div className="flex items-end justify-between mt-2">
               <div>
                 <p className="text-3xl font-bold text-[var(--color-text-primary)] mb-1 font-['Inter',sans-serif] tracking-tight">
-                  {totalHours}
+                  {countHours}
                 </p>
                 <p className="text-[var(--color-text-tertiary)] text-sm font-bold">
                   Hours Learned
@@ -172,7 +178,7 @@ export default function DashboardPage() {
           </motion.div>
 
           {/* Stat Card 3: Badges */}
-          <motion.div variants={fadeUpItem} className="clay-card flex flex-col justify-between bg-[var(--color-background-primary)] border-2 border-[var(--color-border-light)] shadow-[0_4px_0_0_var(--color-border-light)] hover:shadow-[0_6px_0_0_#8b5cf6,0_15px_20px_rgba(0,0,0,0.05)] hover:-translate-y-1 transition-all duration-300 group overflow-hidden relative">
+          <motion.div variants={fadeUpItem} className="clay-card flex flex-col justify-between bg-[var(--color-background-primary)] border-2 border-[var(--color-border-light)] shadow-[0_4px_0_0_var(--color-border-light)] hover:shadow-[0_6px_0_0_#8b5cf6,0_15px_20px_rgba(0,0,0,0.05)] hover:-translate-y-1 transition-[transform,box-shadow] duration-200 ease-out group overflow-hidden relative">
             <div className="absolute top-0 right-0 w-24 h-24 bg-[#8b5cf6] opacity-5 rounded-bl-full group-hover:scale-110 transition-transform"></div>
             <div className="flex items-start justify-between mb-4">
               <div className="h-12 w-12 rounded-2xl bg-[#8b5cf6]/10 text-[#8b5cf6] flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
@@ -185,7 +191,7 @@ export default function DashboardPage() {
             <div className="flex items-end justify-between mt-2">
               <div>
                 <p className="text-3xl font-bold text-[var(--color-text-primary)] mb-1 font-['Inter',sans-serif] tracking-tight">
-                  {completedCourses}
+                  {countCompleted}
                 </p>
                 <p className="text-[var(--color-text-tertiary)] text-sm font-bold">
                   Completed
@@ -201,7 +207,7 @@ export default function DashboardPage() {
           </motion.div>
 
           {/* Stat Card 4: Streaks */}
-          <motion.div variants={fadeUpItem} className="clay-card flex flex-col justify-between bg-[var(--color-background-primary)] border-2 border-[var(--color-border-light)] shadow-[0_4px_0_0_var(--color-border-light)] hover:shadow-[0_6px_0_0_var(--color-warning),0_15px_20px_rgba(0,0,0,0.05)] hover:-translate-y-1 transition-all duration-300 group overflow-hidden relative">
+          <motion.div variants={fadeUpItem} className="clay-card flex flex-col justify-between bg-[var(--color-background-primary)] border-2 border-[var(--color-border-light)] shadow-[0_4px_0_0_var(--color-border-light)] hover:shadow-[0_6px_0_0_var(--color-warning),0_15px_20px_rgba(0,0,0,0.05)] hover:-translate-y-1 transition-[transform,box-shadow] duration-200 ease-out group overflow-hidden relative">
             <div className="absolute top-0 right-0 w-24 h-24 bg-[var(--color-warning)] opacity-5 rounded-bl-full group-hover:scale-110 transition-transform"></div>
             <div className="flex items-start justify-between mb-4">
               <div className="h-12 w-12 rounded-2xl bg-[var(--color-warning)]/10 text-[var(--color-warning)] flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-inner">
