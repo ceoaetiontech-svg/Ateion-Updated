@@ -114,7 +114,7 @@ export default function CoursePlayerPage() {
           <span className="text-sm text-[var(--color-text-primary)] font-medium truncate max-w-[200px]">{currentLesson.title}</span>
         </div>
 
-        <div className="relative w-full shrink-0" style={{ maxHeight: "55vh" }}>
+        <div className="relative w-full shrink-0 sticky top-0 z-10" style={{ maxHeight: "55vh" }}>
           <VideoPlayer title={currentLesson.title} key={currentLesson.id} duration={parseDuration(currentLesson.duration)} onComplete={() => markComplete(currentLesson.id)} />
           <AnimatePresence>
             {xpFloats.map(f => (
