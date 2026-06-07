@@ -22,8 +22,7 @@ function parseDuration(d: string): number {
   return m * 60 + s;
 }
 
-// How many px the user scrolls before the video fully disappears
-const COLLAPSE_PX = 180;
+const COLLAPSE_PX = 220;
 
 export default function CoursePlayerPage() {
   const { id } = useParams<{ id: string }>();
@@ -49,26 +48,33 @@ export default function CoursePlayerPage() {
   const [xpFloats, setXpFloats] = useState<{ id: number; x: number; y: number }[]>([]);
   const xpIdRef = useRef(0);
 
-  // ── GPU-accelerated scroll collapse ──────────────────────────────────────
-  // We use transform:scaleY + opacity — both run on the compositor (GPU),
-  // never trigger layout recalc, and cause ZERO React re-renders.
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
-  const videoWrapRef  = useRef<HTMLDivElement>(null);
+  const scrollAreaRef  = useRef<HTMLDivElement>(null);
+  const videoWrapRef   = useRef<HTMLDivElement>(null);
+  const videoSlotRef   = useRef<HTMLDivElement>(null);
   const videoHeightRef = useRef(0);
 
   useEffect(() => {
     const scrollEl = scrollAreaRef.current;
     const videoEl  = videoWrapRef.current;
-    if (!scrollEl || !videoEl) return;
+    const slotEl   = videoSlotRef.current;
+    if (!scrollEl || !videoEl || !slotEl) return;
 
     videoHeightRef.current = videoEl.getBoundingClientRect().height;
+    const h = videoHeightRef.current;
+
     videoEl.style.transformOrigin = "top center";
+    slotEl.style.overflow = "hidden";
+    slotEl.style.height = `${h}px`;
 
     const onScroll = () => {
       const p = Math.min(1, scrollEl.scrollTop / COLLAPSE_PX);
-      videoEl.style.transform    = `scaleY(${1 - p})`;
-      videoEl.style.opacity      = String(Math.max(0, 1 - p * 1.6));
-      videoEl.style.marginBottom = `${-(videoHeightRef.current * p)}px`;
+
+      // GPU-only: no layout recalc
+      videoEl.style.transform = `scaleY(${1 - p})`;
+      videoEl.style.opacity   = String(Math.max(0, 1 - p * 1.8));
+
+      // Slot shrinks → content slides up
+      slotEl.style.height = `${h * (1 - p)}px`;
     };
 
     scrollEl.addEventListener("scroll", onScroll, { passive: true });
@@ -126,7 +132,7 @@ export default function CoursePlayerPage() {
       {/* ── LEFT COLUMN ── */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
 
-        {/* Breadcrumb — fixed, never scrolls */}
+        {/* Breadcrumb */}
         <div className="flex items-center gap-3 px-6 py-3 border-b border-[var(--color-border-light)] bg-[var(--color-background-secondary)]/50 shrink-0 z-20">
           <button
             onClick={() => navigate("/playground/my-courses")}
@@ -143,55 +149,60 @@ export default function CoursePlayerPage() {
           <span className="text-sm text-[var(--color-text-primary)] font-medium truncate max-w-[200px]">{currentLesson.title}</span>
         </div>
 
-        {/* ── Scrollable column (video + tabs + content) ── */}
+        {/* ── Scrollable area ── */}
         <div ref={scrollAreaRef} className="flex-1 overflow-y-auto min-h-0">
 
-          {/* VIDEO WRAPPER — GPU layer, no layout recalc */}
-          <div
-            ref={videoWrapRef}
-            className="relative w-full shrink-0 sticky top-0 z-10 overflow-hidden bg-black"
-            style={{ willChange: "transform, opacity" }}
-          >
-            <VideoPlayer
-              title={currentLesson.title}
-              key={currentLesson.id}
-              duration={parseDuration(currentLesson.duration)}
-              onComplete={() => markComplete(currentLesson.id)}
-            />
+          {/* SLOT — shrinks as user scrolls, pulling content up */}
+          <div ref={videoSlotRef} className="relative w-full shrink-0 bg-black">
 
-            <AnimatePresence>
-              {xpFloats.map(f => (
-                <motion.div
-                  key={f.id}
-                  initial={{ opacity: 1, y: 0, scale: 0.5 }}
-                  animate={{ opacity: 0, y: -60, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.8, ease: "easeOut" }}
-                  className="absolute z-20 flex items-center gap-1 text-[var(--color-accent)] font-bold text-sm pointer-events-none drop-shadow-lg"
-                  style={{ top: f.y, right: f.x }}
-                >
-                  <Zap size={16} /> +50 XP
-                </motion.div>
-              ))}
-            </AnimatePresence>
+            {/* VIDEO — GPU scale+fade only, zero layout cost */}
+            <div
+              ref={videoWrapRef}
+              className="relative w-full bg-black"
+              style={{ willChange: "transform, opacity" }}
+            >
+              <VideoPlayer
+                title={currentLesson.title}
+                key={currentLesson.id}
+                duration={parseDuration(currentLesson.duration)}
+                onComplete={() => markComplete(currentLesson.id)}
+              />
 
-            <div className="absolute top-4 right-4 z-10 flex items-center gap-2">
-              {!completedIds.has(currentLesson.id) ? (
-                <button
-                  onClick={() => markComplete(currentLesson.id)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--color-success)]/90 text-white text-xs font-bold hover:bg-[var(--color-success)] transition-colors shadow-lg backdrop-blur-sm"
-                >
-                  <CheckCircle size={14} /> Mark complete
-                </button>
-              ) : (
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 text-white/80 text-xs font-bold backdrop-blur-sm shadow-lg">
-                  <CheckCircle size={14} className="text-[var(--color-success)]" /> Completed
-                </div>
-              )}
-            </div>
-          </div>
+              <AnimatePresence>
+                {xpFloats.map(f => (
+                  <motion.div
+                    key={f.id}
+                    initial={{ opacity: 1, y: 0, scale: 0.5 }}
+                    animate={{ opacity: 0, y: -60, scale: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.8, ease: "easeOut" }}
+                    className="absolute z-20 flex items-center gap-1 text-[var(--color-accent)] font-bold text-sm pointer-events-none drop-shadow-lg"
+                    style={{ top: f.y, right: f.x }}
+                  >
+                    <Zap size={16} /> +50 XP
+                  </motion.div>
+                ))}
+              </AnimatePresence>
 
-          {/* Tab bar */}
+              <div className="absolute top-4 right-4 z-10 flex items-center gap-2">
+                {!completedIds.has(currentLesson.id) ? (
+                  <button
+                    onClick={() => markComplete(currentLesson.id)}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--color-success)]/90 text-white text-xs font-bold hover:bg-[var(--color-success)] transition-colors shadow-lg backdrop-blur-sm"
+                  >
+                    <CheckCircle size={14} /> Mark complete
+                  </button>
+                ) : (
+                  <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 text-white/80 text-xs font-bold backdrop-blur-sm shadow-lg">
+                    <CheckCircle size={14} className="text-[var(--color-success)]" /> Completed
+                  </div>
+                )}
+              </div>
+            </div>{/* end videoWrapRef */}
+
+          </div>{/* end videoSlotRef */}
+
+          {/* Tab bar — sticks to top once video collapses */}
           <div className="border-b border-[var(--color-border-light)] bg-[var(--color-background-secondary)]/80 backdrop-blur-sm sticky top-0 z-[9]">
             <div className="flex">
               {TABS.map((tab) => {
