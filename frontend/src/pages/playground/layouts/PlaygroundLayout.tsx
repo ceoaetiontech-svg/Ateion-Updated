@@ -1,4 +1,4 @@
-import { Rocket, User, Settings, LogOut, Sun, Moon, Compass, BookMarked, Search, Flame } from "lucide-react";
+import { Rocket, User, Settings, LogOut, Sun, Moon, Compass, BookMarked, Search, Flame, Home } from "lucide-react";
 import { useState, useEffect, lazy, Suspense, type LazyExoticComponent, type ComponentType } from "react";
 import { Helmet } from "react-helmet-async";
 import {
@@ -262,8 +262,15 @@ function PlaygroundInner() {
 
               <div className="flex items-center gap-3 sm:gap-5">
                 <button
+                  onClick={() => navigate("/")}
+                  className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] text-xs text-[var(--color-text-tertiary)] hover:border-[var(--color-accent)]/30 hover:text-[var(--color-text-primary)] transition-colors mr-1"
+                  title="Home"
+                >
+                  <Home size={16} />
+                </button>
+                <button
                   onClick={() => setSearchOpen(true)}
-                  className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] text-xs text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] hover:border-[var(--color-accent)]/30 transition-all"
+                  className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] text-xs text-[var(--color-text-tertiary)] hover:border-[var(--color-accent)]/30 hover:text-[var(--color-text-primary)] transition-colors w-36"
                 >
                   <Search size={14} />
                   <span className="hidden lg:inline">Search</span>
