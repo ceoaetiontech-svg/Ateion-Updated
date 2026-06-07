@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useParams, useNavigate } from "react-router";
 import { BookOpen, StickyNote, MessageCircle, Download, ArrowLeft, Star, Clock, BarChart2, PlayCircle, Users, Copy, ThumbsUp, MessageSquare, Paperclip, ExternalLink, FileText, CheckCircle, Zap, X } from "lucide-react";
@@ -55,6 +55,28 @@ export default function CoursePlayerPage() {
   const [xpFloats, setXpFloats] = useState<{ id: number; x: number; y: number }[]>([]);
   const xpIdRef = useRef(0);
 
+  // ── Scroll-to-collapse video ──────────────────────────────────────────────
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const [scrollProgress, setScrollProgress] = useState(0); // 0 = full, 1 = collapsed
+
+  useEffect(() => {
+    const el = scrollAreaRef.current;
+    if (!el) return;
+    const COLLAPSE_RANGE = 220; // px of scroll to go from full → collapsed
+    const handleScroll = () => {
+      const progress = Math.min(1, el.scrollTop / COLLAPSE_RANGE);
+      setScrollProgress(progress);
+    };
+    el.addEventListener("scroll", handleScroll, { passive: true });
+    return () => el.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Derived values for smooth animation
+  const videoMaxHeight = `${Math.max(0, (1 - scrollProgress) * 55)}vh`;
+  const videoOpacity = Math.max(0, 1 - scrollProgress * 1.4);
+  const videoScale = 1 - scrollProgress * 0.04;
+  const isCollapsed = scrollProgress >= 0.98;
+
   const derivedProgress = Math.round((completedIds.size / totalLessons) * 100);
 
   const persistCompleted = useCallback((ids: Set<number>) => {
@@ -102,8 +124,8 @@ export default function CoursePlayerPage() {
 
   return (
     <div className="flex h-full">
-      <div className="flex-1 flex flex-col min-w-0">
-        <div className="flex items-center gap-3 px-6 py-3 border-b border-[var(--color-border-light)] bg-[var(--color-background-secondary)]/50">
+      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        <div className="flex items-center gap-3 px-6 py-3 border-b border-[var(--color-border-light)] bg-[var(--color-background-secondary)]/50 shrink-0">
           <button onClick={() => navigate("/playground/my-courses")} className="flex items-center gap-1.5 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors">
             <ArrowLeft size={16} />
             My Courses
@@ -114,7 +136,18 @@ export default function CoursePlayerPage() {
           <span className="text-sm text-[var(--color-text-primary)] font-medium truncate max-w-[200px]">{currentLesson.title}</span>
         </div>
 
-        <div className="relative w-full shrink-0 sticky top-0 z-10" style={{ maxHeight: "55vh" }}>
+        {/* ── STICKY VIDEO — collapses as user scrolls ── */}
+        <div
+          className="relative w-full shrink-0 sticky top-0 z-10 overflow-hidden bg-black"
+          style={{
+            maxHeight: videoMaxHeight,
+            opacity: videoOpacity,
+            transform: `scale(${videoScale})`,
+            transformOrigin: "top center",
+            transition: "max-height 0.05s linear, opacity 0.05s linear, transform 0.05s linear",
+            pointerEvents: isCollapsed ? "none" : "auto",
+          }}
+        >
           <VideoPlayer title={currentLesson.title} key={currentLesson.id} duration={parseDuration(currentLesson.duration)} onComplete={() => markComplete(currentLesson.id)} />
           <AnimatePresence>
             {xpFloats.map(f => (
@@ -150,8 +183,10 @@ export default function CoursePlayerPage() {
           </div>
         </div>
 
-        <div className="border-b border-[var(--color-border-light)] bg-[var(--color-background-secondary)]/30">
-          <div className="flex">
+        {/* ── SCROLLABLE CONTENT AREA ── */}
+        <div ref={scrollAreaRef} className="flex-1 flex flex-col overflow-y-auto min-h-0">
+          <div className="border-b border-[var(--color-border-light)] bg-[var(--color-background-secondary)]/30 shrink-0">
+            <div className="flex">
             {TABS.map((tab) => {
               const Icon = tab.icon;
               return (
@@ -173,7 +208,7 @@ export default function CoursePlayerPage() {
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto p-6 min-h-0">
+          <div className="flex-1 p-6">
           {activeTab === "overview" && (
             <div className="max-w-3xl space-y-6">
               <div>
@@ -329,7 +364,8 @@ export default function CoursePlayerPage() {
               })}
             </div>
           )}
-        </div>
+        </div>{/* end tab content */}
+        </div>{/* end scrollAreaRef */}
       </div>
 
       <aside className="w-80 border-l border-[var(--color-border-light)] overflow-y-auto shrink-0 hidden lg:block">
