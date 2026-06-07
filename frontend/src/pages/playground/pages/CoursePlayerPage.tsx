@@ -59,14 +59,19 @@ export default function CoursePlayerPage() {
     const slotEl   = videoSlotRef.current;
     if (!scrollEl || !videoEl || !slotEl) return;
 
-    videoHeightRef.current = videoEl.getBoundingClientRect().height;
-    const h = videoHeightRef.current;
-
     videoEl.style.transformOrigin = "top center";
     slotEl.style.overflow = "hidden";
-    slotEl.style.height = `${h}px`;
 
     const onScroll = () => {
+      // Measure lazily on first scroll so the video is fully painted
+      if (!videoHeightRef.current) {
+        const h = videoEl.getBoundingClientRect().height;
+        if (!h) return; // still not painted — skip this tick
+        videoHeightRef.current = h;
+        slotEl.style.height = `${h}px`;
+      }
+
+      const h = videoHeightRef.current;
       const p = Math.min(1, scrollEl.scrollTop / COLLAPSE_PX);
 
       // GPU-only: no layout recalc
@@ -77,8 +82,20 @@ export default function CoursePlayerPage() {
       slotEl.style.height = `${h * (1 - p)}px`;
     };
 
+    // Measure after short delay so slot reserves space before first scroll
+    const timer = setTimeout(() => {
+      const h = videoEl.getBoundingClientRect().height;
+      if (h) {
+        videoHeightRef.current = h;
+        slotEl.style.height = `${h}px`;
+      }
+    }, 100);
+
     scrollEl.addEventListener("scroll", onScroll, { passive: true });
-    return () => scrollEl.removeEventListener("scroll", onScroll);
+    return () => {
+      scrollEl.removeEventListener("scroll", onScroll);
+      clearTimeout(timer);
+    };
   }, []);
 
   const derivedProgress = Math.round((completedIds.size / totalLessons) * 100);
@@ -152,7 +169,7 @@ export default function CoursePlayerPage() {
         {/* ── Scrollable area ── */}
         <div ref={scrollAreaRef} className="flex-1 overflow-y-auto min-h-0">
 
-          {/* SLOT — shrinks as user scrolls, pulling content up */}
+          {/* SLOT — height shrinks as user scrolls, pulling content up */}
           <div ref={videoSlotRef} className="relative w-full shrink-0 bg-black">
 
             {/* VIDEO — GPU scale+fade only, zero layout cost */}
