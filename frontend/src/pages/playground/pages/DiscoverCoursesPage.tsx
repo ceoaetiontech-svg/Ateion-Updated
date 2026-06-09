@@ -152,12 +152,12 @@ export default function DiscoverCoursesPage() {
       </div>
 
       {/* Quick topic pills */}
-      <div className="flex overflow-x-auto hide-scrollbar gap-2 pb-1">
+      <div className="flex snap-x overflow-x-auto hide-scrollbar gap-2 pb-1">
         {TOPIC_QUICK_FILTERS.map(topic => (
           <button
             key={topic}
             onClick={() => handleQuickTopic(topic)}
-            className={`shrink-0 px-4 py-2 rounded-full text-xs font-bold transition-all ${
+            className={`inline-flex min-h-10 shrink-0 snap-start items-center justify-center rounded-full px-4 py-2 text-center text-xs font-bold leading-none transition-all ${
               selectedTopics.includes(topic)
                 ? "bg-[var(--color-accent)] text-[#fff] shadow-md"
                 : "bg-[var(--color-background-secondary)] text-[var(--color-text-secondary)] border border-[var(--color-border-light)] hover:border-[var(--color-accent)]/30 hover:text-[var(--color-accent)]"
@@ -199,12 +199,12 @@ export default function DiscoverCoursesPage() {
       </div>
 
       {/* Age group pills */}
-      <div className="flex overflow-x-auto hide-scrollbar gap-3 pb-1 px-0.5">
+      <div className="flex snap-x overflow-x-auto hide-scrollbar gap-3 pb-1 px-0.5">
         {AGE_GROUPS.map((g) => (
           <button
             key={g.id}
             onClick={() => setActiveAgeGroup(g.id)}
-            className={`relative flex items-center gap-2.5 whitespace-nowrap px-6 py-3 rounded-2xl text-[14px] font-bold transition-colors duration-500 group overflow-hidden ${
+            className={`relative inline-flex min-h-12 min-w-[112px] shrink-0 snap-start items-center justify-center gap-2.5 overflow-hidden rounded-2xl px-5 py-3 text-center text-[14px] font-bold leading-none transition-colors duration-500 group sm:min-w-0 sm:px-6 ${
               activeAgeGroup === g.id
                 ? "text-[#fff] shadow-[0_8px_20px_rgba(0,0,0,0.12)] scale-105 border-transparent ring-4 ring-[var(--color-accent)]/10"
                 : "bg-[var(--color-background-secondary)] text-[var(--color-text-secondary)] border border-[var(--color-border-light)] hover:border-[var(--color-accent)]/30 hover:shadow-lg hover:-translate-y-1"
@@ -213,9 +213,9 @@ export default function DiscoverCoursesPage() {
             {activeAgeGroup === g.id && (
               <div className="absolute inset-0 bg-gradient-to-br from-[#d97a60] via-[var(--color-accent)] to-[#ff9e88] z-0 opacity-90" />
             )}
-            <div className={`relative z-10 flex items-center gap-2 ${activeAgeGroup === g.id ? "" : "group-hover:text-[var(--color-accent)] transition-colors duration-300"}`}>
+            <div className={`relative z-10 flex min-w-0 items-center justify-center gap-2 ${activeAgeGroup === g.id ? "" : "group-hover:text-[var(--color-accent)] transition-colors duration-300"}`}>
               <span className="shrink-0">{g.icon}</span>
-              {g.label}
+              <span className="truncate text-center">{g.label}</span>
             </div>
           </button>
         ))}
@@ -281,21 +281,21 @@ export default function DiscoverCoursesPage() {
               {viewMode === "grid" ? (
                 <motion.div
                   key="grid"
-                  className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6"
+                  className="grid auto-rows-fr grid-cols-1 justify-center gap-4 sm:grid-cols-[repeat(2,minmax(0,330px))] sm:gap-5 xl:grid-cols-[repeat(3,minmax(0,330px))]"
                   variants={staggerContainer}
                   initial="hidden"
                   animate="show"
                   exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.15 } }}
                 >
                   {displayCourses.map(course => (
-                    <motion.div variants={fadeUpItem} key={course.id}>
+                    <motion.div variants={fadeUpItem} key={course.id} className="h-full">
                       <CoursePreviewPopover course={course} onEnroll={() => handleEnroll(course.id, course.title)}>
                         <div
-                          className="bg-[var(--color-background-secondary)] rounded-3xl flex flex-col group cursor-pointer overflow-hidden border border-[var(--color-border-light)] border-t-[3px] shadow-md hover:border-[var(--color-accent)]/30 hover:shadow-xl hover:-translate-y-1 transition-[transform,box-shadow] duration-200 ease-out"
+                          className="mx-auto flex h-full min-h-[430px] w-full max-w-[330px] cursor-pointer flex-col overflow-hidden rounded-3xl border border-t-[3px] border-[var(--color-border-light)] bg-[var(--color-background-secondary)] shadow-md transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-1 hover:border-[var(--color-accent)]/30 hover:shadow-xl group"
                           style={{ borderTopColor: getTopicColor(course.topics) }}
                           onClick={() => navigate(`/playground/course/${course.id}`)}
                         >
-                          <div className="relative h-[180px] w-full overflow-hidden">
+                          <div className="relative h-[150px] w-full overflow-hidden">
                             <div className="absolute inset-0 bg-gradient-to-t from-[#000000]/80 via-[#000000]/20 to-transparent z-10 opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
                             <img
                               src={course.image}
@@ -304,46 +304,46 @@ export default function DiscoverCoursesPage() {
                               onError={(e) => { (e.currentTarget as HTMLElement).style.display = "none"; }}
                               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                             />
-                            <div className="absolute top-4 left-4 z-20 flex items-center gap-2">
-                              <div className="bg-[#ffffff]/10 backdrop-blur-md border border-[#ffffff]/20 text-[#ffffff] px-3 py-1.5 rounded-lg text-[11px] font-bold tracking-wider flex items-center gap-1.5 shadow-lg">
+                            <div className="absolute left-3 right-12 top-3 z-20 flex flex-wrap items-center gap-1.5">
+                              <div className="flex items-center gap-1.5 rounded-lg border border-[#ffffff]/20 bg-[#ffffff]/10 px-2.5 py-1.5 text-[10px] font-bold tracking-wider text-[#ffffff] shadow-lg backdrop-blur-md">
                                 <Signal size={12} /> {course.level}
                               </div>
-                              <div className="bg-[#ffffff]/10 backdrop-blur-md border border-[#ffffff]/20 text-[#ffffff] px-3 py-1.5 rounded-lg text-[11px] font-bold tracking-wider flex items-center gap-1.5 shadow-lg">
+                              <div className="flex items-center gap-1.5 rounded-lg border border-[#ffffff]/20 bg-[#ffffff]/10 px-2.5 py-1.5 text-[10px] font-bold tracking-wider text-[#ffffff] shadow-lg backdrop-blur-md">
                                 <Clock size={12} /> {course.duration}
                               </div>
                               {course.isFree && (
-                                <div className="bg-[#22c55e]/80 backdrop-blur-md text-[#fff] px-3 py-1.5 rounded-lg text-[11px] font-bold tracking-wider shadow-lg">FREE</div>
+                                <div className="rounded-lg bg-[#22c55e]/80 px-2.5 py-1.5 text-[10px] font-bold tracking-wider text-[#fff] shadow-lg backdrop-blur-md">FREE</div>
                               )}
                             </div>
                             <button
                               onClick={(e) => { e.stopPropagation(); toggleSave(course.id); }}
-                              className="absolute top-4 right-4 z-20 bg-[#ffffff]/10 backdrop-blur-md border border-[#ffffff]/20 w-8 h-8 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+                              className="absolute right-3 top-3 z-20 flex h-8 w-8 items-center justify-center rounded-full border border-[#ffffff]/20 bg-[#ffffff]/10 shadow-lg backdrop-blur-md transition-transform hover:scale-110"
                             >
                               <Heart size={16} className={savedIds.includes(course.id) ? "fill-red-500 text-red-500" : "text-[#fff]"} />
                             </button>
-                            <div className="absolute bottom-4 left-4 z-20 right-4">
-                              <h4 className="text-[16px] font-bold text-[#ffffff] line-clamp-2 leading-tight drop-shadow-md">{course.title}</h4>
+                            <div className="absolute bottom-3 left-3 right-3 z-20">
+                              <h4 className="line-clamp-2 min-h-10 text-[16px] font-bold leading-tight text-[#ffffff] drop-shadow-md">{course.title}</h4>
                             </div>
                           </div>
-                          <div className="p-5 flex flex-col flex-1 bg-[var(--color-background-secondary)] relative">
-                            <div className="flex items-center gap-2 mt-1">
+                          <div className="relative flex flex-1 flex-col bg-[var(--color-background-secondary)] p-4">
+                            <div className="mt-1 flex min-h-6 items-center gap-2">
                               <img src={course.instructorAvatar} className="w-6 h-6 rounded-full object-cover" />
-                              <span className="text-xs text-[var(--color-text-secondary)]">{course.instructor}</span>
+                              <span className="truncate text-xs text-[var(--color-text-secondary)]">{course.instructor}</span>
                             </div>
 
-                            <div className="flex items-center gap-1.5 mt-2">
+                            <div className="mt-2 flex min-h-4 items-center gap-1.5">
                               <span className="text-xs font-bold text-[var(--color-warning)]">{course.rating}</span>
                               {renderStars(course.rating, 11)}
                               <span className="text-xs text-[var(--color-text-tertiary)]">({formatStudents(course.students)})</span>
                             </div>
 
-                            <div className="flex items-center gap-3 mt-2 flex-wrap text-[11px] text-[var(--color-text-tertiary)]">
+                            <div className="mt-2 flex min-h-7 flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-[var(--color-text-tertiary)]">
                               <span className="flex items-center gap-1"><BarChart2 size={12} /> {course.level}</span>
                               <span className="flex items-center gap-1"><Clock size={12} /> {course.duration}</span>
                               <span className="flex items-center gap-1"><PlayCircle size={12} /> {course.lessons} lessons</span>
                             </div>
 
-                            <div className="flex flex-wrap gap-1.5 mt-3">
+                            <div className="mt-2.5 flex min-h-5 flex-wrap gap-1.5">
                               {course.topics.slice(0, 3).map(topic => (
                                 <span
                                   key={topic}
@@ -355,8 +355,9 @@ export default function DiscoverCoursesPage() {
                               ))}
                             </div>
 
-                            {!course.isFree && course.price && (
-                              <div className="mt-3 flex items-baseline gap-2">
+                            <div className="mt-2.5 flex min-h-6 items-baseline gap-2">
+                              {!course.isFree && course.price && (
+                                <>
                                 <span className="text-base font-bold text-[var(--color-text-primary)]">{course.price}</span>
                                 {course.originalPrice && <span className="text-xs text-[var(--color-text-tertiary)] line-through">{course.originalPrice}</span>}
                                 {course.originalPrice && (
@@ -364,15 +365,17 @@ export default function DiscoverCoursesPage() {
                                     {Math.round((1 - parseInt(course.price.replace(/[^0-9]/g, "")) / parseInt(course.originalPrice.replace(/[^0-9]/g, ""))) * 100)}% off
                                   </span>
                                 )}
-                              </div>
-                            )}
+                                </>
+                              )}
+                            </div>
 
-                            <div className="mt-auto pt-4">
+                            <div className="mt-auto pt-3">
                               <button
                                 onClick={(e) => { e.stopPropagation(); handleEnroll(course.id, course.title); }}
-                                className="w-full bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] group-hover:bg-[var(--color-accent)] group-hover:border-[var(--color-accent)] group-hover:text-[#fff] text-[var(--color-text-primary)] py-3 rounded-xl text-[14px] font-bold transition-colors duration-300 flex items-center justify-center gap-2 shadow-sm group-hover:shadow-[0_8px_20px_rgba(232,133,106,0.3)] active:scale-95"
+                                className="flex min-h-10 w-full items-center justify-center gap-2 rounded-xl border border-[var(--color-border-light)] bg-[var(--color-background-secondary)] px-4 py-2.5 text-center text-[14px] font-bold leading-none text-[var(--color-text-primary)] shadow-sm transition-colors duration-300 group-hover:border-[var(--color-accent)] group-hover:bg-[var(--color-accent)] group-hover:text-[#fff] group-hover:shadow-[0_8px_20px_rgba(232,133,106,0.3)] active:scale-95"
                               >
-                                {course.isEnrolled ? "Continue Learning" : "Enroll now"} <GraduationCap size={16} />
+                                <span className="min-w-0 truncate text-center">{course.isEnrolled ? "Continue Learning" : "Enroll now"}</span>
+                                <GraduationCap size={16} className="shrink-0" />
                               </button>
                             </div>
                           </div>
@@ -394,11 +397,11 @@ export default function DiscoverCoursesPage() {
                     <motion.div
                       variants={fadeUpItem}
                       key={course.id}
-                      className="bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] border-l-[3px] rounded-2xl flex gap-4 p-4 items-start hover:shadow-md hover:-translate-y-0.5 transition-[transform,box-shadow] duration-200 ease-out cursor-pointer"
+                      className="grid cursor-pointer grid-cols-[88px_minmax(0,1fr)] gap-x-3 gap-y-2 rounded-xl border border-l-[3px] border-[var(--color-border-light)] bg-[var(--color-background-secondary)] p-3 transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md sm:grid-cols-[100px_minmax(0,1fr)_auto] sm:items-center sm:gap-4 sm:p-4"
                       style={{ borderLeftColor: getTopicColor(course.topics) }}
                       onClick={() => navigate(`/playground/course/${course.id}`)}
                     >
-                      <div className="w-[100px] h-[72px] rounded-xl shrink-0 overflow-hidden bg-[var(--color-background-primary)]">
+                      <div className="row-span-2 h-[68px] w-[88px] shrink-0 overflow-hidden rounded-lg bg-[var(--color-background-primary)] sm:h-[72px] sm:w-[100px]">
                         <img
                           src={course.image}
                           alt={course.title}
@@ -418,18 +421,18 @@ export default function DiscoverCoursesPage() {
                           <span className="text-[10px] text-[var(--color-text-tertiary)]">({formatStudents(course.students)})</span>
                         </div>
                       </div>
-                      <div className="flex flex-col items-end gap-2 shrink-0">
+                      <div className="flex min-w-0 shrink-0 items-center justify-between gap-2 sm:row-span-2 sm:flex-col sm:items-end sm:justify-center">
                         {course.isFree ? (
-                          <span className="text-[10px] font-bold text-[var(--color-success)] bg-[var(--color-success)]/10 px-2.5 py-0.5 rounded-full">Free</span>
+                          <span className="rounded-md bg-[var(--color-success)]/10 px-2 py-1 text-[10px] font-bold text-[var(--color-success)]">Free</span>
                         ) : course.price && (
-                          <div className="flex items-baseline gap-1">
+                          <div className="flex min-w-0 items-baseline gap-1">
                             <span className="text-xs font-bold text-[var(--color-text-primary)]">{course.price}</span>
                             {course.originalPrice && <span className="text-[10px] text-[var(--color-text-tertiary)] line-through">{course.originalPrice}</span>}
                           </div>
                         )}
                         <button
                           onClick={(e) => { e.stopPropagation(); handleEnroll(course.id, course.title); }}
-                          className="px-4 py-2 rounded-xl bg-[var(--color-background-primary)] border border-[var(--color-border-light)] text-[12px] font-semibold text-[var(--color-text-primary)] hover:bg-[var(--color-accent)] hover:text-[#fff] hover:border-[var(--color-accent)] transition-colors whitespace-nowrap"
+                          className="inline-flex min-h-9 shrink-0 items-center justify-center rounded-lg border border-[var(--color-border-light)] bg-[var(--color-background-primary)] px-3.5 py-2 text-center text-[12px] font-semibold text-[var(--color-text-primary)] transition-colors hover:border-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[#fff]"
                         >
                           {course.isEnrolled ? "Continue" : "Enroll now"}
                         </button>
