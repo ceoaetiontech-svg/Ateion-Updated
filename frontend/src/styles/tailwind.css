@@ -26,4 +26,70 @@
   .animate-ripple-delay-2 {
     animation-delay: 1.6s;
   }
+
+  @keyframes playground-icon-shine {
+    0%,
+    55% {
+      opacity: 0;
+      transform: translateX(-150%) rotate(18deg);
+    }
+    68% {
+      opacity: 0.7;
+    }
+    86%,
+    100% {
+      opacity: 0;
+      transform: translateX(260%) rotate(18deg);
+    }
+  }
+
+  @keyframes playground-icon-glow {
+    0%,
+    55%,
+    100% {
+      box-shadow: 0 2px 8px rgba(232, 133, 106, 0.22);
+    }
+    72% {
+      box-shadow: 0 0 18px rgba(232, 133, 106, 0.48);
+    }
+  }
+
+  .playground-icon-shine {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    animation: playground-icon-glow 2s ease-in-out infinite;
+  }
+
+  .playground-icon-shine::after {
+    content: "";
+    position: absolute;
+    inset: -45% auto -45% -70%;
+    width: 58%;
+    pointer-events: none;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.82),
+      transparent
+    );
+    filter: blur(1px);
+    animation: playground-icon-shine 2s ease-in-out infinite;
+    z-index: 0;
+  }
+
+  .playground-icon-shine svg {
+    position: relative;
+    z-index: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .playground-icon-shine {
+      animation: none;
+    }
+
+    .playground-icon-shine::after {
+      display: none;
+    }
+  }
 }

@@ -246,7 +246,7 @@ function PlaygroundInner() {
             {!location.pathname.startsWith("/playground/course/") && (
               <header className="flex h-16 sm:h-20 items-center justify-between gap-2 px-3 sm:gap-3 sm:px-6 lg:px-10 bg-[var(--color-background-secondary)]/60 backdrop-blur-md border-b border-[var(--color-border-light)] shrink-0 overflow-visible relative z-30">
                 <div className="flex min-w-0 flex-1 items-center gap-3">
-                  <SidebarTrigger className="flex lg:hidden items-center gap-2 bg-[var(--color-accent)] text-white px-3 py-2 rounded-lg text-sm font-bold shadow-sm hover:brightness-110 transition-all" />
+                  <SidebarTrigger className="playground-icon-shine flex lg:hidden items-center gap-2 bg-[var(--color-accent)] text-white px-3 py-2 rounded-lg text-sm font-bold shadow-sm hover:brightness-110 transition-all" />
                   <div className="flex min-w-0 items-center gap-2">
                     <h1
                       className="min-w-0 truncate font-bold text-[var(--color-text-primary)] cursor-pointer hover:text-[var(--color-accent)] hover:scale-105 origin-left transition-all duration-300 active:scale-95"
