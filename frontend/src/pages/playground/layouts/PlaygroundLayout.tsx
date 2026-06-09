@@ -112,7 +112,7 @@ function PlaygroundInner() {
       </Helmet>
       <SidebarProvider>
         <div
-          className="flex w-full bg-[var(--color-background-primary)]"
+          className="flex w-full min-w-0 overflow-hidden bg-[var(--color-background-primary)]"
           style={{
             height: `calc(100dvh - ${navbarHeight}px)`,
             marginTop: navbarHeight,
@@ -242,12 +242,12 @@ function PlaygroundInner() {
             </div>
           </Sidebar>
 
-          <SidebarInset className="flex flex-1 flex-col overflow-x-hidden bg-transparent w-full">
+          <SidebarInset className="flex min-w-0 flex-1 flex-col overflow-x-hidden bg-transparent w-full">
             {!location.pathname.startsWith("/playground/course/") && (
-              <header className="flex h-16 sm:h-20 items-center justify-between px-6 lg:px-10 bg-[var(--color-background-secondary)]/60 backdrop-blur-md border-b border-[var(--color-border-light)] shrink-0 overflow-visible relative z-30">
-                <div className="flex items-center gap-3">
+              <header className="flex h-16 sm:h-20 items-center justify-between gap-3 px-4 sm:px-6 lg:px-10 bg-[var(--color-background-secondary)]/60 backdrop-blur-md border-b border-[var(--color-border-light)] shrink-0 overflow-visible relative z-30">
+                <div className="flex min-w-0 items-center gap-3">
                   <SidebarTrigger className="flex md:hidden items-center gap-2 bg-[var(--color-accent)] text-white px-3 py-2 rounded-lg text-sm font-bold shadow-sm hover:brightness-110 transition-all" />
-                  <div className="flex items-center gap-2">
+                  <div className="flex min-w-0 items-center gap-2">
                     <h1
                       className="font-bold text-[var(--color-text-primary)] cursor-pointer hover:text-[var(--color-accent)] hover:scale-105 origin-left transition-all duration-300 active:scale-95"
                       style={{
@@ -274,7 +274,7 @@ function PlaygroundInner() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 sm:gap-5">
+                <div className="flex min-w-0 shrink-0 items-center gap-2 sm:gap-5">
                   <button
                     onClick={() => navigate("/")}
                     className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] text-xs text-[var(--color-text-tertiary)] hover:border-[var(--color-accent)]/30 hover:text-[var(--color-text-primary)] transition-colors mr-1"
@@ -333,7 +333,7 @@ function PlaygroundInner() {
             <GlobalSearch open={searchOpen} onOpenChange={setSearchOpen} />
             <Toast message={toastMessage} onDismiss={() => setToastMessage(null)} />
 
-            <main className={`flex-1 ${location.pathname.startsWith("/playground/course/") ? "p-0 overflow-y-auto" : "overflow-y-auto p-6 lg:p-10"}`}>
+            <main className={`min-w-0 flex-1 overflow-x-hidden ${location.pathname.startsWith("/playground/course/") ? "p-0 overflow-y-auto" : "overflow-y-auto p-4 sm:p-6 lg:p-10"}`}>
               <Suspense fallback={
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {[...Array(6)].map((_, i) => (
@@ -354,7 +354,7 @@ function PlaygroundInner() {
                   </Routes>
                 ) : (
                   <motion.div
-                    className="max-w-6xl mx-auto flex flex-col gap-8"
+                    className="w-full max-w-6xl min-w-0 mx-auto flex flex-col gap-8"
                     initial={{ opacity: 0, y: 12 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
