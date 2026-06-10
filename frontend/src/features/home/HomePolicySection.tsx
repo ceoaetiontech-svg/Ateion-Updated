@@ -66,7 +66,7 @@ function MiniPolicyCard({ policy, index }: { policy: PolicyEntry; index: number 
       }}
     >
       {/* Logo image */}
-      <div style={{ width: "100%", aspectRatio: "4/3", overflow: "hidden", background: "var(--color-background-secondary)", flexShrink: 0 }} className="sm:aspect-square">
+      <div style={{ width: "100%", height: 140, overflow: "hidden", background: "var(--color-background-secondary)", flexShrink: 0 }} className="sm:h-[180px]">
         {img ? (
           <img
             src={img}
@@ -95,7 +95,7 @@ function MiniPolicyCard({ policy, index }: { policy: PolicyEntry; index: number 
       {/* Bottom strip */}
       <div style={{
         display: "flex", alignItems: "center", gap: 8,
-        padding: "10px 13px",
+        padding: "10px 12px",
         background: "var(--color-background-secondary)",
         borderTop: `3px solid ${policy.accentColor}`,
         flexShrink: 0,
@@ -110,17 +110,15 @@ function MiniPolicyCard({ policy, index }: { policy: PolicyEntry; index: number 
         </span>
         <div style={{ flex: 1, minWidth: 0 }}>
           <p style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "0.82rem", fontWeight: 700, color: "var(--color-text-primary)",
-            margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
-          }}>
+            fontFamily: "var(--font-display)", fontWeight: 700,
+            color: "var(--color-text-primary)", margin: 0, lineHeight: 1.3,
+          }} className="text-[13px] sm:text-[14px] lg:text-[0.82rem]">
             {policy.country}
           </p>
           <p style={{
-            fontFamily: "var(--font-body)",
-            fontSize: "0.54rem", fontWeight: 800, letterSpacing: "0.1em",
+            fontFamily: "var(--font-body)", fontWeight: 800, letterSpacing: "0.1em",
             textTransform: "uppercase", color: policy.accentColor, margin: "2px 0 0",
-          }}>
+          }} className="text-[10px] sm:text-[0.54rem]">
             {policy.frameworks.length} framework{policy.frameworks.length > 1 ? "s" : ""}
           </p>
         </div>
@@ -280,7 +278,7 @@ export default function HomePolicySection() {
       </div>
 
       {/* ── 4 cards ── */}
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-7 max-w-[960px] mx-auto mb-6 sm:mb-8 lg:mb-[52px]">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-7 max-w-[960px] mx-auto mb-6 sm:mb-8 lg:mb-[52px]">
         {featuredPolicies.slice(0, 4).map((policy, index) => (
           <MiniPolicyCard key={policy.id} policy={policy} index={index} />
         ))}

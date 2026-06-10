@@ -205,7 +205,7 @@ function HeroFeatureCardsRow() {
         hidden: {},
         visible: { transition: { staggerChildren: 0.25 } },
       }}
-      className="content-stretch flex flex-col gap-[24px] items-start relative shrink-0 w-full"
+      className="content-stretch flex flex-col gap-[16px] sm:gap-[24px] items-start relative shrink-0 w-full"
     >
       {/* Section heading */}
       <motion.div
@@ -214,7 +214,7 @@ function HeroFeatureCardsRow() {
           visible: { opacity: 1, y: 0 },
         }}
         transition={{ duration: 0.7, ease: "easeOut" }}
-        className="w-full flex flex-col items-center gap-3 pt-8 sm:pt-12"
+        className="w-full flex flex-col items-center gap-3 pt-4 sm:pt-6 lg:pt-12"
       >
         <p
           className="font-bold leading-[0.95] tracking-[-0.04em] text-center"
@@ -232,7 +232,7 @@ function HeroFeatureCardsRow() {
         <div className="w-[60px] h-[3px] rounded-full" style={{ background: "var(--color-accent)" }} />
       </motion.div>
 
-      <div className="w-full mt-8">
+      <div className="w-full mt-4 sm:mt-6 lg:mt-8">
         <HomePolicySection />
       </div>
     </motion.div>
@@ -813,7 +813,7 @@ function FAQSectionContainer() {
 
 export default function Homepage() {
   return (
-    <div className="bg-[var(--color-background-primary)] w-full min-h-screen flex flex-col gap-[40px] sm:gap-[60px] md:gap-[80px]" data-name="Homepage">
+    <div className="bg-[var(--color-background-primary)] w-full min-h-screen flex flex-col gap-[24px] sm:gap-[32px] md:gap-[60px]" data-name="Homepage">
       <Helmet>
         <title>Ateion — Reimagining Education with Capability-Based Learning</title>
         <meta name="description" content="Ateion is a capability-based education ecosystem that replaces memory-based assessment with real-world measurable skills." />
