@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 
-// ── Types ────────────────────────────────────────────────────────────────────
+// ── Types ─────────────────────────────────────────────────────────────────────
 interface Message {
   id: string;
   role: "user" | "assistant";
@@ -20,27 +20,26 @@ interface AIChatBotProps {
   subHeading?: string;
   brandName?: string;
   userInitial?: string;
-  /** Called with every user message — plug in your own API here */
   onSendMessage?: (message: string, history: Message[]) => Promise<string>;
 }
 
-// ── Theme tokens (matches your UI) ──────────────────────────────────────────
+// ── Theme ─────────────────────────────────────────────────────────────────────
 const T = {
-  bg: "#eeeae3",           // warm cream background
-  panel: "#f5f2ec",        // slightly lighter panel
-  panelDark: "#1a1a2e",    // dark navy for header
-  accent: "#c9623f",       // coral/orange accent
-  accentLight: "#f0d9d1",  // light coral tint
-  navy: "#1a1a2e",         // dark navy text
-  navyMid: "#2d2d4e",      // mid navy
-  textMuted: "#8a8070",    // muted warm grey
-  border: "#ddd8cf",       // warm border
-  userBubble: "#1a1a2e",   // dark navy user bubble
-  botBubble: "#fff",       // white bot bubble
-  inputBg: "#fff",         // white input
+  bg: "#eeeae3",
+  panel: "#f5f2ec",
+  panelDark: "#1a1a2e",
+  accent: "#c9623f",
+  accentLight: "#f0d9d1",
+  navy: "#1a1a2e",
+  navyMid: "#2d2d4e",
+  textMuted: "#8a8070",
+  border: "#ddd8cf",
+  userBubble: "#1a1a2e",
+  botBubble: "#fff",
+  inputBg: "#fff",
 };
 
-// ── Default AI handler ───────────────────────────────────────────────────────
+// ── Helpers ───────────────────────────────────────────────────────────────────
 const defaultAIHandler = async (message: string, history: Message[]): Promise<string> => {
   const messages = [
     ...history.map((m) => ({ role: m.role, content: m.content })),
@@ -72,7 +71,6 @@ const fmtDate = (d: Date) => {
   return d.toLocaleDateString([], { month: "short", day: "numeric" });
 };
 
-// ── Mock past conversations ──────────────────────────────────────────────────
 const MOCK_PAST: Conversation[] = [
   {
     id: "past1",
@@ -80,7 +78,7 @@ const MOCK_PAST: Conversation[] = [
     lastUpdated: new Date(Date.now() - 86400000 * 2),
     messages: [
       { id: "p1a", role: "user", content: "How does the Olympiad scoring work?", timestamp: new Date(Date.now() - 86400000 * 2) },
-      { id: "p1b", role: "assistant", content: "The Global Capability Olympiad uses an AI-integrated scoring system that evaluates thinking patterns rather than memorized answers. Each section is scored on logic, reasoning depth, and response quality.", timestamp: new Date(Date.now() - 86400000 * 2) },
+      { id: "p1b", role: "assistant", content: "The Global Capability Olympiad uses an AI-integrated scoring system that evaluates thinking patterns rather than memorized answers.", timestamp: new Date(Date.now() - 86400000 * 2) },
     ],
   },
   {
@@ -89,12 +87,24 @@ const MOCK_PAST: Conversation[] = [
     lastUpdated: new Date(Date.now() - 86400000 * 5),
     messages: [
       { id: "p2a", role: "user", content: "When is the registration deadline?", timestamp: new Date(Date.now() - 86400000 * 5) },
-      { id: "p2b", role: "assistant", content: "Registration deadlines vary by region. Please check the Dashboard for your specific cohort's deadline or contact the team via the 'Get Connected' page.", timestamp: new Date(Date.now() - 86400000 * 5) },
+      { id: "p2b", role: "assistant", content: "Registration deadlines vary by region. Please check the Dashboard for your specific cohort's deadline.", timestamp: new Date(Date.now() - 86400000 * 5) },
     ],
   },
 ];
 
-// ── Component ────────────────────────────────────────────────────────────────
+// ── Hook: detect mobile ───────────────────────────────────────────────────────
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(() => window.innerWidth < 640);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 639px)");
+    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+  return isMobile;
+}
+
+// ── Component ─────────────────────────────────────────────────────────────────
 export default function AIChatBot({
   greeting = "Hello! 👋",
   subHeading = "How can we help?",
@@ -103,7 +113,6 @@ export default function AIChatBot({
   onSendMessage = defaultAIHandler,
 }: AIChatBotProps) {
   const [open, setOpen] = useState(false);
-  // view: "home" | "chat" | "history" | "past-chat"
   const [view, setView] = useState<"home" | "chat" | "history" | "past-chat">("home");
   const [conversations, setConversations] = useState<Conversation[]>(MOCK_PAST);
   const [activeConvId, setActiveConvId] = useState<string | null>(null);
@@ -112,15 +121,20 @@ export default function AIChatBot({
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const isMobile = useIsMobile();
 
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: "smooth" }); }, [currentMessages]);
   useEffect(() => { if (view === "chat") setTimeout(() => inputRef.current?.focus(), 100); }, [view]);
 
-  const startNewChat = () => {
-    setActiveConvId(null);
-    setCurrentMessages([]);
-    setView("chat");
-  };
+  // Lock body scroll on mobile when open
+  useEffect(() => {
+    if (isMobile) {
+      document.body.style.overflow = open ? "hidden" : "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [open, isMobile]);
+
+  const startNewChat = () => { setActiveConvId(null); setCurrentMessages([]); setView("chat"); };
 
   const openPastConv = (conv: Conversation) => {
     setActiveConvId(conv.id);
@@ -150,7 +164,7 @@ export default function AIChatBot({
     setCurrentMessages(updated);
     setInput("");
     setLoading(true);
-    if (view === "past-chat") setView("chat"); // switch to live chat
+    if (view === "past-chat") setView("chat");
     try {
       const reply = await onSendMessage(text, currentMessages);
       const botMsg: Message = { id: uid(), role: "assistant", content: reply, timestamp: new Date() };
@@ -171,7 +185,6 @@ export default function AIChatBot({
     if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); handleSend(); }
   };
 
-  // Group conversations by date
   const grouped = conversations.reduce<Record<string, Conversation[]>>((acc, c) => {
     const key = fmtDate(c.lastUpdated);
     if (!acc[key]) acc[key] = [];
@@ -181,22 +194,93 @@ export default function AIChatBot({
 
   const isInChat = view === "chat" || view === "past-chat";
 
+  // ── Responsive panel styles ───────────────────────────────────────────────
+  const panelStyle: React.CSSProperties = isMobile
+    ? {
+        // Mobile: full screen sheet sliding up from bottom
+        position: "fixed",
+        bottom: 0,
+        left: 0,
+        right: 0,
+        top: 0,
+        width: "100%",
+        height: "100%",
+        borderRadius: 0,
+        background: T.panel,
+        boxShadow: "none",
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden",
+        zIndex: 9998,
+        border: "none",
+        transform: open ? "translateY(0)" : "translateY(100%)",
+        opacity: 1,
+        pointerEvents: open ? "all" : "none",
+        transition: "transform 0.32s cubic-bezier(0.32, 0.72, 0, 1)",
+        fontFamily: "'Inter', system-ui, sans-serif",
+      }
+    : {
+        // Desktop: floating panel
+        position: "fixed",
+        bottom: "96px",
+        right: "28px",
+        width: "368px",
+        height: "560px",
+        borderRadius: "20px",
+        background: T.panel,
+        boxShadow: "0 20px 60px rgba(26,26,46,0.18), 0 4px 16px rgba(26,26,46,0.1)",
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden",
+        zIndex: 9998,
+        border: `1px solid ${T.border}`,
+        transform: open ? "translateY(0) scale(1)" : "translateY(16px) scale(0.97)",
+        opacity: open ? 1 : 0,
+        pointerEvents: open ? "all" : "none",
+        transition: "transform 0.24s cubic-bezier(0.34,1.2,0.64,1), opacity 0.18s ease",
+        fontFamily: "'Inter', system-ui, sans-serif",
+      };
+
+  // FAB position: slightly higher on mobile so it clears nav bars
+  const fabStyle: React.CSSProperties = {
+    position: "fixed",
+    bottom: isMobile ? "20px" : "28px",
+    right: isMobile ? "16px" : "28px",
+    width: isMobile ? "50px" : "54px",
+    height: isMobile ? "50px" : "54px",
+    borderRadius: "50%",
+    background: T.accent,
+    border: "none",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    boxShadow: "0 6px 24px rgba(201,98,63,0.4)",
+    transition: "transform 0.2s, box-shadow 0.2s",
+    zIndex: 9999,
+  };
+
   return (
     <>
-      {/* ── Floating button ── */}
+      {/* ── Mobile backdrop ── */}
+      {isMobile && open && (
+        <div
+          onClick={() => setOpen(false)}
+          style={{
+            position: "fixed", inset: 0, background: "rgba(0,0,0,0.4)",
+            zIndex: 9997,
+            animation: "fadeIn 0.2s ease",
+          }}
+        />
+      )}
+
+      {/* ── FAB ── */}
       <button
         onClick={() => setOpen(o => !o)}
         aria-label="Toggle AI chat"
-        style={{
-          position: "fixed", bottom: "28px", right: "28px",
-          width: "54px", height: "54px", borderRadius: "50%",
-          background: T.accent, border: "none", cursor: "pointer",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          boxShadow: "0 6px 24px rgba(201,98,63,0.4)",
-          transition: "transform 0.2s, box-shadow 0.2s", zIndex: 9999,
-        }}
-        onMouseEnter={e => (e.currentTarget.style.transform = "scale(1.08)")}
-        onMouseLeave={e => (e.currentTarget.style.transform = "scale(1)")}
+        style={fabStyle}
+        onMouseEnter={e => !isMobile && (e.currentTarget.style.transform = "scale(1.08)")}
+        onMouseLeave={e => !isMobile && (e.currentTarget.style.transform = "scale(1)")}
       >
         {open ? (
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5" strokeLinecap="round">
@@ -210,47 +294,35 @@ export default function AIChatBot({
       </button>
 
       {/* ── Panel ── */}
-      <div style={{
-        position: "fixed", bottom: "96px", right: "28px",
-        width: "368px", height: "560px",
-        borderRadius: "20px", background: T.panel,
-        boxShadow: "0 20px 60px rgba(26,26,46,0.18), 0 4px 16px rgba(26,26,46,0.1)",
-        display: "flex", flexDirection: "column", overflow: "hidden",
-        zIndex: 9998, border: `1px solid ${T.border}`,
-        transform: open ? "translateY(0) scale(1)" : "translateY(16px) scale(0.97)",
-        opacity: open ? 1 : 0, pointerEvents: open ? "all" : "none",
-        transition: "transform 0.24s cubic-bezier(0.34,1.2,0.64,1), opacity 0.18s ease",
-        fontFamily: "'Inter', system-ui, sans-serif",
-      }}>
+      <div style={panelStyle}>
+
+        {/* Mobile drag handle */}
+        {isMobile && (
+          <div style={{ display: "flex", justifyContent: "center", padding: "10px 0 0", background: T.panel, flexShrink: 0 }}>
+            <div style={{ width: "40px", height: "4px", borderRadius: "4px", background: T.border }} />
+          </div>
+        )}
 
         {/* ── Header ── */}
         <div style={{
-          background: T.panelDark, padding: "14px 18px",
+          background: T.panelDark,
+          padding: isMobile ? "12px 16px" : "14px 18px",
           display: "flex", alignItems: "center", justifyContent: "space-between",
           flexShrink: 0,
         }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            {isInChat && (
+            {(isInChat || view === "history") && (
               <button onClick={() => setView("home")} style={{
                 background: "none", border: "none", cursor: "pointer",
                 color: "rgba(255,255,255,0.55)", display: "flex", alignItems: "center", padding: "0 4px 0 0",
+                // Larger tap target on mobile
+                minWidth: isMobile ? "36px" : "auto", minHeight: isMobile ? "36px" : "auto",
               }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
                   <polyline points="15 18 9 12 15 6" />
                 </svg>
               </button>
             )}
-            {view === "history" && (
-              <button onClick={() => setView("home")} style={{
-                background: "none", border: "none", cursor: "pointer",
-                color: "rgba(255,255,255,0.55)", display: "flex", alignItems: "center", padding: "0 4px 0 0",
-              }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                  <polyline points="15 18 9 12 15 6" />
-                </svg>
-              </button>
-            )}
-            {/* Bot avatar */}
             <div style={{
               width: "32px", height: "32px", borderRadius: "50%",
               background: T.accent, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
@@ -260,60 +332,68 @@ export default function AIChatBot({
               </svg>
             </div>
             <div>
-              <p style={{ color: "#fff", fontWeight: 700, fontSize: "13px", margin: 0 }}>{brandName}</p>
+              <p style={{ color: "#fff", fontWeight: 700, fontSize: isMobile ? "14px" : "13px", margin: 0 }}>{brandName}</p>
               <p style={{ color: "rgba(255,255,255,0.45)", fontSize: "11px", margin: "1px 0 0" }}>
                 {view === "history" ? "Conversation history" : isInChat ? "Online" : "How can we help?"}
               </p>
             </div>
           </div>
-          {/* User avatar */}
-          <div style={{
-            width: "30px", height: "30px", borderRadius: "50%",
-            background: T.accent, display: "flex", alignItems: "center", justifyContent: "center",
-            color: "#fff", fontWeight: 700, fontSize: "12px", border: "2px solid rgba(255,255,255,0.2)",
-          }}>
-            {userInitial}
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <div style={{
+              width: "30px", height: "30px", borderRadius: "50%",
+              background: T.accent, display: "flex", alignItems: "center", justifyContent: "center",
+              color: "#fff", fontWeight: 700, fontSize: "12px", border: "2px solid rgba(255,255,255,0.2)",
+            }}>
+              {userInitial}
+            </div>
+            {/* Close button — more prominent on mobile */}
+            {isMobile && (
+              <button onClick={() => setOpen(false)} style={{
+                background: "rgba(255,255,255,0.1)", border: "none", borderRadius: "8px",
+                cursor: "pointer", color: "#fff", display: "flex", alignItems: "center",
+                justifyContent: "center", width: "34px", height: "34px",
+              }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+                  <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                </svg>
+              </button>
+            )}
           </div>
         </div>
 
         {/* ══ HOME VIEW ══ */}
         {view === "home" && (
           <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column" }}>
-            {/* Greeting banner */}
             <div style={{
               background: `linear-gradient(135deg, ${T.navyMid} 0%, ${T.panelDark} 100%)`,
-              padding: "24px 20px 28px",
+              padding: isMobile ? "20px 20px 24px" : "24px 20px 28px",
             }}>
-              <p style={{ color: "#fff", fontSize: "22px", fontWeight: 700, margin: 0, lineHeight: 1.3 }}>{greeting}</p>
-              <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "16px", fontWeight: 500, margin: "4px 0 0" }}>{subHeading}</p>
+              <p style={{ color: "#fff", fontSize: isMobile ? "24px" : "22px", fontWeight: 700, margin: 0, lineHeight: 1.3 }}>{greeting}</p>
+              <p style={{ color: "rgba(255,255,255,0.5)", fontSize: isMobile ? "18px" : "16px", fontWeight: 500, margin: "4px 0 0" }}>{subHeading}</p>
             </div>
 
-            {/* Curved separator */}
             <div style={{ height: "20px", background: T.panelDark, position: "relative" }}>
               <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "20px", background: T.panel, borderRadius: "20px 20px 0 0" }} />
             </div>
 
-            <div style={{ padding: "4px 16px 16px", flex: 1 }}>
+            <div style={{ padding: isMobile ? "4px 16px 24px" : "4px 16px 16px", flex: 1 }}>
               {/* New chat CTA */}
               <button onClick={startNewChat} style={{
                 width: "100%", background: "#fff",
                 border: `1px solid ${T.border}`, borderRadius: "14px",
-                padding: "14px 16px", cursor: "pointer",
+                padding: isMobile ? "16px" : "14px 16px", cursor: "pointer",
                 display: "flex", alignItems: "center", gap: "14px",
                 boxShadow: "0 2px 8px rgba(26,26,46,0.06)",
                 transition: "box-shadow 0.15s, transform 0.15s",
                 marginBottom: "16px",
-              }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 4px 16px rgba(201,98,63,0.18)"; (e.currentTarget as HTMLElement).style.transform = "translateY(-1px)"; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 2px 8px rgba(26,26,46,0.06)"; (e.currentTarget as HTMLElement).style.transform = ""; }}
-              >
+              }}>
                 <div style={{ width: "40px", height: "40px", borderRadius: "12px", background: T.accentLight, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={T.accent} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                   </svg>
                 </div>
                 <div style={{ textAlign: "left", flex: 1 }}>
-                  <p style={{ color: T.navy, fontSize: "14px", fontWeight: 600, margin: 0 }}>Start new conversation</p>
+                  <p style={{ color: T.navy, fontSize: isMobile ? "15px" : "14px", fontWeight: 600, margin: 0 }}>Start new conversation</p>
                   <p style={{ color: T.textMuted, fontSize: "12px", margin: "2px 0 0" }}>Ask me anything…</p>
                 </div>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={T.textMuted} strokeWidth="2" strokeLinecap="round">
@@ -321,7 +401,6 @@ export default function AIChatBot({
                 </svg>
               </button>
 
-              {/* Past conversations */}
               {conversations.length > 0 && (
                 <>
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "10px" }}>
@@ -335,29 +414,24 @@ export default function AIChatBot({
                       View all
                     </button>
                   </div>
-                  {conversations.slice(0, 3).map(conv => (
+                  {conversations.slice(0, isMobile ? 4 : 3).map(conv => (
                     <button key={conv.id} onClick={() => openPastConv(conv)} style={{
                       width: "100%", background: "#fff",
                       border: `1px solid ${T.border}`, borderRadius: "12px",
-                      padding: "12px 14px", cursor: "pointer", marginBottom: "8px",
+                      padding: isMobile ? "14px" : "12px 14px", cursor: "pointer", marginBottom: "8px",
                       display: "flex", alignItems: "center", gap: "12px",
                       transition: "background 0.12s",
-                    }}
-                      onMouseEnter={e => ((e.currentTarget as HTMLElement).style.background = T.accentLight)}
-                      onMouseLeave={e => ((e.currentTarget as HTMLElement).style.background = "#fff")}
-                    >
+                    }}>
                       <div style={{ width: "34px", height: "34px", borderRadius: "10px", background: T.bg, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={T.accent} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                           <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                         </svg>
                       </div>
                       <div style={{ textAlign: "left", flex: 1, minWidth: 0 }}>
-                        <p style={{ color: T.navy, fontSize: "13px", fontWeight: 500, margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                        <p style={{ color: T.navy, fontSize: isMobile ? "14px" : "13px", fontWeight: 500, margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                           {conv.title}
                         </p>
-                        <p style={{ color: T.textMuted, fontSize: "11px", margin: "2px 0 0" }}>
-                          {fmtDate(conv.lastUpdated)}
-                        </p>
+                        <p style={{ color: T.textMuted, fontSize: "11px", margin: "2px 0 0" }}>{fmtDate(conv.lastUpdated)}</p>
                       </div>
                       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={T.textMuted} strokeWidth="2" strokeLinecap="round">
                         <polyline points="9 18 15 12 9 6" />
@@ -372,7 +446,7 @@ export default function AIChatBot({
 
         {/* ══ HISTORY VIEW ══ */}
         {view === "history" && (
-          <div style={{ flex: 1, overflowY: "auto", padding: "16px" }}>
+          <div style={{ flex: 1, overflowY: "auto", padding: isMobile ? "16px" : "16px" }}>
             {Object.entries(grouped).map(([date, convs]) => (
               <div key={date} style={{ marginBottom: "20px" }}>
                 <p style={{ color: T.textMuted, fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.07em", margin: "0 0 8px" }}>
@@ -382,20 +456,16 @@ export default function AIChatBot({
                   <button key={conv.id} onClick={() => openPastConv(conv)} style={{
                     width: "100%", background: "#fff",
                     border: `1px solid ${T.border}`, borderRadius: "12px",
-                    padding: "13px 14px", cursor: "pointer", marginBottom: "8px",
+                    padding: isMobile ? "14px" : "13px 14px", cursor: "pointer", marginBottom: "8px",
                     display: "flex", alignItems: "center", gap: "12px",
-                    transition: "background 0.12s",
-                  }}
-                    onMouseEnter={e => ((e.currentTarget as HTMLElement).style.background = T.accentLight)}
-                    onMouseLeave={e => ((e.currentTarget as HTMLElement).style.background = "#fff")}
-                  >
+                  }}>
                     <div style={{ width: "34px", height: "34px", borderRadius: "10px", background: T.bg, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={T.accent} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                       </svg>
                     </div>
                     <div style={{ textAlign: "left", flex: 1, minWidth: 0 }}>
-                      <p style={{ color: T.navy, fontSize: "13px", fontWeight: 500, margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                      <p style={{ color: T.navy, fontSize: isMobile ? "14px" : "13px", fontWeight: 500, margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                         {conv.title}
                       </p>
                       <p style={{ color: T.textMuted, fontSize: "11px", margin: "2px 0 0" }}>
@@ -409,30 +479,23 @@ export default function AIChatBot({
                 ))}
               </div>
             ))}
-            {conversations.length === 0 && (
-              <div style={{ textAlign: "center", marginTop: "60px" }}>
-                <p style={{ color: T.textMuted, fontSize: "13px" }}>No conversations yet.</p>
-              </div>
-            )}
           </div>
         )}
 
         {/* ══ CHAT / PAST-CHAT VIEW ══ */}
         {isInChat && (
           <>
-            {/* Past-chat notice */}
             {view === "past-chat" && (
               <div style={{
                 background: T.accentLight, padding: "8px 16px",
                 display: "flex", alignItems: "center", justifyContent: "space-between",
                 borderBottom: `1px solid ${T.border}`, flexShrink: 0,
               }}>
-                <p style={{ color: T.accent, fontSize: "12px", fontWeight: 500, margin: 0 }}>
-                  Viewing past conversation
-                </p>
+                <p style={{ color: T.accent, fontSize: "12px", fontWeight: 500, margin: 0 }}>Viewing past conversation</p>
                 <button onClick={startNewChat} style={{
                   background: T.accent, border: "none", borderRadius: "20px",
-                  padding: "4px 12px", color: "#fff", fontSize: "11px", fontWeight: 600, cursor: "pointer",
+                  padding: "5px 14px", color: "#fff", fontSize: "12px", fontWeight: 600, cursor: "pointer",
+                  minHeight: isMobile ? "34px" : "auto",
                 }}>
                   New chat
                 </button>
@@ -440,15 +503,21 @@ export default function AIChatBot({
             )}
 
             {/* Messages */}
-            <div style={{ flex: 1, overflowY: "auto", padding: "16px", display: "flex", flexDirection: "column", gap: "12px", background: T.bg }}>
+            <div style={{
+              flex: 1, overflowY: "auto",
+              padding: isMobile ? "16px 14px" : "16px",
+              display: "flex", flexDirection: "column", gap: "12px", background: T.bg,
+              // Safe area for mobile bottom nav bars
+              paddingBottom: isMobile ? "env(safe-area-inset-bottom, 16px)" : "16px",
+            }}>
               {currentMessages.length === 0 && (
-                <div style={{ textAlign: "center", marginTop: "50px" }}>
-                  <div style={{ width: "52px", height: "52px", borderRadius: "50%", background: T.accentLight, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 12px" }}>
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={T.accent} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <div style={{ textAlign: "center", marginTop: "60px" }}>
+                  <div style={{ width: "56px", height: "56px", borderRadius: "50%", background: T.accentLight, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 12px" }}>
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke={T.accent} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
                     </svg>
                   </div>
-                  <p style={{ color: T.textMuted, fontSize: "13px", margin: 0 }}>Start a conversation…</p>
+                  <p style={{ color: T.textMuted, fontSize: "14px", margin: 0 }}>Start a conversation…</p>
                 </div>
               )}
 
@@ -458,24 +527,24 @@ export default function AIChatBot({
                   flexDirection: msg.role === "user" ? "row-reverse" : "row",
                   alignItems: "flex-end", gap: "8px",
                 }}>
-                  {/* Avatar */}
                   <div style={{
-                    width: "28px", height: "28px", borderRadius: "50%",
+                    width: isMobile ? "30px" : "28px",
+                    height: isMobile ? "30px" : "28px",
+                    borderRadius: "50%",
                     background: msg.role === "user" ? T.userBubble : T.accent,
                     display: "flex", alignItems: "center", justifyContent: "center",
-                    flexShrink: 0, fontSize: "11px", fontWeight: 700,
-                    color: "#fff",
+                    flexShrink: 0, fontSize: "11px", fontWeight: 700, color: "#fff",
                   }}>
                     {msg.role === "user" ? userInitial : "AI"}
                   </div>
-                  {/* Bubble */}
-                  <div style={{ maxWidth: "74%" }}>
+                  <div style={{ maxWidth: isMobile ? "78%" : "74%" }}>
                     <div style={{
                       background: msg.role === "user" ? T.userBubble : T.botBubble,
                       color: msg.role === "user" ? "#fff" : T.navy,
                       borderRadius: msg.role === "user" ? "18px 18px 4px 18px" : "18px 18px 18px 4px",
-                      padding: "10px 14px",
-                      fontSize: "13px", lineHeight: 1.55,
+                      padding: isMobile ? "11px 15px" : "10px 14px",
+                      fontSize: isMobile ? "14px" : "13px",
+                      lineHeight: 1.55,
                       boxShadow: "0 2px 6px rgba(26,26,46,0.08)",
                       border: msg.role === "assistant" ? `1px solid ${T.border}` : "none",
                       wordBreak: "break-word",
@@ -492,7 +561,6 @@ export default function AIChatBot({
                 </div>
               ))}
 
-              {/* Typing indicator */}
               {loading && (
                 <div style={{ display: "flex", alignItems: "flex-end", gap: "8px" }}>
                   <div style={{ width: "28px", height: "28px", borderRadius: "50%", background: T.accent, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
@@ -514,7 +582,7 @@ export default function AIChatBot({
 
             {/* Input */}
             <div style={{
-              padding: "12px 14px",
+              padding: isMobile ? "12px 14px calc(12px + env(safe-area-inset-bottom, 0px))" : "12px 14px",
               borderTop: `1px solid ${T.border}`,
               display: "flex", gap: "8px", alignItems: "center",
               background: T.panel, flexShrink: 0,
@@ -528,9 +596,9 @@ export default function AIChatBot({
                 style={{
                   flex: 1, background: T.inputBg,
                   border: `1px solid ${T.border}`, borderRadius: "24px",
-                  padding: "10px 16px", color: T.navy,
-                  fontSize: "13px", outline: "none",
-                  fontFamily: "inherit",
+                  padding: isMobile ? "12px 18px" : "10px 16px",
+                  color: T.navy, fontSize: isMobile ? "16px" : "13px", // 16px prevents iOS zoom
+                  fontFamily: "inherit", outline: "none",
                   boxShadow: "inset 0 1px 3px rgba(26,26,46,0.06)",
                 }}
               />
@@ -538,7 +606,9 @@ export default function AIChatBot({
                 onClick={handleSend}
                 disabled={!input.trim() || loading}
                 style={{
-                  width: "40px", height: "40px", borderRadius: "50%",
+                  width: isMobile ? "44px" : "40px",
+                  height: isMobile ? "44px" : "40px",
+                  borderRadius: "50%",
                   background: input.trim() && !loading ? T.accent : T.border,
                   border: "none", cursor: input.trim() && !loading ? "pointer" : "not-allowed",
                   display: "flex", alignItems: "center", justifyContent: "center",
@@ -558,6 +628,9 @@ export default function AIChatBot({
         @keyframes chatBounce {
           0%, 80%, 100% { transform: scale(0.55); opacity: 0.35; }
           40% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; } to { opacity: 1; }
         }
       `}</style>
     </>
