@@ -66,7 +66,7 @@ function MiniPolicyCard({ policy, index }: { policy: PolicyEntry; index: number 
       }}
     >
       {/* Logo image */}
-      <div style={{ width: "100%", aspectRatio: "1/1", overflow: "hidden", background: "var(--color-background-secondary)", flexShrink: 0 }}>
+      <div style={{ width: "100%", aspectRatio: "4/3", overflow: "hidden", background: "var(--color-background-secondary)", flexShrink: 0 }} className="sm:aspect-square">
         {img ? (
           <img
             src={img}
@@ -219,7 +219,7 @@ export default function HomePolicySection() {
       }} />
 
       {/* ── Header ── */}
-      <div style={{ textAlign: "center", marginBottom: 52 }}>
+      <div style={{ textAlign: "center", marginBottom: 32 }} className="sm:mb-[52px]">
         <motion.span
           initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -279,9 +279,9 @@ export default function HomePolicySection() {
         </motion.p>
       </div>
 
-      {/* ── 3 cards ── */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 max-w-[960px] mx-auto mb-[52px]">
-        {featuredPolicies.slice(0, 3).map((policy, index) => (
+      {/* ── 4 cards ── */}
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-7 max-w-[960px] mx-auto mb-6 sm:mb-8 lg:mb-[52px]">
+        {featuredPolicies.slice(0, 4).map((policy, index) => (
           <MiniPolicyCard key={policy.id} policy={policy} index={index} />
         ))}
       </div>
