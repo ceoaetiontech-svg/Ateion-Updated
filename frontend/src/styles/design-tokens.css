@@ -114,18 +114,18 @@
    * ────────────────────────────────────────────────────────────────────────── */
 
   /* Font Families */
-  --font-display: "Archivo", sans-serif;
-  --font-body: "Barlow", sans-serif;
-  --font-alt: "Barlow", sans-serif;
+  --font-display: "Source Sans 3", sans-serif;
+  --font-body: "Source Sans 3", sans-serif;
+  --font-alt: "Source Sans 3", sans-serif;
   
   --font-family-heading:
-    "Archivo", -apple-system, BlinkMacSystemFont, sans-serif;
+    "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-family-body:
-    "Barlow", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-family-accent:
-    "Barlow", -apple-system, BlinkMacSystemFont, sans-serif;
+    "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-family-mono: "SF Pro Display", "Courier New", monospace;
-  --font-family-footer: "Lato", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-family-footer: "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
   /* Font Sizes - EVEN NUMBERS ONLY (12px, 14px, 16px, 18px, 20px, 24px, 30px, 32px, 36px, 48px, 60px, 72px) */
   --font-size-xxs: 0.75rem; /* 12px */

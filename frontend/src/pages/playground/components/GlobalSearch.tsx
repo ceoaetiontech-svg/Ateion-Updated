@@ -1,5 +1,5 @@
 import { Command } from "cmdk";
-import { Search, BookOpen, User, Hash } from "lucide-react";
+import { Search, BookOpen, User, Hash, X } from "lucide-react";
 import { useNavigate } from "react-router";
 import { MY_COURSES_DATA } from "../shared/mockData";
 
@@ -8,33 +8,49 @@ interface GlobalSearchProps {
   onOpenChange: (open: boolean) => void;
 }
 
+const itemClassName =
+  "flex cursor-pointer items-center gap-3 rounded-2xl border border-transparent px-3.5 py-3.5 text-sm text-[var(--color-text-primary)] outline-none transition-colors data-[disabled=true]:opacity-50 data-[selected=true]:border-[var(--color-accent)]/30 data-[selected=true]:bg-[var(--color-accent_light)]";
+
+const groupClassName =
+  "space-y-1.5 px-1 py-2 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:pb-2 [&_[cmdk-group-heading]]:pt-1 [&_[cmdk-group-heading]]:text-[11px] [&_[cmdk-group-heading]]:font-bold [&_[cmdk-group-heading]]:uppercase [&_[cmdk-group-heading]]:tracking-[0.12em] [&_[cmdk-group-heading]]:text-[var(--color-text-secondary)]";
+
 export default function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) {
   const navigate = useNavigate();
-  const instructors = Array.from(new Set(MY_COURSES_DATA.map(c => c.instructor)));
-  const topics = Array.from(new Set(MY_COURSES_DATA.flatMap(c => c.topics)));
+  const instructors = Array.from(new Set(MY_COURSES_DATA.map((c) => c.instructor)));
+  const topics = Array.from(new Set(MY_COURSES_DATA.flatMap((c) => c.topics)));
 
   return (
     <Command.Dialog
       open={open}
       onOpenChange={onOpenChange}
       label="Search courses"
-      className="fixed inset-0 z-[100] flex items-start justify-center pt-[15vh]"
-      overlayClassName="fixed inset-0 bg-black/60 backdrop-blur-sm"
-      contentClassName="w-full max-w-2xl bg-[var(--color-background-primary)] border border-[var(--color-border-light)] rounded-2xl shadow-2xl overflow-hidden"
+      className="flex max-h-[calc(100dvh-1.5rem)] w-full flex-col overflow-hidden rounded-3xl border border-[var(--color-border-medium)] bg-[var(--color-background-secondary)] text-[var(--color-text-primary)] shadow-[0_28px_90px_rgba(0,0,0,0.28)]"
+      overlayClassName="fixed inset-0 z-[100] bg-black/40 backdrop-blur-md"
+      contentClassName="fixed left-1/2 top-3 z-[101] w-[calc(100vw-1.5rem)] max-w-2xl -translate-x-1/2 overflow-hidden rounded-3xl outline-none sm:top-[10vh] sm:w-[min(92vw,42rem)]"
     >
-      <div className="flex items-center gap-3 px-5 py-4 border-b border-[var(--color-border-light)]">
-        <Search size={18} className="text-[var(--color-text-tertiary)] shrink-0" />
+      <div className="flex items-center gap-3 border-b border-[var(--color-border-light)] bg-[var(--color-background-primary)]/70 px-4 py-3 sm:px-5 sm:py-4">
+        <Search size={18} className="shrink-0 text-[var(--color-text-tertiary)]" />
         <Command.Input
           placeholder="Search courses, instructors, topics..."
-          className="flex-1 bg-transparent text-[var(--color-text-primary)] outline-none placeholder:text-[var(--color-text-tertiary/0.5)] text-sm"
+          className="min-w-0 flex-1 bg-transparent text-[16px] text-[var(--color-text-primary)] outline-none placeholder:text-[var(--color-text-tertiary)] sm:text-sm"
         />
+        <button
+          type="button"
+          onClick={() => onOpenChange(false)}
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[var(--color-border-light)] bg-[var(--color-background-secondary)] text-[var(--color-text-secondary)] transition-colors hover:bg-[var(--color-background-tertiary)] hover:text-[var(--color-text-primary)]"
+          aria-label="Close search"
+        >
+          <X size={16} />
+        </button>
       </div>
-      <Command.List className="max-h-72 overflow-y-auto p-2">
-        <Command.Empty className="py-8 text-center text-sm text-[var(--color-text-tertiary)]">
+
+      <Command.List className="max-h-[calc(100dvh-11rem)] overflow-y-auto overscroll-contain p-3 sm:max-h-[28rem]">
+        <Command.Empty className="py-10 text-center text-sm text-[var(--color-text-secondary)]">
           No results found
         </Command.Empty>
-        <Command.Group heading="Courses" className="text-xs font-semibold text-[var(--color-text-tertiary)] px-3 pt-3 pb-1">
-          {MY_COURSES_DATA.map(course => (
+
+        <Command.Group heading="Courses" className={groupClassName}>
+          {MY_COURSES_DATA.map((course) => (
             <Command.Item
               key={course.id}
               value={`${course.title} ${course.instructor}`}
@@ -42,47 +58,58 @@ export default function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) 
                 onOpenChange(false);
                 navigate(`/playground/course/${course.id}`);
               }}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-lg cursor-pointer text-sm text-[var(--color-text-primary)] aria-selected:bg-[var(--color-accent)] aria-selected:text-[var(--color-text-inverse)] data-[disabled]:opacity-50 transition-colors"
+              className={itemClassName}
             >
-              <BookOpen size={14} className="shrink-0 opacity-60" />
-              <div className="flex-1 min-w-0">
-                <span className="font-medium truncate block">{course.title}</span>
-                <span className="text-xs opacity-60 truncate block">{course.instructor} · {course.level}</span>
+              <BookOpen size={15} className="shrink-0 text-[var(--color-text-tertiary)]" />
+              <div className="min-w-0 flex-1">
+                <span className="block truncate font-semibold text-[var(--color-text-primary)]">{course.title}</span>
+                <span className="block truncate text-xs font-medium text-[var(--color-text-secondary)]">
+                  {course.instructor} - {course.level}
+                </span>
               </div>
             </Command.Item>
           ))}
         </Command.Group>
-        <Command.Group heading="Instructors" className="text-xs font-semibold text-[var(--color-text-tertiary)] px-3 pt-3 pb-1">
-          {instructors.map(name => (
+
+        <Command.Group heading="Instructors" className={groupClassName}>
+          {instructors.map((name) => (
             <Command.Item
               key={name}
               value={name}
               onSelect={() => onOpenChange(false)}
-              className="flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer text-sm text-[var(--color-text-primary)] aria-selected:bg-[var(--color-accent)] aria-selected:text-[var(--color-text-inverse)] transition-colors"
+              className={itemClassName}
             >
-              <User size={14} className="shrink-0 opacity-60" />
-              {name}
+              <User size={15} className="shrink-0 text-[var(--color-text-tertiary)]" />
+              <span className="min-w-0 truncate font-medium text-[var(--color-text-primary)]">{name}</span>
             </Command.Item>
           ))}
         </Command.Group>
-        <Command.Group heading="Topics" className="text-xs font-semibold text-[var(--color-text-tertiary)] px-3 pt-3 pb-1">
-          {topics.map(topic => (
+
+        <Command.Group heading="Topics" className={groupClassName}>
+          {topics.map((topic) => (
             <Command.Item
               key={topic}
               value={topic}
               onSelect={() => onOpenChange(false)}
-              className="flex items-center gap-3 px-3 py-2 rounded-lg cursor-pointer text-sm text-[var(--color-text-primary)] aria-selected:bg-[var(--color-accent)] aria-selected:text-[var(--color-text-inverse)] transition-colors"
+              className={itemClassName}
             >
-              <Hash size={14} className="shrink-0 opacity-60" />
-              {topic}
+              <Hash size={15} className="shrink-0 text-[var(--color-text-tertiary)]" />
+              <span className="min-w-0 truncate font-medium text-[var(--color-text-primary)]">{topic}</span>
             </Command.Item>
           ))}
         </Command.Group>
       </Command.List>
-      <div className="flex items-center gap-4 px-5 py-3 border-t border-[var(--color-border-light)] text-xs text-[var(--color-text-tertiary)]">
-        <span><kbd className="px-1.5 py-0.5 rounded bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] font-mono">↑↓</kbd> navigate</span>
-        <span><kbd className="px-1.5 py-0.5 rounded bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] font-mono">↵</kbd> select</span>
-        <span><kbd className="px-1.5 py-0.5 rounded bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] font-mono">Esc</kbd> close</span>
+
+      <div className="hidden items-center gap-4 border-t border-[var(--color-border-light)] bg-[var(--color-background-primary)]/70 px-5 py-3 text-xs text-[var(--color-text-secondary)] sm:flex">
+        <span>
+          <kbd className="rounded bg-[var(--color-background-tertiary)] px-1.5 py-0.5 font-mono text-[var(--color-text-primary)]">Up/Down</kbd> navigate
+        </span>
+        <span>
+          <kbd className="rounded bg-[var(--color-background-tertiary)] px-1.5 py-0.5 font-mono text-[var(--color-text-primary)]">Enter</kbd> select
+        </span>
+        <span>
+          <kbd className="rounded bg-[var(--color-background-tertiary)] px-1.5 py-0.5 font-mono text-[var(--color-text-primary)]">Esc</kbd> close
+        </span>
       </div>
     </Command.Dialog>
   );

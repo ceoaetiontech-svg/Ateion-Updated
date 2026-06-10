@@ -36,6 +36,14 @@ const TeacherSettingsPage = lazy(() => import("../pages/teacher/pages/TeacherSet
 const ProfilePage = lazy(() => import("../pages/ProfilePage"));
 const ResetPasswordPage = lazy(() => import("../pages/ResetPasswordPage"));
 
+function ChatBotWrapper() {
+  const location = useLocation();
+  const hiddenPaths = ["/admin", "/teacher", "/reset-password"];
+  const shouldHide = hiddenPaths.some((p) => location.pathname.startsWith(p));
+  if (shouldHide) return null;
+  return <AIChatBot greeting="Hello! 👋" />;
+}
+
 function AnimatedRoutes() {
   const location = useLocation();
   const navigate = useNavigate();

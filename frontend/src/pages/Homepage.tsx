@@ -4,10 +4,10 @@
  * Sections (top to bottom):
  *  1. HeroHeaderSection       — full-bleed image slider + headline
  *  2. HeroFeatureCardsRow     — capability card + global-aligned card + red card
- *  3. EducationStatusWrapper  — "Education is not broken" clay card + ticker
- *  4. GlobalPresenceMapSection — stats counters + dot-map
- *  5. HomePolicySection       — global policy alignment cards
- *  6. EcosystemSection        — "Ateion as an Ecosystem" (redesigned)
+ *  3. HomePolicySection       — global policy alignment cards
+ *  4. EcosystemSection        — "Ateion as an Ecosystem" (redesigned)
+ *  5. GlobalPresenceMapSection — stats counters + dot-map
+ *  6. EducationStatusWrapper  — "Education is not broken" clay card + ticker
  *  7. FAQSectionContainer     — accordion FAQ
  *  8. SharedFooter
  */
@@ -76,10 +76,6 @@ function HeroHeaderSection() {
    FEATURE CARDS (capability + global + red)
 ───────────────────────────────────────────── */
 const capabilityMessages = [
-  {
-    title: "Because marks measure memory.",
-    highlight: "Capability measures the future.",
-  },
   {
     title: "Degrees don't guarantee readiness.",
     highlight: "Capability does.",
@@ -185,56 +181,7 @@ function PurpleCapabilityCardInner() {
   );
 }
 function PurpleCapabilityCardOuter() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    video.muted = true;
-    video.play().catch(() => {});
-
-    const handleFirstClick = () => {
-      if (videoRef.current) {
-        videoRef.current.muted = false;
-      }
-      window.removeEventListener("click", handleFirstClick);
-    };
-
-    window.addEventListener("click", handleFirstClick);
-    return () => window.removeEventListener("click", handleFirstClick);
-  }, []);
-
-  return (
-    <div className="w-full flex flex-col items-center gap-10">
-
-      {/* ── CAPABILITY CARD + VIDEO SIDE BY SIDE ── */}
-      <div className="w-full flex justify-center px-[16px] sm:px-[24px] md:px-0">
-        <div className="w-full flex flex-col lg:flex-row gap-[24px] items-stretch">
-          <div className="flex-none lg:flex-[1] rounded-[20px] overflow-hidden" style={{ height: "clamp(440px, 55vw, 600px)" }}>
-            <PurpleCapabilityCardInner />
-          </div>
-          <div className="flex-none lg:flex-[1.5] rounded-[24px] overflow-hidden shadow-xl aspect-video w-full">
-            <video
-              ref={videoRef}
-              autoPlay
-              muted
-              loop
-              controls
-              playsInline
-              className="w-full h-full object-contain"
-              onLoadedMetadata={(e) => {
-                e.currentTarget.playbackRate = 1.5;
-              }}
-            >
-              <source src="/video.mp4" type="video/mp4" />
-            </video>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  );
+  return <PurpleCapabilityCardInner />;
 }
 
 function HeroMetricsRow() {
@@ -258,7 +205,7 @@ function HeroFeatureCardsRow() {
         hidden: {},
         visible: { transition: { staggerChildren: 0.25 } },
       }}
-      className="content-stretch flex flex-col gap-[24px] items-start relative shrink-0 w-full"
+      className="content-stretch flex flex-col gap-[16px] sm:gap-[24px] items-start relative shrink-0 w-full"
     >
       {/* Section heading */}
       <motion.div
@@ -267,7 +214,7 @@ function HeroFeatureCardsRow() {
           visible: { opacity: 1, y: 0 },
         }}
         transition={{ duration: 0.7, ease: "easeOut" }}
-        className="w-full flex flex-col items-center gap-3 pt-8 sm:pt-12"
+        className="w-full flex flex-col items-center gap-3 pt-4 sm:pt-6 lg:pt-12"
       >
         <p
           className="font-bold leading-[0.95] tracking-[-0.04em] text-center"
@@ -284,24 +231,10 @@ function HeroFeatureCardsRow() {
         </p>
         <div className="w-[60px] h-[3px] rounded-full" style={{ background: "var(--color-accent)" }} />
       </motion.div>
-      <motion.div
-        variants={{
-          hidden: { opacity: 0, y: 30 },
-          visible: { opacity: 1, y: 0 },
-        }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
-      >
-        <PurpleCapabilityCardOuter />
-      </motion.div>
-      <motion.div
-        variants={{
-          hidden: { opacity: 0, y: 30 },
-          visible: { opacity: 1, y: 0 },
-        }}
-        transition={{ duration: 0.7, ease: "easeOut" }}
-      >
-        <HeroMetricsRow />
-      </motion.div>
+
+      <div className="w-full mt-4 sm:mt-6 lg:mt-8">
+        <HomePolicySection />
+      </div>
     </motion.div>
   );
 }
@@ -880,7 +813,7 @@ function FAQSectionContainer() {
 
 export default function Homepage() {
   return (
-    <div className="bg-[var(--color-background-primary)] w-full min-h-screen overflow-x-hidden flex flex-col gap-[40px] sm:gap-[60px] md:gap-[80px]" data-name="Homepage">
+    <div className="bg-[var(--color-background-primary)] w-full min-h-screen flex flex-col gap-[24px] sm:gap-[32px] md:gap-[60px]" data-name="Homepage">
       <Helmet>
         <title>Ateion — Reimagining Education with Capability-Based Learning</title>
         <meta name="description" content="Ateion is a capability-based education ecosystem that replaces memory-based assessment with real-world measurable skills." />
@@ -923,17 +856,17 @@ export default function Homepage() {
         <HeroHeaderSection />
       </motion.section>
 
-      {/* 3. Education is not broken — clay card + ticker */}
+      {/* Ecosystem after Global Policy Alignment */}
       <motion.section
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        <EducationStatusWrapper />
+        <EcosystemSection />
       </motion.section>
 
-      {/* 4. Global Presence Map */}
+      {/* 5. Global Presence Map */}
       <motion.section
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -943,24 +876,14 @@ export default function Homepage() {
         <GlobalPresenceMapSection />
       </motion.section>
 
-      {/* 5. Global Policy Alignment */}
+      {/* 6. Education is not broken — clay card + ticker */}
       <motion.section
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
+        transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
       >
-        <HomePolicySection />
-      </motion.section>
-
-      {/* 6. Ecosystem — redesigned */}
-      <motion.section
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-      >
-        <EcosystemSection />
+        <EducationStatusWrapper />
       </motion.section>
 
       {/* 7. FAQ */}
@@ -973,7 +896,7 @@ export default function Homepage() {
         <FAQSectionContainer />
       </motion.section>
 
-      {/* 7. Footer */}
+      {/* 8. Footer */}
       <SharedFooter />
     </div>
   );

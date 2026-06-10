@@ -11,6 +11,54 @@ html {
 
 body {
   overflow: visible;
+  font-family: var(--font-family-body);
+  font-synthesis-weight: none;
+  text-rendering: optimizeLegibility;
+}
+
+#root {
+  font-family: var(--font-family-body);
+}
+
+#root :where(
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span,
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  label,
+  div,
+  section,
+  article,
+  aside,
+  nav,
+  header,
+  footer,
+  table,
+  th,
+  td,
+  li
+) {
+  font-family: var(--font-family-body);
+}
+
+#root :where(code, pre, kbd, samp) {
+  font-family: var(--font-family-mono);
+}
+
+button,
+input,
+textarea,
+select {
+  font-family: inherit;
 }
 
 .solid-hover-overlay {

@@ -81,7 +81,7 @@
 }
 
 .left-side h1 {
-  font-family: var(--font-display, "Archivo", sans-serif);
+  font-family: var(--font-display, "Source Sans 3", sans-serif);
   font-size: var(--font-size-6xl, 60px);
   line-height: var(--line-height-tight, 1.1);
   color: var(--color-text-primary);
@@ -104,7 +104,7 @@
 }
 
 .right-side h2 {
-  font-family: var(--font-display, "Archivo", sans-serif);
+  font-family: var(--font-display, "Source Sans 3", sans-serif);
   font-size: var(--font-size-4xl, 36px);
   margin-bottom: 24px;
   color: var(--color-text-primary);

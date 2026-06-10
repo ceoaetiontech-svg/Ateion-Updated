@@ -34,7 +34,7 @@ function ActivePill({ label, active, onClick }: { label: React.ReactNode; active
   return (
     <button
       onClick={onClick}
-      className={`px-3 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap border transition-all cursor-pointer ${
+      className={`inline-flex min-h-9 items-center justify-center rounded-lg border px-3 py-1.5 text-center text-xs font-bold leading-none whitespace-nowrap transition-all cursor-pointer ${
         active
           ? "bg-[var(--color-accent)]/10 text-[var(--color-accent)] border-[var(--color-accent)]/30"
           : "bg-[var(--color-background-secondary)] text-[var(--color-text-secondary)] border-[var(--color-border-light)] hover:border-[var(--color-accent)]/30 hover:text-[var(--color-accent)]"
@@ -83,7 +83,7 @@ export default function FilterBar(props: FilterBarProps) {
         {/* Filters trigger */}
         <button
           onClick={() => setPanelOpen(prev => !prev)}
-          className={`flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-bold border transition-all shrink-0 cursor-pointer ${
+          className={`inline-flex min-h-10 shrink-0 items-center justify-center gap-1.5 rounded-lg border px-3.5 py-2 text-center text-xs font-bold leading-none transition-all cursor-pointer ${
             panelOpen || props.hasFilters
               ? "bg-[var(--color-accent)]/10 text-[var(--color-accent)] border-[var(--color-accent)]/30"
               : "bg-[var(--color-background-secondary)] text-[var(--color-text-secondary)] border-[var(--color-border-light)] hover:border-[var(--color-accent)]/30 hover:text-[var(--color-accent)]"

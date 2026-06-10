@@ -8,6 +8,7 @@ export interface Lesson {
   completed: boolean;
   isLocked: boolean;
   isCurrent: boolean;
+  videoId?: string;
 }
 
 export interface Section {

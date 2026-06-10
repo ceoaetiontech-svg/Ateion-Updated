@@ -74,7 +74,7 @@ export default function SharedFooter() {
             <Link to="/">
               <img src={logo} alt="Ateion" className="h-[52px] w-auto object-contain logo-footer" />
             </Link>
-            <p className="text-[14px] leading-[1.7] max-w-[300px]" style={{ color: "var(--color-text-secondary)", fontFamily: "Inter, sans-serif" }}>
+            <p className="text-[14px] leading-[1.7] max-w-[300px]" style={{ color: "var(--color-text-secondary)", fontFamily: "var(--font-family-body)" }}>
               The world&apos;s leading Capability-First Education ecosystem — integrating AI literacy, innovation, and measurable readiness into modern schooling.
             </p>
             <div className="flex gap-[10px] items-center mt-[4px]">
@@ -93,7 +93,7 @@ export default function SharedFooter() {
                 key={label}
                 to={to}
                 className="text-[14px] transition-colors duration-200"
-                style={{ color: "var(--color-text-secondary)", fontFamily: "Inter, sans-serif" }}
+                style={{ color: "var(--color-text-secondary)", fontFamily: "var(--font-family-body)" }}
                 onMouseEnter={(e) => e.currentTarget.style.color = "var(--color-accent)"}
                 onMouseLeave={(e) => e.currentTarget.style.color = "var(--color-text-secondary)"}
               >
@@ -107,16 +107,16 @@ export default function SharedFooter() {
             <p className="text-[12px] font-bold uppercase tracking-[0.12em] font-manrope" style={{ color: "var(--color-accent)" }}>
               Contact
             </p>
-            <p className="text-[14px] leading-[1.6]" style={{ color: "var(--color-text-secondary)", fontFamily: "Inter, sans-serif" }}>
+            <p className="text-[14px] leading-[1.6]" style={{ color: "var(--color-text-secondary)", fontFamily: "var(--font-family-body)" }}>
               PCMC, Pune, Maharashtra - 500034
             </p>
-            <p className="text-[14px]" style={{ color: "var(--color-text-secondary)", fontFamily: "Inter, sans-serif" }}>
+            <p className="text-[14px]" style={{ color: "var(--color-text-secondary)", fontFamily: "var(--font-family-body)" }}>
               +91 93569 76878
             </p>
             <a
               href="mailto:destiny@ateion.info"
               className="text-[14px] transition-colors duration-200"
-              style={{ color: "var(--color-accent)", fontFamily: "Inter, sans-serif" }}
+              style={{ color: "var(--color-accent)", fontFamily: "var(--font-family-body)" }}
               onMouseEnter={(e) => e.currentTarget.style.textDecoration = "underline"}
               onMouseLeave={(e) => e.currentTarget.style.textDecoration = "none"}
             >
@@ -133,7 +133,7 @@ export default function SharedFooter() {
               <p
                 key={item}
                 className="text-[14px] transition-colors duration-200 cursor-pointer"
-                style={{ color: "var(--color-text-secondary)", fontFamily: "Inter, sans-serif" }}
+                style={{ color: "var(--color-text-secondary)", fontFamily: "var(--font-family-body)" }}
                 onMouseEnter={(e) => e.currentTarget.style.color = "var(--color-accent)"}
                 onMouseLeave={(e) => e.currentTarget.style.color = "var(--color-text-secondary)"}
               >
@@ -146,7 +146,7 @@ export default function SharedFooter() {
 
       {/* Copyright */}
       <div className="w-full py-[18px] flex items-center justify-center px-[24px]" style={{ backgroundColor: "var(--color-background-primary)", borderTop: "1px solid var(--color-border-light)" }}>
-        <p className="text-[13px] text-center" style={{ color: "var(--color-text-secondary)", fontFamily: "Inter, sans-serif" }}>
+        <p className="text-[13px] text-center" style={{ color: "var(--color-text-secondary)", fontFamily: "var(--font-family-body)" }}>
           Copyright &copy; Ateion Pvt. Ltd. 2026. All Rights Reserved.
         </p>
       </div>

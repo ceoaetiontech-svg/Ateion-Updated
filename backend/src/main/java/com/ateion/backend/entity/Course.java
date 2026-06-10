@@ -7,23 +7,22 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter @Setter @Builder @NoArgsConstructor @AllArgsConstructor
-@Entity 
+@Entity
 @Table(name = "courses")
 public class Course {
 
-    @Id 
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)  // FIXED: was broken annotation syntax
     private String title;
 
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    // We will use this to match the user's ageSegment (e.g., "Segment 2 (Ages 12-14)")
-    private String ageSegment; 
+    private String ageSegment;
 
-    // One Course can have many Modules
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Module> modules;
 

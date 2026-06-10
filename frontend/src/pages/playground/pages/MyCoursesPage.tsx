@@ -48,10 +48,10 @@ export default function MyCoursesPage() {
   const [tab, setTab] = useState<"in-progress" | "saved" | "completed">("in-progress");
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex w-full max-w-full min-w-0 flex-col gap-6 overflow-hidden">
       {/* Hero Banner */}
       <div
-        className="relative overflow-hidden rounded-3xl min-h-[200px] md:min-h-[220px] cursor-pointer group bg-black"
+        className="relative w-full overflow-hidden rounded-3xl min-h-[200px] md:min-h-[220px] cursor-pointer group bg-black"
         onClick={() => lastResume && navigate(`/playground/course/${lastResume.id}`)}
         style={lastResume ? { borderTop: `3px solid ${getTopicColor(lastResume.topics)}` } : undefined}
       >
@@ -105,18 +105,18 @@ export default function MyCoursesPage() {
       </div>
 
       {/* Stats Row */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid w-full grid-cols-2 gap-4 md:grid-cols-4">
         {[
           { label: "Enrolled", value: myCourses.length, icon: BookMarked, color: "var(--color-info)" },
           { label: "In Progress", value: inProgress.length, icon: Clock, color: "var(--color-warning)" },
           { label: "Completed", value: completedCourses.length, icon: CheckCircle, color: "var(--color-success)" },
           { label: "Saved", value: savedCourses.length, icon: Bookmark, color: "var(--color-accent)" },
         ].map((stat) => (
-          <div key={stat.label} className="bg-[var(--color-background-secondary)] rounded-2xl p-4 border border-[var(--color-border-light)] flex items-center gap-4 hover:border-[var(--color-accent)]/20 transition-colors">
+          <div key={stat.label} className="min-w-0 bg-[var(--color-background-secondary)] rounded-2xl p-4 border border-[var(--color-border-light)] flex items-center justify-center gap-3 sm:justify-start sm:gap-4 hover:border-[var(--color-accent)]/20 transition-colors">
             <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: stat.color + "15", color: stat.color }}>
               <stat.icon size={20} />
             </div>
-            <div>
+            <div className="min-w-0 text-center sm:text-left">
               <p className="text-2xl font-bold text-[var(--color-text-primary)]">{stat.value}</p>
               <p className="text-xs text-[var(--color-text-tertiary)] font-medium">{stat.label}</p>
             </div>
@@ -124,7 +124,7 @@ export default function MyCoursesPage() {
         ))}
       </div>
 
-      <div className="flex flex-col gap-6">
+      <div className="flex w-full min-w-0 flex-col gap-6">
         <div className="flex items-center justify-between">
           <h3
             className="text-2xl sm:text-3xl font-bold flex items-center gap-3 group"
@@ -135,7 +135,7 @@ export default function MyCoursesPage() {
           </h3>
         </div>
 
-        <div className="mb-2 relative max-w-md group">
+        <div className="mb-2 relative w-full max-w-md mx-auto sm:mx-0 group">
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[var(--color-text-tertiary)] group-focus-within:text-[var(--color-accent)] transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd" />
@@ -151,7 +151,7 @@ export default function MyCoursesPage() {
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-2">
+        <div className="grid w-full grid-cols-3 gap-2 sm:flex sm:w-auto">
           {[
             { id: "in-progress" as const, label: "In Progress", icon: Play },
             { id: "saved" as const, label: "Saved", icon: Bookmark },
@@ -160,20 +160,20 @@ export default function MyCoursesPage() {
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-colors ${
+              className={`flex min-w-0 items-center justify-center gap-1.5 px-2 py-2.5 rounded-xl text-xs sm:gap-2 sm:px-5 sm:text-sm font-bold transition-colors ${
                 tab === t.id
                   ? "bg-[var(--color-accent)] text-[#fff] shadow-md"
                   : "bg-[var(--color-background-secondary)] text-[var(--color-text-secondary)] border border-[var(--color-border-light)] hover:border-[var(--color-accent)]/30"
               }`}
             >
               <t.icon size={16} />
-              {t.label}
+              <span className="min-w-0 text-center leading-tight">{t.label}</span>
             </button>
           ))}
         </div>
 
         {/* Age Segment Filter Tabs */}
-        <div className="flex overflow-x-auto hide-scrollbar gap-4 pb-4 mb-4 mt-2 px-1">
+        <div className="grid w-full grid-cols-5 justify-items-center gap-2 pb-4 mb-4 mt-2 border-b border-[var(--color-border-light)] sm:flex sm:justify-start sm:overflow-x-auto sm:hide-scrollbar sm:gap-4 sm:border-b-0 sm:px-1">
           {[
             { id: "All", icon: <Compass size={18} /> },
             { id: "Sproutlings (5–7)", icon: <Sprout size={18} /> },
@@ -184,7 +184,7 @@ export default function MyCoursesPage() {
             <button
               key={segment.id}
               onClick={() => setActiveAgeGroup(segment.id)}
-              className={`relative flex items-center gap-2.5 whitespace-nowrap px-6 py-3.5 rounded-2xl text-[15px] font-bold transition-colors duration-500 group overflow-hidden ${
+              className={`relative flex h-12 w-12 items-center justify-center gap-2.5 whitespace-nowrap rounded-2xl text-[15px] font-bold transition-colors duration-500 group overflow-hidden sm:h-auto sm:w-auto sm:px-6 sm:py-3.5 ${
                 activeAgeGroup === segment.id
                   ? "text-[#fff] shadow-[0_8px_20px_rgba(0,0,0,0.12)] scale-105 border-transparent ring-4 ring-[var(--color-accent)]/10"
                   : "bg-[var(--color-background-secondary)] text-[var(--color-text-secondary)] border-2 border-[var(--color-border-light)] hover:border-[var(--color-accent)]/30 hover:shadow-lg hover:-translate-y-1"
@@ -195,7 +195,7 @@ export default function MyCoursesPage() {
               )}
               <div className={`relative z-10 flex items-center gap-2 ${activeAgeGroup === segment.id ? "" : "group-hover:text-[var(--color-accent)] transition-colors duration-300"}`}>
                 {segment.icon}
-                {segment.id}
+                <span className="hidden sm:inline">{segment.id}</span>
               </div>
             </button>
           ))}
@@ -205,7 +205,7 @@ export default function MyCoursesPage() {
         <AnimatePresence mode="wait">
         <motion.div
           key={tab}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+          className="grid w-full grid-cols-1 justify-items-center gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
           variants={staggerContainer}
           initial="hidden"
           animate="show"
@@ -218,7 +218,7 @@ export default function MyCoursesPage() {
                 variants={fadeUpItem}
                 key={course.id}
                 exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.15 } }}
-                className="bg-[var(--color-background-secondary)] rounded-3xl flex flex-col group cursor-pointer overflow-hidden border border-[var(--color-border-light)] border-t-[3px] shadow-md hover:border-[var(--color-accent)]/30 hover:shadow-xl hover:-translate-y-1 transition-[transform,box-shadow] duration-200 ease-out"
+                className="w-full max-w-sm bg-[var(--color-background-secondary)] rounded-3xl flex flex-col group cursor-pointer overflow-hidden border border-[var(--color-border-light)] border-t-[3px] shadow-md hover:border-[var(--color-accent)]/30 hover:shadow-xl hover:-translate-y-1 transition-[transform,box-shadow] duration-200 ease-out"
                     style={{ borderTopColor: getTopicColor(course.topics) }}
                 onClick={() => navigate(`/playground/course/${course.id}`)}
               >

@@ -6,13 +6,13 @@ import VideoPlayer from "../components/VideoPlayer";
 import CurriculumSidebar, { COURSE_SECTIONS, SECTIONS, Lesson } from "../components/CurriculumSidebar";
 import { MY_COURSES_DATA } from "../shared/mockData";
 import { usePlayground } from "../shared/PlaygroundContext";
-
+import { fetchBackendVideos } from "../../../lib/videoApi";
 type TabId = "overview" | "notes" | "qa" | "resources";
 
 interface TabDef {
   id: TabId;
   label: string;
-  icon: React.ComponentType<{ size?: number }>;
+ icon: React.ComponentType<{ size?: number | string }>;  
 }
 
 const TABS: TabDef[] = [
@@ -21,6 +21,9 @@ const TABS: TabDef[] = [
   { id: "qa", label: "Q&A", icon: MessageCircle },
   { id: "resources", label: "Resources", icon: Download },
 ];
+
+
+
 
 function parseDuration(d: string): number {
   const [m, s] = d.split(":").map(Number);
@@ -34,6 +37,7 @@ export default function CoursePlayerPage() {
   const [activeTab, setActiveTab] = useState<TabId>("overview");
   const [noteInput, setNoteInput] = useState("");
 
+  const [backendVideoId, setBackendVideoId] = useState<string | null>(null);
   const courseId = Number(id);
   const course = MY_COURSES_DATA.find((c) => c.id === courseId);
 
@@ -86,12 +90,39 @@ export default function CoursePlayerPage() {
     addXp(50);
     incrementStreak();
   };
+    useEffect(() => {
+    const loadVideoFromBackend = async () => {
+      // 1. If the course is completely empty, don't try to fetch videos
+      if (!currentLesson) return; 
 
-  if (!course) {
+      try {
+        setBackendVideoId(null); 
+        
+        const videos = await fetchBackendVideos(); 
+        
+        // 2. Add fallback (videos || []) just in case your backend API fails
+        const matchedVideo = (videos || []).find(v => v.title === currentLesson.title);
+        
+        if (matchedVideo) {
+          setBackendVideoId(matchedVideo.videoId);
+        } else {
+          console.log("Video not found in backend database yet.");
+        }
+      } catch (error) {
+        console.error("Failed to fetch from backend", error);
+      }
+    };
+
+    loadVideoFromBackend();
+  }, [currentLesson?.title]); 
+
+  if (!course || !currentLesson) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
-          <p className="text-lg font-bold text-[var(--color-text-primary)] mb-2">Course not found</p>
+          <p className="text-lg font-bold text-[var(--color-text-primary)] mb-2">
+            {!course ? "Course not found" : "Lessons coming soon!"}
+          </p>
           <button onClick={() => navigate("/playground/my-courses")} className="text-sm text-[var(--color-accent)] hover:underline">
             Back to courses
           </button>
@@ -121,7 +152,7 @@ export default function CoursePlayerPage() {
         </div>
 
         <div className="relative">
-          <VideoPlayer title={currentLesson.title} key={currentLesson.id} duration={parseDuration(currentLesson.duration)} onComplete={() => markComplete(currentLesson.id)} />
+          <VideoPlayer title={currentLesson.title} videoId={backendVideoId} key={currentLesson.id} duration={parseDuration(currentLesson.duration)} onComplete={() => markComplete(currentLesson.id)} />
           <AnimatePresence>
             {xpFloats.map(f => (
               <motion.div

@@ -27,13 +27,12 @@ import {
 
 export interface NavItem {
   title: string;
-  icon: React.ComponentType<{ size?: number }>;
-  path: string;
+ icon: React.ComponentType<{ size?: number | string }>;  path: string;
 }
 
 export interface NavSection {
   title: string;
-  icon: React.ComponentType<{ size?: number }>;
+   icon: React.ComponentType<{ size?: number | string }>;
   items: NavItem[];
 }
 
@@ -79,7 +78,7 @@ export const navigationSections: NavSection[] = [
     ],
   },
   {
-    title: "Pillar",
+    title: "Age Groups",
     icon: Milestone,
     items: [
       { title: "Sproutlings (5-7)", icon: Sprout, path: "/playground/sproutlings" },
