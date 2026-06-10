@@ -79,7 +79,7 @@ export const navigationSections: NavSection[] = [
     ],
   },
   {
-    title: "Pillar",
+    title: "Age Groups",
     icon: Milestone,
     items: [
       { title: "Sproutlings (5-7)", icon: Sprout, path: "/playground/sproutlings" },
