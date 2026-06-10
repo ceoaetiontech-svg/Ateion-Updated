@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-ro
 import { useState, useEffect, Suspense, lazy } from "react";
 import LoadingSpinner from "./components/LoadingSpinner";
 import { AnimatePresence } from "framer-motion";
+import AIChatBot from "./components/AIChatbot"
 
 const Homepage = lazy(() => import("../pages/Homepage"));
 const GCOPage = lazy(() => import("../pages/GCOPage"));
@@ -34,6 +35,14 @@ const TeacherStudentsPage = lazy(() => import("../pages/teacher/pages/TeacherStu
 const TeacherSettingsPage = lazy(() => import("../pages/teacher/pages/TeacherSettingsPage"));
 const ProfilePage = lazy(() => import("../pages/ProfilePage"));
 const ResetPasswordPage = lazy(() => import("../pages/ResetPasswordPage"));
+
+function ChatBotWrapper() {
+  const location = useLocation();
+  const hiddenPaths = ["/admin", "/teacher", "/reset-password"];
+  const shouldHide = hiddenPaths.some((p) => location.pathname.startsWith(p));
+  if (shouldHide) return null;
+  return <AIChatBot greeting="Hello! 👋" />;
+}
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -298,6 +307,8 @@ export default function App() {
         <Suspense fallback={<LoadingSpinner />}>
         <AnimatedRoutes />
 
+ <ChatBotWrapper />
+ 
         {showRegister && (
           <RegisterPage
             closeRegister={() => {
