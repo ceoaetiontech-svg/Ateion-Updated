@@ -222,14 +222,18 @@
 
   .timeline-mobile-card {
     width: calc(100% - 3.75rem);
-    background: linear-gradient(180deg, #fcfaf5 0%, #f5efe3 100%);
-    border: 1px solid rgba(30, 22, 50, 0.08);
+    background: linear-gradient(
+      180deg,
+      var(--color-background-primary) 0%,
+      var(--color-background-secondary) 100%
+    );
+    border: 1px solid var(--color-border-light);
     border-radius: 24px;
     padding: 1rem 1rem 1rem 1.1rem;
     display: flex;
     align-items: center;
     gap: 0.875rem;
-    box-shadow: 0 18px 40px rgba(30, 22, 50, 0.08);
+    box-shadow: var(--shadow-clay);
   }
 
   .timeline-icon-container-mobile {
@@ -244,6 +248,7 @@
     text-align: left;
     font-size: 1rem;
     line-height: 1.55;
+    overflow-wrap: break-word;
   }
 
   .timeline-number {

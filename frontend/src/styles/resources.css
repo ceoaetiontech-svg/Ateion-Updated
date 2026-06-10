@@ -11,13 +11,13 @@
 
 .resources-header h1 {
   font-size: 60px;
-  color: #111;
+  color: var(--color-text-primary);
   margin-bottom: 20px;
 }
 
 .resources-header p {
   font-size: 18px;
-  color: #555;
+  color: var(--color-text-secondary);
 }
 
 .video-grid {
@@ -27,7 +27,7 @@
 }
 
 .video-card {
-  background: white;
+  background: var(--color-background-secondary);
   border-radius: 24px;
   padding: 24px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
@@ -47,11 +47,12 @@
 
 .video-card h2 {
   font-size: 24px;
+  color: var(--color-text-primary);
   margin-bottom: 10px;
 }
 
 .video-card p {
-  color: #666;
+  color: var(--color-text-secondary);
   margin-bottom: 20px;
 }
 

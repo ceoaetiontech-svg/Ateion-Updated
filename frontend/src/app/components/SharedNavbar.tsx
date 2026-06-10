@@ -201,7 +201,7 @@ function LogoContainer() {
         <img
           src={logo}
           alt="Ateion Logo"
-          className={`h-[76px] object-contain w-auto transition-all duration-300 ${
+          className={`h-[52px] sm:h-[76px] object-contain w-auto transition-all duration-300 ${
             shouldInvert ? "brightness-0 invert" : ""
           }`}
         />
@@ -723,7 +723,7 @@ export default function SharedNavbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="lg:hidden bg-[var(--color-background-primary)] border-t border-[var(--color-border-light)] overflow-hidden absolute w-full shadow-lg"
+            className="lg:hidden bg-[var(--color-background-primary)] border-t border-[var(--color-border-light)] overflow-y-auto absolute w-full shadow-lg max-h-[80vh]"
           >
             <div className="flex flex-col gap-[12px] px-[24px] py-[24px]">
 

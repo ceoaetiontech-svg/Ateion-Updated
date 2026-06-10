@@ -452,28 +452,117 @@ function EcosystemCluster({
   );
 }
 
+function MobileEcosystemCluster({
+  onBubbleClick,
+}: {
+  onBubbleClick: (id: string) => void;
+}) {
+  const navigate = useNavigate();
+
+  const bubbles = [
+    {
+      id: "gco",
+      title: "GCO",
+      description:
+        "From early AI PlayGround to the Global Capability Olympiad, and emerging initiatives like VOUCH.",
+      circleColor: "var(--color-accent)",
+      textColor: "white",
+    },
+    {
+      id: "ateion",
+      title: "Ateion",
+      description:
+        "Ateion is building the infrastructure for a capability-based future by integrating early AI PlayGround with standard-setting competitions.",
+      circleColor: "var(--color-primary)",
+      textColor: "white",
+    },
+    {
+      id: "vouch",
+      title: "Vouch",
+      description:
+        "A way to get trusted proof of what you\u2019ve accomplished.",
+      circleColor: "var(--color-text-secondary)",
+      textColor: "white",
+    },
+    {
+      id: "playground",
+      title: "PlayGround",
+      description:
+        "Engaging, hands-on learning experiences designed to bridge theory with practical AI execution.",
+      circleColor: "var(--color-gray-300)",
+      textColor: "var(--color-text-primary)",
+    },
+  ];
+
+  return (
+    <div className="flex flex-col gap-4 w-full">
+      {bubbles.map((b) => (
+        <motion.div
+          key={b.id}
+          className="flex items-start gap-4 p-4 rounded-2xl cursor-pointer w-full"
+          style={{ background: "var(--color-background-secondary)" }}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={() => {
+            onBubbleClick(b.id);
+            if (b.id === "gco") navigate("/gco");
+            else if (b.id === "playground") navigate("/playground");
+            else navigate("/contact");
+          }}
+        >
+          <div
+            className="shrink-0 flex items-center justify-center rounded-full font-bold"
+            style={{
+              width: 64,
+              height: 64,
+              background: b.circleColor,
+              color: b.textColor,
+              fontFamily: "var(--font-display)",
+              fontSize: 16,
+            }}
+          >
+            {b.title === "PlayGround" ? "PG" : b.title}
+          </div>
+          <div className="flex flex-col gap-1 min-w-0">
+            <p
+              className="font-bold text-[18px] leading-tight"
+              style={{
+                fontFamily: "var(--font-display)",
+                color: "var(--color-text-primary)",
+              }}
+            >
+              {b.title}
+            </p>
+            <p
+              className="text-[14px] leading-relaxed"
+              style={{ color: "var(--color-text-muted)" }}
+            >
+              {b.description}
+            </p>
+          </div>
+        </motion.div>
+      ))}
+    </div>
+  );
+}
+
 export default function EcosystemSection() {
   const [activeId, setActiveId] = useState("gco");
   const [desktopScale, setDesktopScale] = useState(1);
-  const [mobileScale, setMobileScale] = useState(0.85);
 
   const CANVAS_WIDTH_PX = 935;
-  const CANVAS_HEIGHT_PX = 663;
   const DESKTOP_CONTENT_WIDTH = 392 + 64 + CANVAS_WIDTH_PX;
 
   useEffect(() => {
     const updateScales = () => {
       const dw = window.innerWidth - 64;
       setDesktopScale(Math.min(1, Math.max(0.7, dw / DESKTOP_CONTENT_WIDTH)));
-
-      const mw = window.innerWidth - 48;
-      setMobileScale(Math.min(0.85, mw / CANVAS_WIDTH_PX));
     };
 
     updateScales();
     window.addEventListener("resize", updateScales);
     return () => window.removeEventListener("resize", updateScales);
-  }, [DESKTOP_CONTENT_WIDTH, CANVAS_WIDTH_PX]);
+  }, [DESKTOP_CONTENT_WIDTH]);
 
   const ecosystemData = {
     gco: {
@@ -549,21 +638,7 @@ export default function EcosystemSection() {
       <div className="md:hidden flex flex-col items-start gap-[40px] px-6">
         <GcoFeatureBadge activeData={activeData} />
 
-        {/* Mobile cluster — scaled to fit without scroll */}
-        <div className="w-full">
-          <div
-            style={{
-              width: CANVAS_WIDTH,
-              height: CANVAS_HEIGHT,
-              transform: `scale(${mobileScale})`,
-              transformOrigin: "top left",
-              marginBottom: -(CANVAS_HEIGHT * (1 - mobileScale)),
-              marginRight: -(CANVAS_WIDTH * (1 - mobileScale)),
-            }}
-          >
-            <EcosystemCluster onBubbleClick={setActiveId} />
-          </div>
-        </div>
+        <MobileEcosystemCluster onBubbleClick={setActiveId} />
       </div>
 
       {/* Desktop: side-by-side, no horizontal scrollbar; content scales to fit viewport */}

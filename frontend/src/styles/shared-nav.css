@@ -6,7 +6,7 @@
 
 /* Frosted glass effect for scrolled navbar */
 .nav-scrolled {
-  background-color: rgba(247, 243, 235, 0.85);
+  background-color: color-mix(in srgb, var(--color-background-primary) 85%, transparent);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--color-border-light);
@@ -19,30 +19,4 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* Active nav item indicator */
-.nav-btn[data-active="true"]::after {
-  content: "";
-  position: absolute;
-  bottom: -4px;
-  left: 20%;
-  right: 20%;
-  height: 2px;
-  background: var(--color-accent); /* Using accent (Coral) for better visibility and brand consistency */
-  border-radius: 2px;
-  animation: slideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-[data-theme="dark"] .nav-btn[data-active="true"]::after {
-  background: var(--color-accent);
-}
-
-@keyframes slideIn {
-  from {
-    transform: scaleX(0);
-    opacity: 0;
-  }
-  to {
-    transform: scaleX(1);
-    opacity: 1;
-  }
-}
+/* Active nav item indicator — animated underline handled by NavLinks component */

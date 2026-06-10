@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-ro
 import { useState, useEffect, Suspense, lazy } from "react";
 import LoadingSpinner from "./components/LoadingSpinner";
 import { AnimatePresence } from "framer-motion";
-import AIChatBot from "./components/AIChatbot"
+import AIChatBot from "./components/AIChatbot";
 
 const Homepage = lazy(() => import("../pages/Homepage"));
 const GCOPage = lazy(() => import("../pages/GCOPage"));
@@ -301,32 +301,37 @@ export default function App() {
     };
   }, []);
 
+  function ChatBotWrapper() {
+    const location = useLocation();
+    const hiddenPaths = ["/admin", "/teacher", "/reset-password"];
+    const shouldHide = hiddenPaths.some((p) => location.pathname.startsWith(p));
+    if (shouldHide) return null;
+    return <AIChatBot greeting="Hello! 👋" />;
+  }
+
   return (
     <ThemeProvider>
       <BrowserRouter>
         <Suspense fallback={<LoadingSpinner />}>
-        <AnimatedRoutes />
-
- <ChatBotWrapper />
- 
-        {showRegister && (
-          <RegisterPage
-            closeRegister={() => {
-              setShowRegister(false);
-              window.dispatchEvent(new CustomEvent("close-register"));
-            }}
-          />
-        )}
-
-        {showLogin && (
-          <LoginPage
-            closeLogin={() => {
-              setShowLogin(false);
-              window.dispatchEvent(new CustomEvent("close-login"));
-            }}
-          />
-        )}
-              </Suspense>
+          <AnimatedRoutes />
+          <ChatBotWrapper />
+          {showRegister && (
+            <RegisterPage
+              closeRegister={() => {
+                setShowRegister(false);
+                window.dispatchEvent(new CustomEvent("close-register"));
+              }}
+            />
+          )}
+          {showLogin && (
+            <LoginPage
+              closeLogin={() => {
+                setShowLogin(false);
+                window.dispatchEvent(new CustomEvent("close-login"));
+              }}
+            />
+          )}
+        </Suspense>
       </BrowserRouter>
     </ThemeProvider>
   );

@@ -19,6 +19,8 @@ import {
   Compass,
 } from "lucide-react";
 
+import SharedNavbar from "../app/components/SharedNavbar";
+import NavbarSpacer from "../app/components/NavbarSpacer";
 import AIChatBot from  "../app/components/AIChatbot";
 
 const fadeUp = {
@@ -73,9 +75,28 @@ const DashboardPage = () => {
         <meta name="description" content="Track your learning journey and capability development." />
       </Helmet>
 
-      <div className="flex min-h-screen bg-[var(--color-background-primary)] text-[var(--color-text-primary)] font-[var(--font-body)]">
+      <div className="md:hidden">
+        <SharedNavbar />
+        <NavbarSpacer />
+      </div>
 
-        {/* ─── SIDEBAR ─── */}
+      {/* ─── MOBILE HEADER ─── */}
+      <div className="flex md:hidden items-center gap-2 bg-[var(--color-background-secondary)] border-b border-[var(--color-border-light)] px-4 py-2">
+        <div className="flex items-center gap-2 flex-1 min-w-0">
+          <div className="w-7 h-7 rounded-full bg-[var(--color-accent_light)] text-[var(--color-accent)] flex items-center justify-center shrink-0">
+            <User size={12} />
+          </div>
+          <span className="font-semibold text-xs text-[var(--color-text-primary)] truncate">Student</span>
+        </div>
+        <div className="flex items-center gap-1 px-2 py-1 rounded-lg bg-[var(--color-accent_light)] shrink-0">
+          <Zap size={10} />
+          <strong className="text-xs font-extrabold text-[var(--color-accent)]">87</strong>
+        </div>
+      </div>
+
+      <div className="flex flex-col md:flex-row min-h-screen bg-[var(--color-background-primary)] text-[var(--color-text-primary)] font-[var(--font-body)]">
+
+        {/* ─── DESKTOP SIDEBAR ─── */}
         <aside className="hidden md:flex w-[260px] flex-shrink-0 flex-col border-r border-[var(--color-border-light)] bg-[var(--color-background-secondary)] p-6 sticky top-0 h-screen">
           <div className="flex items-center gap-3 pb-4 border-b border-[var(--color-border-light)] mb-4">
             <div className="w-10 h-10 rounded-full bg-[var(--color-accent_light)] text-[var(--color-accent)] flex items-center justify-center">
@@ -131,7 +152,7 @@ const DashboardPage = () => {
         </aside>
 
         {/* ─── MAIN ─── */}
-        <main className="flex-1 overflow-y-auto p-6 lg:p-10 max-w-[1100px]">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-10 max-w-[1100px]">
 
           {/* Welcome */}
           <motion.div variants={fadeUp} initial="hidden" animate="visible" className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-8">
@@ -152,7 +173,7 @@ const DashboardPage = () => {
           </motion.div>
 
           {/* Stats */}
-          <motion.div variants={stagger} initial="hidden" animate="visible" className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <motion.div variants={stagger} initial="hidden" animate="visible" className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8">
             {stats.map((stat) => {
               const Icon = stat.icon;
               return (
