@@ -1,24 +1,11 @@
 package com.ateion.backend.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import java.time.LocalDateTime;
 
-@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter @Setter @Builder @NoArgsConstructor @AllArgsConstructor
 @Entity
 @Table(name = "users")
 public class User {
@@ -36,8 +23,13 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-     @Column(name = "age_segment", nullable = false)
+    @Column(name = "age_segment", nullable = false)
     private String ageSegment;
+
+    // ADDED: required for freemium gate in ProgressService
+    @Builder.Default
+    @Column(name = "is_premium", nullable = false)
+    private Boolean isPremium = false;
 
     @CreationTimestamp
     private LocalDateTime createdAt;
