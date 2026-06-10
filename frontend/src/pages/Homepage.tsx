@@ -4,10 +4,10 @@
  * Sections (top to bottom):
  *  1. HeroHeaderSection       — full-bleed image slider + headline
  *  2. HeroFeatureCardsRow     — capability card + global-aligned card + red card
- *  3. EducationStatusWrapper  — "Education is not broken" clay card + ticker
- *  4. GlobalPresenceMapSection — stats counters + dot-map
- *  5. HomePolicySection       — global policy alignment cards
- *  6. EcosystemSection        — "Ateion as an Ecosystem" (redesigned)
+ *  3. HomePolicySection       — global policy alignment cards
+ *  4. EcosystemSection        — "Ateion as an Ecosystem" (redesigned)
+ *  5. GlobalPresenceMapSection — stats counters + dot-map
+ *  6. EducationStatusWrapper  — "Education is not broken" clay card + ticker
  *  7. FAQSectionContainer     — accordion FAQ
  *  8. SharedFooter
  */
@@ -866,17 +866,7 @@ export default function Homepage() {
         <EcosystemSection />
       </motion.section>
 
-      {/* 3. Education is not broken — clay card + ticker */}
-      <motion.section
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-      >
-        <EducationStatusWrapper />
-      </motion.section>
-
-      {/* 4. Global Presence Map */}
+      {/* 5. Global Presence Map */}
       <motion.section
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -886,7 +876,17 @@ export default function Homepage() {
         <GlobalPresenceMapSection />
       </motion.section>
 
-      {/* 6. FAQ */}
+      {/* 6. Education is not broken — clay card + ticker */}
+      <motion.section
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+      >
+        <EducationStatusWrapper />
+      </motion.section>
+
+      {/* 7. FAQ */}
       <motion.section
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -896,7 +896,7 @@ export default function Homepage() {
         <FAQSectionContainer />
       </motion.section>
 
-      {/* 7. Footer */}
+      {/* 8. Footer */}
       <SharedFooter />
     </div>
   );
