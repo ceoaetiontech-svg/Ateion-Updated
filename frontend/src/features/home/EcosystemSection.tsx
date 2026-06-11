@@ -61,7 +61,7 @@ function GcoFeatureBadge({
               <div className="flex items-center gap-3 w-full">
                 <div className="w-[4px] h-[32px] rounded-full shrink-0" style={{ background: accentColor }} />
                 <p
-                  className="font-bold leading-[0.95] tracking-[-0.05em] not-italic text-[36px] sm:text-[42px] md:text-[48px] text-[var(--color-text-primary)] w-full max-w-[500px]"
+                  className="font-bold leading-[1.1] tracking-[-0.05em] not-italic text-[36px] sm:text-[42px] md:text-[48px] text-[var(--color-text-primary)] w-full max-w-[500px]"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   {activeData.title}
@@ -380,9 +380,9 @@ function EcosystemCluster({
         mt="137.18px"
         size="272.92px"
         defaultColor="var(--color-primary)"
-        staticTextColor="white"
+        staticTextColor="var(--color-text-inverse)"
         hoverColor="var(--color-primary-hover)"
-        isDark={true}
+        isDark={false}
         gradientId="ateionGrad"
         title="Ateion"
         description="Ateion is building the infrastructure for a capability-based future by integrating early AI PlayGround with standard-setting competitions."
@@ -432,9 +432,9 @@ function EcosystemCluster({
       />
 
       <EcosystemBubble
-        ml="601.32px"
+        ml="590px"
         mt="57.94px"
-        size="333.67px"
+        size="328px"
         defaultColor="var(--color-gray-300)"
         staticTextColor="var(--color-text-primary)"
         hoverColor="var(--color-gray-400)"
@@ -643,7 +643,7 @@ export default function EcosystemSection() {
 
       {/* Desktop: side-by-side, no horizontal scrollbar; content scales to fit viewport */}
       <div
-        className="hidden md:block w-full overflow-x-hidden overflow-y-visible"
+        className="hidden md:block w-full overflow-visible"
         style={{ WebkitOverflowScrolling: "touch" }}
       >
         <div className="flex justify-center">

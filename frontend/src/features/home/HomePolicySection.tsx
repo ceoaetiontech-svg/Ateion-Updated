@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router";
 import { allPolicies, featuredPolicies, PolicyEntry } from "../../data/policies";
+import EcosystemSection from "./EcosystemSection";
 
 // ── All 12 policy images ───────────────────────────────────────────────────
 import singaporeImg  from "../../assets/policies/singapore.png";
@@ -94,7 +95,7 @@ function MiniPolicyCard({ policy, index }: { policy: PolicyEntry; index: number 
 
       {/* Bottom strip */}
       <div style={{
-        display: "flex", alignItems: "center", gap: 8,
+        display: "flex", flexDirection: "column", alignItems: "center", gap: 2,
         padding: "10px 13px",
         background: "var(--color-background-secondary)",
         borderTop: `3px solid ${policy.accentColor}`,
@@ -102,28 +103,27 @@ function MiniPolicyCard({ policy, index }: { policy: PolicyEntry; index: number 
       }}>
         <span style={{
           fontFamily: "var(--font-body)",
-          fontSize: "0.58rem", fontWeight: 800, letterSpacing: "0.06em",
-          color: "var(--color-background-secondary)", background: policy.accentColor,
-          borderRadius: 5, padding: "3px 7px", flexShrink: 0, lineHeight: 1,
+          fontSize: "0.65rem", fontWeight: 800, letterSpacing: "0.06em",
+          color: "#fff", background: policy.accentColor,
+          borderRadius: 6, padding: "4px 10px", lineHeight: 1,
         }}>
           {policy.code}
         </span>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <p style={{
-            fontFamily: "var(--font-display)",
-            fontSize: "0.82rem", fontWeight: 700, color: "var(--color-text-primary)",
-            margin: 0, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
-          }}>
-            {policy.country}
-          </p>
-          <p style={{
-            fontFamily: "var(--font-body)",
-            fontSize: "0.54rem", fontWeight: 800, letterSpacing: "0.1em",
-            textTransform: "uppercase", color: policy.accentColor, margin: "2px 0 0",
-          }}>
-            {policy.frameworks.length} framework{policy.frameworks.length > 1 ? "s" : ""}
-          </p>
-        </div>
+        <span style={{
+          fontFamily: "var(--font-display)",
+          fontSize: "0.82rem", fontWeight: 700, color: "var(--color-text-primary)",
+          lineHeight: 1.2, marginTop: 2,
+        }}>
+          {policy.country}
+        </span>
+        <span style={{
+          fontFamily: "var(--font-body)",
+          fontSize: "0.55rem", fontWeight: 800, letterSpacing: "0.1em",
+          textTransform: "uppercase", color: "var(--color-text-secondary)",
+          whiteSpace: "nowrap",
+        }}>
+          {policy.frameworks.length} FRAMEWORK{policy.frameworks.length > 1 ? "S" : ""}
+        </span>
       </div>
 
       {/* Hover overlay */}
@@ -144,7 +144,7 @@ function MiniPolicyCard({ policy, index }: { policy: PolicyEntry; index: number 
             <p style={{
               fontFamily: "var(--font-body)",
               fontSize: "0.54rem", fontWeight: 800, letterSpacing: "0.16em",
-              textTransform: "uppercase", color: "var(--color-text-subtle)", margin: "0 0 6px",
+              textTransform: "uppercase", color: "var(--color-text-tertiary)", margin: "0 0 6px",
             }}>
               HOW ATEION ALIGNS
             </p>
@@ -168,7 +168,7 @@ function MiniPolicyCard({ policy, index }: { policy: PolicyEntry; index: number 
                     className="clay-button"
                     style={{
                       fontFamily: "var(--font-body)", fontSize: "0.58rem", fontWeight: 700,
-                      color: "var(--color-background-secondary)", background: policy.accentColor,
+                      color: "#fff", background: policy.accentColor,
                       border: "1px solid rgba(255,255,255,0.15)",
                       borderRadius: 100, padding: "4px 9px", cursor: "pointer",
                       whiteSpace: "nowrap", flexShrink: 0,
@@ -186,7 +186,7 @@ function MiniPolicyCard({ policy, index }: { policy: PolicyEntry; index: number 
                   fontFamily: "var(--font-body)", fontSize: "0.56rem", fontWeight: 700,
                   padding: "2px 7px", borderRadius: 100,
                   border: `1px solid ${policy.accentColor}38`,
-                  background: `${policy.accentColor}0d`, color: policy.accentColor,
+                  background: `${policy.accentColor}0d`, color: "var(--color-text-secondary)",
                 }}>
                   {tag}
                 </span>
@@ -205,10 +205,8 @@ export default function HomePolicySection() {
 
   return (
     <section style={{
-      background: "var(--color-background-primary)",
       padding: "0 5% 0",
       position: "relative",
-      overflow: "hidden",
     }}>
       {/* Subtle radial glow */}
       <div style={{
@@ -279,18 +277,25 @@ export default function HomePolicySection() {
         </motion.p>
       </div>
 
-      {/* ── 3 cards ── */}
-      <div style={{
+      {/* ── 4 cards ── */}
+      <div className="home-policy-grid" style={{
         display: "grid",
-        gridTemplateColumns: "repeat(3, 1fr)",
-        gap: 28,
+        gridTemplateColumns: "repeat(4, 1fr)",
+        gap: 20,
         maxWidth: 960,
-        margin: "0 auto 52px",
+        margin: "0 auto 0",
       }}>
-        {featuredPolicies.slice(0, 3).map((policy, index) => (
+        {featuredPolicies.map((policy, index) => (
           <MiniPolicyCard key={policy.id} policy={policy} index={index} />
         ))}
       </div>
+      <style>{`
+        @media (max-width: 1000px) {
+          .home-policy-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+        }
+      `}</style>
 
       {/* ── Explore All CTA ── */}
       <motion.div
@@ -298,7 +303,7 @@ export default function HomePolicySection() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5, delay: 0.4 }}
-        style={{ display: "flex", justifyContent: "center" }}
+        style={{ display: "flex", justifyContent: "center", marginTop: 52, paddingBottom: 32 }}
       >
         <motion.button
           onClick={() => navigate("/policies")}
@@ -339,6 +344,8 @@ export default function HomePolicySection() {
           </motion.svg>
         </motion.button>
       </motion.div>
+
+      <EcosystemSection />
     </section>
   );
 }
