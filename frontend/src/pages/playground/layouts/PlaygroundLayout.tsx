@@ -130,7 +130,7 @@ function PlaygroundInner() {
             <div className="flex h-full flex-col bg-[var(--color-background-secondary)] text-[var(--color-text-primary)] shadow-[inset_-2px_0_6px_-2px_rgba(0,0,0,0.08)]">
               <SidebarHeader
                 className="px-4 py-6 cursor-pointer hover:opacity-80 transition-opacity"
-                onClick={() => navigate("/playground")}
+                onClick={() => navigate("/playground/dashboard")}
               >
                 <div className="flex items-center gap-3">
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-accent)] text-white">
@@ -256,7 +256,7 @@ function PlaygroundInner() {
                         letterSpacing: "-0.03em",
                         lineHeight: "1.1"
                       }}
-                      onClick={() => navigate("/playground")}
+                      onClick={() => navigate("/playground/dashboard")}
                     >
                       Playground
                     </h1>
