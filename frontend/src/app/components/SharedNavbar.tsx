@@ -111,12 +111,14 @@ function NavButton({
   onClick,
   href,
   isActive = false,
+  style,
 }: {
   children: React.ReactNode;
   variant?: "default" | "muted" | "primary" | "accent" | "white" | "outline-dark";
   onClick?: () => void;
   href?: string;
   isActive?: boolean;
+  style?: React.CSSProperties;
 }) {
   const navigate = useNavigate();
 
@@ -145,6 +147,7 @@ function NavButton({
       transition={{ type: "spring", stiffness: 400, damping: 17 }}
       onClick={handleClick}
       data-active={isActive}
+      style={style}
       className={`clay-button nav-btn ${variantClasses[variant]} rounded-full flex h-[36px] items-center justify-center px-[12px] xl:px-[24px] shrink-0 cursor-pointer transition-colors relative`}
     >
       {children}
@@ -268,6 +271,11 @@ function ResourcesBtn({ onClick }: { onClick?: () => void }) {
     <NavButton
       variant="default"
       isActive={isActive}
+      style={{
+        background: "linear-gradient(135deg, #2b244f 0%, #d66f55 58%, #ff9b82 100%)",
+        border: "none",
+        color: "#fff",
+      }}
       onClick={() => {
         if (onClick) onClick();
         navigate("/playground");
