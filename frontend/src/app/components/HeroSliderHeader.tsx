@@ -32,15 +32,17 @@ const marqueeStyles = `
   z-index: 2;
 }
 `;
-import hero1 from "../../assets/hero/hero1.png";
-import hero2 from "../../assets/hero/hero2.png";
-import hero3 from "../../assets/hero/hero3.png";
-import hero4 from "../../assets/hero/hero4.png";
-import hero5 from "../../assets/hero/hero5.png";
-import hero6 from "../../assets/hero/hero6.png";
-import hero7 from "../../assets/hero/hero7.png";
-import hero8 from "../../assets/hero/hero8.png";
-import hero9 from "../../assets/hero/hero9.png";
+
+import doorPeachnight from "../../assets/hero/door-peachnight.jpeg";
+import learnerPurple from "../../assets/hero/learner-purple.jpeg";
+import meetingsWhitepurple from "../../assets/hero/meetings-whitepurple.jpeg";
+import onlineWorkshopPurple from "../../assets/hero/online-workshop-purple.jpeg";
+import peachFixit from "../../assets/hero/peach-fixit.jpeg";
+import seesawPurplepeach from "../../assets/hero/seesaw-purplepeach.jpeg";
+import strengthsPurple from "../../assets/hero/strengths-purple.jpeg";
+import viewskyPeach from "../../assets/hero/viewsky-peach.jpeg";
+import wateringPurple from "../../assets/hero/watering-purple.jpeg";
+import yogaPurple from "../../assets/hero/yoga-purple.jpeg";
 import certificate from "../../assets/hero/certificate.jpg";
 import SharedNavbar from "./SharedNavbar";
 import NavbarSpacer from "./NavbarSpacer";
@@ -93,11 +95,11 @@ function Item({ src, alt, width }: { src: string; alt: string; width?: string })
 export function Frame67() {
   return (
     <MarqueeTrack duration={50} direction="right" align="end">
-      <Item src={hero1} alt="" width="w-[280px]" />
-      <Item src={hero2} alt="" width="w-[420px]" />
-      <Item src={hero3} alt="" width="w-[380px]" />
-      <Item src={hero4} alt="" width="w-[350px]" />
-      <Item src={hero8} alt="" width="w-[360px]" />
+      <Item src={doorPeachnight} alt="" width="w-[280px]" />
+      <Item src={learnerPurple} alt="" width="w-[420px]" />
+      <Item src={meetingsWhitepurple} alt="" width="w-[380px]" />
+      <Item src={onlineWorkshopPurple} alt="" width="w-[350px]" />
+      <Item src={peachFixit} alt="" width="w-[360px]" />
     </MarqueeTrack>
   );
 }
@@ -105,10 +107,11 @@ export function Frame67() {
 export function Frame66() {
   return (
     <MarqueeTrack duration={35} direction="left" align="center">
-      <Item src={hero5} alt="" width="w-[400px]" />
-      <Item src={hero6} alt="" width="w-[320px]" />
-      <Item src={hero7} alt="" width="w-[380px]" />
-      <Item src={hero9} alt="" width="w-[420px]" />
+      <Item src={seesawPurplepeach} alt="" width="w-[400px]" />
+      <Item src={strengthsPurple} alt="" width="w-[320px]" />
+      <Item src={viewskyPeach} alt="" width="w-[380px]" />
+      <Item src={wateringPurple} alt="" width="w-[420px]" />
+      <Item src={yogaPurple} alt="" width="w-[350px]" />
       <Item src={certificate} alt="" width="w-[340px]" />
     </MarqueeTrack>
   );
