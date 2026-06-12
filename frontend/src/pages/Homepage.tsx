@@ -62,7 +62,7 @@ function HeroHeaderSection() {
   return (
     <div className="flex flex-col items-start w-full bg-[var(--color-background-primary)]">
       <HeroSliderHeader />
-      <div className="w-full px-[16px] sm:px-[24px] md:px-[64px]">
+    <div className="w-full px-[16px] sm:px-[24px] md:px-[64px] pt-6 sm:pt-8">
         <HeroFeatureCardsRow />
       </div>
     </div>
@@ -427,7 +427,7 @@ function VerticalTicker() {
 
 export function EducationStatusWrapper() {
   return (
-    <div className="w-full px-[16px] sm:px-[24px] md:px-[64px]">
+    <div className="w-full px-[16px] sm:px-[24px] md:px-[64px] pt-6 sm:pt-8">
       {/* ─── MAIN CLAY CARD ─── */}
       <div
         style={{
