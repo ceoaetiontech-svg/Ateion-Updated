@@ -281,16 +281,10 @@ export default function App() {
   const [showLogin, setShowLogin] = useState(false);
 
   useEffect(() => {
-    const handleOpenLogin = () => setShowLogin(true);
-    const handleOpenRegister = () => setShowRegister(true);
-
-    window.addEventListener("open-login", handleOpenLogin);
-    window.addEventListener("open-register", handleOpenRegister);
-
-    return () => {
-      window.removeEventListener("open-login", handleOpenLogin);
-      window.removeEventListener("open-register", handleOpenRegister);
-    };
+    const ac = new AbortController();
+    window.addEventListener("open-login", () => setShowLogin(true), { signal: ac.signal });
+    window.addEventListener("open-register", () => setShowRegister(true), { signal: ac.signal });
+    return () => ac.abort();
   }, []);
 
   function ChatBotWrapper() {

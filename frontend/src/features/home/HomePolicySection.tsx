@@ -5,18 +5,18 @@ import { allPolicies, featuredPolicies, PolicyEntry } from "../../data/policies"
 import EcosystemSection from "./EcosystemSection";
 
 // ── All 12 policy images ───────────────────────────────────────────────────
-import singaporeImg  from "../../assets/policies/singapore.png";
-import finlandImg    from "../../assets/policies/finland.png";
-import japanImg      from "../../assets/policies/japan.png";
-import indiaImg      from "../../assets/gco/education-ministry-logo.jpg";
-import uaeImg        from "../../assets/gco/logo-education.png";
-import germanyImg    from "../../assets/policies/germany.png";
-import usaImg        from "../../assets/policies/usa.png";
-import ukImg         from "../../assets/policies/uk.png";
-import southkoreaImg from "../../assets/policies/southkorea.jpg";
-import euImg         from "../../assets/policies/eu.png";
-import unescoImg     from "../../assets/policies/unesco.jpg";
-import wefImg        from "../../assets/policies/wef.jpg";
+import singaporeImg  from "../../assets/policies/singapore.webp";
+import finlandImg    from "../../assets/policies/finland.webp";
+import japanImg      from "../../assets/policies/japan.webp";
+import indiaImg      from "../../assets/gco/education-ministry-logo.webp";
+import uaeImg        from "../../assets/gco/logo-education.webp";
+import germanyImg    from "../../assets/policies/germany.webp";
+import usaImg        from "../../assets/policies/usa.webp";
+import ukImg         from "../../assets/policies/uk.webp";
+import southkoreaImg from "../../assets/policies/southkorea.webp";
+import euImg         from "../../assets/policies/eu.webp";
+import unescoImg     from "../../assets/policies/unesco.webp";
+import wefImg        from "../../assets/policies/wef.webp";
 
 const policyImages: Record<string, string> = {
   singapore:  singaporeImg,

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Smile, Heart, Brain, Activity, Wind, Clock, ChevronRight,
@@ -7,6 +7,7 @@ import {
   Star, PenLine, Trash2
 } from "lucide-react";
 import { usePlayground } from "../shared/PlaygroundContext";
+import { useInterval } from "../../../app/components/hooks/use-interval";
 
 type TabId = "mental-health" | "stress" | "confidence";
 type BreathPhase = "inhale" | "hold" | "exhale" | "rest";
@@ -47,7 +48,6 @@ function BreathingExercise() {
   const [phaseIdx, setPhaseIdx] = useState(0);
   const [elapsed, setElapsed] = useState(0);
   const [cycles, setCycles] = useState(0);
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const pattern = PATTERNS[patternKey];
   const [phase, duration] = pattern.seq[phaseIdx];
   const progress = elapsed / duration;
@@ -81,14 +81,7 @@ function BreathingExercise() {
     });
   }, [pattern, phaseIdx]);
 
-  useEffect(() => {
-    if (running) {
-      intervalRef.current = setInterval(tick, 1000);
-    } else {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    }
-    return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
-  }, [running, tick]);
+  useInterval(tick, running ? 1000 : null);
 
   const reset = () => {
     setRunning(false);

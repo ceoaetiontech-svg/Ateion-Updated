@@ -17,11 +17,12 @@ import { Helmet } from "react-helmet-async";
 import { motion, animate, useInView, AnimatePresence } from "framer-motion";
 import { ChevronRight } from "lucide-react";
 import svgPaths from "./svg-paths";
-import logo from "../assets/logo.png";
-import imgRectangle9 from "../assets/e54e08242e5e8cea29c382ba6bc82218d425f28e.png";
-import imgImage9 from "../assets/3aab4451afd875f66a83eb26e0ca2d6f58abce98.png";
-import imgImage7 from "../assets/e985b07ea1f916546c05a06ca93558ef62ecc870.png";
-import imgImage13 from "../assets/a440209918fa81a1c528e2e95290d4f1f12546e7.png";
+import logo from "../assets/logo.webp";
+import imgRectangle9 from "../assets/eba887f3bcae20b7a5611026256348307e65c2c4.webp";
+import imgImage9 from "../assets/3aab4451afd875f66a83eb26e0ca2d6f58abce98.webp";
+import imgImage7 from "../assets/e985b07ea1f916546c05a06ca93558ef62ecc870.webp";
+import imgImage13 from "../assets/a440209918fa81a1c528e2e95290d4f1f12546e7.webp";
+import { useInterval } from "../app/components/hooks/use-interval";
 import HeroSliderHeader from "../app/components/HeroSliderHeader";
 import DotMap from "../components/DotMap";
 import SharedFooter from "../app/components/SharedFooter";
@@ -90,13 +91,9 @@ const capabilityMessages = [
 function PurpleCapabilityCardInner() {
   const [current, setCurrent] = useState(0);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % capabilityMessages.length);
-    }, 3500);
-
-    return () => clearInterval(interval);
-  }, []);
+  useInterval(() => {
+    setCurrent((prev) => (prev + 1) % capabilityMessages.length);
+  }, 3500);
 
   return (
     <div
@@ -360,10 +357,7 @@ const tickerItems = Array.from({ length: TICKER_REPEAT }, () => tickerWords).fla
 function VerticalTicker() {
   const [idx, setIdx] = useState(0);
 
-  useEffect(() => {
-    const timer = setInterval(() => setIdx((prev) => (prev + 1) % tickerWords.length), 2000);
-    return () => clearInterval(timer);
-  }, []);
+  useInterval(() => setIdx((prev) => (prev + 1) % tickerWords.length), 2000);
 
   const activePos = tickerWords.length + idx;
   const offsetY = activePos * WORD_H;
@@ -855,6 +849,7 @@ export default function Homepage() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+        style={{ contentVisibility: "auto", containIntrinsicSize: "auto 600px" }}
       >
         <EducationStatusWrapper />
       </motion.section>
@@ -865,12 +860,15 @@ export default function Homepage() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
+        style={{ contentVisibility: "auto", containIntrinsicSize: "auto 500px" }}
       >
         <FAQSectionContainer />
       </motion.section>
 
       {/* 8. Footer */}
-      <SharedFooter />
+      <div style={{ contentVisibility: "auto", containIntrinsicSize: "auto 400px" }}>
+        <SharedFooter />
+      </div>
     </div>
   );
 }

@@ -4,11 +4,11 @@ import { useNavigate } from "react-router";
 import { featuredPolicies, PolicyEntry } from "../../data/policies";
 
 // ─── Policy images (all featured countries) ────────────────────────────────────
-import singaporeImg from "../../assets/policies/singapore.png";
-import finlandImg from "../../assets/policies/finland.png";
-import japanImg from "../../assets/policies/japan.png";
-import indiaImg from "../../assets/gco/education-ministry-logo.jpg";
-import uaeImg from "../../assets/gco/logo-education.png";
+import singaporeImg from "../../assets/policies/singapore.webp";
+import finlandImg from "../../assets/policies/finland.webp";
+import japanImg from "../../assets/policies/japan.webp";
+import indiaImg from "../../assets/gco/education-ministry-logo.webp";
+import uaeImg from "../../assets/gco/logo-education.webp";
 
 import "../../styles/gco/PolicyAlignment.css";
 

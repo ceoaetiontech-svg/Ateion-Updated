@@ -33,16 +33,16 @@ const marqueeStyles = `
 }
 `;
 
-import doorPeachnight from "../../assets/hero/door-peachnight.jpeg";
-import learnerPurple from "../../assets/hero/learner-purple.jpeg";
-import meetingsWhitepurple from "../../assets/hero/meetings-whitepurple.jpeg";
-import onlineWorkshopPurple from "../../assets/hero/online-workshop-purple.jpeg";
-import peachFixit from "../../assets/hero/peach-fixit.jpeg";
-import seesawPurplepeach from "../../assets/hero/seesaw-purplepeach.jpeg";
-import strengthsPurple from "../../assets/hero/strengths-purple.jpeg";
-import viewskyPeach from "../../assets/hero/viewsky-peach.jpeg";
-import wateringPurple from "../../assets/hero/watering-purple.jpeg";
-import yogaPurple from "../../assets/hero/yoga-purple.jpeg";
+import doorPeachnight from "../../assets/hero/door-peachnight.webp";
+import learnerPurple from "../../assets/hero/learner-purple.webp";
+import meetingsWhitepurple from "../../assets/hero/meetings-whitepurple.webp";
+import onlineWorkshopPurple from "../../assets/hero/online-workshop-purple.webp";
+import peachFixit from "../../assets/hero/peach-fixit.webp";
+import seesawPurplepeach from "../../assets/hero/seesaw-purplepeach.webp";
+import strengthsPurple from "../../assets/hero/strengths-purple.webp";
+import viewskyPeach from "../../assets/hero/viewsky-peach.webp";
+import wateringPurple from "../../assets/hero/watering-purple.webp";
+import yogaPurple from "../../assets/hero/yoga-purple.webp";
 import SharedNavbar from "./SharedNavbar";
 import NavbarSpacer from "./NavbarSpacer";
 
@@ -74,16 +74,29 @@ function MarqueeTrack({
   );
 }
 
+const ITEM_ASPECT_RATIOS: Record<string, string> = {
+  "w-[280px]": "280 / 200",
+  "w-[320px]": "320 / 200",
+  "w-[350px]": "350 / 200",
+  "w-[360px]": "360 / 200",
+  "w-[380px]": "380 / 200",
+  "w-[400px]": "400 / 200",
+  "w-[420px]": "420 / 200",
+};
+
 function Item({ src, alt, width }: { src: string; alt: string; width?: string }) {
+  const cls = width || "w-[360px]";
   return (
     <div
-      className={`marquee-card h-[120px] sm:h-[150px] md:h-[180px] lg:h-[200px] relative shrink-0 rounded-[12px] overflow-hidden cursor-pointer ${width || "w-[360px]"}`}
+      className={`marquee-card h-[120px] sm:h-[150px] md:h-[180px] lg:h-[200px] relative shrink-0 rounded-[12px] overflow-hidden cursor-pointer ${cls}`}
+      style={{ aspectRatio: ITEM_ASPECT_RATIOS[cls] || "360 / 200" }}
     >
       <img
         alt={alt}
         src={src}
         className="w-full h-full object-cover"
         loading="lazy"
+        decoding="async"
         role="presentation"
         aria-hidden="true"
       />

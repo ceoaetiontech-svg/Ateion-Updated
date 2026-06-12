@@ -45,17 +45,24 @@
     <link rel="apple-touch-icon" href="/src/assets/logo.png" />
     <link rel="manifest" href="/manifest.json" />
 
-    <!-- Content Security Policy -->
-
     <!-- Preconnect to external resources -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+
+    <!-- Non-blocking Google Fonts: Source Sans 3 only -->
     <link
-      href="https://fonts.googleapis.com/css2?family=Flow+Circular&family=Manrope:wght@200..800&display=swap"
       rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300..900&display=swap"
+      media="print"
+      onload="this.media='all'"
       aria-label="Google Fonts"
     />
+
+    <!-- Preload critical above-fold assets -->
+    <link rel="preload" as="image" href="/src/assets/logo.webp" fetchpriority="high" />
+    <link rel="preload" as="image" href="/src/assets/hero/door-peachnight.webp" fetchpriority="high" />
+    <link rel="preload" as="image" href="/src/assets/hero/learner-purple.webp" fetchpriority="high" />
 
     <!-- Anti-FOUC: Set theme before paint to prevent flash of wrong theme -->
     <script>

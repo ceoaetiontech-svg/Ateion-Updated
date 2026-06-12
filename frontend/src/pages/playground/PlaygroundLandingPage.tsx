@@ -18,8 +18,8 @@ import {
   Menu,
   X,
 } from "lucide-react";
-import logo from "../../assets/logo.png";
-import playgroundHero from "../../assets/hero/playground_hero.png";
+import logo from "../../assets/logo.webp";
+import playgroundHero from "../../assets/hero/playground_hero.webp";
 import { useTheme } from "../../app/components/ThemeProvider";
 export default function PlaygroundLandingPage() {
   const navigate = useNavigate();
