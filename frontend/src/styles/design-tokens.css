@@ -528,8 +528,8 @@ html[data-theme="dark"] body {
 
 html[data-theme="dark"] .ateion-metallic-bg {
   --color-background-primary: rgba(8, 8, 14, 0.52);
-  --color-background-secondary: rgba(248, 248, 244, 0.08);
-  --color-background-tertiary: rgba(248, 248, 244, 0.12);
+  --color-background-secondary: #1E293B;
+  --color-background-tertiary: #334155;
   --color-border-light: rgba(248, 248, 244, 0.12);
   --color-border-medium: rgba(248, 248, 244, 0.18);
   --color-border-dark: rgba(248, 248, 244, 0.28);
