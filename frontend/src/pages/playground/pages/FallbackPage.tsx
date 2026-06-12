@@ -54,11 +54,12 @@ const stars = [
 export default function FallbackPage() {
   const location = useLocation();
   const activeView = getActiveView(location.pathname);
-  const isSproutlings = activeView === "Sproutlings (5-7)";
+  const hasSkyTheme =
+    activeView === "Sproutlings (5-7)" || activeView === "Saplings (7-14)";
 
   return (
     <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      {isSproutlings && (
+      {hasSkyTheme && (
         <style>{`
           @keyframes sproutlingTwinkle {
             0%, 100% { opacity: 0.35; transform: scale(0.75); }
@@ -96,12 +97,12 @@ export default function FallbackPage() {
       
       <div
         className={`flex flex-col items-center justify-center px-4 text-center rounded-3xl border shadow-sm mt-8 relative overflow-hidden ${
-          isSproutlings
+          hasSkyTheme
             ? "min-h-[520px] border-[#184b82]/20 bg-[#0c4279] py-16 text-[#ffffff]"
             : "bg-[var(--color-background-secondary)] border-[var(--color-border-light)] py-20"
         }`}
       >
-        {isSproutlings ? (
+        {hasSkyTheme ? (
           <div className="absolute inset-0 pointer-events-none overflow-hidden">
             <div className="absolute inset-0 bg-[linear-gradient(180deg,#0b376a_0%,#0e4f86_56%,#77add5_100%)]" />
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_22%,rgba(255,255,255,0.18),transparent_16%),radial-gradient(circle_at_76%_10%,rgba(255,255,255,0.08),transparent_22%)]" />
@@ -166,19 +167,19 @@ export default function FallbackPage() {
           </div>
         </div>
         
-        <h4 className={`relative z-10 text-2xl font-bold mb-3 ${isSproutlings ? "text-[#ffffff]" : "text-[var(--color-text-primary)]"}`}>
+        <h4 className={`relative z-10 text-2xl font-bold mb-3 ${hasSkyTheme ? "text-[#ffffff]" : "text-[var(--color-text-primary)]"}`}>
           Something exciting is brewing
         </h4>
-        <p className={`relative z-10 max-w-md mx-auto mb-8 leading-relaxed ${isSproutlings ? "text-[#e8f5ff]" : "text-[var(--color-text-secondary)]"}`}>
+        <p className={`relative z-10 max-w-md mx-auto mb-8 leading-relaxed ${hasSkyTheme ? "text-[#e8f5ff]" : "text-[var(--color-text-secondary)]"}`}>
           We're currently crafting the{" "}
-          <span className={`font-bold ${isSproutlings ? "text-[#ffffff]" : "text-[var(--color-accent)]"}`}>
+          <span className={`font-bold ${hasSkyTheme ? "text-[#ffffff]" : "text-[var(--color-accent)]"}`}>
             {activeView}
           </span>{" "}
           experience. Check back soon to explore new tools and resources tailored just for you.
         </p>
         
         <button className={`relative z-10 px-6 py-3 rounded-xl font-bold transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-1 ${
-          isSproutlings
+          hasSkyTheme
             ? "bg-[#ffffff] text-[#0d467d] hover:bg-[#eaf6ff]"
             : "bg-[var(--color-text-primary)] text-[var(--color-background-primary)] hover:bg-[var(--color-accent)] hover:text-[#ffffff]"
         }`}>
