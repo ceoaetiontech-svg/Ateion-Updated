@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
+import com.ateion.backend.entity.User;
 
 @Component
 public class JwtUtil {
@@ -18,15 +19,33 @@ public class JwtUtil {
     @Value("${JWT_SECRET:ateion-default-secret-key-change-in-production-min32}")
     private String secretString;
 
+    public String extractRole(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("role", String.class);
+    }
+
     private Key getKey() {
         return Keys.hmacShaKeyFor(secretString.getBytes(StandardCharsets.UTF_8));
     }
 
     private final long EXPIRATION_TIME = 86400000; // 24 hours
 
-    public String generateToken(String email) {
+    @Value("${jwt.secret:AteionSuperSecretKeyThatIsAtLeast32BytesLongForSecurity}")
+    private String secret;
+
+    private Key getSigningKey() {
+        byte[] keyBytes = secret.getBytes(StandardCharsets.UTF_8);
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    public String generateToken(User user) {
         return Jwts.builder()
-                .setSubject(email)
+                .setSubject(user.getEmail())
+                .claim("role", user.getRole())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(getKey())

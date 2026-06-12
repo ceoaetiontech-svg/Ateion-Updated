@@ -230,7 +230,7 @@ function HomeBtn({ onClick }: { onClick?: () => void }) {
         navigate("/");
       }}
     >
-      <span className={`${navTextClass}`}>Home</span>
+      <span className={navTextClass}>Home</span>
     </NavButton>
   );
 }

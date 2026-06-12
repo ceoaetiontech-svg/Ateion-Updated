@@ -276,12 +276,15 @@ function PlaygroundInner() {
 
                 <div className="flex shrink-0 items-center gap-2 sm:gap-5">
                   <button
-                    onClick={() => navigate("/")}
-                    className="hidden xl:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] text-xs text-[var(--color-text-tertiary)] hover:border-[var(--color-accent)]/30 hover:text-[var(--color-text-primary)] transition-colors mr-1"
-                    title="Home"
-                  >
-                    <Home size={16} />
-                  </button>
+  onClick={() => navigate("/")}
+  className="hidden xl:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--color-border-light)] text-xs text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] transition-colors mr-1"
+  style={{
+    background: "linear-gradient(135deg, #2b244f 0%, #d66f55 58%, #ff9b82 100%)",
+  }}
+  title="Home"
+>
+  <Home size={16} />
+</button>
                   <button
                     onClick={() => setSearchOpen(true)}
                     className="hidden xl:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] text-xs text-[var(--color-text-tertiary)] hover:border-[var(--color-accent)]/30 hover:text-[var(--color-text-primary)] transition-colors w-36"

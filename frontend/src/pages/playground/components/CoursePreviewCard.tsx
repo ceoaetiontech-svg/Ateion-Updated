@@ -6,12 +6,23 @@ interface CoursePreviewCardProps {
     course: Course;
 }
 
+// A beautiful, high-quality dark abstract pattern to act as a fallback course banner
+const FALLBACK_COURSE_IMAGE = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1964&auto=format&fit=crop";
+
 export default function CoursePreviewCard({ course }: CoursePreviewCardProps) {
     return (
         <div className="w-full h-full flex flex-col bg-transparent overflow-hidden">
             {/* Thumbnail with Topic Color Accent Bar */}
             <div className="w-full aspect-video relative overflow-hidden bg-[var(--color-background-tertiary)] shrink-0">
-                <img src={course.image} alt={course.title} className="w-full h-full object-cover" />
+                <img 
+                    src={course.image || FALLBACK_COURSE_IMAGE} 
+                    alt={course.title} 
+                    className="w-full h-full object-cover" 
+                    onError={(e) => {
+                        // If the primary image URL is broken, gracefully switch to the fallback
+                        e.currentTarget.src = FALLBACK_COURSE_IMAGE;
+                    }}
+                />
                 <div
                     className="absolute bottom-0 left-0 w-full h-1"
                     style={{ backgroundColor: getTopicColor(course.topics) }}

@@ -183,6 +183,7 @@ function EcosystemBubble({
         animate={{
           y: isHovered ? -4 : 0,
           rotate: isHovered ? 1 : 0,
+          scale: isHovered ? 1.12 : 1,
         }}
         transition={{
           type: "spring",
@@ -227,7 +228,6 @@ function EcosystemBubble({
                   ? defaultColor
                   : "var(--color-border-medium)",
               strokeWidth: isHovered ? 3 : 0.8,
-              scale: isHovered ? 1.12 : 1,
             }}
             transition={{ type: "spring", stiffness: 400, damping: 25 }}
           />
@@ -551,7 +551,7 @@ export default function EcosystemSection() {
   const [desktopScale, setDesktopScale] = useState(1);
 
   const CANVAS_WIDTH_PX = 935;
-  const DESKTOP_CONTENT_WIDTH = 392 + 64 + CANVAS_WIDTH_PX;
+  const DESKTOP_CONTENT_WIDTH = 64 + 392 + 64 + CANVAS_WIDTH_PX + 64;
 
   useEffect(() => {
     const updateScales = () => {
@@ -643,12 +643,12 @@ export default function EcosystemSection() {
 
       {/* Desktop: side-by-side, no horizontal scrollbar; content scales to fit viewport */}
       <div
-        className="hidden md:block w-full overflow-visible"
+        className="hidden md:block w-full overflow-visible px-8 lg:px-16"
         style={{ WebkitOverflowScrolling: "touch" }}
       >
         <div className="flex justify-center">
           <div
-            className="flex flex-row items-center gap-[48px] lg:gap-[64px] px-8 lg:px-16"
+            className="flex flex-row items-center gap-[64px]"
             style={{
               width: DESKTOP_CONTENT_WIDTH,
               maxWidth: "100%",
