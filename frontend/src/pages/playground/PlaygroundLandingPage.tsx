@@ -96,8 +96,8 @@ export default function PlaygroundLandingPage() {
           />
         </div>
         <nav className="hidden md:flex items-center gap-2 xl:gap-3">
-          {["Home", "Features", "For Schools", "For Parents", "For Students", "About Us"].map((label, i) => {
-            const href = i === 0 ? "/" : i === 5 ? "/contact" : `#${label.toLowerCase().replace(/\s/g, "")}`;
+          {["Home", "About Us"].map((label, i) => {
+            const href = i === 0 ? "/" : "/contact";
             return (
               <a
                 key={label}
@@ -137,7 +137,7 @@ export default function PlaygroundLandingPage() {
               e.currentTarget.style.backgroundColor = "var(--color-accent)";
             }}
           >
-            Book a Demo
+            PlayGround
           </button>
         </div>
         <button
@@ -161,8 +161,8 @@ export default function PlaygroundLandingPage() {
               borderBottom: "1px solid var(--color-border-light)",
             }}
           >
-            {["Home", "Features", "For Schools", "For Parents", "For Students", "About Us"].map((label, i) => {
-              const href = i === 0 ? "/" : i === 5 ? "/contact" : `#${label.toLowerCase().replace(/\s/g, "")}`;
+            {["Home", "About Us"].map((label, i) => {
+              const href = i === 0 ? "/" : "/contact";
               return (
                 <a
                   key={label}
@@ -204,7 +204,7 @@ export default function PlaygroundLandingPage() {
                 e.currentTarget.style.backgroundColor = "var(--color-accent)";
               }}
             >
-              Book a Demo
+              PlayGround
             </button>
           </motion.div>
         )}
