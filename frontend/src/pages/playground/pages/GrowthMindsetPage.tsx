@@ -638,7 +638,6 @@ export default function GrowthMindsetPage() {
                     { title: "Box Breathing", desc: "3 mins · Reduce anxiety", icon: Wind, color: "var(--color-info)" },
                     { title: "Guided Meditation", desc: "10 mins · Regain focus", icon: Smile, color: "var(--color-success)" },
                     { title: "Gratitude Journal", desc: "5 mins · Evening reflection", icon: Heart, color: "var(--color-accent)" },
-                    { title: "Body Scan", desc: "7 mins · Release tension", icon: Activity, color: "var(--color-warning)" },
                   ].map((item, i) => {
                     const Icon = item.icon;
                     return (
