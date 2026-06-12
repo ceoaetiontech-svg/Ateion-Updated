@@ -25,11 +25,17 @@ public class User {
 
     @Column(name = "age_segment", nullable = false)
     private String ageSegment;
+    
+    @Builder.Default
+   @Column(nullable = false)
+    private String role = "ROLE_STUDENT";
 
     // ADDED: required for freemium gate in ProgressService
     @Builder.Default
     @Column(name = "is_premium", nullable = false)
     private Boolean isPremium = false;
+    
+     
 
     @CreationTimestamp
     private LocalDateTime createdAt;

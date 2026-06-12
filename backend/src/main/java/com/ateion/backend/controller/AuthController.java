@@ -52,7 +52,7 @@ public class AuthController {
             // VERIFY using BCrypt's .matches()
             if (passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
                 
-                String token = jwtUtil.generateToken(user.getEmail());
+                String token = jwtUtil.generateToken(user);
 
                 Map<String, Object> userData = new HashMap<>();
                 userData.put("fullName", user.getFullName());
