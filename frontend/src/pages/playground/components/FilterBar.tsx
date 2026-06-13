@@ -108,7 +108,7 @@ export default function FilterBar(props: FilterBarProps) {
 
       {/* Filters panel */}
       {panelOpen && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-[var(--color-background-primary)] border border-[var(--color-border-light)] rounded-2xl shadow-xl z-[999] p-5">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] rounded-2xl shadow-xl z-[999] p-5">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-5">
             {/* Duration */}
             <FilterGroup title="Duration">
