@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import svgPaths from "../../pages/svg-paths";
 import { Link } from "react-router";
-import logo from "../../assets/logo.png";
+import logo from "../../assets/logo.webp";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },

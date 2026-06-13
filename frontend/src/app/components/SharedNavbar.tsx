@@ -28,7 +28,7 @@ import {
 } from "lucide-react";
 import { useTheme } from "./ThemeProvider";
 
-import logo from "../../assets/logo.png";
+import logo from "../../assets/logo.webp";
 import "../../styles/shared-nav.css";
 
 const navTextClass = "font-bold text-[13px] whitespace-nowrap font-manrope m-0 leading-none";
@@ -127,12 +127,14 @@ function NavButton({
   onClick,
   href,
   isActive = false,
+  style,
 }: {
   children: React.ReactNode;
   variant?: "default" | "muted" | "primary" | "accent" | "white" | "outline-dark";
   onClick?: () => void;
   href?: string;
   isActive?: boolean;
+  style?: React.CSSProperties;
 }) {
   const navigate = useNavigate();
 
@@ -161,6 +163,7 @@ function NavButton({
       transition={{ type: "spring", stiffness: 400, damping: 17 }}
       onClick={handleClick}
       data-active={isActive}
+      style={style}
       className={`clay-button nav-btn ${variantClasses[variant]} rounded-full flex h-[36px] items-center justify-center px-[12px] xl:px-[24px] shrink-0 cursor-pointer transition-colors relative`}
     >
       {children}
@@ -172,35 +175,20 @@ function useNavbarOnDark() {
   const [isOnDarkSection, setIsOnDarkSection] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const navbar = document.querySelector("nav");
-      if (!navbar) return;
+    const darkSections = document.querySelectorAll(".dark-section");
+    if (darkSections.length === 0) return;
 
-      const navRect = navbar.getBoundingClientRect();
-      const navMidY = navRect.top + navRect.height / 2;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const overDark = entries.some((entry) => entry.isIntersecting);
+        setIsOnDarkSection(overDark);
+      },
+      { rootMargin: "-80px 0px 0px 0px" },
+    );
 
-      const darkSections = document.querySelectorAll(".dark-section");
-      let overDark = false;
+    darkSections.forEach((s) => observer.observe(s));
 
-      darkSections.forEach((section) => {
-        const rect = section.getBoundingClientRect();
-        if (navMidY >= rect.top && navMidY <= rect.bottom) {
-          overDark = true;
-        }
-      });
-
-      setIsOnDarkSection(overDark);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", handleScroll);
-
-    handleScroll();
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleScroll);
-    };
+    return () => observer.disconnect();
   }, []);
 
   return isOnDarkSection;
@@ -243,7 +231,7 @@ function HomeBtn({ onClick }: { onClick?: () => void }) {
         navigate("/");
       }}
     >
-      <span className={`${navTextClass}`}>Home</span>
+      <span className={navTextClass}>Home</span>
     </NavButton>
   );
 }
@@ -284,6 +272,11 @@ function ResourcesBtn({ onClick }: { onClick?: () => void }) {
     <NavButton
       variant="default"
       isActive={isActive}
+      style={{
+        background: "linear-gradient(135deg, #2b244f 0%, #d66f55 58%, #ff9b82 100%)",
+        border: "none",
+        color: "#fff",
+      }}
       onClick={() => {
         if (onClick) onClick();
         navigate("/playground");
@@ -431,14 +424,10 @@ function SignInBtn({ onClick }: { onClick?: () => void }) {
   const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
-    const handleOpen = () => setIsActive(true);
-    const handleClose = () => setIsActive(false);
-    window.addEventListener("open-login", handleOpen);
-    window.addEventListener("close-login", handleClose);
-    return () => {
-      window.removeEventListener("open-login", handleOpen);
-      window.removeEventListener("close-login", handleClose);
-    };
+    const ac = new AbortController();
+    window.addEventListener("open-login", () => setIsActive(true), { signal: ac.signal });
+    window.addEventListener("close-login", () => setIsActive(false), { signal: ac.signal });
+    return () => ac.abort();
   }, []);
 
   return (
@@ -466,14 +455,10 @@ function SignUpBtn({ onClick }: { onClick?: () => void }) {
   const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
-    const handleOpen = () => setIsActive(true);
-    const handleClose = () => setIsActive(false);
-    window.addEventListener("open-register", handleOpen);
-    window.addEventListener("close-register", handleClose);
-    return () => {
-      window.removeEventListener("open-register", handleOpen);
-      window.removeEventListener("close-register", handleClose);
-    };
+    const ac = new AbortController();
+    window.addEventListener("open-register", () => setIsActive(true), { signal: ac.signal });
+    window.addEventListener("close-register", () => setIsActive(false), { signal: ac.signal });
+    return () => ac.abort();
   }, []);
 
   return (
@@ -646,14 +631,11 @@ export default function SharedNavbar() {
 
     checkAuth();
 
-    // Listen for custom events that might trigger re-auth check
-    window.addEventListener("close-login", checkAuth);
-    window.addEventListener("close-register", checkAuth);
-
-    return () => {
-      window.removeEventListener("close-login", checkAuth);
-      window.removeEventListener("close-register", checkAuth);
-    };
+    const ac = new AbortController();
+    const opts = { signal: ac.signal };
+    window.addEventListener("close-login", checkAuth, opts);
+    window.addEventListener("close-register", checkAuth, opts);
+    return () => ac.abort();
   }, []);
 
   const handleLogout = () => {
@@ -670,11 +652,10 @@ export default function SharedNavbar() {
       setScrolled(window.scrollY > 20);
     };
 
-    window.addEventListener("scroll", onScroll, { passive: true });
-    // Initial check
-    onScroll();
-
-    return () => window.removeEventListener("scroll", onScroll);
+    const ac = new AbortController();
+    window.addEventListener("scroll", onScroll, { signal: ac.signal, passive: true });
+    onScroll(); // Initial check
+    return () => ac.abort();
   }, []);
 
   // Handle click outside to close mobile menu

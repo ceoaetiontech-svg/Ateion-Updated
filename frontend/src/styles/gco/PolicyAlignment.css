@@ -7,7 +7,6 @@
   background-color: var(--color-background-primary);
   padding: 40px 5% 110px;
   position: relative;
-  overflow: hidden;
 }
 
 
@@ -51,7 +50,7 @@
 /* ─── Cards Grid ───────────────────────────────────────────── */
 .policy-cards-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
   max-width: var(--max-width);
   margin: 0 auto 64px;
@@ -288,7 +287,7 @@
 /* ─── Responsive ────────────────────────────────────────────── */
 @media (max-width: 1200px) {
   .policy-cards-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 

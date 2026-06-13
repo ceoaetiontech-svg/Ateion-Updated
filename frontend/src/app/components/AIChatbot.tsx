@@ -404,11 +404,9 @@ export default function AIChatBot({
   const panelStyle: CSSProperties = isMobile
     ? {
         position: "fixed",
-        bottom: 0,
         left: 0,
         right: 0,
         top: 0,
-        width: "100%",
         height: vph > 0 ? `${vph}px` : "100dvh",
         borderRadius: 0,
         background: T.panel,

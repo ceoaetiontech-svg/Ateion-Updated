@@ -130,7 +130,7 @@ function PlaygroundInner() {
             <div className="flex h-full flex-col bg-[var(--color-background-secondary)] text-[var(--color-text-primary)] shadow-[inset_-2px_0_6px_-2px_rgba(0,0,0,0.08)]">
               <SidebarHeader
                 className="px-4 py-6 cursor-pointer hover:opacity-80 transition-opacity"
-                onClick={() => navigate("/playground")}
+                onClick={() => navigate("/playground/dashboard")}
               >
                 <div className="flex items-center gap-3">
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-accent)] text-white">
@@ -256,7 +256,7 @@ function PlaygroundInner() {
                         letterSpacing: "-0.03em",
                         lineHeight: "1.1"
                       }}
-                      onClick={() => navigate("/playground")}
+                      onClick={() => navigate("/playground/dashboard")}
                     >
                       Playground
                     </h1>
@@ -276,12 +276,15 @@ function PlaygroundInner() {
 
                 <div className="flex shrink-0 items-center gap-2 sm:gap-5">
                   <button
-                    onClick={() => navigate("/")}
-                    className="hidden xl:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] text-xs text-[var(--color-text-tertiary)] hover:border-[var(--color-accent)]/30 hover:text-[var(--color-text-primary)] transition-colors mr-1"
-                    title="Home"
-                  >
-                    <Home size={16} />
-                  </button>
+  onClick={() => navigate("/")}
+  className="hidden xl:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--color-border-light)] text-xs text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] transition-colors mr-1"
+  style={{
+    background: "linear-gradient(135deg, #2b244f 0%, #d66f55 58%, #ff9b82 100%)",
+  }}
+  title="Home"
+>
+  <Home size={16} />
+</button>
                   <button
                     onClick={() => setSearchOpen(true)}
                     className="hidden xl:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] text-xs text-[var(--color-text-tertiary)] hover:border-[var(--color-accent)]/30 hover:text-[var(--color-text-primary)] transition-colors w-36"

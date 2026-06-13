@@ -61,7 +61,7 @@ function GcoFeatureBadge({
               <div className="flex items-center gap-3 w-full">
                 <div className="w-[4px] h-[32px] rounded-full shrink-0" style={{ background: accentColor }} />
                 <p
-                  className="font-bold leading-[0.95] tracking-[-0.05em] not-italic text-[36px] sm:text-[42px] md:text-[48px] text-[var(--color-text-primary)] w-full max-w-[500px]"
+                  className="font-bold leading-[1.1] tracking-[-0.05em] not-italic text-[36px] sm:text-[42px] md:text-[48px] text-[var(--color-text-primary)] w-full max-w-[500px]"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   {activeData.title}

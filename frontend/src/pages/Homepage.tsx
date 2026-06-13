@@ -17,17 +17,18 @@ import { Helmet } from "react-helmet-async";
 import { motion, animate, useInView, AnimatePresence } from "framer-motion";
 import { ChevronRight } from "lucide-react";
 import svgPaths from "./svg-paths";
-import logo from "../assets/logo.png";
-import imgRectangle9 from "../assets/e54e08242e5e8cea29c382ba6bc82218d425f28e.png";
-import imgImage9 from "../assets/3aab4451afd875f66a83eb26e0ca2d6f58abce98.png";
-import imgImage7 from "../assets/e985b07ea1f916546c05a06ca93558ef62ecc870.png";
-import imgImage13 from "../assets/a440209918fa81a1c528e2e95290d4f1f12546e7.png";
+import logo from "../assets/logo.webp";
+import imgRectangle9 from "../assets/eba887f3bcae20b7a5611026256348307e65c2c4.webp";
+import imgImage9 from "../assets/3aab4451afd875f66a83eb26e0ca2d6f58abce98.webp";
+import imgImage7 from "../assets/e985b07ea1f916546c05a06ca93558ef62ecc870.webp";
+import imgImage13 from "../assets/a440209918fa81a1c528e2e95290d4f1f12546e7.webp";
+import { useInterval } from "../app/components/hooks/use-interval";
 import HeroSliderHeader from "../app/components/HeroSliderHeader";
 import DotMap from "../components/DotMap";
 import SharedFooter from "../app/components/SharedFooter";
 import SharedNavbar from "../app/components/SharedNavbar";
 
-import EcosystemSection from "../features/home/EcosystemSection";
+
 import HomePolicySection from "../features/home/HomePolicySection";
 
 /* ─────────────────────────────────────────────
@@ -62,7 +63,7 @@ function HeroHeaderSection() {
   return (
     <div className="flex flex-col items-start w-full bg-[var(--color-background-primary)]">
       <HeroSliderHeader />
-      <div className="w-full px-[16px] sm:px-[24px] md:px-[64px]">
+    <div className="w-full px-[16px] sm:px-[24px] md:px-[64px] pt-6 sm:pt-8">
         <HeroFeatureCardsRow />
       </div>
     </div>
@@ -90,13 +91,9 @@ const capabilityMessages = [
 function PurpleCapabilityCardInner() {
   const [current, setCurrent] = useState(0);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % capabilityMessages.length);
-    }, 3500);
-
-    return () => clearInterval(interval);
-  }, []);
+  useInterval(() => {
+    setCurrent((prev) => (prev + 1) % capabilityMessages.length);
+  }, 3500);
 
   return (
     <div
@@ -201,7 +198,7 @@ function HeroFeatureCardsRow() {
         hidden: {},
         visible: { transition: { staggerChildren: 0.25 } },
       }}
-      className="content-stretch flex flex-col gap-[16px] sm:gap-[24px] items-start relative shrink-0 w-full"
+      className="content-stretch flex flex-col items-start relative shrink-0 w-full"
     >
       {/* Section heading */}
       <motion.div
@@ -213,7 +210,7 @@ function HeroFeatureCardsRow() {
         className="w-full flex flex-col items-center gap-3 pt-4 sm:pt-6 lg:pt-12"
       >
         <p
-          className="font-bold leading-[0.95] tracking-[-0.04em] text-center"
+          className="font-bold leading-[1.1] tracking-[-0.04em] text-center"
           style={{
             fontFamily: "var(--font-display)",
             fontSize: "clamp(32px, 5vw, 52px)",
@@ -228,7 +225,7 @@ function HeroFeatureCardsRow() {
         <div className="w-[180px] h-[4px] rounded-full mx-auto" style={{ background: "linear-gradient(90deg, #6B46C1 0%, #F6AD55 100%)" }} />
       </motion.div>
 
-      <div className="w-full mt-4 sm:mt-6 lg:mt-8">
+      <div className="w-full mt-4 sm:mt-6">
         <HomePolicySection />
       </div>
     </motion.div>
@@ -240,7 +237,7 @@ function HeroFeatureCardsRow() {
 ───────────────────────────────────────────── */
 function GlobalPresenceMapSection() {
   return (
-    <div className="w-full flex flex-col items-center justify-center relative bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] pt-10 sm:pt-12 md:pt-16 pb-0 overflow-hidden">
+    <div className="w-full flex flex-col items-center justify-center relative bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] pt-6 sm:pt-8 pb-0 overflow-hidden">
       {/* Decorative top accent */}
       <div
         className="absolute top-0 left-[10%] right-[10%] h-[3px] rounded-full"
@@ -360,10 +357,7 @@ const tickerItems = Array.from({ length: TICKER_REPEAT }, () => tickerWords).fla
 function VerticalTicker() {
   const [idx, setIdx] = useState(0);
 
-  useEffect(() => {
-    const timer = setInterval(() => setIdx((prev) => (prev + 1) % tickerWords.length), 2000);
-    return () => clearInterval(timer);
-  }, []);
+  useInterval(() => setIdx((prev) => (prev + 1) % tickerWords.length), 2000);
 
   const activePos = tickerWords.length + idx;
   const offsetY = activePos * WORD_H;
@@ -427,7 +421,7 @@ function VerticalTicker() {
 
 export function EducationStatusWrapper() {
   return (
-    <div className="w-full px-[16px] sm:px-[24px] md:px-[64px]">
+    <div className="w-full px-[16px] sm:px-[24px] md:px-[64px] pt-6 sm:pt-8">
       {/* ─── MAIN CLAY CARD ─── */}
       <div
         style={{
@@ -742,7 +736,7 @@ function FAQSectionContainer() {
         hidden: {},
         visible: { transition: { staggerChildren: 0.08 } },
       }}
-      className="flex flex-col items-center w-full px-[16px] sm:px-[24px] md:px-[64px]"
+      className="flex flex-col items-center w-full px-[16px] sm:px-[24px] md:px-[64px] pt-6 sm:pt-8"
     >
       <div className="content-stretch flex flex-col gap-[32px] items-center relative shrink-0 w-full max-w-[1044px]">
         {/* Title */}
@@ -796,7 +790,7 @@ function FAQSectionContainer() {
 
 export default function Homepage() {
   return (
-    <div className="ateion-metallic-bg w-full min-h-screen flex flex-col gap-[24px] sm:gap-[32px] md:gap-[60px]" data-name="Homepage">
+    <div className="ateion-metallic-bg w-full min-h-screen flex flex-col" data-name="Homepage">
       <Helmet>
         <title>Ateion — Reimagining Education with Capability-Based Learning</title>
         <meta name="description" content="Ateion is a capability-based education ecosystem that replaces memory-based assessment with real-world measurable skills." />
@@ -839,16 +833,6 @@ export default function Homepage() {
         <HeroHeaderSection />
       </motion.section>
 
-      {/* Ecosystem after Global Policy Alignment */}
-      <motion.section
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-      >
-        <EcosystemSection />
-      </motion.section>
-
       {/* 5. Global Presence Map */}
       <motion.section
         initial={{ opacity: 0, y: 30 }}
@@ -865,6 +849,7 @@ export default function Homepage() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+        style={{ contentVisibility: "auto", containIntrinsicSize: "auto 600px" }}
       >
         <EducationStatusWrapper />
       </motion.section>
@@ -875,12 +860,15 @@ export default function Homepage() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
+        style={{ contentVisibility: "auto", containIntrinsicSize: "auto 500px" }}
       >
         <FAQSectionContainer />
       </motion.section>
 
       {/* 8. Footer */}
-      <SharedFooter />
+      <div style={{ contentVisibility: "auto", containIntrinsicSize: "auto 400px" }}>
+        <SharedFooter />
+      </div>
     </div>
   );
 }

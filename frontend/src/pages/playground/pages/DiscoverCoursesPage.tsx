@@ -98,6 +98,8 @@ const AGE_GROUP_THEMES: Record<AgeGroupFilterId, {
   },
 };
 
+const CATEGORIES = ["AI", "Coding", "Languages", "Curious Kitty", "Finance", "Art", "Advanced Skills", "Mental Health"];
+
 const SORTS: { id: SortOption; label: string }[] = [
   { id: "popular", label: "Most popular" },
   { id: "rating", label: "Highest rated" },
@@ -176,7 +178,24 @@ export default function DiscoverCoursesPage() {
           </div>
         </div>
 
-        {/* 2. Age Group Quick Filters */}
+        {/* 2. Category Quick Filters */}
+        <div className="flex flex-wrap gap-2">
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => toggleArray(setSelectedTopics, cat)}
+              className={`px-3 py-1.5 rounded-full border text-xs font-bold transition-all cursor-pointer ${
+                selectedTopics.includes(cat)
+                  ? "bg-[var(--color-accent)] text-white border-[var(--color-accent)]"
+                  : "bg-[var(--color-background-secondary)] text-[var(--color-text-secondary)] border-[var(--color-border-light)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        {/* 3. Age Group Quick Filters */}
         <div className="flex flex-wrap gap-3">
           {AGE_GROUPS.map((group) => (
               <button
@@ -195,7 +214,7 @@ export default function DiscoverCoursesPage() {
           ))}
         </div>
 
-        {/* 3. Filter Bar */}
+        {/* 4. Filter Bar */}
         <FilterBar
             selectedDurations={selectedDurations}
             toggleDuration={(v) => toggleArray(setSelectedDurations, v)}
@@ -216,7 +235,7 @@ export default function DiscoverCoursesPage() {
             hasFilters={hasFilters}
         />
 
-        {/* 4. Course Grid with Popovers */}
+        {/* 5. Course Grid with Popovers */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-stretch auto-rows-fr">
           <AnimatePresence mode="popLayout">
             {displayCourses.map((course) => (

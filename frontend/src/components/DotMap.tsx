@@ -1,6 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import * as d3 from "d3";
-import * as topojson from "topojson-client";
 import { motion } from "framer-motion";
 
 const nodesData = [
@@ -25,6 +23,125 @@ const nodesData = [
 ];
 
 let globalCachedWorld: any = null;
+let dotsCanvas: OffscreenCanvas | null = null;
+let lastWidth = 0;
+let lastHeight = 0;
+
+function getThemeColor(ctx: CanvasRenderingContext2D, isDark: boolean) {
+  return isDark ? "rgba(255, 255, 255, 0.4)" : "rgba(0, 0, 0, 0.5)";
+}
+
+function renderDotsFromCache(canvas: HTMLCanvasElement, isDark: boolean) {
+  const ctx = canvas.getContext("2d");
+  if (!ctx || !dotsCanvas) return;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const width = canvas.width / dpr;
+  const height = canvas.height / dpr;
+
+  ctx.save();
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.scale(dpr, dpr);
+  ctx.drawImage(dotsCanvas, 0, 0);
+  ctx.fillStyle = getThemeColor(ctx, isDark);
+  ctx.globalCompositeOperation = "source-atop";
+  ctx.fillRect(0, 0, width, height);
+  ctx.globalCompositeOperation = "source-over";
+  ctx.restore();
+}
+
+async function renderMapCore(
+  width: number,
+  height: number,
+  isDark: boolean,
+  canvas: HTMLCanvasElement,
+) {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  canvas.width = width * dpr;
+  canvas.height = height * dpr;
+  canvas.style.width = `${width}px`;
+  canvas.style.height = `${height}px`;
+
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return [];
+  ctx.scale(dpr, dpr);
+
+  if (!globalCachedWorld) {
+    const response = await fetch(
+      "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json",
+    );
+    if (!response.ok) throw new Error("Failed to fetch map data");
+    globalCachedWorld = await response.json();
+  }
+
+  const world = globalCachedWorld;
+  const { geoPath, geoEquirectangular } = await import("d3");
+  const { feature } = await import("topojson-client");
+
+  const countries = feature(
+    world,
+    world.objects.countries as any,
+  ) as any;
+  if (!countries || !countries.features) return [];
+
+  countries.features = countries.features.filter(
+    (d: any) => d.id !== "010",
+  );
+
+  const projection = geoEquirectangular()
+    .fitSize([width, height], countries);
+
+  const positions = nodesData.map((node) => {
+    const [x, y] = projection(node.coords) || [0, 0];
+    return { ...node, x, y };
+  });
+
+  const offCanvas = new OffscreenCanvas(width, height);
+  const offCtx = offCanvas.getContext("2d");
+  if (!offCtx) return positions;
+
+  const path = geoPath().projection(projection).context(offCtx);
+  offCtx.fillStyle = "#fff";
+  offCtx.beginPath();
+  path(countries);
+  offCtx.fill();
+
+  const imageData = offCtx.getImageData(0, 0, width, height);
+  const data = imageData.data;
+  const imgWidth = imageData.width;
+
+  ctx.clearRect(0, 0, width, height);
+  ctx.fillStyle = getThemeColor(ctx, isDark);
+
+  const isMobile = width < 768;
+  const step = isMobile ? 12 : 8;
+  const dotRadius = 1.5;
+
+  const dotsOffCanvas = new OffscreenCanvas(width, height);
+  const dotsOffCtx = dotsOffCanvas.getContext("2d");
+  if (dotsOffCtx) {
+    for (let y = 0; y < height; y += step) {
+      for (let x = 0; x < width; x += step) {
+        const index = (y * imgWidth + x) * 4;
+        if (data[index + 3] > 128) {
+          dotsOffCtx.beginPath();
+          dotsOffCtx.arc(x, y, dotRadius, 0, Math.PI * 2);
+          dotsOffCtx.fill();
+        }
+      }
+    }
+    dotsCanvas = dotsOffCanvas;
+    lastWidth = width;
+    lastHeight = height;
+    ctx.drawImage(dotsCanvas, 0, 0);
+    ctx.fillStyle = getThemeColor(ctx, isDark);
+    ctx.globalCompositeOperation = "source-atop";
+    ctx.fillRect(0, 0, width, height);
+    ctx.globalCompositeOperation = "source-over";
+  }
+
+  return positions;
+}
 
 export default function DotMap() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -39,7 +156,6 @@ export default function DotMap() {
 
     const container = containerRef.current;
     const canvas = canvasRef.current;
-    
     let animationFrameId: number;
     let isMounted = true;
 
@@ -48,120 +164,39 @@ export default function DotMap() {
 
       const width = containerRef.current.offsetWidth;
       const height = containerRef.current.offsetHeight;
-
       if (width <= 0 || height <= 0) return;
 
-      const dpr = window.devicePixelRatio || 1;
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-      canvas.style.width = `${width}px`;
-      canvas.style.height = `${height}px`;
-
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return;
-      ctx.scale(dpr, dpr);
-
-      try {
-        if (!globalCachedWorld) {
-          const response = await fetch(
-            "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json",
-          );
-          if (!response.ok) throw new Error("Failed to fetch map data");
-          globalCachedWorld = await response.json();
-        }
-
-        const world = globalCachedWorld;
-        if (!isMounted || !world) return;
-
-        const countries = topojson.feature(
-          world,
-          world.objects.countries as any,
-        ) as any;
-        if (!countries || !countries.features) return;
-
-        countries.features = countries.features.filter(
-          (d: any) => d.id !== "010",
-        );
-
-        const projection = d3
-          .geoEquirectangular()
-          .fitSize([width, height], countries);
-
-        const positions = nodesData.map((node) => {
-          const [x, y] = projection(node.coords) || [0, 0];
-          return { ...node, x, y };
-        });
-
-        if (isMounted) setNodePositions(positions);
-
-        const offCanvas = document.createElement("canvas");
-        offCanvas.width = width;
-        offCanvas.height = height;
-        const offCtx = offCanvas.getContext("2d");
-        if (!offCtx) return;
-
-        const path = d3.geoPath().projection(projection).context(offCtx);
-
-        // Theme Support for Canvas
-        const isDark = document.documentElement.getAttribute("data-theme") === "dark";
-        
-        offCtx.fillStyle = isDark ? "#fff" : "#000";
-        offCtx.beginPath();
-        path(countries);
-        offCtx.fill();
-
-        const imageData = offCtx.getImageData(0, 0, width, height);
-        const data = imageData.data;
-        const imgWidth = imageData.width;
-
-        ctx.clearRect(0, 0, width, height);
-        
-        // Theme Support for Canvas Dots
-        ctx.fillStyle = isDark ? "rgba(255, 255, 255, 0.4)" : "rgba(0, 0, 0, 0.5)";
-
-        const step = 8;
-        const dotRadius = 1.5;
-
-        for (let y = 0; y < height; y += step) {
-          for (let x = 0; x < width; x += step) {
-            const index = (y * imgWidth + x) * 4;
-            if (data[index + 3] > 128) {
-              ctx.beginPath();
-              ctx.arc(x, y, dotRadius, 0, Math.PI * 2);
-              ctx.fill();
-            }
-          }
-        }
-      } catch (error) {
-        console.error("Error loading map data:", error);
-      }
+      const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+      const positions = await renderMapCore(width, height, isDark, canvas);
+      if (isMounted) setNodePositions(positions);
     };
 
     renderMap();
 
     const resizeObserver = new ResizeObserver(() => {
       cancelAnimationFrame(animationFrameId);
+      dotsCanvas = null;
       animationFrameId = requestAnimationFrame(renderMap);
     });
-
     resizeObserver.observe(container);
 
-    // Re-render when theme changes so canvas updates
-    const observer = new MutationObserver((mutations) => {
+    const themeObserver = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
-        if (mutation.attributeName === "data-theme") {
+        if (mutation.attributeName === "data-theme" && dotsCanvas && canvasRef.current) {
+          const isDark = document.documentElement.getAttribute("data-theme") === "dark";
           cancelAnimationFrame(animationFrameId);
-          animationFrameId = requestAnimationFrame(renderMap);
+          animationFrameId = requestAnimationFrame(() => {
+            if (canvasRef.current) renderDotsFromCache(canvasRef.current, isDark);
+          });
         }
       });
     });
-    
-    observer.observe(document.documentElement, { attributes: true });
+    themeObserver.observe(document.documentElement, { attributes: true });
 
     return () => {
       isMounted = false;
       resizeObserver.disconnect();
-      observer.disconnect();
+      themeObserver.disconnect();
       cancelAnimationFrame(animationFrameId);
     };
   }, []);
@@ -172,24 +207,12 @@ export default function DotMap() {
 
       <style>{`
         @keyframes ripple {
-          0% {
-            transform: scale(0.8);
-            opacity: 1;
-          }
-          100% {
-            transform: scale(2.4);
-            opacity: 0;
-          }
+          0% { transform: scale(0.8); opacity: 1; }
+          100% { transform: scale(2.4); opacity: 0; }
         }
-        .animate-ripple {
-          animation: ripple 3s infinite;
-        }
-        .animate-ripple-delay-1 {
-          animation: ripple 3s infinite 1s;
-        }
-        .animate-ripple-delay-2 {
-          animation: ripple 3s infinite 2s;
-        }
+        .animate-ripple { animation: ripple 3s infinite; }
+        .animate-ripple-delay-1 { animation: ripple 3s infinite 1s; }
+        .animate-ripple-delay-2 { animation: ripple 3s infinite 2s; }
       `}</style>
 
       {nodePositions.map((node) => (
@@ -204,7 +227,6 @@ export default function DotMap() {
           onMouseEnter={() => setHoveredNode(node.id)}
           onMouseLeave={() => setHoveredNode(null)}
         >
-          {/* Tooltip */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9, y: 10 }}
             animate={
@@ -224,10 +246,8 @@ export default function DotMap() {
             </div>
           </motion.div>
 
-          {/* Node core */}
           <div className="relative w-3 h-3 bg-[var(--color-accent)] rounded-full shadow-[0_0_15px_4px_var(--color-accent-light)] transition-transform duration-300 group-hover:scale-125" />
 
-          {/* Ripples */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div className="absolute w-12 h-12 border border-[var(--color-accent)]/40 rounded-full animate-ripple" />
             <div className="absolute w-12 h-12 border border-[var(--color-accent)]/30 rounded-full animate-ripple animate-ripple-delay-1" />

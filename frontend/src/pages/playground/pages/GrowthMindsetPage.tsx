@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Smile, Heart, Brain, Activity, Wind, Clock, ChevronRight,
@@ -7,9 +7,11 @@ import {
   Star, PenLine, Trash2
 } from "lucide-react";
 import { usePlayground } from "../shared/PlaygroundContext";
+import { useInterval } from "../../../app/components/hooks/use-interval";
 
 type TabId = "mental-health" | "stress" | "confidence";
 type BreathPhase = "inhale" | "hold" | "exhale" | "rest";
+type PowerPoseStep = "ready" | "posing" | "done";
 
 // ── Breathing engine ──────────────────────────────────────────
 const PATTERNS: Record<string, { label: string; seq: [BreathPhase, number][]; desc: string; color: string }> = {
@@ -46,10 +48,23 @@ function BreathingExercise() {
   const [phaseIdx, setPhaseIdx] = useState(0);
   const [elapsed, setElapsed] = useState(0);
   const [cycles, setCycles] = useState(0);
-  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const pattern = PATTERNS[patternKey];
   const [phase, duration] = pattern.seq[phaseIdx];
   const progress = elapsed / duration;
+
+  const [powerPoseOpen, setPowerPoseOpen] = useState(false);
+  const [powerPoseStep, setPowerPoseStep] = useState<PowerPoseStep>("ready");
+  const [powerPoseSeconds, setPowerPoseSeconds] = useState(120);
+
+  useEffect(() => {
+  if (powerPoseStep !== "posing") return;
+  if (powerPoseSeconds <= 0) {
+    setPowerPoseStep("done");
+    return;
+  }
+  const t = setTimeout(() => setPowerPoseSeconds(s => s - 1), 1000);
+  return () => clearTimeout(t);
+}, [powerPoseStep, powerPoseSeconds]);
 
   const tick = useCallback(() => {
     setElapsed(prev => {
@@ -66,14 +81,7 @@ function BreathingExercise() {
     });
   }, [pattern, phaseIdx]);
 
-  useEffect(() => {
-    if (running) {
-      intervalRef.current = setInterval(tick, 1000);
-    } else {
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    }
-    return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
-  }, [running, tick]);
+  useInterval(tick, running ? 1000 : null);
 
   const reset = () => {
     setRunning(false);
@@ -300,6 +308,21 @@ function ConfidenceTab() {
   const [winInput, setWinInput] = useState("");
   const [addingWin, setAddingWin] = useState(false);
 
+  const [powerPoseOpen, setPowerPoseOpen] = useState(false);
+  const [powerPoseStep, setPowerPoseStep] = useState<PowerPoseStep>("ready");
+  const [powerPoseSeconds, setPowerPoseSeconds] = useState(120);
+
+
+  useEffect(() => {
+  if (powerPoseStep !== "posing") return;
+  if (powerPoseSeconds <= 0) {
+    setPowerPoseStep("done");
+    return;
+  }
+  const t = setTimeout(() => setPowerPoseSeconds(s => s - 1), 1000);
+  return () => clearTimeout(t);
+  }, [powerPoseStep, powerPoseSeconds]);
+
   const nextAff = () => setAffIdx(i => (i + 1) % AFFIRMATIONS.length);
 
   const addWin = () => {
@@ -334,10 +357,17 @@ function ConfidenceTab() {
               </motion.p>
             </AnimatePresence>
           </div>
+
           <button onClick={nextAff}
             className="relative z-10 self-start mt-4 bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-xl text-xs font-bold transition-all backdrop-blur-md flex items-center gap-1.5">
             <Sparkles size={13} /> Next Affirmation
-          </button>
+          </button>  
+
+          <button className="shrink-0 px-3 py-2 rounded-xl bg-[var(--color-warning)]/15 text-[var(--color-warning)] text-xs font-bold hover:bg-[var(--color-warning)]/25 transition-colors">
+          Try
+          </button> 
+
+
         </div>
 
         {/* Power posing */}
@@ -349,10 +379,76 @@ function ConfidenceTab() {
             <p className="text-sm font-bold text-[var(--color-text-primary)]">Power Posing</p>
             <p className="text-xs text-[var(--color-text-secondary)] mt-0.5">2 mins before interviews. Raises testosterone, lowers cortisol.</p>
           </div>
-          <button className="shrink-0 px-3 py-2 rounded-xl bg-[var(--color-warning)]/15 text-[var(--color-warning)] text-xs font-bold hover:bg-[var(--color-warning)]/25 transition-colors">
+          {/* <button className="shrink-0 px-3 py-2 rounded-xl bg-[var(--color-warning)]/15 text-[var(--color-warning)] text-xs font-bold hover:bg-[var(--color-warning)]/25 transition-colors">
             Try
+          </button> */}
+
+          <button onClick={() => setPowerPoseOpen(true)} className="shrink-0 px-3 py-2 rounded-xl bg-[var(--color-warning)]/15 text-[var(--color-warning)] text-xs font-bold hover:bg-[var(--color-warning)]/25 transition-colors">
+          Try
           </button>
+
+
+          {/* Power Posing Modal */}
+          {powerPoseOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+              onClick={() => { setPowerPoseOpen(false); setPowerPoseStep("ready"); setPowerPoseSeconds(120); }}>
+              <div className="bg-[var(--color-background-primary)] rounded-2xl p-6 max-w-sm w-full mx-4 border border-[var(--color-border-light)]"
+                onClick={e => e.stopPropagation()}>
+
+                {powerPoseStep === "ready" && (
+                  <div className="flex flex-col items-center gap-4 text-center">
+                    <div className="w-16 h-16 rounded-2xl bg-[var(--color-warning)]/15 flex items-center justify-center">
+                      <Zap size={32} className="text-[var(--color-warning)]" />
+                    </div>
+                    <h3 className="text-lg font-bold text-[var(--color-text-primary)]">Power Posing</h3>
+                    <p className="text-sm text-[var(--color-text-secondary)]">
+                      Stand tall. Feet shoulder-width apart. Hands on hips or raised in a V. Hold for 2 minutes.
+                      Research shows this raises testosterone and lowers cortisol.
+                    </p>
+                    <button onClick={() => setPowerPoseStep("posing")}
+                      className="w-full py-3 rounded-xl bg-[var(--color-warning)] text-white font-bold text-sm">
+                      Start 2-Minute Timer
+                    </button>
+                  </div>
+                )}
+
+                {powerPoseStep === "posing" && (
+                  <div className="flex flex-col items-center gap-4 text-center">
+                    <div className="w-20 h-20 rounded-full bg-[var(--color-warning)]/15 flex items-center justify-center">
+                      <span className="text-3xl font-bold text-[var(--color-warning)]">
+                        {Math.floor(powerPoseSeconds / 60)}:{String(powerPoseSeconds % 60).padStart(2, "0")}
+                      </span>
+                    </div>
+                    <p className="text-sm font-bold text-[var(--color-text-primary)]">Hold your pose — you've got this!</p>
+                    <p className="text-xs text-[var(--color-text-secondary)]">Chin up. Chest out. Own the room.</p>
+                    <button onClick={() => { setPowerPoseOpen(false); setPowerPoseStep("ready"); setPowerPoseSeconds(120); }}
+                      className="text-xs text-[var(--color-text-tertiary)] underline">
+                      Cancel
+                    </button>
+                  </div>
+                )}
+
+                {powerPoseStep === "done" && (
+                  <div className="flex flex-col items-center gap-4 text-center">
+                    <div className="w-16 h-16 rounded-2xl bg-[var(--color-success)]/15 flex items-center justify-center">
+                      <ShieldCheck size={32} className="text-[var(--color-success)]" />
+                    </div>
+                    <h3 className="text-lg font-bold text-[var(--color-text-primary)]">You're ready! 💪</h3>
+                    <p className="text-sm text-[var(--color-text-secondary)]">
+                      Your body chemistry has shifted. Walk in with confidence.
+                    </p>
+                    <button onClick={() => { setPowerPoseOpen(false); setPowerPoseStep("ready"); setPowerPoseSeconds(120); }}
+                      className="w-full py-3 rounded-xl bg-[var(--color-success)] text-white font-bold text-sm">
+                      Done
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
         </div>
+
       </div>
 
       {/* Small wins log */}
@@ -535,7 +631,6 @@ export default function GrowthMindsetPage() {
                     { title: "Box Breathing", desc: "3 mins · Reduce anxiety", icon: Wind, color: "var(--color-info)" },
                     { title: "Guided Meditation", desc: "10 mins · Regain focus", icon: Smile, color: "var(--color-success)" },
                     { title: "Gratitude Journal", desc: "5 mins · Evening reflection", icon: Heart, color: "var(--color-accent)" },
-                    { title: "Body Scan", desc: "7 mins · Release tension", icon: Activity, color: "var(--color-warning)" },
                   ].map((item, i) => {
                     const Icon = item.icon;
                     return (
