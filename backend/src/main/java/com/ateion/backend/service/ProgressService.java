@@ -71,7 +71,11 @@ public class ProgressService {
                 .id(video.getId())
                 .title(video.getTitle())
                 .videoId(includeVideoId ? video.getVideoId() : null)
-                .durationSeconds(video.getDurationSeconds())
+                .durationSeconds(
+                        video.getDurationSeconds() != null
+                                ? video.getDurationSeconds().intValue()
+                                : 0
+                )
                 .moduleId(video.getModule() != null ? video.getModule().getId() : null)
                 .build();
     }

@@ -81,7 +81,7 @@ export default function CoursePreviewPopover({
                   transition={{ type: "spring", stiffness: 350, damping: 25 }}
                   className={`absolute top-1/2 -translate-y-1/2 w-[360px] bg-[var(--color-background-secondary)] rounded-2xl shadow-[0_24px_80px_rgba(0,0,0,0.22)] border border-[var(--color-border-medium)] ${
                       position === "right" ? "left-full ml-4" : "right-full mr-4"
-                  } z- cursor-default`}
+                  } z-50 cursor-default`}
               >
                 <div
                     className={`absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-[var(--color-background-secondary)] transform rotate-45 ${
