@@ -5,11 +5,14 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
-@Getter @Setter @Builder @NoArgsConstructor @AllArgsConstructor
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "videos")
 public class Videos {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,24 +20,21 @@ public class Videos {
     @Column(nullable = false)
     private String title;
 
-    // YouTube Video ID (e.g. "ho32JRawRpw") — NOT the full URL
-    @Column(name = "video_id", nullable = false, length = 20)
+    @Column(nullable = false, unique = true)
     private String videoId;
 
-    // Keep videoUrl as nullable for future migration to R2/Vimeo
-    @Column(name = "video_url")
-    private String videoUrl;
+    private String thumbnailUrl;
 
-    private Integer durationSeconds;  // FIXED: removed duplicate declaration
+    // CRITICAL FIX: Must be Long to prevent JpaSystemException from PostgreSQL BIGINT
+    private Long durationSeconds;
+
+    private Integer videoOrder;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "module_id")
     private Module module;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "playlist_id")
-    private Playlist playlist;
-
     @CreationTimestamp
+    @Column(updatable = false)
     private LocalDateTime createdAt;
 }

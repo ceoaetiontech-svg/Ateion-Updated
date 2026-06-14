@@ -5,11 +5,14 @@ import com.ateion.backend.entity.UserProgress;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
+
 @Repository
 public interface UserProgressRepository extends JpaRepository<UserProgress, Long> {
     // Counts how many free videos the user has consumed
-    long countByUserId(Long userId); 
-    
+    long countByUserId(Long userId);
+
     // Checks if they are just re-watching a video they already unlocked
-    boolean existsByUserIdAndVideoId(Long userId, Long videoId); 
+    boolean existsByUserIdAndVideoId(Long userId, Long videoId);
+    long deleteByVideoIdIn(Collection<Long> videoIds);
 }

@@ -34,25 +34,18 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtUtil jwtUtil;
+    private final UserRepository userRepository;
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                                .requestMatchers(
-                                        "/api/auth/**",
-                                        "/api/ping",
-                                        "/api/videos/**"
-                                ).permitAll()
-//                        .anyRequest().authenticated()
+                        // ADDED: "/api/admin/**" to the whitelist to permit the YouTube preview endpoint
+                        .requestMatchers("/api/auth/**", "/api/contact/**", "/api/admin/**").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
 
@@ -60,40 +53,46 @@ public class SecurityConfig {
     }
 
     @Bean
-    public OncePerRequestFilter jwtAuthFilter() {
-        return new OncePerRequestFilter() {
-            @Override
-            protected void doFilterInternal(HttpServletRequest req,
-                                            HttpServletResponse res,
-                                            FilterChain chain) throws ServletException, IOException {
-                String header = req.getHeader("Authorization");
-                if (header != null && header.startsWith("Bearer ")) {
-                    String token = header.substring(7);
-                    try {
-                        if (jwtUtil.validateToken(token)) {
-                            String email = jwtUtil.extractEmail(token);
-                            UsernamePasswordAuthenticationToken auth =
-                                    new UsernamePasswordAuthenticationToken(email, null, Collections.emptyList());
-                            SecurityContextHolder.getContext().setAuthentication(auth);
-                        }
-                    } catch (Exception ignored) {}
-                }
-                chain.doFilter(req, res);
-            }
-        };
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
-        // FIXED: single source of truth for CORS — WebConfig.java should be deleted
-        config.setAllowedOrigins(List.of("https://www.ateion.com", "http://localhost:5173", "http://localhost:3000"));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("*"));
-        config.setAllowCredentials(true);
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOriginPatterns(Collections.singletonList("*"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Collections.singletonList("*"));
+        configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
+        source.registerCorsConfiguration("/**", configuration);
         return source;
+    }
+
+    @Bean
+    public OncePerRequestFilter jwtAuthFilter() {
+        return new OncePerRequestFilter() {
+            @Override
+            protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+                    throws ServletException, IOException {
+                String authHeader = request.getHeader("Authorization");
+                if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                    String token = authHeader.substring(7);
+                    try {
+                        String email = jwtUtil.extractEmail(token);
+                        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                            // Authenticate the user context if the token is valid
+                            UsernamePasswordAuthenticationToken authToken =
+                                    new UsernamePasswordAuthenticationToken(email, null, Collections.emptyList());
+                            SecurityContextHolder.getContext().setAuthentication(authToken);
+                        }
+                    } catch (Exception e) {
+                        // Invalid or expired token; ignore and let Spring Security handle the rejection
+                    }
+                }
+                filterChain.doFilter(request, response);
+            }
+        };
     }
 }

@@ -13,16 +13,18 @@ import {
   Calendar,
   FileText,
   Milestone,
+  type LucideIcon,
 } from "lucide-react";
 
 export interface NavItem {
   title: string;
- icon: React.ComponentType<{ size?: number | string }>;  path: string;
+  icon: LucideIcon;
+  path: string;
 }
 
 export interface NavSection {
   title: string;
-   icon: React.ComponentType<{ size?: number | string }>;
+  icon: LucideIcon;
   items: NavItem[];
 }
 

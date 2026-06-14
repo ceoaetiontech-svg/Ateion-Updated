@@ -39,7 +39,11 @@ public class VideoService {
         Videos video = Videos.builder()
                 .title(dto.getTitle())
                 .videoId(dto.getVideoId())
-                .durationSeconds(dto.getDurationSeconds())
+                .durationSeconds(
+                        dto.getDurationSeconds() != null
+                                ? dto.getDurationSeconds().longValue()
+                                : 0L
+                )
                 .module(module)
                 .build();
 
@@ -52,7 +56,11 @@ public class VideoService {
 
         video.setTitle(dto.getTitle());
         video.setVideoId(dto.getVideoId());
-        video.setDurationSeconds(dto.getDurationSeconds());
+        video.setDurationSeconds(
+                dto.getDurationSeconds() != null
+                        ? dto.getDurationSeconds().longValue()
+                        : 0L
+        );
 
         if (dto.getModuleId() != null) {
             Module module = moduleRepository.findById(dto.getModuleId())
@@ -77,8 +85,16 @@ public class VideoService {
                 .id(video.getId())
                 .title(video.getTitle())
                 .videoId(video.getVideoId())
-                .durationSeconds(video.getDurationSeconds())
-                .moduleId(video.getModule() != null ? video.getModule().getId() : null)
+                .durationSeconds(
+                        video.getDurationSeconds() != null
+                                ? video.getDurationSeconds().intValue()
+                                : 0
+                )
+                .moduleId(
+                        video.getModule() != null
+                                ? video.getModule().getId()
+                                : null
+                )
                 .build();
     }
 }
