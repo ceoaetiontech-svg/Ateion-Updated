@@ -23,6 +23,11 @@ import {
   Languages,
   BarChart2,
   PlayCircle,
+  Bot,
+  Code,
+  Cat,
+  DollarSign,
+  Palette,
 } from "lucide-react";
 import { staggerContainer, fadeUpItem } from "../shared/types";
 import { usePlayground } from "../shared/PlaygroundContext";
@@ -32,10 +37,27 @@ import { getTopicColor } from "../shared/topicColors";
 import { courseMatchesAgeGroup } from "../shared/courseAgeGroups";
 import CoursePreviewPopover from "../components/CoursePreviewPopover";
 
+const CATEGORIES = [
+  { name: "AI", icon: Bot },
+  { name: "Coding", icon: Code },
+  { name: "Languages", icon: Languages },
+  { name: "Curious Kitty", icon: Cat },
+  { name: "Finance", icon: DollarSign },
+  { name: "Art", icon: Palette },
+  { name: "Advanced Skills", icon: Award },
+  { name: "Mental Health", icon: Heart },
+];
+
 export default function MyCoursesPage() {
   const { courseQuery, setCourseQuery, activeAgeGroup, setActiveAgeGroup, savedIds, toggleSave, enrolledIds, courseAccess } = usePlayground();
   const { allCourses, lastResume, myCourses } = useCourses(courseQuery, enrolledIds, courseAccess);
   const navigate = useNavigate();
+  const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
+  const [tab, setTab] = useState<"in-progress" | "saved" | "completed">("in-progress");
+
+  const toggleTopic = (topic: string) => {
+    setSelectedTopics(prev => prev.includes(topic) ? prev.filter(t => t !== topic) : [...prev, topic]);
+  };
 
   const filtered = allCourses.filter(c =>
     (c.title.toLowerCase().includes(courseQuery.toLowerCase()) ||
@@ -43,10 +65,9 @@ export default function MyCoursesPage() {
     courseMatchesAgeGroup(c, activeAgeGroup)
   );
 
-  const inProgress = myCourses.filter(c => c.progress < 100);
-  const savedCourses = filtered.filter(c => savedIds.includes(c.id));
-  const completedCourses = myCourses.filter(c => c.progress === 100);
-  const [tab, setTab] = useState<"in-progress" | "saved" | "completed">("in-progress");
+  const inProgress = myCourses.filter(c => c.progress < 100).filter(c => selectedTopics.length === 0 || c.topics.some(t => selectedTopics.includes(t)));
+  const savedCourses = filtered.filter(c => savedIds.includes(c.id)).filter(c => selectedTopics.length === 0 || c.topics.some(t => selectedTopics.includes(t)));
+  const completedCourses = myCourses.filter(c => c.progress === 100).filter(c => selectedTopics.length === 0 || c.topics.some(t => selectedTopics.includes(t)));
 
   return (
     <div className="flex w-full max-w-full min-w-0 flex-col gap-6 overflow-hidden">
@@ -171,6 +192,27 @@ export default function MyCoursesPage() {
               <span className="min-w-0 text-center leading-tight">{t.label}</span>
             </button>
           ))}
+        </div>
+
+        {/* Category Quick Filters */}
+        <div className="flex flex-wrap gap-2">
+          {CATEGORIES.map((cat) => {
+            const Icon = cat.icon;
+            return (
+              <button
+                key={cat.name}
+                onClick={() => toggleTopic(cat.name)}
+                className={`px-3 py-1.5 rounded-full border text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                  selectedTopics.includes(cat.name)
+                    ? "bg-[var(--color-accent)] text-white border-[var(--color-accent)]"
+                    : "bg-[var(--color-background-secondary)] text-[var(--color-text-secondary)] border-[var(--color-border-light)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+                }`}
+              >
+                <Icon size={14} className="animate-pulse" />
+                {cat.name}
+              </button>
+            );
+          })}
         </div>
 
         {/* Age Segment Filter Tabs */}
