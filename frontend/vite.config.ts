@@ -35,13 +35,12 @@ export default defineConfig({
       output: {
         manualChunks: {
           "react-vendor": ["react", "react-dom", "react-router"],
-          "ui-vendor": ["framer-motion", "lucide-react", "recharts", "d3"],
+          "ui-vendor": ["framer-motion", "lucide-react"],
           "radix-vendor": [
-            "@radix-ui/react-accordion",
             "@radix-ui/react-dialog",
-            "@radix-ui/react-dropdown-menu",
-            "@radix-ui/react-popover",
-            "@radix-ui/react-select",
+            "@radix-ui/react-separator",
+            "@radix-ui/react-slot",
+            "@radix-ui/react-tooltip",
           ],
         },
       },

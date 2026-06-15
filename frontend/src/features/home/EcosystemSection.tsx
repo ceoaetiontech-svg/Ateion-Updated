@@ -578,8 +578,8 @@ export default function EcosystemSection() {
   const desktopFrameRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const updateScales = () => {
-      const frameWidth = desktopFrameRef.current?.clientWidth ?? window.innerWidth;
+    const updateScales = (frameWidth?: number) => {
+      if (!frameWidth) frameWidth = desktopFrameRef.current?.clientWidth ?? window.innerWidth;
       const availableWidth = Math.max(320, frameWidth - DESKTOP_SAFE_PADDING * 2 - 64);
       setDesktopScale(
         Math.min(
@@ -589,20 +589,25 @@ export default function EcosystemSection() {
       );
     };
 
-    updateScales();
-    const observer =
-      typeof ResizeObserver !== "undefined"
-        ? new ResizeObserver(updateScales)
-        : null;
+    const rect = desktopFrameRef.current?.getBoundingClientRect();
+    updateScales(rect ? Math.floor(rect.width) : undefined);
+
+          const observer =
+    typeof ResizeObserver !== "undefined"
+      ? new ResizeObserver((entries) => {
+          const entry = entries[0];
+          if (entry) {
+            updateScales(Math.floor(entry.contentRect.width));
+          }
+        })
+      : null;
 
     if (desktopFrameRef.current && observer) {
       observer.observe(desktopFrameRef.current);
     }
 
-    window.addEventListener("resize", updateScales);
     return () => {
       observer?.disconnect();
-      window.removeEventListener("resize", updateScales);
     };
   }, [DESKTOP_CONTENT_WIDTH, DESKTOP_MAX_SCALE, DESKTOP_MIN_SCALE, DESKTOP_SAFE_PADDING]);
 
