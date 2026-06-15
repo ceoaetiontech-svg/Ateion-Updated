@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
 import svgPaths from "../../pages/svg-paths";
 
@@ -91,7 +91,7 @@ function GcoFeatureBadge({
         onClick={() => {
           if (activeData.id === "gco") navigate("/gco");
           if (activeData.id === "playground") navigate("/playground");
-          if (activeData.id === "vouch") navigate("/contact");
+          if (activeData.id === "psychometric") window.location.assign("https://www.ateion.com/psychometric-assessment");
           if (activeData.id === "ateion") navigate("/contact");
         }}
         onKeyDown={(e) => { 
@@ -99,7 +99,7 @@ function GcoFeatureBadge({
             e.preventDefault(); 
             if (activeData.id === "gco") navigate("/gco"); 
             if (activeData.id === "playground") navigate("/playground");
-            if (activeData.id === "vouch") navigate("/contact");
+            if (activeData.id === "psychometric") window.location.assign("https://www.ateion.com/psychometric-assessment");
             if (activeData.id === "ateion") navigate("/contact");
           } 
         }}
@@ -417,7 +417,7 @@ function EcosystemCluster({
         isDark={true}
         gradientId="gcoGrad"
         title="GCO"
-        description="From early AI PlayGround to the Global Capability Olympiad, and emerging initiatives like VOUCH."
+        description="From early AI PlayGround to the Global Capability Olympiad, with psychometric readiness tools."
         titleSize="38px"
         descSize="14px"
         onClick={() => {
@@ -438,13 +438,13 @@ function EcosystemCluster({
         hoverDescColor="var(--ecosystem-bubble-hover-description)"
         isDark={true}
         gradientId="ateionGrad"
-        title="Vouch"
-        description="A way to get trusted proof of what you’ve accomplished."
-        titleSize="29px"
+        title="Psychometric Tests"
+        description="Discover strengths, mindset, and learning style."
+        titleSize="24px"
         descSize="14px"
         onClick={() => {
-          onBubbleClick("vouch");
-          navigate("/contact");
+          onBubbleClick("psychometric");
+          window.location.assign("https://www.ateion.com/psychometric-assessment");
         }}
       />
 
@@ -482,7 +482,7 @@ function MobileEcosystemCluster({
       id: "gco",
       title: "GCO",
       description:
-        "From early AI PlayGround to the Global Capability Olympiad, and emerging initiatives like VOUCH.",
+        "From early AI PlayGround to the Global Capability Olympiad, with psychometric readiness tools.",
       circleColor: "var(--color-accent)",
       textColor: "white",
     },
@@ -495,10 +495,10 @@ function MobileEcosystemCluster({
       textColor: "white",
     },
     {
-      id: "vouch",
-      title: "Vouch",
+      id: "psychometric",
+      title: "Psychometric Tests",
       description:
-        "A way to get trusted proof of what you\u2019ve accomplished.",
+        "Discover strengths, mindset, and learning style.",
       circleColor: "var(--color-text-secondary)",
       textColor: "white",
     },
@@ -525,6 +525,7 @@ function MobileEcosystemCluster({
             onBubbleClick(b.id);
             if (b.id === "gco") navigate("/gco");
             else if (b.id === "playground") navigate("/playground");
+            else if (b.id === "psychometric") window.location.assign("https://www.ateion.com/psychometric-assessment");
             else navigate("/contact");
           }}
         >
@@ -568,15 +569,18 @@ export default function EcosystemSection() {
   const DESKTOP_BADGE_WIDTH = 392;
   const DESKTOP_GAP = 64;
   const DESKTOP_CONTENT_WIDTH = DESKTOP_BADGE_WIDTH + DESKTOP_GAP + CANVAS_WIDTH;
-  const DESKTOP_MAX_SCALE = 0.78;
-  const DESKTOP_MIN_SCALE = 0.64;
+  const DESKTOP_SAFE_PADDING = 28;
+  const DESKTOP_MAX_SCALE = 0.66;
+  const DESKTOP_MIN_SCALE = 0.44;
 
   const [activeId, setActiveId] = useState("gco");
   const [desktopScale, setDesktopScale] = useState(DESKTOP_MAX_SCALE);
+  const desktopFrameRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const updateScales = () => {
-      const availableWidth = window.innerWidth - 96;
+      const frameWidth = desktopFrameRef.current?.clientWidth ?? window.innerWidth;
+      const availableWidth = Math.max(320, frameWidth - DESKTOP_SAFE_PADDING * 2 - 64);
       setDesktopScale(
         Math.min(
           DESKTOP_MAX_SCALE,
@@ -586,9 +590,21 @@ export default function EcosystemSection() {
     };
 
     updateScales();
+    const observer =
+      typeof ResizeObserver !== "undefined"
+        ? new ResizeObserver(updateScales)
+        : null;
+
+    if (desktopFrameRef.current && observer) {
+      observer.observe(desktopFrameRef.current);
+    }
+
     window.addEventListener("resize", updateScales);
-    return () => window.removeEventListener("resize", updateScales);
-  }, [DESKTOP_CONTENT_WIDTH, DESKTOP_MAX_SCALE, DESKTOP_MIN_SCALE]);
+    return () => {
+      observer?.disconnect();
+      window.removeEventListener("resize", updateScales);
+    };
+  }, [DESKTOP_CONTENT_WIDTH, DESKTOP_MAX_SCALE, DESKTOP_MIN_SCALE, DESKTOP_SAFE_PADDING]);
 
   const ecosystemData = {
     gco: {
@@ -596,7 +612,7 @@ export default function EcosystemSection() {
       number: "01",
       title: "Global Capability Olympiad (GCO)",
       description:
-        "From early AI PlayGround to the Global Capability Olympiad, and emerging initiatives like VOUCH.",
+        "From early AI PlayGround to the Global Capability Olympiad, with psychometric readiness tools.",
       hasTags: true,
     },
     ateion: {
@@ -614,12 +630,12 @@ export default function EcosystemSection() {
       description: "",
       hasTags: false,
     },
-    vouch: {
-      id: "vouch",
+    psychometric: {
+      id: "psychometric",
       number: "04",
-      title: "Vouch",
+      title: "Psychometric Tests",
       description:
-        "A way to get trusted proof of what you’ve accomplished.",
+        "Discover strengths, mindset, and learning style through guided assessments.",
       hasTags: false,
     },
     playground: {
@@ -637,10 +653,11 @@ export default function EcosystemSection() {
   return (
     // `relative` + `w-full` + explicit padding ensures the section occupies
     // real document space so the next sibling renders below it — no overlap.
-    <section className="relative w-full overflow-x-hidden overflow-y-visible bg-[var(--color-background-primary)] px-4 py-12 sm:py-14 lg:py-16">
+    <section className="relative w-full px-4 py-8 sm:px-6 sm:py-10 md:px-10 lg:py-12">
+      <div className="relative mx-auto w-full max-w-[1120px] overflow-visible bg-transparent pt-8 pb-6 shadow-none sm:pt-10 sm:pb-8 lg:pt-12 lg:pb-10">
       {/* Section title */}
-      <div className="flex flex-col items-center w-full mb-[24px] sm:mb-[32px] lg:mb-[36px]">
-        <p className="font-bold text-[36px] sm:text-[48px] md:text-[58px] text-[var(--color-text-primary)] text-center tracking-[-0.05em] leading-[0.95]" style={{ fontFamily: "var(--font-display)" }}>
+      <div className="relative z-10 flex flex-col items-center w-full mb-[20px] sm:mb-[26px] lg:mb-[30px] px-4">
+        <p className="font-bold text-[34px] sm:text-[44px] md:text-[52px] text-[var(--color-text-primary)] text-center tracking-[-0.05em] leading-[0.95]" style={{ fontFamily: "var(--font-display)" }}>
           Ateion as an Ecosystem
         </p>
         <div className="flex items-center gap-3 mt-4">
@@ -661,7 +678,7 @@ export default function EcosystemSection() {
       */}
 
       {/* Mobile: stacked */}
-      <div className="lg:hidden mx-auto flex w-full max-w-[720px] flex-col items-start gap-[40px] px-2 sm:px-6">
+      <div className="relative z-10 lg:hidden mx-auto flex w-full max-w-[720px] flex-col items-start gap-[40px] px-4 sm:px-6">
         <GcoFeatureBadge activeData={activeData} />
 
         <MobileEcosystemCluster onBubbleClick={setActiveId} />
@@ -669,18 +686,21 @@ export default function EcosystemSection() {
 
       {/* Desktop: side-by-side, scaled visually and sized physically so it never clips. */}
       <div
-        className="hidden lg:flex w-full justify-center overflow-visible"
+        ref={desktopFrameRef}
+        className="relative z-10 hidden lg:flex w-full justify-center overflow-hidden px-6 xl:px-8"
       >
         <div
           className="relative"
           style={{
-            width: DESKTOP_CONTENT_WIDTH * desktopScale,
-            height: CANVAS_HEIGHT * desktopScale,
+            width: DESKTOP_CONTENT_WIDTH * desktopScale + DESKTOP_SAFE_PADDING * 2,
+            height: CANVAS_HEIGHT * desktopScale + DESKTOP_SAFE_PADDING * 2,
           }}
         >
           <div
-            className="absolute left-0 top-0 flex flex-row items-center gap-[64px]"
+            className="absolute flex flex-row items-center gap-[64px]"
             style={{
+              left: DESKTOP_SAFE_PADDING,
+              top: DESKTOP_SAFE_PADDING,
               width: DESKTOP_CONTENT_WIDTH,
               height: CANVAS_HEIGHT,
               transform: `scale(${desktopScale})`,
@@ -691,6 +711,7 @@ export default function EcosystemSection() {
             <EcosystemCluster onBubbleClick={setActiveId} />
           </div>
         </div>
+      </div>
       </div>
     </section>
   );

@@ -30,6 +30,7 @@ import SharedNavbar from "../app/components/SharedNavbar";
 
 
 import HomePolicySection from "../features/home/HomePolicySection";
+import EcosystemSection from "../features/home/EcosystemSection";
 
 /* ─────────────────────────────────────────────
    UTILITY COMPONENTS
@@ -831,6 +832,16 @@ export default function Homepage() {
         transition={{ duration: 1, ease: "easeOut" }}
       >
         <HeroHeaderSection />
+      </motion.section>
+
+      {/* 4. Ateion ecosystem */}
+      <motion.section
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        <EcosystemSection />
       </motion.section>
 
       {/* 5. Global Presence Map */}
