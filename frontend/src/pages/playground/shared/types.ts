@@ -45,6 +45,7 @@ export interface Course {
   topics: string[];
   enrollments: number;
   createdAt: number;
+  previewModuleId: number | null;
   isEnrolled?: boolean;
 }
 

@@ -10,19 +10,22 @@ import com.ateion.backend.repository.VideoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/content")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "*", maxAge = 3600)
 public class CourseController {
 
     private final CourseRepository courseRepository;
@@ -31,20 +34,40 @@ public class CourseController {
 
     @GetMapping("/courses")
     public ResponseEntity<List<Map<String, Object>>> getAllCourses() {
-        List<Map<String, Object>> response = courseRepository.findAll().stream().map(c -> {
-            Map<String, Object> map = new LinkedHashMap<>();
-            map.put("id", c.getId());
-            map.put("title", c.getTitle());
-            map.put("description", c.getDescription() != null ? c.getDescription() : "");
-            map.put("category", c.getCategory() != null ? c.getCategory() : "technology");
-            map.put("ageSegment", c.getAgeSegment() != null ? c.getAgeSegment() : "All Levels");
-            map.put("isFree", c.getIsFree() != null ? c.getIsFree() : true);
-            map.put("price", c.getPrice() != null ? c.getPrice() : "0");
-            map.put("image", c.getImage() != null ? c.getImage() : "");
-            map.put("rating", c.getRating() != null ? c.getRating() : 5.0);
-            map.put("enrollments", c.getEnrollments() != null ? c.getEnrollments() : 0);
-            return map;
-        }).collect(Collectors.toList());
+        List<Course> courses = courseRepository.findAllByOrderByCreatedAtDesc();
+        List<Long> courseIds = courses.stream().map(Course::getId).toList();
+
+        Map<Long, VideoRepository.CourseVideoSummary> videoSummaries = courseIds.isEmpty()
+                ? Map.of()
+                : videoRepository.summarizeByCourseIds(courseIds)
+                .stream()
+                .collect(Collectors.toMap(
+                        VideoRepository.CourseVideoSummary::getCourseId,
+                        Function.identity()
+                ));
+
+        List<Map<String, Object>> response = courses.stream()
+                .map(course -> {
+                    VideoRepository.CourseVideoSummary videoSummary = videoSummaries.get(course.getId());
+
+                    Map<String, Object> map = new LinkedHashMap<>();
+                    map.put("id", course.getId());
+                    map.put("title", course.getTitle());
+                    map.put("description", course.getDescription() != null ? course.getDescription() : "");
+                    map.put("category", course.getCategory() != null ? course.getCategory() : "General");
+                    map.put("ageSegment", course.getAgeSegment() != null ? course.getAgeSegment() : "All Levels");
+                    map.put("isFree", course.getIsFree() != null ? course.getIsFree() : Boolean.TRUE);
+                    map.put("price", course.getPrice() != null ? course.getPrice() : "0");
+                    map.put("image", course.getImage() != null ? course.getImage() : "");
+                    map.put("rating", course.getRating() != null ? course.getRating() : 5.0);
+                    map.put("enrollments", course.getEnrollments() != null ? course.getEnrollments() : 0);
+                    map.put("createdAt", course.getCreatedAt());
+                    map.put("videoCount", videoSummary != null ? videoSummary.getVideoCount() : 0L);
+                    map.put("previewModuleId", videoSummary != null ? videoSummary.getPreviewModuleId() : null);
+                    return map;
+                })
+                .toList();
+
         return ResponseEntity.ok(response);
     }
 
@@ -60,26 +83,31 @@ public class CourseController {
         List<Module> modules = moduleRepository.findByCourseId(course.getId());
         List<CourseFullDTO.ModuleDTO> moduleDTOs = new ArrayList<>();
 
-        for (Module mod : modules) {
-            CourseFullDTO.ModuleDTO modDTO = new CourseFullDTO.ModuleDTO();
-            modDTO.setId(mod.getId());
-            modDTO.setTitle(mod.getTitle());
+        for (Module module : modules) {
+            CourseFullDTO.ModuleDTO moduleDTO = new CourseFullDTO.ModuleDTO();
+            moduleDTO.setId(module.getId());
+            moduleDTO.setTitle(module.getTitle());
 
-            List<Videos> videos = videoRepository.findByModuleIdOrderByVideoOrderAsc(mod.getId());
+            List<Videos> videos = videoRepository.findByModuleIdOrderByVideoOrderAsc(module.getId());
             List<CourseFullDTO.VideoDTO> videoDTOs = new ArrayList<>();
 
-            for (Videos vid : videos) {
-                CourseFullDTO.VideoDTO vidDTO = new CourseFullDTO.VideoDTO();
-                vidDTO.setId(vid.getId());
-                vidDTO.setTitle(vid.getTitle());
-                // Safely cast Database BIGINT to Frontend Integer
-                vidDTO.setDurationSeconds(vid.getDurationSeconds() != null ? vid.getDurationSeconds().intValue() : 0);
-                vidDTO.setVideoOrder(vid.getVideoOrder());
-                videoDTOs.add(vidDTO);
+            for (Videos video : videos) {
+                CourseFullDTO.VideoDTO videoDTO = new CourseFullDTO.VideoDTO();
+                videoDTO.setId(video.getId());
+                videoDTO.setTitle(video.getTitle());
+                videoDTO.setDurationSeconds(
+                        video.getDurationSeconds() != null
+                                ? video.getDurationSeconds().intValue()
+                                : 0
+                );
+                videoDTO.setVideoOrder(video.getVideoOrder());
+                videoDTOs.add(videoDTO);
             }
-            modDTO.setVideos(videoDTOs);
-            moduleDTOs.add(modDTO);
+
+            moduleDTO.setVideos(videoDTOs);
+            moduleDTOs.add(moduleDTO);
         }
+
         response.setModules(moduleDTOs);
         return ResponseEntity.ok(response);
     }

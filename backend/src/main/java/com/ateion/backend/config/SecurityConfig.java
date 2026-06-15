@@ -1,7 +1,6 @@
 package com.ateion.backend.config;
 
 import com.ateion.backend.util.JwtUtil;
-import com.ateion.backend.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,7 +34,6 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtUtil jwtUtil;
-    private final UserRepository userRepository;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -43,12 +41,25 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(exceptions -> exceptions
+                        .authenticationEntryPoint((request, response, exception) ->
+                                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized"))
+                )
                 .authorizeHttpRequests(auth -> auth
-                        // Existing public routes
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                        // Existing public routes. Admin and teacher behavior is intentionally unchanged.
                         .requestMatchers("/api/auth/**", "/api/contact/**", "/api/admin/**").permitAll()
-                        // NEW: only GET /api/videos/public/** is public.
-                        // All other /api/videos/** routes remain authenticated.
+
+                        // Public readiness endpoint for local checks and Render health checks.
+                        .requestMatchers(HttpMethod.GET, "/api/ping").permitAll()
+
+                        // Guests may browse only the course catalogue.
+                        .requestMatchers(HttpMethod.GET, "/api/content/courses").permitAll()
+
+                        // Guests may access only the dedicated public video-preview routes.
                         .requestMatchers(HttpMethod.GET, "/api/videos/public/**").permitAll()
+
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
@@ -68,6 +79,7 @@ public class SecurityConfig {
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Collections.singletonList("*"));
         configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
@@ -78,22 +90,35 @@ public class SecurityConfig {
     public OncePerRequestFilter jwtAuthFilter() {
         return new OncePerRequestFilter() {
             @Override
-            protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-                    throws ServletException, IOException {
+            protected void doFilterInternal(
+                    HttpServletRequest request,
+                    HttpServletResponse response,
+                    FilterChain filterChain
+            ) throws ServletException, IOException {
                 String authHeader = request.getHeader("Authorization");
+
                 if (authHeader != null && authHeader.startsWith("Bearer ")) {
-                    String token = authHeader.substring(7);
-                    try {
-                        String email = jwtUtil.extractEmail(token);
-                        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                            UsernamePasswordAuthenticationToken authToken =
-                                    new UsernamePasswordAuthenticationToken(email, null, Collections.emptyList());
-                            SecurityContextHolder.getContext().setAuthentication(authToken);
+                    String token = authHeader.substring(7).trim();
+
+                    if (!token.isEmpty() && SecurityContextHolder.getContext().getAuthentication() == null) {
+                        try {
+                            if (jwtUtil.validateToken(token)) {
+                                String email = jwtUtil.extractEmail(token);
+                                UsernamePasswordAuthenticationToken authentication =
+                                        new UsernamePasswordAuthenticationToken(
+                                                email,
+                                                null,
+                                                Collections.emptyList()
+                                        );
+                                SecurityContextHolder.getContext().setAuthentication(authentication);
+                            }
+                        } catch (Exception ignored) {
+                            // Invalid or expired tokens are treated as unauthenticated.
+                            // Public routes continue; protected routes are rejected by Spring Security.
                         }
-                    } catch (Exception e) {
-                        // Invalid or expired token; let Spring Security decide based on the route rules.
                     }
                 }
+
                 filterChain.doFilter(request, response);
             }
         };

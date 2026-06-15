@@ -1,3 +1,5 @@
+import { fetchJsonWithRetry } from "./apiClient";
+
 export interface BackendVideo {
     id: number;
     title: string;
@@ -7,50 +9,44 @@ export interface BackendVideo {
     thumbnailUrl?: string;
 }
 
-// ─── AUTHENTICATED fetch (existing) ──────────────────────────────────────────
-export const fetchBackendVideos = async (): Promise<BackendVideo[]> => {
-    const apiUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
+export async function fetchBackendVideos(
+    signal?: AbortSignal,
+): Promise<BackendVideo[]> {
     const token = localStorage.getItem("token");
 
-    const response = await fetch(`${apiUrl}/videos`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-    });
-
-    if (!response.ok) {
-        if (response.status === 401 || response.status === 403) {
-            throw new Error("Authentication required. Please log in.");
-        }
-        throw new Error("Failed to fetch videos from the server.");
+    if (!token) {
+        throw new Error("Authentication required. Please log in.");
     }
 
-    return response.json();
-};
-
-// ─── PUBLIC fetch — NO token, NO localStorage ─────────────────────────────────
-// Calls GET /api/videos/public/module/{moduleId}
-// VITE_API_BASE_URL already ends with "/api" (e.g. "https://xxx.onrender.com/api"),
-// so we append "/videos/public/module/{moduleId}" — never "/api/videos/...".
-export const fetchPublicVideosByModule = async (moduleId: number): Promise<BackendVideo[]> => {
-    const base = (import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api")
-        .replace(/\/+$/, ""); // strip trailing slash if present
-
-    const url = `${base}/videos/public/module/${moduleId}`;
-
-    const response = await fetch(url, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            // ⚠️  No Authorization header. This is intentional for the public route.
+    return fetchJsonWithRetry<BackendVideo[]>(
+        "/videos",
+        {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            signal,
         },
-    });
+        2,
+    );
+}
 
-    if (!response.ok) {
-        throw new Error(`Public video fetch failed: ${response.status}`);
+export async function fetchPublicVideosByModule(
+    moduleId: number,
+    signal?: AbortSignal,
+): Promise<BackendVideo[]> {
+    if (!Number.isInteger(moduleId) || moduleId <= 0) {
+        throw new Error("Invalid module ID.");
     }
 
-    return response.json();
-};
+    // This public request intentionally does not read localStorage and does not
+    // attach an Authorization header.
+    return fetchJsonWithRetry<BackendVideo[]>(
+        `/videos/public/module/${moduleId}`,
+        {
+            method: "GET",
+            signal,
+        },
+        8,
+    );
+}
