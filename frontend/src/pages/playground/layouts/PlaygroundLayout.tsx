@@ -38,11 +38,17 @@ const viewMap: Record<string, LazyExoticComponent<ComponentType<any>>> = {
   "My Courses": lazy(() => import("../pages/MyCoursesPage")),
   "Saved Courses": lazy(() => import("../pages/SavedCoursesPage")),
   "Discover Courses": lazy(() => import("../pages/DiscoverCoursesPage")),
+  "Completed Courses": lazy(() => import("../pages/CompletedCoursesPage")),
   "Tasks": lazy(() => import("../pages/TasksPage")),
   "Calendar": lazy(() => import("../pages/CalendarPage")),
   "Notes": lazy(() => import("../pages/NotesPage")),
   "Wellness Hub": lazy(() => import("../pages/WellnessHubPage")),
   "Growth Mindset": lazy(() => import("../pages/GrowthMindsetPage")),
+  "Daily Reflection": lazy(() => import("../pages/ReflectionPage")),
+  "Sproutlings (5-7)": lazy(() => import("../pages/AgeGroupPage")),
+  "Saplings (7-14)": lazy(() => import("../pages/AgeGroupPage")),
+  "Pathfinders (14-18)": lazy(() => import("../pages/AgeGroupPage")),
+  "Dreamers (18+)": lazy(() => import("../pages/AgeGroupPage")),
 };
 
 function PlaygroundInner() {
@@ -55,7 +61,6 @@ function PlaygroundInner() {
   const [isAuthenticated, setIsAuthenticated] = useState(() => Boolean(localStorage.getItem("token")));
 
   const normalizedPath = location.pathname.replace(/\/+$/, "");
-  const isGuestCourseRoute = normalizedPath === "/playground/discover";
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -141,11 +146,7 @@ function PlaygroundInner() {
           localStorage.removeItem("token");
           setIsAuthenticated(false);
           window.dispatchEvent(new CustomEvent("ateion:auth-changed"));
-
-          if (!isGuestCourseRoute) {
-            navigate("/playground/discover", { replace: true });
-            window.dispatchEvent(new CustomEvent("open-login"));
-          }
+          window.dispatchEvent(new CustomEvent("open-login"));
           return;
         }
 
@@ -156,7 +157,7 @@ function PlaygroundInner() {
 
     void fetchUserDataFromDB();
     return () => controller.abort();
-  }, [isAuthenticated, isGuestCourseRoute, navigate, setUserProfile]);
+  }, [isAuthenticated, navigate, setUserProfile]);
 
   return (
       <>
