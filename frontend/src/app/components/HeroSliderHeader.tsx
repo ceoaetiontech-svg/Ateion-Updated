@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 
 const marqueeStyles = `
 @keyframes marquee-left {
@@ -84,7 +84,7 @@ const ITEM_ASPECT_RATIOS: Record<string, string> = {
   "w-[420px]": "420 / 200",
 };
 
-function Item({ src, alt, width }: { src: string; alt: string; width?: string }) {
+const Item = memo(function Item({ src, alt, width }: { src: string; alt: string; width?: string }) {
   const cls = width || "w-[360px]";
   return (
     <div
@@ -102,9 +102,9 @@ function Item({ src, alt, width }: { src: string; alt: string; width?: string })
       />
     </div>
   );
-}
+});
 
-export function Frame67() {
+const Frame67 = memo(function Frame67() {
   return (
     <MarqueeTrack duration={50} direction="right" align="end">
       <Item src={doorPeachnight} alt="" width="w-[280px]" />
@@ -114,9 +114,9 @@ export function Frame67() {
       <Item src={peachFixit} alt="" width="w-[360px]" />
     </MarqueeTrack>
   );
-}
+});
 
-export function Frame66() {
+const Frame66 = memo(function Frame66() {
   return (
     <MarqueeTrack duration={35} direction="left" align="center">
       <Item src={seesawPurplepeach} alt="" width="w-[400px]" />
@@ -126,7 +126,7 @@ export function Frame66() {
       <Item src={yogaPurple} alt="" width="w-[350px]" />
     </MarqueeTrack>
   );
-}
+});
 
 export default function HeroSliderHeader({
   showNavbar = true,

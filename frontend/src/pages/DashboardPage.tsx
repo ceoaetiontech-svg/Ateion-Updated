@@ -21,7 +21,6 @@ import {
 
 import SharedNavbar from "../app/components/SharedNavbar";
 import NavbarSpacer from "../app/components/NavbarSpacer";
-import AIChatBot from  "../app/components/AIChatbot";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },

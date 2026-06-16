@@ -6,7 +6,7 @@
  * ============================================================================
  */
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, memo, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, Link, useLocation } from "react-router";
 import {
@@ -118,10 +118,23 @@ function UserProfileDropdown({ user, onLogout }: { user: any; onLogout: () => vo
   );
 }
 
+const VARIANT_CLASSES = {
+  default:
+    "bg-[var(--color-background-secondary)] border border-[var(--color-accent)] text-[var(--color-accent)] hover:bg-[var(--color-accent-light)]",
+  primary:
+    "bg-[var(--color-primary)] border border-transparent text-white hover:bg-[var(--color-primary-hover)]",
+  accent:
+    "bg-[var(--color-accent)] border border-transparent text-[var(--color-background-secondary)] hover:bg-[var(--color-accent-hover)]",
+  white:
+    "bg-[var(--color-background-secondary)] border border-[var(--color-border-medium)] text-[var(--color-text-primary)] hover:bg-[var(--color-background-tertiary)]",
+  "outline-dark":
+    "bg-[var(--color-background-secondary)] border border-[var(--color-text-primary)] text-[var(--color-text-primary)] hover:bg-[var(--color-background-tertiary)]",
+};
+
 /**
  * Unified NavButton component with 3 variants
  */
-function NavButton({
+const NavButton = memo(function NavButton({
   children,
   variant = "default" as "default" | "muted" | "primary" | "accent" | "white" | "outline-dark",
   onClick,
@@ -138,23 +151,10 @@ function NavButton({
 }) {
   const navigate = useNavigate();
 
-  const variantClasses = {
-    default:
-      "bg-[var(--color-background-secondary)] border border-[var(--color-accent)] text-[var(--color-accent)] hover:bg-[var(--color-accent-light)]",
-    primary:
-      "bg-[var(--color-primary)] border border-transparent text-white hover:bg-[var(--color-primary-hover)]",
-    accent:
-      "bg-[var(--color-accent)] border border-transparent text-[var(--color-background-secondary)] hover:bg-[var(--color-accent-hover)]",
-    white:
-      "bg-[var(--color-background-secondary)] border border-[var(--color-border-medium)] text-[var(--color-text-primary)] hover:bg-[var(--color-background-tertiary)]",
-    "outline-dark":
-      "bg-[var(--color-background-secondary)] border border-[var(--color-text-primary)] text-[var(--color-text-primary)] hover:bg-[var(--color-background-tertiary)]",
-  };
-
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     if (onClick) onClick();
     if (href) navigate(href);
-  };
+  }, [onClick, href, navigate]);
 
   return (
     <motion.div
@@ -164,12 +164,12 @@ function NavButton({
       onClick={handleClick}
       data-active={isActive}
       style={style}
-      className={`clay-button nav-btn ${variantClasses[variant]} rounded-full flex h-[36px] items-center justify-center px-[12px] xl:px-[24px] shrink-0 cursor-pointer transition-colors relative`}
+      className={`clay-button nav-btn ${VARIANT_CLASSES[variant]} rounded-full flex h-[36px] items-center justify-center px-[12px] xl:px-[24px] shrink-0 cursor-pointer transition-colors relative`}
     >
       {children}
     </motion.div>
   );
-}
+});
 
 function useNavbarOnDark() {
   const [isOnDarkSection, setIsOnDarkSection] = useState(false);
@@ -194,7 +194,7 @@ function useNavbarOnDark() {
   return isOnDarkSection;
 }
 
-function LogoContainer() {
+const LogoContainer = memo(function LogoContainer() {
   const isLogoWhite = useNavbarOnDark();
   const { theme } = useTheme();
   const shouldInvert = isLogoWhite || theme === "dark";
@@ -212,7 +212,7 @@ function LogoContainer() {
       </Link>
     </div>
   );
-}
+});
 
 /**
  * HOME BUTTON
@@ -561,7 +561,7 @@ function MobileMenuIcon({
 /**
  * THEME TOGGLE BUTTON (Sun/Moon)
  */
-function ThemeToggleBtn() {
+const ThemeToggleBtn = memo(function ThemeToggleBtn() {
   const { theme, toggleTheme } = useTheme();
 
   return (
@@ -599,7 +599,7 @@ function ThemeToggleBtn() {
       </AnimatePresence>
     </motion.button>
   );
-}
+});
 
 export default function SharedNavbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

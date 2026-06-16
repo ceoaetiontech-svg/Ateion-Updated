@@ -24,8 +24,6 @@ const nodesData = [
 
 let globalCachedWorld: any = null;
 let dotsCanvas: OffscreenCanvas | null = null;
-let lastWidth = 0;
-let lastHeight = 0;
 
 function getThemeColor(ctx: CanvasRenderingContext2D, isDark: boolean) {
   return isDark ? "rgba(255, 255, 255, 0.4)" : "rgba(0, 0, 0, 0.5)";
@@ -131,8 +129,6 @@ async function renderMapCore(
       }
     }
     dotsCanvas = dotsOffCanvas;
-    lastWidth = width;
-    lastHeight = height;
     ctx.drawImage(dotsCanvas, 0, 0);
     ctx.fillStyle = getThemeColor(ctx, isDark);
     ctx.globalCompositeOperation = "source-atop";
@@ -156,14 +152,10 @@ export default function DotMap() {
 
     const container = containerRef.current;
     const canvas = canvasRef.current;
-    let animationFrameId: number;
     let isMounted = true;
 
-    const renderMap = async () => {
-      if (!isMounted || !containerRef.current || !canvasRef.current) return;
-
-      const width = containerRef.current.offsetWidth;
-      const height = containerRef.current.offsetHeight;
+    const renderMap = async (width: number, height: number) => {
+      if (!isMounted || !canvasRef.current) return;
       if (width <= 0 || height <= 0) return;
 
       const isDark = document.documentElement.getAttribute("data-theme") === "dark";
@@ -171,23 +163,27 @@ export default function DotMap() {
       if (isMounted) setNodePositions(positions);
     };
 
-    renderMap();
-
-    const resizeObserver = new ResizeObserver(() => {
-      cancelAnimationFrame(animationFrameId);
+    const onResize = (width: number, height: number) => {
       dotsCanvas = null;
-      animationFrameId = requestAnimationFrame(renderMap);
+      renderMap(width, height);
+    };
+
+    const resizeObserver = new ResizeObserver((entries) => {
+      const entry = entries[0];
+      if (!entry) return;
+      const { width, height } = entry.contentRect;
+      onResize(Math.floor(width), Math.floor(height));
     });
     resizeObserver.observe(container);
+
+    const rect = container.getBoundingClientRect();
+    onResize(Math.floor(rect.width), Math.floor(rect.height));
 
     const themeObserver = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.attributeName === "data-theme" && dotsCanvas && canvasRef.current) {
           const isDark = document.documentElement.getAttribute("data-theme") === "dark";
-          cancelAnimationFrame(animationFrameId);
-          animationFrameId = requestAnimationFrame(() => {
-            if (canvasRef.current) renderDotsFromCache(canvasRef.current, isDark);
-          });
+          if (canvasRef.current) renderDotsFromCache(canvasRef.current, isDark);
         }
       });
     });
@@ -197,7 +193,6 @@ export default function DotMap() {
       isMounted = false;
       resizeObserver.disconnect();
       themeObserver.disconnect();
-      cancelAnimationFrame(animationFrameId);
     };
   }, []);
 

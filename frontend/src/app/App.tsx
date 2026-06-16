@@ -2,11 +2,12 @@ import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-ro
 import { useState, useEffect, Suspense, lazy } from "react";
 import LoadingSpinner from "./components/LoadingSpinner";
 import { AnimatePresence } from "framer-motion";
-import AIChatBot from "./components/AIChatbot";
 import { ToastProvider } from "../pages/admin/utils/toast";
 import ToastContainer from "../pages/admin/components/ui/Toast";
 import { AdminAuthProvider } from "../pages/admin/context/AdminAuthContext";
 import { CourseProvider } from "../pages/admin/context/CourseContext";
+
+const AIChatBot = lazy(() => import("./components/AIChatbot"));
 
 const Homepage = lazy(() => import("../pages/Homepage"));
 const GCOPage = lazy(() => import("../pages/GCOPage"));

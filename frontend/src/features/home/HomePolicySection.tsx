@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router";
 import { allPolicies, featuredPolicies, PolicyEntry } from "../../data/policies";
-import EcosystemSection from "./EcosystemSection";
 
 // ── All 12 policy images ───────────────────────────────────────────────────
 import singaporeImg  from "../../assets/policies/singapore.webp";
@@ -347,8 +346,6 @@ export default function HomePolicySection() {
           </motion.svg>
         </motion.button>
       </motion.div>
-
-      <EcosystemSection />
     </section>
   );
 }

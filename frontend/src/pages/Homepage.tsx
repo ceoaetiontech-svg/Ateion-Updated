@@ -16,12 +16,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import { motion, animate, useInView, AnimatePresence } from "framer-motion";
 import { ChevronRight } from "lucide-react";
-import svgPaths from "./svg-paths";
-import logo from "../assets/logo.webp";
-import imgRectangle9 from "../assets/eba887f3bcae20b7a5611026256348307e65c2c4.webp";
-import imgImage9 from "../assets/3aab4451afd875f66a83eb26e0ca2d6f58abce98.webp";
-import imgImage7 from "../assets/e985b07ea1f916546c05a06ca93558ef62ecc870.webp";
-import imgImage13 from "../assets/a440209918fa81a1c528e2e95290d4f1f12546e7.webp";
 import { useInterval } from "../app/components/hooks/use-interval";
 import HeroSliderHeader from "../app/components/HeroSliderHeader";
 import DotMap from "../components/DotMap";
@@ -30,6 +24,7 @@ import SharedNavbar from "../app/components/SharedNavbar";
 
 
 import HomePolicySection from "../features/home/HomePolicySection";
+import EcosystemSection from "../features/home/EcosystemSection";
 
 /* ─────────────────────────────────────────────
    UTILITY COMPONENTS
@@ -831,6 +826,16 @@ export default function Homepage() {
         transition={{ duration: 1, ease: "easeOut" }}
       >
         <HeroHeaderSection />
+      </motion.section>
+
+      {/* 4. Ateion ecosystem */}
+      <motion.section
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        <EcosystemSection />
       </motion.section>
 
       {/* 5. Global Presence Map */}

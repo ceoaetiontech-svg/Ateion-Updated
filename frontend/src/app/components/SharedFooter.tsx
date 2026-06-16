@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { motion } from "framer-motion";
 import svgPaths from "../../pages/svg-paths";
 import { Link } from "react-router";
@@ -9,33 +9,33 @@ const fadeUp = {
   visible: (i = 0) => ({ opacity: 1, y: 0, transition: { duration: 0.5, delay: i * 0.06, ease: [0.21, 0.45, 0.32, 0.9] } }),
 };
 
-function SocialIcon({ svgPath, href }: { svgPath: string; href?: string }) {
+const SocialIcon = memo(function SocialIcon({ svgPath, href }: { svgPath: string; href?: string }) {
   const IconContainer = href ? "a" : "div";
   const linkProps = href ? { href, target: "_blank", rel: "noopener noreferrer" } : {};
 
   return (
     <IconContainer
       {...linkProps}
-      className="w-9 h-9 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 group"
+      className="w-9 h-9 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 group hover:scale-110"
       style={{ backgroundColor: "rgba(232,133,106,0.08)" }}
-      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "var(--color-accent)"; e.currentTarget.style.transform = "scale(1.1)"; }}
-      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "rgba(232,133,106,0.08)"; e.currentTarget.style.transform = "scale(1)"; }}
+      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "var(--color-accent)"; }}
+      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "rgba(232,133,106,0.08)"; }}
     >
       <svg className="w-[18px] h-[18px]" fill="none" viewBox="0 0 22.2726 22.2726">
         <path d={svgPath} className="fill-[var(--color-text-secondary)] group-hover:fill-white transition-colors" />
       </svg>
     </IconContainer>
   );
-}
+});
 
-function MailIcon({ href }: { href: string }) {
+const MailIcon = memo(function MailIcon({ href }: { href: string }) {
   return (
     <a
       href={href}
-      className="w-9 h-9 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 group"
+      className="w-9 h-9 rounded-full flex items-center justify-center cursor-pointer transition-all duration-200 group hover:scale-110"
       style={{ backgroundColor: "rgba(232,133,106,0.08)" }}
-      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "var(--color-accent)"; e.currentTarget.style.transform = "scale(1.1)"; }}
-      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "rgba(232,133,106,0.08)"; e.currentTarget.style.transform = "scale(1)"; }}
+      onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "var(--color-accent)"; }}
+      onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "rgba(232,133,106,0.08)"; }}
     >
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
         <path d="M4 6H20V18H4V6Z" className="stroke-[var(--color-text-secondary)] group-hover:stroke-white transition-colors" strokeWidth="2" strokeLinejoin="round" />
@@ -43,7 +43,7 @@ function MailIcon({ href }: { href: string }) {
       </svg>
     </a>
   );
-}
+});
 
 const navLinks = [
   { label: "Home", to: "/" },
