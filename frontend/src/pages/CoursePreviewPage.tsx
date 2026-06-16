@@ -92,9 +92,9 @@ export default function CoursePreviewPage() {
                 >
                     <ChevronLeft size={16} /> Browse courses
                 </button>
-                <div className="flex items-center gap-2 px-3 py-1 rounded-lg border" style={{ borderColor: "var(--color-border-light)" }}>
-                    <Monitor size={14} style={{ color: "var(--color-accent)" }} />
-                    <span className="text-xs font-bold" style={{ color: "var(--color-text-tertiary)" }}>
+                <div className="flex items-center gap-2 px-4 py-1.5 rounded-xl border-2" style={{ borderColor: "var(--color-accent)", background: "var(--color-accent) / 8" }}>
+                    <Monitor size={16} style={{ color: "var(--color-accent)" }} />
+                    <span className="text-sm font-bold" style={{ color: "var(--color-accent)" }}>
                         Free Preview
                     </span>
                 </div>
@@ -291,11 +291,27 @@ export default function CoursePreviewPage() {
                                         })}
                                     </div>
                                     <div className="p-4 border-t" style={{ borderColor: "var(--color-border-light)" }}>
-                                        <div className="flex items-center gap-2 px-3 py-2 rounded-lg opacity-60">
-                                            <Lock size={13} style={{ color: "var(--color-text-tertiary)" }} />
-                                            <span className="text-xs" style={{ color: "var(--color-text-tertiary)" }}>
-                                                Full course on sign up
-                                            </span>
+                                        <div className="flex flex-col gap-3 px-4 py-4 rounded-xl" style={{ background: "var(--color-background-primary)" }}>
+                                            <div className="flex items-center gap-2.5">
+                                                <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: "var(--color-accent) / 12" }}>
+                                                    <Lock size={14} style={{ color: "var(--color-accent)" }} />
+                                                </div>
+                                                <div>
+                                                    <span className="text-sm font-bold" style={{ color: "var(--color-text-primary)" }}>
+                                                        Full course
+                                                    </span>
+                                                    <span className="text-xs block" style={{ color: "var(--color-text-tertiary)" }}>
+                                                        Sign up to unlock all lessons
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <button
+                                                onClick={() => window.dispatchEvent(new CustomEvent("open-register"))}
+                                                className="w-full py-2.5 rounded-xl text-white text-sm font-bold transition-all hover:brightness-110 shadow-md"
+                                                style={{ background: "linear-gradient(135deg, #2b244f 0%, #d66f55 58%, #ff9b82 100%)" }}
+                                            >
+                                                Create an account
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
