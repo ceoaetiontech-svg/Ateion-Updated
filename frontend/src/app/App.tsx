@@ -84,13 +84,13 @@ function AnimatedRoutes() {
 }
 
 export default function App() {
-    const [showRegister, setShowRegister] = useState(false);
     const [showLogin, setShowLogin] = useState(false);
+    const [loginTab, setLoginTab] = useState<"signin" | "signup">("signin");
 
     useEffect(() => {
         const ac = new AbortController();
-        window.addEventListener("open-login", () => setShowLogin(true), { signal: ac.signal });
-        window.addEventListener("open-register", () => setShowRegister(true), { signal: ac.signal });
+        window.addEventListener("open-login", () => { setLoginTab("signin"); setShowLogin(true); }, { signal: ac.signal });
+        window.addEventListener("open-register", () => { setLoginTab("signup"); setShowLogin(true); }, { signal: ac.signal });
         return () => ac.abort();
     }, []);
 
@@ -127,16 +127,9 @@ export default function App() {
                         </CourseProvider>
                     </AdminAuthProvider>
                     <ChatBotWrapper />
-                    {showRegister && (
-                        <RegisterPage
-                            closeRegister={() => {
-                                setShowRegister(false);
-                                window.dispatchEvent(new CustomEvent("close-register"));
-                            }}
-                        />
-                    )}
                     {showLogin && (
                         <LoginPage
+                            initialTab={loginTab}
                             closeLogin={() => {
                                 setShowLogin(false);
                                 window.dispatchEvent(new CustomEvent("close-login"));
