@@ -37,17 +37,26 @@ const defaultAIHandler = async (
   message: string,
   history: Message[]
 ): Promise<string> => {
-  const res = await fetch("http://localhost:8080/api/chat", {
+  const messages = [
+    ...history.map((m) => ({ role: m.role, content: m.content })),
+    { role: "user" as const, content: message },
+  ];
+  const res = await fetch("https://api.anthropic.com/v1/messages", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      message,
-      history: history.map((m) => ({ role: m.role, content: m.content })),
+      model: "claude-sonnet-4-20250514",
+      max_tokens: 1000,
+      system: "You are a helpful assistant for Ateion, an edtech platform. Be concise and friendly.",
+      messages,
     }),
   });
-  if (!res.ok) throw new Error(`Server error ${res.status}`);
+  if (!res.ok) throw new Error(`API error ${res.status}`);
   const data = await res.json();
-  return data.reply ?? "Sorry, I couldn't get a response.";
+  const textBlock = data?.content?.find(
+    (b: { type: string }) => b.type === "text"
+  );
+  return textBlock?.text ?? "Sorry, I couldn't get a response.";
 };
 
 const uid = () => Math.random().toString(36).slice(2, 9);
