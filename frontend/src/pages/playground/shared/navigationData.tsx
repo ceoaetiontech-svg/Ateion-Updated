@@ -61,10 +61,10 @@ export const navigationSections: NavSection[] = [
     title: "Age Groups",
     icon: Milestone,
     items: [
-      { title: "Sproutlings (5-7)", icon: Sprout, path: "/playground/sproutlings" },
-      { title: "Saplings (7-14)", icon: Sprout, path: "/playground/saplings" },
-      { title: "Pathfinders (14-18)", icon: Compass, path: "/playground/pathfinders" },
-      { title: "Dreamers (18+)", icon: Sparkles, path: "/playground/dreamers" },
+      { title: "Sproutlings (5-7 age)", icon: Sprout, path: "/playground/sproutlings" },
+      { title: "Saplings (7-14 age)", icon: Sprout, path: "/playground/saplings" },
+      { title: "Pathfinders (14-18 age)", icon: Compass, path: "/playground/pathfinders" },
+      { title: "Dreamers (18+ age)", icon: Sparkles, path: "/playground/dreamers" },
     ],
   },
 ];

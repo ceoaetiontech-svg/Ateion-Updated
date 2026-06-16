@@ -19,10 +19,10 @@ interface BackendCourse {
 
 const COURSE_REQUEST_ATTEMPTS = 8;
 const VALID_AGE_GROUPS = new Set<AgeGroupId>([
-  "Sproutlings (5-7)",
-  "Saplings (7-14)",
-  "Pathfinders (14-18)",
-  "Dreamers (18+)",
+  "Sproutlings (5-7 age)",
+  "Saplings (7-14 age)",
+  "Pathfinders (14-18 age)",
+  "Dreamers (18+ age)",
 ]);
 
 function toNumber(value: unknown, fallback = 0): number {

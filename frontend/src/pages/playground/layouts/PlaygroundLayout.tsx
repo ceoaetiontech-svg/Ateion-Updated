@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Rocket, User, Settings, LogOut, LogIn, Sun, Moon, Compass, BookMarked, Search, Flame, Home } from "lucide-react";
+import { Rocket, User, Settings, LogOut, LogIn, Sun, Moon, Compass, BookMarked, Flame, Home } from "lucide-react";
 import { useState, useEffect, lazy, Suspense, type LazyExoticComponent, type ComponentType } from "react";
 import { Helmet } from "react-helmet-async";
 import {
@@ -45,10 +45,10 @@ const viewMap: Record<string, LazyExoticComponent<ComponentType<any>>> = {
   "Wellness Hub": lazy(() => import("../pages/WellnessHubPage")),
   "Growth Mindset": lazy(() => import("../pages/GrowthMindsetPage")),
   "Daily Reflection": lazy(() => import("../pages/ReflectionPage")),
-  "Sproutlings (5-7)": lazy(() => import("../pages/AgeGroupPage")),
-  "Saplings (7-14)": lazy(() => import("../pages/AgeGroupPage")),
-  "Pathfinders (14-18)": lazy(() => import("../pages/AgeGroupPage")),
-  "Dreamers (18+)": lazy(() => import("../pages/AgeGroupPage")),
+  "Sproutlings (5-7 age)": lazy(() => import("../pages/AgeGroupPage")),
+  "Saplings (7-14 age)": lazy(() => import("../pages/AgeGroupPage")),
+  "Pathfinders (14-18 age)": lazy(() => import("../pages/AgeGroupPage")),
+  "Dreamers (18+ age)": lazy(() => import("../pages/AgeGroupPage")),
 };
 
 function PlaygroundInner() {
@@ -352,20 +352,8 @@ function PlaygroundInner() {
                       >
                         <Home size={16} />
                       </button>
-                      <button
-                          onClick={() => setSearchOpen(true)}
-                          className="hidden xl:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] text-xs text-[var(--color-text-tertiary)] hover:border-[var(--color-accent)]/30 hover:text-[var(--color-text-primary)] transition-colors w-36"
-                      >
-                        <Search size={14} />
-                        <span className="hidden lg:inline">Search</span>
-                        <kbd className="px-1 py-0.5 rounded bg-[var(--color-background-primary)] border border-[var(--color-border-light)] font-mono text-[10px]">⌘K</kbd>
-                      </button>
-                      <button
-                          onClick={() => setSearchOpen(true)}
-                          className="flex xl:hidden p-2 rounded-lg hover:bg-[var(--color-background-secondary)] transition-colors"
-                      >
-                        <Search size={18} className="text-[var(--color-text-primary)]" />
-                      </button>
+
+
 
                       <div className="hidden xl:flex items-center gap-1 px-3 py-1.5 rounded-full bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] group/streak">
                         <Flame size={14} className={`text-orange-500 ${streak > 0 ? "animate-[bounce_2s_ease-in-out_infinite]" : ""}`} />

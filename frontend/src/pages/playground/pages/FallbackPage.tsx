@@ -91,11 +91,11 @@ export default function FallbackPage() {
   const location = useLocation();
   const activeView = getActiveView(location.pathname);
   const hasSkyTheme =
-    activeView === "Sproutlings (5-7)" || activeView === "Saplings (7-14)";
+    activeView === "Sproutlings (5-7 age)" || activeView === "Saplings (7-14 age)";
   const hasWaveTheme =
-    activeView === "Pathfinders (14-18)" || activeView === "Dreamers (18+)";
+    activeView === "Pathfinders (14-18 age)" || activeView === "Dreamers (18+ age)";
   const hasIllustratedTheme = hasSkyTheme || hasWaveTheme;
-  const isDreamers = activeView === "Dreamers (18+)";
+  const isDreamers = activeView === "Dreamers (18+ age)";
 
   return (
     <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">

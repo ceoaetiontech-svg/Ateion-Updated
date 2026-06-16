@@ -5,7 +5,7 @@ export interface UserProfile {
   isPremium: boolean;
 }
 
-export type AgeGroupId = "Sproutlings (5-7)" | "Saplings (7-14)" | "Pathfinders (14-18)" | "Dreamers (18+)";
+export type AgeGroupId = "Sproutlings (5-7 age)" | "Saplings (7-14 age)" | "Pathfinders (14-18 age)" | "Dreamers (18+ age)";
 
 export interface Task {
   id: number;

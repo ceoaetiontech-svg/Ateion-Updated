@@ -17,10 +17,10 @@ type AgeGroupFilterId = "All" | AgeGroupId;
 
 const AGE_GROUPS: { id: AgeGroupFilterId; label: string; icon: JSX.Element }[] = [
   { id: "All", label: "All", icon: <Compass size={18} /> },
-  { id: "Sproutlings (5-7)", label: "Sproutlings (5-7)", icon: <Sprout size={18} /> },
-  { id: "Saplings (7-14)", label: "Saplings (7-14)", icon: <Sprout size={18} /> },
-  { id: "Pathfinders (14-18)", label: "Pathfinders (14-18)", icon: <Compass size={18} /> },
-  { id: "Dreamers (18+)", label: "Dreamers (18+)", icon: <Sparkles size={18} /> },
+  { id: "Sproutlings (5-7 age)", label: "Sproutlings (5-7 age)", icon: <Sprout size={18} /> },
+  { id: "Saplings (7-14 age)", label: "Saplings (7-14 age)", icon: <Sprout size={18} /> },
+  { id: "Pathfinders (14-18 age)", label: "Pathfinders (14-18 age)", icon: <Compass size={18} /> },
+  { id: "Dreamers (18+ age)", label: "Dreamers (18+ age)", icon: <Sparkles size={18} /> },
 ];
 
 const AGE_GROUP_THEMES: Record<AgeGroupFilterId, {
@@ -40,7 +40,7 @@ const AGE_GROUP_THEMES: Record<AgeGroupFilterId, {
     buttonClass: "border border-[var(--color-border-light)] bg-[var(--color-background-secondary)] text-[var(--color-text-primary)] group-hover:border-[var(--color-accent)] group-hover:bg-[var(--color-accent)] group-hover:text-[#fff] group-hover:shadow-[0_8px_20px_rgba(232,133,106,0.3)]",
     listClass: "rounded-xl border border-l-[3px] border-[var(--color-border-light)] bg-[var(--color-background-secondary)] hover:shadow-md",
   },
-  "Sproutlings (5-7)": {
+  "Sproutlings (5-7 age)": {
     kicker: "Playful quest path",
     title: "Tiny quests, bright wins",
     description: "Short playful lessons, cheerful progress cues and simple cards for early learners.",
@@ -54,7 +54,7 @@ const AGE_GROUP_THEMES: Record<AgeGroupFilterId, {
     buttonClass: "border border-[#46a302] bg-[#58cc02] text-[#ffffff] shadow-[0_4px_0_#46a302] hover:bg-[#62df05] active:translate-y-0.5 active:shadow-[0_2px_0_#46a302]",
     listClass: "rounded-[20px] border-2 border-l-[6px] border-[#d7efc8] bg-[#ffffff] shadow-[0_4px_0_#d7efc8]",
   },
-  "Saplings (7-14)": {
+  "Saplings (7-14 age)": {
     kicker: "Build and explore",
     title: "Creative skill labs",
     description: "Hands-on beginner projects for curious learners moving from play into creation.",
@@ -68,7 +68,7 @@ const AGE_GROUP_THEMES: Record<AgeGroupFilterId, {
     buttonClass: "border border-[#0f766e] bg-[#14b8a6] text-[#ffffff] shadow-[0_4px_0_#0f766e] hover:bg-[#16cfc0] active:translate-y-0.5 active:shadow-[0_2px_0_#0f766e]",
     listClass: "rounded-[18px] border-2 border-l-[6px] border-[#bdebe5] bg-[#ffffff] shadow-[0_4px_0_#bdebe5]",
   },
-  "Pathfinders (14-18)": {
+  "Pathfinders (14-18 age)": {
     kicker: "Portfolio-ready growth",
     title: "Skill tracks for teen builders",
     description: "Focused courses with clearer career signals, project depth and measurable progress.",
@@ -82,7 +82,7 @@ const AGE_GROUP_THEMES: Record<AgeGroupFilterId, {
     buttonClass: "border border-[#5558e8] bg-[#6366f1] text-[#ffffff] shadow-sm hover:bg-[#5558e8]",
     listClass: "rounded-[16px] border border-l-[5px] border-[#d7d8ff] bg-[var(--color-background-secondary)] hover:shadow-md",
   },
-  "Dreamers (18+)": {
+  "Dreamers (18+ age)": {
     kicker: "Professional momentum",
     title: "Career-grade mastery",
     description: "Longer, deeper tracks for advanced upskilling and applied workplace readiness.",
