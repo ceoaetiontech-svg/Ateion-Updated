@@ -105,14 +105,16 @@ function GcoFeatureBadge({
         }}
       >
         <motion.p
-          className="font-['Outfit',sans-serif] leading-none text-[17px] text-[var(--color-text-inverse)] tracking-[0.16px] whitespace-nowrap pt-0.5"
+          className="font-['Outfit',sans-serif] leading-none text-[17px] text-white tracking-[0.16px] whitespace-nowrap pt-0.5"
+          style={{ color: "#ffffff" }}
           whileHover={{ x: 4 }}
           transition={{ type: "spring", stiffness: 300, damping: 12 }}
         >
           View More
         </motion.p>
         <motion.div
-          className="flex items-center justify-center"
+          className="flex items-center justify-center text-white"
+          style={{ color: "#ffffff" }}
           aria-hidden="true"
           whileHover={{ x: 4, y: -4 }}
           transition={{ type: "spring", stiffness: 300, damping: 12 }}
@@ -123,7 +125,7 @@ function GcoFeatureBadge({
               height="24"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#ffffff"
+              stroke="currentColor"
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -389,13 +391,11 @@ function EcosystemCluster({
         ml="274.69px"
         mt="137.18px"
         size="272.92px"
-        defaultColor="var(--color-primary)"
-        staticTextColor="var(--ecosystem-light-bubble-text)"
-        hoverColor="var(--color-primary-hover)"
-        hoverTextColor="var(--ecosystem-bubble-hover-title)"
-        hoverDescColor="var(--ecosystem-bubble-hover-description)"
+        defaultColor="var(--color-accent)"
+        staticTextColor="white"
+        hoverColor="var(--color-accent-hover)"
         isDark={true}
-        gradientId="ateionGrad"
+        gradientId="gcoGrad"
         title="Ateion"
         description="Ateion is building the infrastructure for a capability-based future by integrating early AI PlayGround with standard-setting competitions."
         titleSize="31px"
@@ -431,13 +431,11 @@ function EcosystemCluster({
         ml="468.38px"
         mt="369.61px"
         size="248.27px"
-        defaultColor="var(--color-text-secondary)"
-        staticTextColor="var(--ecosystem-light-bubble-text)"
-        hoverColor="var(--color-primary-hover)"
-        hoverTextColor="var(--ecosystem-bubble-hover-title)"
-        hoverDescColor="var(--ecosystem-bubble-hover-description)"
+        defaultColor="var(--color-accent)"
+        staticTextColor="white"
+        hoverColor="var(--color-accent-hover)"
         isDark={true}
-        gradientId="ateionGrad"
+        gradientId="gcoGrad"
         title="Psychometric Tests"
         description="Discover strengths, mindset, and learning style."
         titleSize="24px"
@@ -452,10 +450,10 @@ function EcosystemCluster({
         ml="601.32px"
         mt="57.94px"
         size="333.67px"
-        defaultColor="var(--ecosystem-playground-bubble)"
-        staticTextColor="var(--color-text-primary)"
-        hoverColor="var(--ecosystem-playground-bubble-hover)"
-        isDark={false}
+        defaultColor="var(--color-accent)"
+        staticTextColor="white"
+        hoverColor="var(--color-accent-hover)"
+        isDark={true}
         gradientId="gcoGrad"
         title="PlayGround"
         description="Engaging, hands-on learning experiences designed to bridge theory with practical AI execution."
@@ -491,7 +489,7 @@ function MobileEcosystemCluster({
       title: "Ateion",
       description:
         "Ateion is building the infrastructure for a capability-based future by integrating early AI PlayGround with standard-setting competitions.",
-      circleColor: "var(--color-primary)",
+      circleColor: "var(--color-accent)",
       textColor: "white",
     },
     {
@@ -499,7 +497,7 @@ function MobileEcosystemCluster({
       title: "Psychometric Tests",
       description:
         "Discover strengths, mindset, and learning style.",
-      circleColor: "var(--color-text-secondary)",
+      circleColor: "var(--color-accent)",
       textColor: "white",
     },
     {
@@ -507,8 +505,8 @@ function MobileEcosystemCluster({
       title: "PlayGround",
       description:
         "Engaging, hands-on learning experiences designed to bridge theory with practical AI execution.",
-      circleColor: "var(--ecosystem-playground-bubble)",
-      textColor: "var(--color-text-primary)",
+      circleColor: "var(--color-accent)",
+      textColor: "white",
     },
   ];
 
@@ -540,7 +538,7 @@ function MobileEcosystemCluster({
               fontSize: 16,
             }}
           >
-            {b.title === "PlayGround" ? "PG" : b.title}
+            {b.title === "PlayGround" ? "PG" : b.title === "Psychometric Tests" ? "PT" : b.title}
           </div>
           <div className="flex flex-col gap-1 min-w-0">
             <p

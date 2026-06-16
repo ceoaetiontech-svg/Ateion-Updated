@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Compass, Sprout, Sparkles, Search, Bot, Code, Languages, Cat, DollarSign, Palette, Award, Heart } from "lucide-react";
+import { Compass, Sprout, Sparkles, Search, Bot, Code, Languages, Cat, DollarSign, Palette, Award, Heart, RefreshCw } from "lucide-react";
 import type { AgeGroupId } from "../shared/types";
 import { slideInItem } from "../shared/types";
 import { courseMatchesAgeGroup, normalizeAgeGroupId } from "../shared/courseAgeGroups";
@@ -117,8 +117,9 @@ const SORTS: { id: SortOption; label: string }[] = [
 ];
 
 export default function DiscoverCoursesPage() {
-  const { courseQuery, activeAgeGroup, setActiveAgeGroup, savedIds, toggleSave, enrolledIds, courseAccess } = usePlayground();
-  const { allCourses, discoverCourses } = useCourses(courseQuery, enrolledIds, courseAccess);
+  const { courseQuery, activeAgeGroup, setActiveAgeGroup, savedIds, toggleSave, enrolledIds, courseAccess, setToastMessage } = usePlayground();
+  const guestEnrolledIds = localStorage.getItem("token") ? enrolledIds : [];
+  const { allCourses, discoverCourses, isLoading, isWaking, error, refreshCourses } = useCourses(courseQuery, guestEnrolledIds, courseAccess);
   const navigate = useNavigate();
 
   const [sortBy, setSortBy] = useState<SortOption>("popular");
@@ -171,6 +172,25 @@ export default function DiscoverCoursesPage() {
 
   const hasFilters = selectedLevels.length > 0 || selectedDurations.length > 0 || selectedRatings.length > 0 || selectedTopics.length > 0 || priceFilter !== "all";
 
+  const openProtectedCourse = useCallback((courseId: number) => {
+    if (!localStorage.getItem("token")) {
+      window.dispatchEvent(new CustomEvent("open-login"));
+      return;
+    }
+
+    navigate(`/playground/course/${courseId}`);
+  }, [navigate]);
+
+  const openPublicPreview = useCallback((previewModuleId: number | null) => {
+    if (previewModuleId) {
+      navigate(`/course-preview/${previewModuleId}`);
+      return;
+    }
+
+    setToastMessage("A preview is not available for this course yet.");
+    window.setTimeout(() => setToastMessage(null), 3000);
+  }, [navigate, setToastMessage]);
+
   return (
       <div className="flex flex-col gap-6">
 
@@ -192,18 +212,18 @@ export default function DiscoverCoursesPage() {
           {CATEGORIES.map((cat) => {
             const Icon = cat.icon;
             return (
-              <button
-                key={cat.name}
-                onClick={() => toggleArray(setSelectedTopics, cat.name)}
-                className={`px-3 py-1.5 rounded-full border text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
-                  selectedTopics.includes(cat.name)
-                    ? "bg-[var(--color-accent)] text-white border-[var(--color-accent)]"
-                    : "bg-[var(--color-background-secondary)] text-[var(--color-text-secondary)] border-[var(--color-border-light)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
-                }`}
-              >
-                <Icon size={14} className="animate-pulse" />
-                {cat.name}
-              </button>
+                <button
+                    key={cat.name}
+                    onClick={() => toggleArray(setSelectedTopics, cat.name)}
+                    className={`px-3 py-1.5 rounded-full border text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                        selectedTopics.includes(cat.name)
+                            ? "bg-[var(--color-accent)] text-white border-[var(--color-accent)]"
+                            : "bg-[var(--color-background-secondary)] text-[var(--color-text-secondary)] border-[var(--color-border-light)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+                    }`}
+                >
+                  <Icon size={14} className="animate-pulse" />
+                  {cat.name}
+                </button>
             );
           })}
         </div>
@@ -249,53 +269,81 @@ export default function DiscoverCoursesPage() {
         />
 
         {/* 5. Course Grid with Popovers */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-stretch auto-rows-fr">
-          <AnimatePresence mode="popLayout">
-            {displayCourses.map((course) => (
-                <motion.div
-                    key={course.id}
-                    layout
-                    variants={slideInItem}
-                    initial="hidden"
-                    animate="show"
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    className="h-full flex w-full"
-                >
-                  <CoursePreviewPopover
-                      course={course}
-                      onReadMore={() => navigate(`/playground/course/${course.id}`)}
-                      onPreview={() => navigate(`/playground/course/${course.id}`)}
-                      onSave={() => toggleSave(course.id)}
-                      isSaved={savedIds.includes(course.id)}
-                  >
-                    <div
-                        onClick={() => navigate(`/playground/course/${course.id}`)}
-                        className={`w-full cursor-pointer h-full transition-transform hover:-translate-y-1 flex flex-col group ${activeTheme.cardClass}`}
-                    >
-                      <CoursePreviewCard course={course} />
-                    </div>
-                  </CoursePreviewPopover>
-                </motion.div>
-            ))}
-          </AnimatePresence>
+        {isLoading && (
+            <div className="rounded-2xl border border-[var(--color-border-light)] bg-[var(--color-background-secondary)] px-6 py-10 text-center">
+              <div className="mx-auto mb-4 h-9 w-9 animate-spin rounded-full border-4 border-[var(--color-accent)] border-t-transparent" />
+              <p className="font-bold text-[var(--color-text-primary)]">
+                {isWaking ? "The course server is waking up…" : "Loading courses…"}
+              </p>
+              <p className="mt-1 text-sm text-[var(--color-text-secondary)]">
+                {isWaking
+                    ? "The first request can take longer on Render's free tier."
+                    : "Fetching the latest courses from the database."}
+              </p>
+            </div>
+        )}
 
-          {/* Empty State */}
-          {displayCourses.length === 0 && (
-              <div className="col-span-full py-12 text-center text-[var(--color-text-tertiary)] flex flex-col items-center">
-                <Search size={48} className="mb-4 opacity-20" />
-                <p className="text-lg font-medium">No courses found</p>
-                <p className="text-sm">Try adjusting your filters or search query</p>
-                {hasFilters && (
-                    <button
-                        onClick={clearFilters}
-                        className="mt-4 text-[var(--color-accent)] font-bold hover:underline"
+        {!isLoading && error && (
+            <div className="rounded-2xl border border-red-500/20 bg-red-500/5 px-6 py-10 text-center">
+              <p className="font-bold text-[var(--color-text-primary)]">{error}</p>
+              <button
+                  onClick={() => void refreshCourses()}
+                  className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[var(--color-accent)] px-5 py-2.5 text-sm font-bold text-white"
+              >
+                <RefreshCw size={16} /> Retry
+              </button>
+            </div>
+        )}
+
+        {!isLoading && !error && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-stretch auto-rows-fr">
+              <AnimatePresence mode="popLayout">
+                {displayCourses.map((course) => (
+                    <motion.div
+                        key={course.id}
+                        layout
+                        variants={slideInItem}
+                        initial="hidden"
+                        animate="show"
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        className="h-full flex w-full"
                     >
-                      Clear all filters
-                    </button>
-                )}
-              </div>
-          )}
-        </div>
+                      <CoursePreviewPopover
+                          course={course}
+                          onReadMore={() => openProtectedCourse(course.id)}
+                          onPreview={() => openPublicPreview(course.previewModuleId)}
+                          onSave={() => toggleSave(course.id)}
+                          isSaved={savedIds.includes(course.id)}
+                      >
+                        <div
+                            onClick={() => openProtectedCourse(course.id)}
+                            className={`w-full cursor-pointer h-full transition-transform hover:-translate-y-1 flex flex-col group ${activeTheme.cardClass}`}
+                        >
+                          <CoursePreviewCard course={course} />
+                        </div>
+                      </CoursePreviewPopover>
+                    </motion.div>
+                ))}
+              </AnimatePresence>
+
+              {/* Empty State */}
+              {displayCourses.length === 0 && (
+                  <div className="col-span-full py-12 text-center text-[var(--color-text-tertiary)] flex flex-col items-center">
+                    <Search size={48} className="mb-4 opacity-20" />
+                    <p className="text-lg font-medium">No courses found</p>
+                    <p className="text-sm">Try adjusting your filters or search query</p>
+                    {hasFilters && (
+                        <button
+                            onClick={clearFilters}
+                            className="mt-4 text-[var(--color-accent)] font-bold hover:underline"
+                        >
+                          Clear all filters
+                        </button>
+                    )}
+                  </div>
+              )}
+            </div>
+        )}
 
       </div>
   );

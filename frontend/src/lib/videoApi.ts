@@ -1,3 +1,5 @@
+import { fetchJsonWithRetry } from "./apiClient";
+
 export interface BackendVideo {
     id: number;
     title: string;
@@ -7,25 +9,44 @@ export interface BackendVideo {
     thumbnailUrl?: string;
 }
 
-export const fetchBackendVideos = async (): Promise<BackendVideo[]> => {
-    const apiUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
+export async function fetchBackendVideos(
+    signal?: AbortSignal,
+): Promise<BackendVideo[]> {
     const token = localStorage.getItem("token");
 
-    const response = await fetch(`${apiUrl}/videos`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-    });
-
-    if (!response.ok) {
-        if (response.status === 401 || response.status === 403) {
-            throw new Error("Authentication required. Please log in.");
-        }
-        throw new Error("Failed to fetch videos from the server.");
+    if (!token) {
+        throw new Error("Authentication required. Please log in.");
     }
 
-    const data = await response.json();
-    return data;
-};
+    return fetchJsonWithRetry<BackendVideo[]>(
+        "/videos",
+        {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            signal,
+        },
+        2,
+    );
+}
+
+export async function fetchPublicVideosByModule(
+    moduleId: number,
+    signal?: AbortSignal,
+): Promise<BackendVideo[]> {
+    if (!Number.isInteger(moduleId) || moduleId <= 0) {
+        throw new Error("Invalid module ID.");
+    }
+
+    // This public request intentionally does not read localStorage and does not
+    // attach an Authorization header.
+    return fetchJsonWithRetry<BackendVideo[]>(
+        `/videos/public/module/${moduleId}`,
+        {
+            method: "GET",
+            signal,
+        },
+        8,
+    );
+}
