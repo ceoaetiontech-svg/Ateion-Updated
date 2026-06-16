@@ -135,7 +135,10 @@ export default function AgeGroupPage() {
                             onClick={() => openProtectedCourse(course.id, course.previewModuleId)}
                             className="w-full cursor-pointer h-full transition-transform hover:-translate-y-1 flex flex-col group bg-[var(--color-background-secondary)] rounded-2xl border border-[var(--color-border-light)] shadow-md hover:border-[var(--color-accent)]/30 hover:shadow-xl overflow-hidden"
                         >
-                          <CoursePreviewCard course={course} />
+                          <CoursePreviewCard
+                                        course={course}
+                                        onReadMore={() => openProtectedCourse(course.id, course.previewModuleId)}
+                                    />
                         </div>
                       </CoursePreviewPopover>
                     </motion.div>

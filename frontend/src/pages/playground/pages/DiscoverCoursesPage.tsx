@@ -322,7 +322,11 @@ export default function DiscoverCoursesPage() {
                             onClick={() => openProtectedCourse(course.id, course.previewModuleId)}
                             className={`w-full cursor-pointer h-full transition-transform hover:-translate-y-1 flex flex-col group ${activeTheme.cardClass}`}
                         >
-                          <CoursePreviewCard course={course} />
+                          <CoursePreviewCard
+                                        course={course}
+                                        onReadMore={() => openProtectedCourse(course.id, course.previewModuleId)}
+                                        onPreview={() => openPublicPreview(course.previewModuleId)}
+                                    />
                         </div>
                       </CoursePreviewPopover>
                     </motion.div>
