@@ -66,11 +66,44 @@ export default function CoursePreviewPopover({
   return (
       <div
           ref={containerRef}
-          className={`relative flex w-full h-full ${isOpen ? "z-50" : "z-10"}`}
+          className={`relative w-full h-full ${isOpen ? "z-50" : "z-10"} ${isMobile ? "flex flex-col" : "flex"}`}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
       >
         {children}
+
+        {/* Mobile action buttons - always visible below the card */}
+        {isMobile && (
+          <div className="flex flex-col gap-2 px-4 pb-4 mt-2">
+            <div className="flex items-center gap-2">
+              <button
+                onClick={(e) => { e.stopPropagation(); if (onReadMore) onReadMore(); }}
+                className="flex-1 bg-[var(--color-accent)] text-white py-3 rounded-xl text-sm font-bold hover:brightness-110 transition-all text-center shadow-md cursor-pointer"
+              >
+                Read More
+              </button>
+              <button
+                onClick={(e) => { e.stopPropagation(); if (onSave) onSave(); }}
+                className={`w-12 h-12 rounded-xl border flex items-center justify-center transition-colors shrink-0 cursor-pointer ${
+                  isSaved
+                    ? "border-[var(--color-error)] text-[var(--color-error)] bg-[var(--color-error)]/10"
+                    : "border-[var(--color-border-medium)] text-[var(--color-text-secondary)]"
+                }`}
+                aria-label="Save course"
+              >
+                <Heart size={20} fill={isSaved ? "currentColor" : "none"} />
+              </button>
+            </div>
+            {onPreview && (
+              <button
+                onClick={(e) => { e.stopPropagation(); if (onPreview) onPreview(); }}
+                className="w-full bg-[var(--color-background-tertiary)] text-[var(--color-text-primary)] border border-[var(--color-border-medium)] py-3 rounded-xl text-sm font-bold hover:border-[var(--color-accent)] transition-all text-center flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <Play size={16} fill="currentColor" /> Preview Course
+              </button>
+            )}
+          </div>
+        )}
 
         <AnimatePresence>
           {isOpen && !isMobile && (
