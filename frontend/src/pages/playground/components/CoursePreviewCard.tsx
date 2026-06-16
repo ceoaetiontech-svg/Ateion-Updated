@@ -70,7 +70,7 @@ export default function CoursePreviewCard({ course }: CoursePreviewCardProps) {
             {/* 5. Button Area - Always pinned to the very bottom */}
             <div className="px-4 pb-4 mt-auto shrink-0 w-full">
                 <div className="w-full bg-[var(--color-background-tertiary)] text-[var(--color-text-primary)] border border-[var(--color-border-medium)] py-2.5 rounded-xl text-xs font-bold text-center group-hover:bg-[var(--color-accent)] group-hover:text-white group-hover:border-[var(--color-accent)] transition-all">
-                    Read More
+                    Preview Course
                 </div>
             </div>
         </div>
