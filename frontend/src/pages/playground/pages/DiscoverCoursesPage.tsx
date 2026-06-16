@@ -172,12 +172,15 @@ export default function DiscoverCoursesPage() {
 
   const hasFilters = selectedLevels.length > 0 || selectedDurations.length > 0 || selectedRatings.length > 0 || selectedTopics.length > 0 || priceFilter !== "all";
 
-  const openProtectedCourse = useCallback((courseId: number) => {
+  const openProtectedCourse = useCallback((courseId: number, previewModuleId?: number | null) => {
+    if (previewModuleId) {
+      navigate(`/course-preview/${previewModuleId}`);
+      return;
+    }
     if (!localStorage.getItem("token")) {
       window.dispatchEvent(new CustomEvent("open-login"));
       return;
     }
-
     navigate(`/playground/course/${courseId}`);
   }, [navigate]);
 
@@ -310,13 +313,13 @@ export default function DiscoverCoursesPage() {
                     >
                       <CoursePreviewPopover
                           course={course}
-                          onReadMore={() => openProtectedCourse(course.id)}
+                          onReadMore={() => openProtectedCourse(course.id, course.previewModuleId)}
                           onPreview={() => openPublicPreview(course.previewModuleId)}
                           onSave={() => toggleSave(course.id)}
                           isSaved={savedIds.includes(course.id)}
                       >
                         <div
-                            onClick={() => openProtectedCourse(course.id)}
+                            onClick={() => openProtectedCourse(course.id, course.previewModuleId)}
                             className={`w-full cursor-pointer h-full transition-transform hover:-translate-y-1 flex flex-col group ${activeTheme.cardClass}`}
                         >
                           <CoursePreviewCard course={course} />
