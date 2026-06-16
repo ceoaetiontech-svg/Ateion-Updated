@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Edit2, Trash2, TrendingUp, BookOpen, Plus, Book, FileText, ArrowUpDown, ArrowUp, ArrowDown, CheckSquare, Square, Archive, Download } from "lucide-react";
 import { Link } from "react-router";
 import { containerVariants, itemVariants } from "../../utils/variants";
