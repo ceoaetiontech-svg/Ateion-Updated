@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Star, Clock, PlayCircle } from "lucide-react";
 import type { Course } from "../shared/types";
 import { getTopicColor } from "../shared/topicColors";
@@ -8,10 +9,19 @@ interface CoursePreviewCardProps {
     onPreview?: () => void;
 }
 
-// A beautiful, high-quality dark abstract pattern to act as a fallback course banner
 const FALLBACK_COURSE_IMAGE = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1964&auto=format&fit=crop";
 
 export default function CoursePreviewCard({ course, onReadMore, onPreview }: CoursePreviewCardProps) {
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const mq = window.matchMedia("(max-width: 1023px)");
+        setIsMobile(mq.matches);
+        const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+        mq.addEventListener("change", handler);
+        return () => mq.removeEventListener("change", handler);
+    }, []);
+
     return (
         <div className="w-full h-full flex flex-col bg-transparent overflow-hidden">
             {/* Thumbnail with Topic Color Accent Bar */}
@@ -63,7 +73,7 @@ export default function CoursePreviewCard({ course, onReadMore, onPreview }: Cou
 
             {/* 5. Button Area - Always pinned to the very bottom */}
             <div className="px-4 pb-4 mt-auto shrink-0 w-full flex flex-col gap-2">
-                {onReadMore ? (
+                {isMobile && onReadMore ? (
                     <>
                         <button
                             onClick={(e) => { e.stopPropagation(); if (onReadMore) onReadMore(); }}
