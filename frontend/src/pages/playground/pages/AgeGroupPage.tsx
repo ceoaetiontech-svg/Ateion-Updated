@@ -64,7 +64,11 @@ export default function AgeGroupPage() {
 
   const filtered = allCourses.filter(c => courseMatchesAgeGroup(c, activeView));
 
-  const openProtectedCourse = (courseId: number) => {
+  const openProtectedCourse = (courseId: number, previewModuleId?: number | null) => {
+    if (previewModuleId) {
+      navigate(`/course-preview/${previewModuleId}`);
+      return;
+    }
     if (!localStorage.getItem("token")) {
       window.dispatchEvent(new CustomEvent("open-login"));
       return;
@@ -123,12 +127,12 @@ export default function AgeGroupPage() {
                     >
                       <CoursePreviewPopover
                           course={course}
-                          onReadMore={() => openProtectedCourse(course.id)}
+                          onReadMore={() => openProtectedCourse(course.id, course.previewModuleId)}
                           onSave={() => toggleSave(course.id)}
                           isSaved={savedIds.includes(course.id)}
                       >
                         <div
-                            onClick={() => openProtectedCourse(course.id)}
+                            onClick={() => openProtectedCourse(course.id, course.previewModuleId)}
                             className="w-full cursor-pointer h-full transition-transform hover:-translate-y-1 flex flex-col group bg-[var(--color-background-secondary)] rounded-2xl border border-[var(--color-border-light)] shadow-md hover:border-[var(--color-accent)]/30 hover:shadow-xl overflow-hidden"
                         >
                           <CoursePreviewCard course={course} />
