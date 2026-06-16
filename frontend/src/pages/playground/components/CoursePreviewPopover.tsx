@@ -72,31 +72,6 @@ export default function CoursePreviewPopover({
       >
         {children}
 
-        {/* Mobile action buttons - always visible below the card */}
-        {isMobile && (
-          <div className="flex items-center gap-2 px-4 pb-4 mt-2">
-            <button
-              onClick={(e) => { e.stopPropagation(); if (onReadMore) onReadMore(); }}
-              className="flex-1 bg-[var(--color-accent)] text-white py-3 rounded-xl text-sm font-bold hover:brightness-110 transition-all text-center shadow-md cursor-pointer"
-            >
-              Read More
-            </button>
-            {onSave && (
-              <button
-                onClick={(e) => { e.stopPropagation(); if (onSave) onSave(); }}
-                className={`w-12 h-12 rounded-xl border flex items-center justify-center transition-colors shrink-0 cursor-pointer ${
-                  isSaved
-                    ? "border-[var(--color-error)] text-[var(--color-error)] bg-[var(--color-error)]/10"
-                    : "border-[var(--color-border-medium)] text-[var(--color-text-secondary)]"
-                }`}
-                aria-label="Save course"
-              >
-                <Heart size={20} fill={isSaved ? "currentColor" : "none"} />
-              </button>
-            )}
-          </div>
-        )}
-
         <AnimatePresence>
           {isOpen && !isMobile && (
               <motion.div
