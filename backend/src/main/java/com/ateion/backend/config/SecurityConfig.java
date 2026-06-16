@@ -44,7 +44,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         // ADDED: "/api/admin/**" to the whitelist to permit the YouTube preview endpoint
-                        .requestMatchers("/api/auth/**", "/api/contact/**", "/api/admin/**").permitAll()
+                        .requestMatchers("/api/auth/**", "/api/contact/**", "/api/admin/**", "/api/ping", "/api/videos/**", "/api/chat").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);

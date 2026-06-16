@@ -1,48 +1,46 @@
-import { ShieldCheck, Sun, Moon } from "lucide-react";
+import { ShieldCheck, Sun, Moon, Loader2 } from "lucide-react";
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate, Navigate } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "../../../app/components/ThemeProvider";
+import { useAdminAuth } from "../context/AdminAuthContext";
 import "../styles/adminstyle.css";
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
+  const { login, isAuthenticated } = useAdminAuth();
 
-  const handleLogin = (e: React.FormEvent) => {
+  if (isAuthenticated) {
+    return <Navigate to="/admin/dashboard" replace />;
+  }
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email && password) {
-      localStorage.setItem("admin", JSON.stringify({ email }));
-      navigate("/admin/dashboard");
+    setError("");
+    setLoading(true);
+    const result = await login(email, password);
+    setLoading(false);
+    if (result.success) {
+      navigate("/admin/dashboard", { replace: true });
+    } else {
+      setError(result.error || "Invalid email or password");
     }
   };
 
   return (
-    <div
-      className="
-min-h-screen
-flex
-items-center
-justify-center
-px-4
-sm:px-6
-lg:px-8
-relative
-overflow-hidden
-animated-gradient
-bg-[var(--color-background-primary)]
-"
-    >
-      {/* Theme Toggle — top right */}
+    <div className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 relative overflow-hidden animated-gradient bg-[var(--color-background-primary)]">
       <motion.button
         type="button"
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
         onClick={toggleTheme}
         className="absolute top-6 right-6 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-background-secondary)] border border-[var(--color-border-medium)] text-[var(--color-text-primary)] cursor-pointer"
-        style={{ backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}
+        style={{ backdropFilter: "blur(12px)" }}
         aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
         title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
       >
@@ -71,7 +69,6 @@ bg-[var(--color-background-primary)]
         </AnimatePresence>
       </motion.button>
 
-      {/* Background orbs — overlap card for frosted glass visibility */}
       <div className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full"
         style={{ background: "var(--color-accent)", opacity: 0.25, filter: "blur(120px)" }}
       />
@@ -79,9 +76,7 @@ bg-[var(--color-background-primary)]
         style={{ background: "var(--color-background-tertiary)", opacity: 0.2, filter: "blur(120px)" }}
       />
 
-      {/* Login Card — Frosted Glass */}
       <div className="admin-glass-card w-full max-w-md md:max-w-lg z-10 relative">
-        {/* Logo */}
         <div className="flex justify-center mb-4">
           <div className="admin-glass-icon p-4 rounded-full">
             <ShieldCheck size={42} className="text-[var(--color-text-primary)]" />
@@ -91,12 +86,10 @@ bg-[var(--color-background-primary)]
         <h1 className="text-center text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)] mb-1">
           Ateion
         </h1>
-
         <p className="text-center text-[var(--color-text-secondary)] mt-0 mb-8 text-sm">
           Master Admin Portal
         </p>
 
-        {/* Form */}
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
             <label className="block text-[var(--color-text-primary)] mb-2 text-sm font-medium">
@@ -109,6 +102,7 @@ bg-[var(--color-background-primary)]
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
+              disabled={loading}
             />
           </div>
 
@@ -123,14 +117,26 @@ bg-[var(--color-background-primary)]
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              disabled={loading}
             />
+            {error && (
+              <motion.p
+                initial={{ opacity: 0, y: -4 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-red-500 text-xs mt-2 font-medium"
+              >
+                {error}
+              </motion.p>
+            )}
           </div>
 
           <button
             type="submit"
-            className="w-full py-3 rounded-xl text-[var(--color-text-inverse)] font-semibold transition-all duration-300 hover:scale-[1.02] admin-btn"
+            disabled={loading}
+            className="w-full py-3 rounded-xl text-[var(--color-text-inverse)] font-semibold transition-all duration-300 hover:scale-[1.02] admin-btn flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
           >
-            Login
+            {loading && <Loader2 size={18} className="animate-spin" />}
+            {loading ? "Signing in..." : "Login"}
           </button>
         </form>
 

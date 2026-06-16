@@ -3,6 +3,10 @@ import { useState, useEffect, Suspense, lazy } from "react";
 import LoadingSpinner from "./components/LoadingSpinner";
 import { AnimatePresence } from "framer-motion";
 import AIChatBot from "./components/AIChatbot";
+import { ToastProvider } from "../pages/admin/utils/toast";
+import ToastContainer from "../pages/admin/components/ui/Toast";
+import { AdminAuthProvider } from "../pages/admin/context/AdminAuthContext";
+import { CourseProvider } from "../pages/admin/context/CourseContext";
 
 const Homepage = lazy(() => import("../pages/Homepage"));
 const GCOPage = lazy(() => import("../pages/GCOPage"));
@@ -20,8 +24,8 @@ const PoliciesPage = lazy(() => import("../pages/PoliciesPage"));
 const PolicyDetailPage = lazy(() => import("../pages/PolicyDetailPage"));
 const AdminDashboardPage = lazy(() => import("../pages/admin/pages/AdminDashboardPage"));
 const AdminLayout = lazy(() => import("../pages/admin/layouts/AdminLayout"));
-const CourseListView = lazy(() => import("../pages/admin/components/CourseListView"));
-const CourseUploadView = lazy(() => import("../pages/admin/components/CourseUploadView"));
+const CoursesPage = lazy(() => import("../pages/admin/pages/CoursesPage"));
+const CourseUploadView = lazy(() => import("../pages/admin/components/courses/CourseUploadView"));
 const UsersPage = lazy(() => import("../pages/admin/pages/UsersPage"));
 const SettingsPage = lazy(() => import("../pages/admin/pages/SettingsPage"));
 import ThemeProvider from "./components/ThemeProvider";
@@ -156,7 +160,7 @@ function AnimatedRoutes() {
             path="/admin/courses"
             element={
               <PageTransition>
-                <CourseListView />
+                <CoursesPage />
               </PageTransition>
             }
           />
@@ -207,12 +211,11 @@ function AnimatedRoutes() {
               </PageTransition>
             }
           />
-          {/* Reusing Admin components for Teacher features as requested */}
           <Route
             path="/teacher/courses"
             element={
               <PageTransition>
-                <CourseListView />
+                <CoursesPage />
               </PageTransition>
             }
           />
@@ -226,7 +229,6 @@ function AnimatedRoutes() {
               </PageTransition>
             }
           />
-          {/* Restricted Teacher Pages */}
           <Route
             path="/teacher/students"
             element={
@@ -292,14 +294,33 @@ export default function App() {
     const hiddenPaths = ["/admin", "/teacher", "/reset-password"];
     const shouldHide = hiddenPaths.some((p) => location.pathname.startsWith(p));
     if (shouldHide) return null;
-    return <AIChatBot greeting="Hello! 👋" />;
+
+    const handleSendMessage = async (message: string, history: { role: string; content: string }[]) => {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message, history }),
+      });
+      if (!res.ok) throw new Error(`Chat API error: ${res.status}`);
+      const data = await res.json();
+      return data.reply;
+    };
+
+    return <AIChatBot greeting="Hello! 👋" onSendMessage={handleSendMessage} />;
   }
 
   return (
     <ThemeProvider>
       <BrowserRouter>
         <Suspense fallback={<LoadingSpinner />}>
-          <AnimatedRoutes />
+          <AdminAuthProvider>
+            <CourseProvider>
+              <ToastProvider>
+                <AnimatedRoutes />
+                <ToastContainer />
+              </ToastProvider>
+            </CourseProvider>
+          </AdminAuthProvider>
           <ChatBotWrapper />
           {showRegister && (
             <RegisterPage

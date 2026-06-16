@@ -1,150 +1,93 @@
-import React, { useEffect } from "react";
-import { useNavigate, useLocation, Outlet, Link } from "react-router";
-import {
-  LayoutDashboard,
-  BookOpen,
-  Upload,
-  Users,
-  Settings,
-  LogOut,
-  Sun,
-  Moon,
-  ShieldCheck,
-} from "lucide-react";
-import { useTheme } from "../../../app/components/ThemeProvider";
-import "../../../styles/Dashboard.css";
-import "../styles/adminstyle.css";
+import { useEffect, useCallback } from "react";
+import { Navigate, Outlet, useLocation, useNavigate } from "react-router";
+import { motion, AnimatePresence } from "framer-motion";
+import { useAdminAuth } from "../context/AdminAuthContext";
+import AdminSidebar from "./AdminSidebar";
+import AdminHeader from "./AdminHeader";
+import CommandPalette from "../components/CommandPalette";
+import ToastContainer from "../components/ui/Toast";
+
+const ADMIN_THEME_KEY = "ateion-admin-theme";
+const MAIN_THEME_KEY = "ateion-theme";
+
+const pageVariants = {
+  initial: { opacity: 0, y: 12 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.25, ease: "easeOut" } },
+  exit: { opacity: 0, y: -8, transition: { duration: 0.15, ease: "easeIn" } },
+};
 
 export default function AdminLayout() {
-  const { theme, toggleTheme } = useTheme();
-  const navigate = useNavigate();
+  const { isAuthenticated } = useAdminAuth();
   const location = useLocation();
-
-  // Determine active tab from URL path
-  const currentPath = location.pathname;
-  let activeTab = "overview";
-  if (currentPath.includes("/admin/courses")) activeTab = "courses";
-  if (currentPath.includes("/admin/upload")) activeTab = "upload";
-  if (currentPath.includes("/admin/users")) activeTab = "users";
-  if (currentPath.includes("/admin/settings")) activeTab = "settings";
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const adminData = localStorage.getItem("admin");
-    if (!adminData) {
-      navigate("/admin");
+    const adminTheme = localStorage.getItem(ADMIN_THEME_KEY);
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+    if (!adminTheme) {
+      localStorage.setItem(ADMIN_THEME_KEY, "dark");
+      document.documentElement.setAttribute("data-theme", "dark");
+    } else {
+      document.documentElement.setAttribute("data-theme", adminTheme);
     }
-  }, [navigate]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("admin");
-    navigate("/admin");
-  };
+    return () => {
+      const mainTheme = localStorage.getItem(MAIN_THEME_KEY) || (prefersDark ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", mainTheme);
+    };
+  }, []);
 
-  const menuItems = [
-    {
-      id: "overview",
-      label: "Overview",
-      icon: LayoutDashboard,
-      path: "/admin/dashboard",
-    },
-    {
-      id: "courses",
-      label: "Manage Courses",
-      icon: BookOpen,
-      path: "/admin/courses",
-    },
-    {
-      id: "upload",
-      label: "Upload Course",
-      icon: Upload,
-      path: "/admin/upload",
-    },
-    { id: "users", label: "Users", icon: Users, path: "/admin/users" },
-    {
-      id: "settings",
-      label: "Settings",
-      icon: Settings,
-      path: "/admin/settings",
-    },
-  ];
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    const tag = (e.target as HTMLElement)?.tagName;
+    if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
 
-  const currentMenuLabel =
-    menuItems.find((m) => m.id === activeTab)?.label || "Dashboard";
+    if (e.key === "n" && !e.metaKey && !e.ctrlKey) {
+      e.preventDefault();
+      if (location.pathname.startsWith("/admin/courses") || location.pathname.startsWith("/admin/dashboard")) {
+        navigate("/admin/upload");
+      }
+    }
+
+    if (e.key === "/" && !e.metaKey && !e.ctrlKey) {
+      e.preventDefault();
+      const searchInput = document.querySelector<HTMLInputElement>(
+        'input[type="text"][placeholder*="Search"]',
+      );
+      searchInput?.focus();
+    }
+  }, [navigate, location.pathname]);
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handleKeyDown]);
+
+  if (!isAuthenticated) {
+    return <Navigate to="/admin" replace />;
+  }
 
   return (
-    <div className="min-h-screen bg-[var(--color-background-primary)] text-[var(--color-text-primary)] font-['SF_Pro_Display'] flex">
-      {/* SIDEBAR */}
-      <aside className="w-[280px] h-screen sticky top-0 border-r border-[var(--color-border-light)] bg-[var(--color-background-secondary)] flex flex-col z-20">
-        <div className="p-6 border-b border-[var(--color-border-light)] flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[var(--color-primary_light)] flex items-center justify-center border border-[var(--color-primary)]">
-            <ShieldCheck size={20} className="text-[var(--color-primary)]" />
-          </div>
-          <div>
-            <h2 className="font-bold text-lg font-['OV_Soge'] leading-tight">
-              Ateion Admin
-            </h2>
-            <p className="text-xs text-[var(--color-text-tertiary)] font-medium">
-              Ecosystem Control
-            </p>
-          </div>
-        </div>
-
-        <nav className="flex-1 p-4 flex flex-col gap-2 overflow-y-auto">
-          {menuItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = activeTab === item.id;
-            return (
-              <Link
-                to={item.path}
-                key={item.id}
-                className={`flex items-center gap-3 w-full px-4 py-3 rounded-xl transition-all duration-200 text-sm font-medium cursor-pointer ${
-                  isActive
-                    ? "bg-[var(--color-accent)] text-white shadow-[var(--shadow-button)]"
-                    : "text-[var(--color-text-secondary)] hover:bg-[var(--color-background-tertiary)] hover:text-[var(--color-text-primary)]"
-                }`}
-              >
-                <Icon size={18} />
-                {item.label}
-              </Link>
-            );
-          })}
-        </nav>
-
-        <div className="p-4 border-t border-[var(--color-border-light)]">
-          <button
-            onClick={handleLogout}
-            className="flex items-center gap-3 w-full px-4 py-3 rounded-xl transition-all duration-200 text-sm font-medium text-red-500 hover:bg-red-500/10 cursor-pointer"
-          >
-            <LogOut size={18} />
-            Sign Out
-          </button>
-        </div>
-      </aside>
-
-      {/* MAIN CONTENT AREA */}
+    <div className="min-h-screen bg-[var(--color-background-primary)] text-[var(--color-text-primary)] flex">
+      <AdminSidebar />
       <main className="flex-1 flex flex-col min-h-screen overflow-x-hidden">
-        {/* HEADER */}
-        <header className="h-[72px] px-8 border-b border-[var(--color-border-light)] bg-[var(--color-background-secondary)] backdrop-blur-md sticky top-0 z-10 flex items-center justify-between">
-          <h1 className="text-xl font-bold font-['OV_Soge']">
-            {currentMenuLabel}
-          </h1>
-
-          <div className="flex items-center gap-4">
-            <button
-              onClick={toggleTheme}
-              className="w-10 h-10 rounded-full flex items-center justify-center cursor-pointer transition-colors bg-[var(--color-background-tertiary)] hover:bg-[var(--color-border-light)] text-[var(--color-text-secondary)]"
+        <AdminHeader />
+        <div className="p-8 max-w-[var(--admin-content-max-width,var(--max-width))] mx-auto w-full flex-1">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={location.pathname}
+              variants={pageVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
             >
-              {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
-            </button>
-            <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 to-purple-500 border-2 border-[var(--color-background-primary)] shadow-sm"></div>
-          </div>
-        </header>
-
-        {/* DYNAMIC CONTENT (Pages are injected here) */}
-        <div className="p-8 max-w-[var(--max-width)] mx-auto w-full flex-1">
-          <Outlet />
+              <Outlet />
+            </motion.div>
+          </AnimatePresence>
         </div>
       </main>
+      <CommandPalette />
+      <ToastContainer />
     </div>
   );
 }

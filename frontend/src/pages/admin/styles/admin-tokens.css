@@ -1,0 +1,7 @@
+:root {
+  --shadow-accent: var(--shadow-button);
+  --shadow-accent-hover: var(--shadow-button-hover);
+  --sidebar-width: 280px;
+  --sidebar-collapsed-width: 64px;
+  --header-height: 72px;
+}
