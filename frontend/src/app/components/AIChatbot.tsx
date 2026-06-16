@@ -37,7 +37,10 @@ const defaultAIHandler = async (
   message: string,
   history: Message[]
 ): Promise<string> => {
-  const res = await fetch("http://localhost:8080/api/chat", {
+  
+    const backendUrl = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
+    const res = await fetch(`${backendUrl}/chat`, {
+
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
