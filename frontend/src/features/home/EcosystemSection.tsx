@@ -226,7 +226,11 @@ function EcosystemBubble({
             cy="50"
             r="49.5"
             animate={{
-              fill: isHovered ? hoverColor : defaultColor,
+              fill: isHovered
+                ? hoverColor
+                : gradientId
+                  ? `url(#${gradientId})`
+                  : defaultColor,
               stroke: isHovered
                 ? hoverColor
                 : defaultColor !== "transparent"
@@ -302,6 +306,7 @@ function EcosystemCluster({
   onBubbleClick: (id: string) => void;
 }) {
   const navigate = useNavigate();
+
   return (
     // Explicit width + height so the cluster never collapses and never
     // causes the next section to overlap.
@@ -312,20 +317,11 @@ function EcosystemCluster({
       {/* SVG gradient defs */}
       <svg width="0" height="0" className="absolute">
         <defs>
-          <linearGradient
-            id="ateionGrad"
-            x1="0%"
-            y1="0%"
-            x2="100%"
-            y2="100%"
-          >
-            <stop offset="0%" stopColor="#1E1632" />
-            <stop offset="100%" stopColor="#4A3B6F" />
+          <linearGradient id="themeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="var(--color-accent)" />
+            <stop offset="100%" stopColor="var(--color-accent_light, var(--color-accent))" />
           </linearGradient>
-          <linearGradient id="gcoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#FF595B" />
-            <stop offset="100%" stopColor="#FF8A8C" />
-          </linearGradient>
+
           <linearGradient
             id="softGrad"
             x1="0%"
@@ -393,9 +389,9 @@ function EcosystemCluster({
         size="272.92px"
         defaultColor="var(--color-accent)"
         staticTextColor="white"
-        hoverColor="var(--color-accent-hover)"
+        hoverColor="var(--color-accent)"
         isDark={true}
-        gradientId="gcoGrad"
+        gradientId="themeGrad"
         title="Ateion"
         description="Ateion is building the infrastructure for a capability-based future by integrating early AI PlayGround with standard-setting competitions."
         titleSize="31px"
@@ -413,9 +409,9 @@ function EcosystemCluster({
         size="274.68px"
         defaultColor="var(--color-accent)"
         staticTextColor="white"
-        hoverColor="var(--color-accent-hover)"
+        hoverColor="var(--color-accent)"
         isDark={true}
-        gradientId="gcoGrad"
+        gradientId="themeGrad"
         title="GCO"
         description="From early AI PlayGround to the Global Capability Olympiad, with psychometric readiness tools."
         titleSize="38px"
@@ -433,9 +429,9 @@ function EcosystemCluster({
         size="248.27px"
         defaultColor="var(--color-accent)"
         staticTextColor="white"
-        hoverColor="var(--color-accent-hover)"
+        hoverColor="var(--color-accent)"
         isDark={true}
-        gradientId="gcoGrad"
+        gradientId="themeGrad"
         title="Psychometric Tests"
         description="Discover strengths, mindset, and learning style."
         titleSize="24px"
@@ -452,9 +448,9 @@ function EcosystemCluster({
         size="333.67px"
         defaultColor="var(--color-accent)"
         staticTextColor="white"
-        hoverColor="var(--color-accent-hover)"
+        hoverColor="var(--color-accent)"
         isDark={true}
-        gradientId="gcoGrad"
+        gradientId="themeGrad"
         title="PlayGround"
         description="Engaging, hands-on learning experiences designed to bridge theory with practical AI execution."
         titleSize="25px"
@@ -568,8 +564,8 @@ export default function EcosystemSection() {
   const DESKTOP_GAP = 64;
   const DESKTOP_CONTENT_WIDTH = DESKTOP_BADGE_WIDTH + DESKTOP_GAP + CANVAS_WIDTH;
   const DESKTOP_SAFE_PADDING = 28;
-  const DESKTOP_MAX_SCALE = 0.66;
-  const DESKTOP_MIN_SCALE = 0.44;
+  const DESKTOP_MAX_SCALE = 0.88;
+  const DESKTOP_MIN_SCALE = 0.55;
 
   const [activeId, setActiveId] = useState("gco");
   const [desktopScale, setDesktopScale] = useState(DESKTOP_MAX_SCALE);
@@ -654,10 +650,8 @@ export default function EcosystemSection() {
   const activeData = ecosystemData[activeId as keyof typeof ecosystemData];
 
   return (
-    // `relative` + `w-full` + explicit padding ensures the section occupies
-    // real document space so the next sibling renders below it — no overlap.
     <section className="relative w-full px-4 py-8 sm:px-6 sm:py-10 md:px-10 lg:py-12">
-      <div className="relative mx-auto w-full max-w-[1120px] overflow-visible bg-transparent pt-8 pb-6 shadow-none sm:pt-10 sm:pb-8 lg:pt-12 lg:pb-10">
+      <div className="relative mx-auto w-full max-w-[1360px] overflow-visible bg-transparent pt-8 pb-6 shadow-none sm:pt-10 sm:pb-8 lg:pt-12 lg:pb-10">
       {/* Section title */}
       <div className="relative z-10 flex flex-col items-center w-full mb-[20px] sm:mb-[26px] lg:mb-[30px] px-4">
         <p className="font-bold text-[34px] sm:text-[44px] md:text-[52px] text-[var(--color-text-primary)] text-center tracking-[-0.05em] leading-[0.95]" style={{ fontFamily: "var(--font-display)" }}>
