@@ -100,10 +100,10 @@ export default function CourseUploadView({
             <h2 className="text-3xl font-bold font-['OV_Soge'] mb-2 tracking-tight text-[var(--color-text-primary)]">Create New Course</h2>
             <p className="text-sm text-[var(--color-text-secondary)]">Fill in the details to publish a new course to the ecosystem.</p>
           </div>
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
             <motion.button
               onClick={handleSaveDraft}
-              className="px-5 py-2.5 rounded-xl border border-[var(--color-border-light)] text-[var(--color-text-secondary)] bg-[var(--color-background-secondary)] font-medium flex items-center gap-2 hover:bg-[var(--color-background-tertiary)]/30 hover:text-[var(--color-text-primary)] transition-all duration-200 cursor-pointer"
+              className="px-5 py-2.5 rounded-xl border border-[var(--color-border-light)] text-[var(--color-text-secondary)] bg-[var(--color-background-secondary)] font-medium flex items-center justify-center gap-2 hover:bg-[var(--color-background-tertiary)]/30 hover:text-[var(--color-text-primary)] transition-all duration-200 cursor-pointer w-full sm:w-auto"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -112,7 +112,7 @@ export default function CourseUploadView({
             </motion.button>
             <motion.button
               onClick={handleSubmit}
-              className="px-5 py-2.5 rounded-xl bg-[var(--color-accent)] text-white font-medium flex items-center gap-2 shadow-[var(--shadow-accent)] hover:shadow-[var(--shadow-accent-hover)] transition-all duration-300 cursor-pointer"
+              className="px-5 py-2.5 rounded-xl bg-[var(--color-accent)] text-white font-medium flex items-center justify-center gap-2 shadow-[var(--shadow-accent)] hover:shadow-[var(--shadow-accent-hover)] transition-all duration-300 cursor-pointer w-full sm:w-auto"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
             >
@@ -123,12 +123,12 @@ export default function CourseUploadView({
         </div>
       </motion.div>
 
-      <motion.div className="flex items-center gap-4 my-8" variants={itemVariants}>
+      <motion.div className="flex items-center justify-center sm:justify-start gap-2.5 sm:gap-4 my-6 sm:my-8 flex-wrap" variants={itemVariants}>
         {sections.map((s, i) => (
-          <div key={s.num} className="flex items-center gap-4">
-            <div className="flex items-center gap-2">
+          <div key={s.num} className="flex items-center gap-2.5 sm:gap-4">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               <div
-                className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold ${
+                className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
                   (s.num === 1 && hasTitle) ||
                   (s.num === 3 && hasModules)
                     ? "bg-[var(--color-accent)] text-white"
@@ -141,19 +141,19 @@ export default function CourseUploadView({
                   s.num
                 )}
               </div>
-              <span className="text-sm font-semibold text-[var(--color-text-secondary)] hidden sm:inline">
+              <span className="text-xs sm:text-sm font-semibold text-[var(--color-text-secondary)] hidden sm:inline whitespace-nowrap">
                 {s.label}
               </span>
             </div>
             {i < sections.length - 1 && (
-              <div className="w-8 h-px bg-[var(--color-border-light)]" />
+              <div className="w-6 sm:w-8 h-px bg-[var(--color-border-light)]" />
             )}
           </div>
         ))}
       </motion.div>
 
       <motion.div className="clay-card bg-[var(--color-background-secondary)] rounded-2xl border border-[var(--color-border-light)] mb-8 overflow-hidden" variants={itemVariants}>
-        <div className="flex items-center gap-3 px-8 pt-6 pb-4 border-b border-[var(--color-border-light)]">
+        <div className="flex items-center gap-3 px-4 py-4 sm:px-6 sm:py-5 lg:px-8 lg:pt-6 lg:pb-4 border-b border-[var(--color-border-light)]">
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-accent)]/80 text-white flex items-center justify-center text-sm font-bold shadow-sm">1</div>
           <h3 className="text-xl font-bold">Basic Information</h3>
         </div>
@@ -167,7 +167,7 @@ export default function CourseUploadView({
       </motion.div>
 
       <motion.div className="clay-card bg-[var(--color-background-secondary)] rounded-2xl border border-[var(--color-border-light)] mb-8 overflow-hidden" variants={itemVariants}>
-        <div className="flex items-center gap-3 px-8 pt-6 pb-4 border-b border-[var(--color-border-light)]">
+        <div className="flex items-center gap-3 px-4 py-4 sm:px-6 sm:py-5 lg:px-8 lg:pt-6 lg:pb-4 border-b border-[var(--color-border-light)]">
           <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-accent)]/80 text-white flex items-center justify-center text-sm font-bold shadow-sm">2</div>
           <h3 className="text-xl font-bold">Course Media</h3>
         </div>
@@ -175,7 +175,7 @@ export default function CourseUploadView({
       </motion.div>
 
       <motion.div className="clay-card bg-[var(--color-background-secondary)] rounded-2xl border border-[var(--color-border-light)] overflow-hidden" variants={itemVariants}>
-        <div className="flex items-center justify-between px-8 pt-6 pb-4 border-b border-[var(--color-border-light)]">
+        <div className="flex items-center justify-between px-4 py-4 sm:px-6 sm:py-5 lg:px-8 lg:pt-6 lg:pb-4 border-b border-[var(--color-border-light)]">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-accent)]/80 text-white flex items-center justify-center text-sm font-bold shadow-sm">3</div>
             <h3 className="text-xl font-bold">Curriculum Builder</h3>

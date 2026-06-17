@@ -9,7 +9,7 @@ const mediaItems = [
 
 export default function Step2Media() {
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-6 lg:p-8">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {mediaItems.map(({ Icon, title, desc }) => (
           <motion.div

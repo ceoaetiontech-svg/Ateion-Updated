@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useLocation } from "react-router";
-import { Sun, Moon, User, Key, LogOut, ChevronDown, Bell } from "lucide-react";
+import { Sun, Moon, User, Key, LogOut, ChevronDown, Bell, Menu } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAdminAuth } from "../context/AdminAuthContext";
 
@@ -62,8 +62,17 @@ export default function AdminHeader() {
     .slice(0, 2) || "AD";
 
   return (
-    <header className="h-[72px] px-8 border-b border-[var(--color-border-light)] bg-[var(--color-background-secondary)]/80 backdrop-blur-xl sticky top-0 z-10 flex items-center justify-between">
-      <h1 className="text-xl font-bold font-['OV_Soge'] tracking-tight">{title}</h1>
+    <header className="h-[72px] px-4 sm:px-6 lg:px-8 border-b border-[var(--color-border-light)] bg-[var(--color-background-secondary)]/80 backdrop-blur-xl sticky top-0 z-10 flex items-center justify-between">
+      <div className="flex items-center gap-3">
+        <label
+          htmlFor="mobile-sidebar-toggle"
+          className="lg:hidden w-10 h-10 rounded-xl flex items-center justify-center cursor-pointer transition-colors bg-[var(--color-background-tertiary)] hover:bg-[var(--color-border-light)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
+          aria-label="Toggle Menu"
+        >
+          <Menu size={20} />
+        </label>
+        <h1 className="text-xl font-bold font-['OV_Soge'] tracking-tight">{title}</h1>
+      </div>
 
       <div className="flex items-center gap-4">
         <div className="relative" ref={notifRef}>

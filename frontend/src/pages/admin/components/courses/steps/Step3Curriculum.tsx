@@ -64,7 +64,7 @@ export default function Step3Curriculum({ modules, setModules }: Step3Props) {
   };
 
   return (
-    <div className="p-8 space-y-6">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-6">
       {modules.length > 0 ? (
         <Reorder.Group
           axis="y"
@@ -145,28 +145,28 @@ function ModuleItem({
       id={mod.id}
       className="rounded-2xl bg-[var(--color-background-primary)] border border-[var(--color-border-light)] overflow-hidden shadow-sm"
     >
-      <div className="flex items-center justify-between px-6 py-4 bg-[var(--color-background-secondary)] border-b border-[var(--color-border-light)]">
-        <div className="flex items-center gap-3 flex-1">
-          <div className="cursor-grab active:cursor-grabbing touch-none text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)] transition-colors">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between px-4 py-4 sm:px-6 bg-[var(--color-background-secondary)] border-b border-[var(--color-border-light)] gap-3">
+        <div className="flex items-center gap-3 flex-1 w-full">
+          <div className="cursor-grab active:cursor-grabbing touch-none text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)] transition-colors shrink-0">
             <GripVertical size={16} />
           </div>
-          <div className="w-7 h-7 rounded-lg bg-[var(--color-accent)]/10 flex items-center justify-center text-[var(--color-accent)]">
+          <div className="w-7 h-7 rounded-lg bg-[var(--color-accent)]/10 flex items-center justify-center text-[var(--color-accent)] shrink-0">
             <Layers size={14} />
           </div>
-          <span className="font-bold text-sm text-[var(--color-text-secondary)]">
+          <span className="font-bold text-sm text-[var(--color-text-secondary)] shrink-0">
             Module {index + 1}
           </span>
           <input
             type="text"
             placeholder="Module Title (e.g. Introduction to Variables)"
-            className="flex-1 bg-transparent border-b border-transparent hover:border-[var(--color-border-light)] focus:border-[var(--color-accent)] outline-none px-2 py-1 font-semibold transition-all duration-250"
+            className="flex-1 bg-transparent border-b border-transparent hover:border-[var(--color-border-light)] focus:border-[var(--color-accent)] outline-none px-2 py-1 font-semibold transition-all duration-250 w-full"
             value={mod.title}
             onChange={(e) => onTitleChange(mod.id, e.target.value)}
           />
         </div>
         <motion.button
           onClick={() => onRemove(mod.id)}
-          className="text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 p-2 hover:bg-red-500/10 rounded-lg transition-colors cursor-pointer"
+          className="text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 p-2 hover:bg-red-500/10 rounded-lg transition-colors cursor-pointer self-end sm:self-auto shrink-0"
           title="Delete Module"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
@@ -174,7 +174,7 @@ function ModuleItem({
           <Trash2 size={16} />
         </motion.button>
       </div>
-      <div className="px-6 py-5">
+      <div className="px-4 py-4 sm:px-6 sm:py-5">
         {mod.lessons.length > 0 ? (
           <Reorder.Group
             axis="y"
@@ -204,7 +204,7 @@ function ModuleItem({
                 />
                 <button
                   onClick={() => onRemoveLesson(mod.id, lIndex)}
-                  className="opacity-0 group-hover:opacity-100 p-1 rounded-lg text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 hover:bg-red-500/10 transition-all cursor-pointer"
+                  className="opacity-100 lg:opacity-0 lg:group-hover:opacity-100 p-1 rounded-lg text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 hover:bg-red-500/10 transition-all cursor-pointer"
                   title="Remove Lesson"
                 >
                   <Trash2 size={12} />
@@ -215,7 +215,7 @@ function ModuleItem({
         ) : null}
         <button
           onClick={() => onAddLesson(mod.id)}
-          className="text-sm text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] flex items-center gap-1.5 mt-4 ml-[52px] transition-colors cursor-pointer"
+          className="text-sm text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] flex items-center gap-1.5 mt-4 ml-10 sm:ml-[52px] transition-colors cursor-pointer"
         >
           <div className="w-5 h-5 rounded-full border border-dashed border-current flex items-center justify-center">
             <Plus size={12} />

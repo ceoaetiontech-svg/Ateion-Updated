@@ -304,7 +304,7 @@ export default function UserListView() {
                       {relativeTime(user.joinedAt)}
                     </td>
                     <td className="p-4">
-                      <div className="flex items-center justify-center gap-1.5 opacity-0 group-hover:opacity-100 transition-all duration-200 transform translate-x-2 group-hover:translate-x-0">
+                      <div className="flex items-center justify-center gap-1.5 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-all duration-200 transform translate-x-0 lg:translate-x-2 lg:group-hover:translate-x-0">
                         <button
                           className="p-2 rounded-lg text-[var(--color-text-tertiary)] hover:text-blue-650 dark:hover:text-blue-400 hover:bg-blue-500/10 transition-all cursor-pointer hover:scale-105 active:scale-95"
                           title="Edit User"

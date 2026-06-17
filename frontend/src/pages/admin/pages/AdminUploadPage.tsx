@@ -26,16 +26,16 @@ export default function AdminUploadPage() {
       />
 
       {/* Tab Switcher Bar */}
-      <div className="tab-container flex p-1 bg-[var(--color-background-secondary)] rounded-xl border border-[var(--color-border-light)] w-max mb-8 shadow-sm">
+      <div className="tab-container flex p-1 bg-[var(--color-background-secondary)] rounded-xl border border-[var(--color-border-light)] w-full max-w-lg mb-8 shadow-sm">
         <label
           htmlFor="method-manual"
-          className="manual-label px-5 py-2.5 rounded-lg text-sm font-semibold text-[var(--color-text-secondary)] cursor-pointer select-none transition-all duration-200 hover:text-[var(--color-text-primary)]"
+          className="manual-label flex-1 text-center px-5 py-2.5 rounded-lg text-sm font-semibold text-[var(--color-text-secondary)] cursor-pointer select-none transition-all duration-200 hover:text-[var(--color-text-primary)]"
         >
           Manual Course Builder
         </label>
         <label
           htmlFor="method-youtube"
-          className="youtube-label px-5 py-2.5 rounded-lg text-sm font-semibold text-[var(--color-text-secondary)] cursor-pointer select-none transition-all duration-200 hover:text-[var(--color-text-primary)]"
+          className="youtube-label flex-1 text-center px-5 py-2.5 rounded-lg text-sm font-semibold text-[var(--color-text-secondary)] cursor-pointer select-none transition-all duration-200 hover:text-[var(--color-text-primary)]"
         >
           YouTube Playlist Importer
         </label>

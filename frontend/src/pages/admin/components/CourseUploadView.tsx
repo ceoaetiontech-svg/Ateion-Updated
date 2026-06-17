@@ -74,7 +74,7 @@ export default function CourseUploadView({ onUploadSuccess }: { onUploadSuccess:
           <button 
             onClick={handlePublish} 
             disabled={loading || !previewData} 
-            className="px-5 py-2.5 rounded-xl bg-[var(--color-accent)] text-white font-medium flex items-center justify-center gap-2 shadow-[var(--shadow-accent)] hover:shadow-[var(--shadow-accent-hover)] disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+            className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[var(--color-accent)] text-white font-medium flex items-center justify-center gap-2 shadow-[var(--shadow-accent)] hover:shadow-[var(--shadow-accent-hover)] disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
           >
             <CheckCircle size={18} /> {loading ? "Processing..." : "Publish Course Live"}
           </button>
@@ -83,18 +83,18 @@ export default function CourseUploadView({ onUploadSuccess }: { onUploadSuccess:
         <div className="admin-glass-card space-y-6">
           <div>
             <label className="block text-sm font-semibold mb-2">YouTube Playlist URL</label>
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-4">
               <input
                   type="text"
                   placeholder="https://youtube.com/playlist?list=..."
-                  className="admin-input flex-1 px-4 py-3 rounded-xl outline-none border border-[var(--color-border-light)] hover:border-[var(--color-border-medium)] focus:border-[var(--color-accent)] focus:hover:border-[var(--color-accent)] focus:shadow-[0_0_0_3px_rgba(232,133,106,0.12)] bg-[var(--color-background-primary)]/40 text-[var(--color-text-primary)] backdrop-blur-sm"
+                  className="admin-input flex-1 px-4 py-3 rounded-xl outline-none border border-[var(--color-border-light)] hover:border-[var(--color-border-medium)] focus:border-[var(--color-accent)] focus:hover:border-[var(--color-accent)] focus:shadow-[0_0_0_3px_rgba(232,133,106,0.12)] bg-[var(--color-background-primary)]/40 text-[var(--color-text-primary)] backdrop-blur-sm w-full"
                   value={playlistUrl}
                   onChange={(e) => setPlaylistUrl(e.target.value)}
               />
               <button 
                 onClick={handlePreview} 
                 disabled={loading} 
-                className="px-6 py-3 bg-[var(--color-text-primary)] text-[var(--color-text-inverse)] hover:bg-[var(--color-primary-hover)] active:scale-[0.98] transition-all duration-150 rounded-xl font-bold flex items-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full sm:w-auto justify-center px-6 py-3 bg-[var(--color-text-primary)] text-[var(--color-text-inverse)] hover:bg-[var(--color-primary-hover)] active:scale-[0.98] transition-all duration-150 rounded-xl font-bold flex items-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Search size={18} /> Preview
               </button>

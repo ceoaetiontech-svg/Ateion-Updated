@@ -73,10 +73,18 @@ export default function AdminLayout() {
       className="min-h-screen bg-[var(--color-background-primary)] text-[var(--color-text-primary)] flex"
       style={{ fontFamily: "var(--font-body)" }}
     >
+      <input type="checkbox" id="mobile-sidebar-toggle" className="peer/sidebar hidden" />
+      
+      {/* Mobile backdrop overlay */}
+      <label 
+        htmlFor="mobile-sidebar-toggle" 
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden peer-checked/sidebar:block lg:peer-checked/sidebar:hidden cursor-pointer"
+      />
+
       <AdminSidebar />
       <main className="flex-1 flex flex-col min-h-screen overflow-x-hidden">
         <AdminHeader />
-        <div className="p-8 max-w-[var(--admin-content-max-width,var(--max-width))] mx-auto w-full flex-1">
+        <div className="p-4 sm:p-6 lg:p-8 max-w-[var(--admin-content-max-width,var(--max-width))] mx-auto w-full flex-1">
           <AnimatePresence mode="wait">
             <motion.div
               key={location.pathname}
