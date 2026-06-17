@@ -25,7 +25,7 @@ const PolicyDetailPage = lazy(() => import("../pages/PolicyDetailPage"));
 const AdminDashboardPage = lazy(() => import("../pages/admin/pages/AdminDashboardPage"));
 const AdminLayout = lazy(() => import("../pages/admin/layouts/AdminLayout"));
 const CourseListView = lazy(() => import("../pages/admin/components/courses/CourseListView"));
-const CourseUploadView = lazy(() => import("../pages/admin/components/courses/CourseUploadView"));
+const CourseUploadView = lazy(() => import("../pages/admin/components/CourseUploadView"));
 const UsersPage = lazy(() => import("../pages/admin/pages/UsersPage"));
 const SettingsPage = lazy(() => import("../pages/admin/pages/SettingsPage"));
 const CoursePreviewPage = lazy(() => import("../pages/CoursePreviewPage"));
