@@ -31,7 +31,7 @@ const AGE_GROUP_THEMES: Record<AgeGroupFilterId, {
     title: "All learning paths",
     description: "Browse every course across age groups, goals and skill levels.",
     accent: "var(--color-accent)",
-    activePill: "linear-gradient(135deg, #2b244f 0%, #d66f55 58%, #ff9b82 100%)",
+    activePill: "var(--color-accent)",
     wallpaper: "radial-gradient(circle at 12% 18%, rgba(232,133,106,0.14), transparent 24%), radial-gradient(circle at 86% 12%, rgba(99,102,241,0.10), transparent 22%)",
     panelClass: "border-[var(--color-border-light)] bg-[var(--color-background-secondary)]",
     cardClass: "rounded-2xl border border-t-[3px] border-[var(--color-border-light)] bg-[var(--color-background-secondary)] shadow-md hover:border-[var(--color-accent)]/30 hover:shadow-xl overflow-hidden",
