@@ -11,6 +11,8 @@ import {
   CheckSquare,
   Calendar,
   FileText,
+  Milestone,
+  Headphones,
   type LucideIcon,
 } from "lucide-react";
 
@@ -53,6 +55,13 @@ export const navigationSections: NavSection[] = [
       { title: "Tasks", icon: CheckSquare, path: "/playground/tasks" },
       { title: "Calendar", icon: Calendar, path: "/playground/calendar" },
       { title: "Notes", icon: FileText, path: "/playground/notes" },
+    ],
+  },
+  {
+    title: "Audio Library",
+    icon: Headphones,
+    items: [
+      { title: "Audiobooks", icon: Headphones, path: "/playground/audiobooks" },
     ],
   },
 ];

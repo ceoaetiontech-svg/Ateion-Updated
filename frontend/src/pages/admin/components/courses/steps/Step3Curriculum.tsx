@@ -2,18 +2,27 @@ import { useState } from "react";
 import { Plus, Trash2, Layers, BookOpen, GripVertical } from "lucide-react";
 import { motion } from "framer-motion";
 import { Reorder } from "framer-motion";
-import type { ICourseModule } from "../../../types/types";
+
+export interface IBuilderLesson {
+  id: string;
+  text: string;
+}
+
+export interface IBuilderModule {
+  id: string;
+  title: string;
+  lessons: IBuilderLesson[];
+}
 
 interface Step3Props {
-  modules: ICourseModule[];
-  setModules: (m: ICourseModule[]) => void;
+  modules: IBuilderModule[];
+  setModules: (m: IBuilderModule[]) => void;
 }
 
 export default function Step3Curriculum({ modules, setModules }: Step3Props) {
-  const [dragEnabled, setDragEnabled] = useState(true);
-
   const handleAddModule = () => {
-    setModules([...modules, { id: `m${Date.now()}`, title: "", lessons: [""] }]);
+    const timestamp = Date.now();
+    setModules([...modules, { id: `m${timestamp}`, title: "", lessons: [{ id: `l${timestamp}-0`, text: "" }] }]);
   };
 
   const handleRemoveModule = (id: string) => {
@@ -25,9 +34,15 @@ export default function Step3Curriculum({ modules, setModules }: Step3Props) {
   };
 
   const handleAddLesson = (moduleId: string) => {
+    const timestamp = Date.now();
     setModules(
       modules.map((m) =>
-        m.id === moduleId ? { ...m, lessons: [...m.lessons, ""] } : m,
+        m.id === moduleId
+          ? {
+              ...m,
+              lessons: [...m.lessons, { id: `l${timestamp}-${m.lessons.length}-${Math.random()}`, text: "" }],
+            }
+          : m,
       ),
     );
   };
@@ -36,8 +51,7 @@ export default function Step3Curriculum({ modules, setModules }: Step3Props) {
     setModules(
       modules.map((m) => {
         if (m.id === moduleId) {
-          const newLessons = [...m.lessons];
-          newLessons[lessonIndex] = value;
+          const newLessons = m.lessons.map((l, idx) => (idx === lessonIndex ? { ...l, text: value } : l));
           return { ...m, lessons: newLessons };
         }
         return m;
@@ -57,7 +71,7 @@ export default function Step3Curriculum({ modules, setModules }: Step3Props) {
     );
   };
 
-  const handleReorderLessons = (moduleId: string, lessons: string[]) => {
+  const handleReorderLessons = (moduleId: string, lessons: IBuilderLesson[]) => {
     setModules(
       modules.map((m) => (m.id === moduleId ? { ...m, lessons } : m)),
     );
@@ -130,14 +144,14 @@ function ModuleItem({
   onRemoveLesson,
   onReorderLessons,
 }: {
-  mod: ICourseModule;
+  mod: IBuilderModule;
   index: number;
   onTitleChange: (id: string, value: string) => void;
   onRemove: (id: string) => void;
   onAddLesson: (moduleId: string) => void;
   onLessonChange: (moduleId: string, lessonIndex: number, value: string) => void;
   onRemoveLesson: (moduleId: string, lessonIndex: number) => void;
-  onReorderLessons: (moduleId: string, lessons: string[]) => void;
+  onReorderLessons: (moduleId: string, lessons: IBuilderLesson[]) => void;
 }) {
   return (
     <Reorder.Item
@@ -184,9 +198,9 @@ function ModuleItem({
           >
             {mod.lessons.map((lesson, lIndex) => (
               <Reorder.Item
-                key={`${mod.id}-${lIndex}`}
+                key={lesson.id}
                 value={lesson}
-                id={`${mod.id}-${lIndex}`}
+                id={lesson.id}
                 className="flex items-center gap-3 group"
               >
                 <div className="cursor-grab active:cursor-grabbing touch-none text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)] transition-colors">
@@ -199,7 +213,7 @@ function ModuleItem({
                   type="text"
                   placeholder="Lesson Name"
                   className="flex-1 bg-[var(--color-background-secondary)]/40 border border-[var(--color-border-light)] hover:border-[var(--color-border-medium)] rounded-lg px-3 py-2 text-sm outline-none transition-all duration-200 focus:border-[var(--color-accent)] focus:hover:border-[var(--color-accent)] focus:shadow-[0_0_0_2px_rgba(232,133,106,0.1)] text-[var(--color-text-primary)] placeholder-[var(--color-text-tertiary)]/60"
-                  value={lesson}
+                  value={lesson.text}
                   onChange={(e) => onLessonChange(mod.id, lIndex, e.target.value)}
                 />
                 <button

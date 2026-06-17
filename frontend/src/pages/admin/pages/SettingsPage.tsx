@@ -49,7 +49,7 @@ export default function SettingsPage() {
         initial="hidden"
         animate="show"
       >
-        <motion.div className="flex justify-between items-end mb-8" variants={itemVariants}>
+        <motion.div className="flex flex-col sm:flex-row justify-between sm:items-end gap-4 mb-8" variants={itemVariants}>
           <div>
             <motion.div
               initial={{ scaleX: 0 }}

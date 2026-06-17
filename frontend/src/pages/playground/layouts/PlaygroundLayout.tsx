@@ -40,6 +40,8 @@ import { ApiRequestError, fetchJsonWithRetry } from "../../../lib/apiClient";
 
 const CoursePlayerPage = lazy(() => import("../pages/CoursePlayerPage"));
 const FallbackPage = lazy(() => import("../pages/FallbackPage"));
+const AudiobooksLibraryPage = lazy(() => import("../pages/AudiobooksLibraryPage"));
+const AudiobookPlayerPage = lazy(() => import("../pages/AudiobookPlayerPage"));
 
 const viewMap: Record<string, LazyExoticComponent<ComponentType<any>>> = {
   "Dashboard": lazy(() => import("../pages/DashboardPage")),
@@ -53,6 +55,7 @@ const viewMap: Record<string, LazyExoticComponent<ComponentType<any>>> = {
   "Wellness Hub": lazy(() => import("../pages/WellnessHubPage")),
   "Growth Mindset": lazy(() => import("../pages/GrowthMindsetPage")),
   "Daily Reflection": lazy(() => import("../pages/ReflectionPage")),
+  "Audiobooks": lazy(() => import("../pages/AudiobooksLibraryPage")),
 };
 
 const PLAYGROUND_PREF_KEYS = {
@@ -600,6 +603,10 @@ function PlaygroundInner() {
                   {location.pathname.startsWith("/playground/course/") ? (
                       <Routes>
                         <Route path="course/:id" element={<CoursePlayerPage />} />
+                      </Routes>
+                  ) : location.pathname.startsWith("/playground/audiobook/") ? (
+                      <Routes>
+                        <Route path="audiobook/:id" element={<AudiobookPlayerPage />} />
                       </Routes>
                   ) : (
                       <motion.div

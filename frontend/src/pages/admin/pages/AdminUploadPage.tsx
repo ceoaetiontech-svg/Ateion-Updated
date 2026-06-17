@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import CourseUploadViewYoutube from "../components/CourseUploadView";
 import CourseUploadViewForm from "../components/courses/CourseUploadView";
+import AudiobookUploadView from "../components/AudiobookUploadView";
 
 export default function AdminUploadPage() {
   return (
@@ -24,9 +25,15 @@ export default function AdminUploadPage() {
         name="upload-method"
         className="hidden"
       />
+      <input
+        type="radio"
+        id="method-audiobook"
+        name="upload-method"
+        className="hidden"
+      />
 
       {/* Tab Switcher Bar */}
-      <div className="tab-container flex p-1 bg-[var(--color-background-secondary)] rounded-xl border border-[var(--color-border-light)] w-full max-w-lg mb-8 shadow-sm">
+      <div className="tab-container flex p-1 bg-[var(--color-background-secondary)] rounded-xl border border-[var(--color-border-light)] w-full max-w-2xl mb-8 shadow-sm">
         <label
           htmlFor="method-manual"
           className="manual-label flex-1 text-center px-5 py-2.5 rounded-lg text-sm font-semibold text-[var(--color-text-secondary)] cursor-pointer select-none transition-all duration-200 hover:text-[var(--color-text-primary)]"
@@ -39,16 +46,27 @@ export default function AdminUploadPage() {
         >
           YouTube Playlist Importer
         </label>
+        <label
+          htmlFor="method-audiobook"
+          className="audiobook-label flex-1 text-center px-5 py-2.5 rounded-lg text-sm font-semibold text-[var(--color-text-secondary)] cursor-pointer select-none transition-all duration-200 hover:text-[var(--color-text-primary)]"
+        >
+          Audiobook Manager
+        </label>
       </div>
 
       {/* Manual Course Builder Content */}
-      <div className="content-manual hidden">
+      <div className="content-manual">
         <CourseUploadViewForm onUploadSuccess={() => {}} />
       </div>
 
       {/* YouTube Importer Content */}
-      <div className="content-youtube hidden">
+      <div className="content-youtube">
         <CourseUploadViewYoutube onUploadSuccess={() => {}} />
+      </div>
+
+      {/* Audiobook Manager Content */}
+      <div className="content-audiobook">
+        <AudiobookUploadView />
       </div>
     </motion.div>
   );

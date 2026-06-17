@@ -267,11 +267,26 @@
   color: #ffffff;
 }
 
+#method-audiobook:checked ~ .tab-container .audiobook-label {
+  background: var(--color-accent);
+  color: #ffffff;
+}
+
 #method-manual:checked ~ .content-manual {
   display: block;
 }
 
 #method-youtube:checked ~ .content-youtube {
   display: block;
+}
+
+#method-audiobook:checked ~ .content-audiobook {
+  display: block;
+}
+
+.content-manual,
+.content-youtube,
+.content-audiobook {
+  display: none;
 }
 
