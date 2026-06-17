@@ -3,7 +3,6 @@ import {
   BookMarked,
   Compass,
   Award,
-  Sparkles,
   Sprout,
   Heart,
   Lightbulb,
@@ -12,7 +11,6 @@ import {
   CheckSquare,
   Calendar,
   FileText,
-  Milestone,
   type LucideIcon,
 } from "lucide-react";
 
