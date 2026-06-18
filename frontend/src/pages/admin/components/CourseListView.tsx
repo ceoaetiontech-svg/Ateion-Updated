@@ -12,20 +12,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { Link } from "react-router";
-
-interface AdminCourse {
-  id: number;
-  title: string;
-  category: string;
-  price: string;
-  isFree: boolean;
-  ageSegment: string;
-  image: string;
-  status: "Published" | "Draft";
-  moduleCount: number;
-  videoCount: number;
-  createdAt: string | null;
-}
+import CourseEditDrawer, { AdminCourse } from "./CourseEditDrawer";
 
 const containerVariants = {
   hidden: {},
@@ -66,6 +53,7 @@ export default function CourseListView() {
   const [isLoading, setIsLoading] = useState(true);
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [editingCourse, setEditingCourse] = useState<AdminCourse | null>(null);
 
   const fetchCourses = useCallback(async () => {
     setIsLoading(true);
@@ -346,13 +334,14 @@ export default function CourseListView() {
                             >
                               <TrendingUp size={16} />
                             </button>
-                            <button
-                                type="button"
-                                className="p-2 rounded-lg text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] hover:bg-[var(--color-accent)]/10 transition-colors"
-                                title="Editing coming later"
-                            >
-                              <Edit2 size={16} />
-                            </button>
+                             <button
+                                 type="button"
+                                 onClick={() => setEditingCourse(course)}
+                                 className="p-2 rounded-lg text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] hover:bg-[var(--color-accent)]/10 transition-all cursor-pointer hover:scale-105 active:scale-95"
+                                 title="Edit Course"
+                             >
+                               <Edit2 size={16} />
+                             </button>
                             <button
                                 type="button"
                                 onClick={() => void handleDelete(course)}
@@ -406,6 +395,16 @@ export default function CourseListView() {
             Showing {filteredCourses.length} of {courses.length} courses
           </div>
         </motion.div>
+
+        <CourseEditDrawer
+          course={editingCourse}
+          onClose={() => setEditingCourse(null)}
+          onSave={(updatedCourse) => {
+            setCourses((current) =>
+              current.map((item) => (item.id === updatedCourse.id ? updatedCourse : item))
+            );
+          }}
+        />
       </motion.div>
   );
 }

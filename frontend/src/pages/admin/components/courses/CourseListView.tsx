@@ -9,6 +9,8 @@ import ConfirmDialog from "../ui/ConfirmDialog";
 import { useCourses } from "../../context/CourseContext";
 import { useToast } from "../../utils/toast";
 import { relativeTime } from "../../utils/time";
+import CourseEditDrawer from "./CourseEditDrawer";
+import type { ICourseItem } from "../../types/types";
 
 const ITEMS_PER_PAGE = 5;
 const STATUS_TABS = ["All", "Published", "Draft", "Archived"] as const;
@@ -25,6 +27,7 @@ export default function CourseListView({ onCourseSelect }: { onCourseSelect?: (i
   const [sortKey, setSortKey] = useState<SortKey>("createdAt");
   const [sortDir, setSortDir] = useState<"asc" | "desc">("desc");
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [editingCourse, setEditingCourse] = useState<ICourseItem | null>(null);
 
   const onSort = (key: SortKey) => {
     if (sortKey === key) {
@@ -307,6 +310,7 @@ export default function CourseListView({ onCourseSelect }: { onCourseSelect?: (i
                           <TrendingUp size={16} />
                         </button>
                         <button
+                          onClick={() => setEditingCourse(course)}
                           className="p-2 rounded-lg text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] hover:bg-[var(--color-accent)]/10 transition-colors cursor-pointer"
                           title="Edit Course"
                         >
@@ -426,6 +430,15 @@ export default function CourseListView({ onCourseSelect }: { onCourseSelect?: (i
         onCancel={() => setDeleteId(null)}
         confirmLabel="Delete"
         variant="danger"
+      />
+
+      <CourseEditDrawer
+        course={editingCourse}
+        onClose={() => setEditingCourse(null)}
+        onSave={(id, updates) => {
+          updateCourse(id, updates);
+          showToast("Course details updated successfully", "success");
+        }}
       />
     </motion.div>
   );
