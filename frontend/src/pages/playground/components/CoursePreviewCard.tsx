@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Star, Clock, PlayCircle, ArrowRight } from "lucide-react";
+import { Star, Clock, PlayCircle, ArrowRight, Monitor } from "lucide-react";
 import type { Course } from "../shared/types";
 import { getTopicColor } from "../shared/topicColors";
 
@@ -27,8 +27,19 @@ export default function CoursePreviewCard({ course, onReadMore, onPreview, accen
 
     return (
         <div className="w-full h-full flex flex-col bg-transparent overflow-hidden">
-            {/* Thumbnail with Dynamic Hover Overlay */}
+            {/* Thumbnail with Dynamic Badges & Hover Overlay */}
             <div className="w-full aspect-video relative overflow-hidden bg-[var(--color-background-tertiary)] shrink-0">
+                {/* Level Badge (Top-Left) */}
+                <div className="absolute top-3 left-3 z-10 px-2 py-0.5 rounded-md bg-black/50 backdrop-blur-md border border-white/10 text-[9px] font-extrabold text-white uppercase tracking-wider">
+                    {course.isFree ? "Free" : "Premium"}
+                </div>
+
+                {/* Duration Badge (Bottom-Right) */}
+                <div className="absolute bottom-3 right-3 z-10 px-2.5 py-1 rounded-md bg-black/60 backdrop-blur-md border border-white/10 text-[9px] font-extrabold text-white flex items-center gap-1">
+                    <Clock size={10} />
+                    <span>{course.duration}</span>
+                </div>
+
                 <img 
                     src={course.image || FALLBACK_COURSE_IMAGE} 
                     alt={course.title} 
@@ -56,54 +67,58 @@ export default function CoursePreviewCard({ course, onReadMore, onPreview, accen
 
             {/* Content Area */}
             <div className="p-5 flex flex-col flex-1">
-                {/* Topic Pills */}
+                {/* Topic Badges */}
                 <div className="flex flex-wrap gap-1.5 mb-3">
                     {course.topics.slice(0, 2).map((topic) => {
                         const topicColor = getTopicColor([topic]);
                         return (
                             <span 
                                 key={topic} 
-                                className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-md"
+                                className="text-[9px] font-extrabold uppercase tracking-widest px-2.5 py-1 rounded-md flex items-center gap-1.5"
                                 style={{ 
                                     color: topicColor,
-                                    backgroundColor: `${topicColor}15`
+                                    backgroundColor: `${topicColor}10`
                                 }}
                             >
+                                <span className="w-1 h-1 rounded-full shrink-0" style={{ backgroundColor: topicColor }} />
                                 {topic}
                             </span>
                         );
                     })}
                 </div>
 
-                <h4 className="text-[15px] font-bold text-[var(--color-text-primary)] mb-2.5 line-clamp-2 leading-tight min-h-[40px] group-hover:text-[var(--color-accent)] transition-colors">
+                {/* Title */}
+                <h4 className="text-[15px] font-extrabold text-[var(--color-text-primary)] mb-4 line-clamp-2 leading-snug min-h-[40px] group-hover:text-[var(--color-accent)] transition-colors">
                     {course.title}
                 </h4>
 
-                <div className="flex items-center gap-2 mb-3 h-[24px] shrink-0 text-xs text-[var(--color-text-secondary)]">
-                    <img src={course.instructorAvatar} alt={course.instructor} className="w-6 h-6 rounded-full object-cover shrink-0" />
-                    <span className="truncate font-medium">{course.instructor}</span>
-                </div>
-
-                <div className="flex items-center gap-1.5 mb-4 h-[16px] shrink-0">
-                    <span className="text-xs font-bold text-[var(--color-warning)]">{course.rating.toFixed(1)}</span>
-                    <div className="flex items-center gap-0.5">
-                        {[...Array(5)].map((_, i) => (
-                            <Star
-                                key={i}
-                                size={11}
-                                className="text-[var(--color-warning)]"
-                                fill={i < Math.round(course.rating) ? "var(--color-warning)" : "none"}
-                            />
-                        ))}
+                {/* Instructor & Rating Row (Horizontal, aligned to center) */}
+                <div className="flex items-center justify-between text-xs text-[var(--color-text-secondary)] mt-auto mb-4">
+                    <div className="flex items-center gap-2 min-w-0">
+                        <img 
+                            src={course.instructorAvatar} 
+                            alt={course.instructor} 
+                            className="w-6 h-6 rounded-full object-cover shrink-0 border border-[var(--color-border-light)]" 
+                        />
+                        <span className="truncate font-semibold text-[var(--color-text-primary)]">{course.instructor}</span>
                     </div>
-                    <span className="text-xs text-[var(--color-text-tertiary)]">
-                        ({course.enrollments.toLocaleString()})
-                    </span>
+                    
+                    {/* Compact Rating Badge */}
+                    <div className="flex items-center gap-1 shrink-0 font-bold text-[var(--color-warning)] bg-[var(--color-warning)]/10 px-2 py-0.5 rounded-md text-[11px]">
+                        <Star size={11} fill="var(--color-warning)" className="text-[var(--color-warning)] shrink-0" />
+                        <span>{course.rating.toFixed(1)}</span>
+                    </div>
                 </div>
 
-                <div className="flex items-center gap-3 h-[16px] shrink-0 text-[11px] text-[var(--color-text-secondary)] font-medium mt-auto">
-                    <span className="flex items-center gap-1"><Clock size={12} /> {course.duration}</span>
-                    <span className="flex items-center gap-1"><PlayCircle size={12} /> {course.lessons} lessons</span>
+                {/* Secondary Meta Row */}
+                <div className="flex items-center justify-between text-[10px] text-[var(--color-text-tertiary)] font-bold pt-3.5 border-t border-[var(--color-border-light)]/40 shrink-0">
+                    <span className="uppercase tracking-wider flex items-center gap-1">
+                        <Monitor size={11} />
+                        {course.lessons} lessons
+                    </span>
+                    <span className="uppercase tracking-wider">
+                        {course.enrollments.toLocaleString()} students
+                    </span>
                 </div>
             </div>
 
@@ -134,7 +149,7 @@ export default function CoursePreviewCard({ course, onReadMore, onPreview, accen
                             "--hover-bg": cardAccent,
                             "--hover-border": cardAccent
                         } as React.CSSProperties}
-                        className="w-full bg-[var(--color-background-tertiary)] text-[var(--color-text-primary)] border border-[var(--color-border-medium)] py-2.5 rounded-xl text-xs font-bold text-center group-hover:bg-[var(--hover-bg)] group-hover:text-white group-hover:border-[var(--hover-border)] transition-all flex items-center justify-center gap-1.5 cursor-pointer outline-none"
+                        className="w-full bg-[var(--color-background-tertiary)] text-[var(--color-text-primary)] border border-[var(--color-border-medium)] py-2.5 rounded-xl text-xs font-bold text-center group-hover:bg-[var(--hover-bg)] group-hover:text-white group-hover:border-[var(--hover-bg)] hover:shadow-[0_4px_15px_rgba(0,0,0,0.04)] transition-all flex items-center justify-center gap-1.5 cursor-pointer outline-none"
                     >
                         <span>Preview Course</span>
                         <ArrowRight size={14} className="opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
