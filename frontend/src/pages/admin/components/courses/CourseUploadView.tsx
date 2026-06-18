@@ -71,8 +71,8 @@ export default function CourseUploadView({
     // Check validation of preceding steps before going forward
     for (let s = activeStep; s < stepNum; s++) {
       if (!isStepValid(s)) {
-        if (s === 1) showToast("Please enter a Course Title in Step 1.", "warning");
-        if (s === 3) showToast("Please add at least one module with a title in Step 3.", "warning");
+        if (s === 1) showToast("Please enter a Course Title in Step 1.", "info");
+        if (s === 3) showToast("Please add at least one module with a title in Step 3.", "info");
         return;
       }
     }
@@ -84,7 +84,7 @@ export default function CourseUploadView({
       if (isStepValid(activeStep)) {
         setActiveStep(activeStep + 1);
       } else {
-        if (activeStep === 1) showToast("Course Title is required to proceed.", "warning");
+        if (activeStep === 1) showToast("Course Title is required to proceed.", "info");
       }
     }
   };
@@ -108,7 +108,13 @@ export default function CourseUploadView({
       instructor: "Admin",
       price: parseFloat(price) || 0,
       status: "Draft",
-      modules: modules.filter((m) => m.title.trim().length > 0),
+      modules: modules
+        .filter((m) => m.title.trim().length > 0)
+        .map((m) => ({
+          id: m.id,
+          title: m.title.trim(),
+          lessons: m.lessons.map((l) => l.text.trim()).filter((t) => t.length > 0),
+        })),
       thumbnailUrl: thumbnailPreview || undefined,
     });
     showToast("Course saved as draft!", "success");
@@ -134,7 +140,13 @@ export default function CourseUploadView({
       instructor: "Admin",
       price: parseFloat(price) || 0,
       status: "Published",
-      modules: modules.filter((m) => m.title.trim().length > 0),
+      modules: modules
+        .filter((m) => m.title.trim().length > 0)
+        .map((m) => ({
+          id: m.id,
+          title: m.title.trim(),
+          lessons: m.lessons.map((l) => l.text.trim()).filter((t) => t.length > 0),
+        })),
       thumbnailUrl: thumbnailPreview || undefined,
     });
     showToast("Course Successfully Published!", "success");
