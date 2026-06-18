@@ -221,11 +221,7 @@ export default function DiscoverCoursesPage() {
 
   const hasFilters = selectedLevels.length > 0 || selectedDurations.length > 0 || selectedRatings.length > 0 || selectedTopics.length > 0 || priceFilter !== "all";
 
-  const openProtectedCourse = useCallback((courseId: number, previewModuleId?: number | null) => {
-    if (previewModuleId) {
-      navigate(`/course-preview/${previewModuleId}`);
-      return;
-    }
+  const openProtectedCourse = useCallback((courseId: number) => {
     if (!localStorage.getItem("token")) {
       window.dispatchEvent(new CustomEvent("open-login"));
       return;
@@ -432,18 +428,18 @@ export default function DiscoverCoursesPage() {
                     >
                       <CoursePreviewPopover
                           course={course}
-                          onReadMore={() => openProtectedCourse(course.id, course.previewModuleId)}
+                          onReadMore={() => openProtectedCourse(course.id)}
                           onPreview={() => openPublicPreview(course.previewModuleId)}
                           onSave={() => toggleSave(course.id)}
                           isSaved={savedIds.includes(course.id)}
                       >
                         <div
-                            onClick={() => openProtectedCourse(course.id, course.previewModuleId)}
+                            onClick={() => openProtectedCourse(course.id)}
                             className={`w-full cursor-pointer h-full transition-transform hover:-translate-y-1 flex flex-col group ${activeTheme.cardClass}`}
                         >
                           <CoursePreviewCard
                               course={course}
-                              onReadMore={() => openProtectedCourse(course.id, course.previewModuleId)}
+                              onReadMore={() => openProtectedCourse(course.id)}
                               onPreview={() => openPublicPreview(course.previewModuleId)}
                               accentColor={activeTheme.accent}
                           />
