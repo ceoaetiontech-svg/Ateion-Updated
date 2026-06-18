@@ -2,7 +2,10 @@ import { motion } from "framer-motion";
 import { Area, AreaChart, ResponsiveContainer } from "recharts";
 import type { LucideIcon } from "lucide-react";
 import { itemVariants } from "../../utils/variants";
-import type { IChartPoint } from "../../mock/chartData";
+
+interface IChartPoint {
+  value: number;
+}
 
 interface StatCardProps {
   label: string;
@@ -27,14 +30,14 @@ export default function StatCard({ label, value, icon: Icon, gradient, iconBg, b
       />
       <div className="relative z-10">
         <div
-          className={`w-11 h-11 rounded-xl ${iconBg} border ${border} flex items-center justify-center mb-3`}
+          className={`w-11 h-11 rounded-xl ${iconBg} border ${border} flex items-center justify-center mb-3 transition-all duration-300 group-hover:scale-110 group-hover:rotate-3 shadow-sm`}
         >
-          <Icon size={20} />
+          <Icon size={20} className="transition-transform duration-300 group-hover:scale-105" />
         </div>
-        <p className="text-sm font-medium text-[var(--color-text-secondary)] mb-1">
+        <p className="text-sm font-medium text-[var(--color-text-secondary)] mb-1 tracking-wide">
           {label}
         </p>
-        <p className="text-2xl font-bold text-[var(--color-text-primary)]">
+        <p className="text-2xl font-bold text-[var(--color-text-primary)] tracking-tight">
           {value}
         </p>
         {sparklineData && sparklineData.length > 0 && (

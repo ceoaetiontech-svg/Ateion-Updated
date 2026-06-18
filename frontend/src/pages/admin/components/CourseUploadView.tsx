@@ -13,12 +13,14 @@ export default function CourseUploadView({ onUploadSuccess }: { onUploadSuccess:
   const [previewData, setPreviewData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
 
+  const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
+
   const handlePreview = async () => {
     if (!playlistUrl) return;
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/admin/import/youtube/preview?playlistUrl=${encodeURIComponent(playlistUrl)}`, {
+      const res = await fetch(`${API_BASE}/admin/import/youtube/preview?playlistUrl=${encodeURIComponent(playlistUrl)}`, {
         headers: { "Authorization": `Bearer ${token}` }
       });
       if (!res.ok) throw new Error("Failed to preview");
@@ -37,7 +39,7 @@ export default function CourseUploadView({ onUploadSuccess }: { onUploadSuccess:
     setLoading(true);
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/admin/import/youtube/publish`, {
+      const res = await fetch(`${API_BASE}/admin/import/youtube/publish`, {
         method: "POST",
         headers: {
           "Authorization": `Bearer ${token}`,
@@ -64,12 +66,16 @@ export default function CourseUploadView({ onUploadSuccess }: { onUploadSuccess:
           <ArrowLeft size={16} /> Back to Courses
         </Link>
 
-        <div className="flex justify-between items-end mb-8">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end mb-8 gap-4">
           <div>
-            <h2 className="text-3xl font-bold font-['OV_Soge'] mb-2">Import YouTube Playlist</h2>
-            <p className="text-[var(--color-text-secondary)]">Import an unlisted YouTube playlist to create a new ecosystem course.</p>
+            <h2 className="text-3xl font-bold font-['OV_Soge'] mb-2 tracking-tight text-[var(--color-text-primary)]">Import YouTube Playlist</h2>
+            <p className="text-sm text-[var(--color-text-secondary)]">Import an unlisted YouTube playlist to create a new ecosystem course.</p>
           </div>
-          <button onClick={handlePublish} disabled={loading || !previewData} className="px-5 py-2.5 rounded-xl bg-[var(--color-accent)] text-white font-medium flex items-center gap-2 shadow-sm disabled:opacity-50 transition-all hover:scale-[1.03]">
+          <button 
+            onClick={handlePublish} 
+            disabled={loading || !previewData} 
+            className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[var(--color-accent)] text-white font-medium flex items-center justify-center gap-2 shadow-[var(--shadow-accent)] hover:shadow-[var(--shadow-accent-hover)] disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
+          >
             <CheckCircle size={18} /> {loading ? "Processing..." : "Publish Course Live"}
           </button>
         </div>
@@ -77,15 +83,19 @@ export default function CourseUploadView({ onUploadSuccess }: { onUploadSuccess:
         <div className="admin-glass-card space-y-6">
           <div>
             <label className="block text-sm font-semibold mb-2">YouTube Playlist URL</label>
-            <div className="flex gap-4">
+            <div className="flex flex-col sm:flex-row gap-4">
               <input
                   type="text"
                   placeholder="https://youtube.com/playlist?list=..."
-                  className="admin-input flex-1 px-4 py-3 rounded-xl outline-none focus:border-[var(--color-accent)]"
+                  className="admin-input flex-1 px-4 py-3 rounded-xl outline-none border border-[var(--color-border-light)] hover:border-[var(--color-border-medium)] focus:border-[var(--color-accent)] focus:hover:border-[var(--color-accent)] focus:shadow-[0_0_0_3px_rgba(232,133,106,0.12)] bg-[var(--color-background-primary)]/40 text-[var(--color-text-primary)] backdrop-blur-sm w-full"
                   value={playlistUrl}
                   onChange={(e) => setPlaylistUrl(e.target.value)}
               />
-              <button onClick={handlePreview} disabled={loading} className="px-6 py-3 bg-[var(--color-text-primary)] text-[var(--color-background-primary)] rounded-xl font-bold flex items-center gap-2 hover:opacity-90">
+              <button 
+                onClick={handlePreview} 
+                disabled={loading} 
+                className="w-full sm:w-auto justify-center px-6 py-3 bg-[var(--color-text-primary)] text-[var(--color-text-inverse)] hover:bg-[var(--color-primary-hover)] active:scale-[0.98] transition-all duration-150 rounded-xl font-bold flex items-center gap-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              >
                 <Search size={18} /> Preview
               </button>
             </div>
@@ -96,11 +106,11 @@ export default function CourseUploadView({ onUploadSuccess }: { onUploadSuccess:
                 <div className="space-y-4">
                   <div>
                     <label className="block text-sm font-semibold mb-2">Course Title</label>
-                    <input type="text" className="admin-input w-full px-4 py-3 rounded-xl outline-none" value={title} onChange={(e) => setTitle(e.target.value)} />
+                    <input type="text" className="admin-input w-full px-4 py-3 rounded-xl border border-[var(--color-border-light)] hover:border-[var(--color-border-medium)] focus:border-[var(--color-accent)] focus:hover:border-[var(--color-accent)] focus:shadow-[0_0_0_3px_rgba(232,133,106,0.12)] outline-none bg-[var(--color-background-primary)]/40 backdrop-blur-sm text-[var(--color-text-primary)]" value={title} onChange={(e) => setTitle(e.target.value)} />
                   </div>
                   <div>
                     <label className="block text-sm font-semibold mb-2">Description</label>
-                    <textarea className="admin-input w-full px-4 py-3 rounded-xl h-24 outline-none" value={description} onChange={(e) => setDescription(e.target.value)} />
+                    <textarea className="admin-input w-full px-4 py-3 rounded-xl border border-[var(--color-border-light)] hover:border-[var(--color-border-medium)] focus:border-[var(--color-accent)] focus:hover:border-[var(--color-accent)] focus:shadow-[0_0_0_3px_rgba(232,133,106,0.12)] h-24 outline-none bg-[var(--color-background-primary)]/40 backdrop-blur-sm text-[var(--color-text-primary)]" value={description} onChange={(e) => setDescription(e.target.value)} />
                   </div>
                 </div>
                 <div className="p-4 bg-[var(--color-background-primary)] rounded-2xl border border-[var(--color-border-light)]">

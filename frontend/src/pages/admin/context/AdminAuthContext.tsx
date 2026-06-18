@@ -4,7 +4,7 @@ import type { IAdminUser } from "../types/types";
 interface IAuthContext {
   user: IAdminUser | null;
   isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<{ success: boolean }>;
+  login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => void;
 }
 
@@ -19,9 +19,9 @@ export function AdminAuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<IAdminUser | null>(null);
   const isAuthenticated = user !== null;
 
-  const login = useCallback(async (email: string, _password: string): Promise<{ success: boolean }> => {
+  const login = useCallback(async (email: string, _password: string): Promise<{ success: boolean; error?: string }> => {
     await new Promise((resolve) => setTimeout(resolve, 400));
-    setUser({ email, name: "Admin", role: "super_admin" });
+    setUser({ email, name: "Admin", fullName: "Admin", role: "super_admin" });
     return { success: true };
   }, []);
 

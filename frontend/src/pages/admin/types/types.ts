@@ -38,6 +38,7 @@ export interface IActivityEntry {
 export interface IAdminUser {
   email: string;
   name: string;
+  fullName: string;
   role: 'super_admin' | 'admin';
 }
 

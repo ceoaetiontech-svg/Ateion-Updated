@@ -5,7 +5,7 @@ import { AnimatePresence } from "framer-motion";
 import { ToastProvider } from "../pages/admin/utils/toast";
 import ToastContainer from "../pages/admin/components/ui/Toast";
 import { AdminAuthProvider } from "../pages/admin/context/AdminAuthContext";
-import { CourseProvider } from "../pages/admin/context/CourseContext";
+
 
 const AIChatBot = lazy(() => import("./components/AIChatbot"));
 
@@ -25,6 +25,7 @@ const PolicyDetailPage = lazy(() => import("../pages/PolicyDetailPage"));
 const AdminDashboardPage = lazy(() => import("../pages/admin/pages/AdminDashboardPage"));
 const AdminLayout = lazy(() => import("../pages/admin/layouts/AdminLayout"));
 const CourseListView = lazy(() => import("../pages/admin/components/courses/CourseListView"));
+const AdminUploadPage = lazy(() => import("../pages/admin/pages/AdminUploadPage"));
 const CourseUploadView = lazy(() => import("../pages/admin/components/CourseUploadView"));
 const UsersPage = lazy(() => import("../pages/admin/pages/UsersPage"));
 const SettingsPage = lazy(() => import("../pages/admin/pages/SettingsPage"));
@@ -63,7 +64,7 @@ function AnimatedRoutes() {
                 <Route element={<AdminLayout />}>
                     <Route path="/admin/dashboard" element={<PageTransition><AdminDashboardPage /></PageTransition>} />
                     <Route path="/admin/courses" element={<PageTransition><CourseListView /></PageTransition>} />
-                    <Route path="/admin/upload" element={<PageTransition><CourseUploadView onUploadSuccess={() => navigate("/admin/courses")} /></PageTransition>} />
+                    <Route path="/admin/upload" element={<PageTransition><AdminUploadPage /></PageTransition>} />
                     <Route path="/admin/users" element={<PageTransition><UsersPage /></PageTransition>} />
                     <Route path="/admin/settings" element={<PageTransition><SettingsPage /></PageTransition>} />
                 </Route>
@@ -119,12 +120,10 @@ export default function App() {
             <BrowserRouter>
                 <Suspense fallback={<LoadingSpinner />}>
                     <AdminAuthProvider>
-                        <CourseProvider>
-                            <ToastProvider>
-                                <AnimatedRoutes />
-                                <ToastContainer />
-                            </ToastProvider>
-                        </CourseProvider>
+                        <ToastProvider>
+                            <AnimatedRoutes />
+                            <ToastContainer />
+                        </ToastProvider>
                     </AdminAuthProvider>
                     <ChatBotWrapper />
                     {showLogin && (

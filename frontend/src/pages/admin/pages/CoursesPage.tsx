@@ -29,14 +29,14 @@ export default function CoursesPage() {
         {showUpload && (
           <>
             <motion.div
-              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[500]"
+              className="fixed inset-0 bg-black/50 backdrop-blur-md z-[500]"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setShowUpload(false)}
             />
             <motion.div
-              className="fixed top-0 right-0 h-full w-full max-w-[600px] z-[600] bg-[var(--color-background-primary)] border-l border-[var(--color-border-light)] shadow-xl overflow-y-auto"
+              className="fixed top-0 right-0 h-full w-full max-w-[600px] z-[600] bg-[var(--color-background-primary)] border-l border-[var(--color-border-light)] shadow-[var(--shadow-xl)] overflow-y-auto"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
@@ -46,7 +46,7 @@ export default function CoursesPage() {
                 <h2 className="text-xl font-bold font-['OV_Soge']">Create New Course</h2>
                 <button
                   onClick={() => setShowUpload(false)}
-                  className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-[var(--color-background-tertiary)] transition-colors cursor-pointer text-[var(--color-text-secondary)]"
+                  className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-[var(--color-background-tertiary)]/50 transition-colors cursor-pointer text-[var(--color-text-secondary)]"
                 >
                   <X size={20} />
                 </button>

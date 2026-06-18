@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import { Rocket, User, Settings, LogOut, LogIn, Sun, Moon, Compass, BookMarked, Flame, Home } from "lucide-react";
-import { useState, useEffect, lazy, Suspense, type LazyExoticComponent, type ComponentType } from "react";
+import { Rocket, User, Settings, LogOut, LogIn, Sun, Moon, Home, Bell, Keyboard, ShieldCheck, Search } from "lucide-react";
+import { useState, useEffect, lazy, Suspense, type LazyExoticComponent, type ComponentType, type ReactNode } from "react";
 import { Helmet } from "react-helmet-async";
 import {
   SidebarProvider,
@@ -18,6 +18,14 @@ import {
   SidebarInset,
   SidebarTrigger,
 } from "../../../app/components/ui/sidebar";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "../../../app/components/ui/sheet";
+import { Switch } from "../../../app/components/ui/switch";
 import { useNavigate, useLocation, Routes, Route } from "react-router";
 import { useTheme } from "../../../app/components/ThemeProvider";
 import { navigationSections, getActiveView } from "../shared/navigationData";
@@ -32,6 +40,8 @@ import { ApiRequestError, fetchJsonWithRetry } from "../../../lib/apiClient";
 
 const CoursePlayerPage = lazy(() => import("../pages/CoursePlayerPage"));
 const FallbackPage = lazy(() => import("../pages/FallbackPage"));
+const AudiobooksLibraryPage = lazy(() => import("../pages/AudiobooksLibraryPage"));
+const AudiobookPlayerPage = lazy(() => import("../pages/AudiobookPlayerPage"));
 
 const viewMap: Record<string, LazyExoticComponent<ComponentType<any>>> = {
   "Dashboard": lazy(() => import("../pages/DashboardPage")),
@@ -45,11 +55,51 @@ const viewMap: Record<string, LazyExoticComponent<ComponentType<any>>> = {
   "Wellness Hub": lazy(() => import("../pages/WellnessHubPage")),
   "Growth Mindset": lazy(() => import("../pages/GrowthMindsetPage")),
   "Daily Reflection": lazy(() => import("../pages/ReflectionPage")),
-  "Sproutlings (5-7 age)": lazy(() => import("../pages/AgeGroupPage")),
-  "Saplings (7-14 age)": lazy(() => import("../pages/AgeGroupPage")),
-  "Pathfinders (14-18 age)": lazy(() => import("../pages/AgeGroupPage")),
-  "Dreamers (18+ age)": lazy(() => import("../pages/AgeGroupPage")),
+  "Audiobooks": lazy(() => import("../pages/AudiobooksLibraryPage")),
 };
+
+const PLAYGROUND_PREF_KEYS = {
+  reminders: "ateion_playground_course_reminders",
+  autoResume: "ateion_playground_auto_resume",
+};
+
+function loadPreference(key: string, fallback: boolean) {
+  if (typeof window === "undefined") return fallback;
+  const saved = window.localStorage.getItem(key);
+  return saved === null ? fallback : saved === "true";
+}
+
+function savePreference(key: string, value: boolean) {
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem(key, String(value));
+}
+
+function SettingsRow({
+  icon,
+  title,
+  description,
+  children,
+}: {
+  icon: ReactNode;
+  title: string;
+  description: string;
+  children: ReactNode;
+}) {
+  return (
+      <div className="flex items-center justify-between gap-4 rounded-2xl border border-[var(--color-border-light)] bg-[var(--color-background-secondary)] px-4 py-3">
+        <div className="flex min-w-0 items-start gap-3">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-[var(--color-accent-light)] text-[var(--color-accent)]">
+            {icon}
+          </div>
+          <div className="min-w-0">
+            <p className="text-sm font-bold text-[var(--color-text-primary)]">{title}</p>
+            <p className="mt-0.5 text-xs leading-relaxed text-[var(--color-text-secondary)]">{description}</p>
+          </div>
+        </div>
+        {children}
+      </div>
+  );
+}
 
 function PlaygroundInner() {
   const { userProfile, setUserProfile, streak, xp, courseQuery, setCourseQuery, toastMessage, setToastMessage } = usePlayground();
@@ -58,6 +108,9 @@ function PlaygroundInner() {
   const location = useLocation();
   const [navbarHeight, setNavbarHeight] = useState(0);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [courseReminders, setCourseReminders] = useState(() => loadPreference(PLAYGROUND_PREF_KEYS.reminders, false));
+  const [autoResume, setAutoResume] = useState(() => loadPreference(PLAYGROUND_PREF_KEYS.autoResume, true));
   const [isAuthenticated, setIsAuthenticated] = useState(() => Boolean(localStorage.getItem("token")));
 
   const normalizedPath = location.pathname.replace(/\/+$/, "");
@@ -84,6 +137,17 @@ function PlaygroundInner() {
     obs.observe(nav);
     return () => obs.disconnect();
   }, []);
+
+  const updatePreference = (
+      key: string,
+      value: boolean,
+      setter: (next: boolean) => void,
+      message: string,
+  ) => {
+    setter(value);
+    savePreference(key, value);
+    setToastMessage(message);
+  };
 
   useEffect(() => {
     const syncAuthentication = () => {
@@ -262,21 +326,12 @@ function PlaygroundInner() {
 
                   <SidebarMenu>
                     <SidebarMenuItem>
-                      <SidebarMenuButton className="text-[var(--color-text-primary)] hover:bg-[var(--color-background-tertiary)]/30">
+                      <SidebarMenuButton
+                          className="text-[var(--color-text-primary)] hover:bg-[var(--color-background-tertiary)]/30 cursor-pointer hover:translate-x-1 transition-all duration-300"
+                          onClick={() => setSettingsOpen(true)}
+                      >
                         <Settings size={16} />
                         <span>Settings</span>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-
-                    <SidebarMenuItem>
-                      <SidebarMenuButton
-                          className="group/theme text-[var(--color-text-primary)] hover:bg-[var(--color-background-tertiary)]/30 cursor-pointer hover:translate-x-1 transition-all duration-300"
-                          onClick={toggleTheme}
-                      >
-                        <div className="group-hover/theme:rotate-180 transition-transform duration-500">
-                          {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
-                        </div>
-                        <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
 
@@ -344,27 +399,13 @@ function PlaygroundInner() {
                     <div className="flex shrink-0 items-center gap-2 sm:gap-5">
                       <button
                           onClick={() => navigate("/")}
-                          className="hidden xl:flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--color-border-light)] text-xs text-[var(--color-text-tertiary)] hover:text-[var(--color-text-primary)] transition-colors mr-1"
-                          style={{
-                            background: "linear-gradient(135deg, #2b244f 0%, #d66f55 58%, #ff9b82 100%)",
-                          }}
+                          className="hidden xl:flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full border border-transparent bg-[var(--color-accent)] text-xs text-[var(--color-text-inverse)] shadow-[0_2px_10px_var(--color-accent-light)] hover:shadow-[0_4px_15px_var(--color-accent)] hover:-translate-y-0.5 transition-all duration-300 mr-1"
                           title="Home"
                       >
                         <Home size={16} />
                       </button>
 
 
-
-                      <div className="hidden xl:flex items-center gap-1 px-3 py-1.5 rounded-full bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] group/streak">
-                        <Flame size={14} className={`text-orange-500 ${streak > 0 ? "animate-[bounce_2s_ease-in-out_infinite]" : ""}`} />
-                        <span className="text-xs font-bold text-[var(--color-text-primary)]">{streak}</span>
-                        <span className="text-xs text-[var(--color-text-tertiary)] hidden sm:inline">day streak</span>
-                      </div>
-
-                      <div className="hidden xl:flex items-center gap-1 text-xs font-bold text-[var(--color-text-primary)]">
-                        <span className="text-[var(--color-accent)]">{xp.toLocaleString()}</span>
-                        <span className="text-[var(--color-text-tertiary)] hidden sm:inline">XP</span>
-                      </div>
 
                       <NotificationDropdown />
 
@@ -391,6 +432,159 @@ function PlaygroundInner() {
               <GlobalSearch open={searchOpen} onOpenChange={setSearchOpen} />
               <Toast message={toastMessage} onDismiss={() => setToastMessage(null)} />
 
+              <Sheet open={settingsOpen} onOpenChange={setSettingsOpen}>
+                <SheetContent
+                    side="right"
+                    className="w-[92vw] max-w-[420px] overflow-y-auto border-l border-[var(--color-border-light)] bg-[var(--color-background-primary)] p-0 text-[var(--color-text-primary)] shadow-2xl"
+                >
+                  <SheetHeader className="border-b border-[var(--color-border-light)] px-5 py-5">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[var(--color-accent)] text-white shadow-[0_8px_22px_var(--color-accent-light)]">
+                        <Settings size={20} />
+                      </div>
+                      <div>
+                        <SheetTitle className="text-xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "var(--font-display)" }}>
+                          Playground Settings
+                        </SheetTitle>
+                        <SheetDescription className="text-sm text-[var(--color-text-secondary)]">
+                          Personalize your learning space
+                        </SheetDescription>
+                      </div>
+                    </div>
+                  </SheetHeader>
+
+                  <div className="flex flex-col gap-5 px-5 pb-6">
+                    <div className="rounded-3xl border border-[var(--color-border-light)] bg-[var(--color-background-secondary)] p-4 shadow-sm">
+                      <div className="flex items-center gap-3">
+                        <UserAvatar name={userProfile.fullName} />
+                        <div className="min-w-0">
+                          <p className="truncate text-base font-bold text-[var(--color-text-primary)]">{userProfile.fullName}</p>
+                          <p className="text-sm text-[var(--color-text-secondary)]">{userProfile.segmentText}</p>
+                        </div>
+                      </div>
+                      <div className="mt-4 grid grid-cols-2 gap-3">
+                        <div className="flex min-h-[88px] flex-col items-center justify-center rounded-2xl bg-[var(--color-background-primary)] p-3 text-center">
+                          <p className="text-xs font-semibold text-[var(--color-text-tertiary)]">XP</p>
+                          <p className="mt-1 text-lg font-bold text-[var(--color-accent)]">{xp.toLocaleString()}</p>
+                        </div>
+                        <div className="flex min-h-[88px] flex-col items-center justify-center rounded-2xl bg-[var(--color-background-primary)] p-3 text-center">
+                          <p className="text-xs font-semibold text-[var(--color-text-tertiary)]">Streak</p>
+                          <p className="mt-1 text-lg font-bold text-[var(--color-text-primary)]">{streak} days</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col gap-3">
+                      <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-text-tertiary)]">Preferences</p>
+
+                      <SettingsRow
+                          icon={theme === "dark" ? <Moon size={17} /> : <Sun size={17} />}
+                          title="Dark mode"
+                          description="Switch the Playground theme."
+                      >
+                        <Switch
+                            checked={theme === "dark"}
+                            onCheckedChange={(checked) => {
+                              if ((checked && theme !== "dark") || (!checked && theme === "dark")) {
+                                toggleTheme();
+                              }
+                            }}
+                            className="data-[state=checked]:bg-[var(--color-accent)] data-[state=unchecked]:bg-[var(--color-background-tertiary)]"
+                            aria-label="Toggle dark mode"
+                        />
+                      </SettingsRow>
+
+                      <SettingsRow
+                          icon={<Bell size={17} />}
+                          title="Course reminders"
+                          description="Keep reminders enabled for learning sessions."
+                      >
+                        <Switch
+                            checked={courseReminders}
+                            onCheckedChange={(checked) => updatePreference(
+                                PLAYGROUND_PREF_KEYS.reminders,
+                                checked,
+                                setCourseReminders,
+                                checked ? "Course reminders enabled" : "Course reminders disabled",
+                            )}
+                            className="data-[state=checked]:bg-[var(--color-accent)] data-[state=unchecked]:bg-[var(--color-background-tertiary)]"
+                            aria-label="Toggle course reminders"
+                        />
+                      </SettingsRow>
+
+                      <SettingsRow
+                          icon={<ShieldCheck size={17} />}
+                          title="Auto resume"
+                          description="Remember your last active course."
+                      >
+                        <Switch
+                            checked={autoResume}
+                            onCheckedChange={(checked) => updatePreference(
+                                PLAYGROUND_PREF_KEYS.autoResume,
+                                checked,
+                                setAutoResume,
+                                checked ? "Auto resume enabled" : "Auto resume disabled",
+                            )}
+                            className="data-[state=checked]:bg-[var(--color-accent)] data-[state=unchecked]:bg-[var(--color-background-tertiary)]"
+                            aria-label="Toggle auto resume"
+                        />
+                      </SettingsRow>
+                    </div>
+
+                    <div className="flex flex-col gap-3">
+                      <p className="text-xs font-bold uppercase tracking-[0.18em] text-[var(--color-text-tertiary)]">Quick Actions</p>
+
+                      <button
+                          type="button"
+                          onClick={() => {
+                            setSettingsOpen(false);
+                            setSearchOpen(true);
+                          }}
+                          className="flex w-full items-center justify-between rounded-2xl border border-[var(--color-border-light)] bg-[var(--color-background-secondary)] px-4 py-3 text-left text-sm font-bold text-[var(--color-text-primary)] transition-all hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+                      >
+                        <span className="flex items-center gap-3">
+                          <Keyboard size={17} />
+                          Open global search
+                        </span>
+                        <Search size={16} />
+                      </button>
+
+                      <button
+                          type="button"
+                          onClick={() => {
+                            setSettingsOpen(false);
+                            navigate("/dashboard");
+                          }}
+                          className="flex w-full items-center justify-between rounded-2xl border border-[var(--color-border-light)] bg-[var(--color-background-secondary)] px-4 py-3 text-left text-sm font-bold text-[var(--color-text-primary)] transition-all hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+                      >
+                        <span className="flex items-center gap-3">
+                          <User size={17} />
+                          Account dashboard
+                        </span>
+                        <Home size={16} />
+                      </button>
+
+                      <button
+                          type="button"
+                          onClick={() => {
+                            localStorage.removeItem("token");
+                            setIsAuthenticated(false);
+                            window.dispatchEvent(new CustomEvent("ateion:auth-changed"));
+                            setSettingsOpen(false);
+                            navigate("/");
+                          }}
+                          className="flex w-full items-center justify-between rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-left text-sm font-bold text-red-500 transition-all hover:bg-red-500 hover:text-white"
+                      >
+                        <span className="flex items-center gap-3">
+                          <LogOut size={17} />
+                          Logout
+                        </span>
+                      </button>
+                      </div>
+                  </div>
+                </SheetContent>
+              </Sheet>
+
               <main className={`min-w-0 flex-1 overflow-x-hidden ${location.pathname.startsWith("/playground/course/") ? "p-0 overflow-y-auto" : "overflow-y-auto p-4 sm:p-6 lg:p-10"}`}>
                 <Suspense fallback={
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -409,6 +603,10 @@ function PlaygroundInner() {
                   {location.pathname.startsWith("/playground/course/") ? (
                       <Routes>
                         <Route path="course/:id" element={<CoursePlayerPage />} />
+                      </Routes>
+                  ) : location.pathname.startsWith("/playground/audiobook/") ? (
+                      <Routes>
+                        <Route path="audiobook/:id" element={<AudiobookPlayerPage />} />
                       </Routes>
                   ) : (
                       <motion.div

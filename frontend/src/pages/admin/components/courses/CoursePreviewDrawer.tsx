@@ -14,14 +14,14 @@ export default function CoursePreviewDrawer({ course, onClose }: Props) {
       {course && (
         <>
           <motion.div
-            className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[500]"
+            className="fixed inset-0 bg-black/50 backdrop-blur-md z-[500]"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
           />
           <motion.div
-            className="fixed top-0 right-0 h-full w-full max-w-[480px] z-[600] bg-[var(--color-background-primary)] border-l border-[var(--color-border-light)] shadow-xl overflow-y-auto"
+            className="fixed top-0 right-0 h-full w-full max-w-[480px] z-[600] bg-[var(--color-background-primary)] border-l border-[var(--color-border-light)] shadow-[var(--shadow-xl)] overflow-y-auto"
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
@@ -31,14 +31,14 @@ export default function CoursePreviewDrawer({ course, onClose }: Props) {
               <h2 className="text-lg font-bold font-['OV_Soge']">Course Preview</h2>
               <button
                 onClick={onClose}
-                className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-[var(--color-background-tertiary)] transition-colors cursor-pointer text-[var(--color-text-secondary)]"
+                className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-[var(--color-background-tertiary)]/50 transition-colors cursor-pointer text-[var(--color-text-secondary)]"
               >
                 <X size={20} />
               </button>
             </div>
 
             <div className="p-6 space-y-6">
-              <div className="w-full h-40 rounded-2xl bg-gradient-to-br from-[var(--color-accent-light)] to-[var(--color-accent)]/20 flex items-center justify-center border border-[var(--color-border-medium)]">
+              <div className="w-full h-40 rounded-2xl bg-gradient-to-br from-[var(--color-accent)]/20 to-[var(--color-accent)]/5 flex items-center justify-center border border-[var(--color-accent)]/20 shadow-sm">
                 {course.thumbnailUrl ? (
                   <img src={course.thumbnailUrl} alt={course.title} className="w-full h-full object-cover rounded-2xl" />
                 ) : (
@@ -82,7 +82,7 @@ export default function CoursePreviewDrawer({ course, onClose }: Props) {
                     <DollarSign size={14} />
                     Price
                   </div>
-                  <p className="font-semibold text-sm">{course.price === 0 ? "Free" : `$${course.price}`}</p>
+                  <p className="font-semibold text-sm">{course.price === 0 ? "Free" : `₹${course.price}`}</p>
                 </div>
               </div>
 
@@ -98,7 +98,7 @@ export default function CoursePreviewDrawer({ course, onClose }: Props) {
                       className="p-3 rounded-xl bg-[var(--color-background-secondary)] border border-[var(--color-border-light)]"
                     >
                       <div className="flex items-center gap-2 mb-1">
-                        <div className="w-6 h-6 rounded-full bg-[var(--color-accent)]/10 flex items-center justify-center text-[10px] font-bold text-[var(--color-accent)]">
+                        <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[var(--color-accent)]/20 to-[var(--color-accent)]/5 flex items-center justify-center text-[10px] font-bold text-[var(--color-accent)] border border-[var(--color-accent)]/20">
                           {i + 1}
                         </div>
                         <p className="font-semibold text-sm">{mod.title}</p>

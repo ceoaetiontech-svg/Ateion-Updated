@@ -93,3 +93,24 @@ export const slideInItem = {
     transition: { type: "spring", stiffness: 300, damping: 26 },
   },
 };
+
+export interface IAudioChapter {
+  id: string;
+  title: string;
+  audioUrl: string;
+  duration: number;
+  startTimestamp?: number;
+}
+
+export interface IAudiobook {
+  id: string;
+  title: string;
+  author: string;
+  description: string;
+  coverUrl: string;
+  category: string;
+  duration: number;
+  isSingleFile: boolean;
+  chapters: IAudioChapter[];
+  createdAt: string;
+}
