@@ -25,7 +25,7 @@ import { useCourses } from "../hooks/useCourses";
 import { useNavigate } from "react-router";
 import { getTopicColor } from "../shared/topicColors";
 import { courseMatchesAgeGroup, normalizeAgeGroupId } from "../shared/courseAgeGroups";
-import CoursePreviewPopover from "../components/CoursePreviewPopover";
+import NetflixHoverCard from "../components/NetflixHoverCard";
 import type { AgeGroupId } from "../shared/types";
 
 type AgeGroupFilterId = "All" | AgeGroupId;
@@ -230,105 +230,14 @@ export default function MyCoursesPage() {
                       exit={{ opacity: 0, scale: 0.9 }}
                       className="h-full flex w-full"
                   >
-                    <CoursePreviewPopover
+                      <NetflixHoverCard
                         course={course}
                         onReadMore={() => navigate(`/playground/course/${course.id}`)}
+                        onPreview={() => navigate(`/playground/course/${course.id}`)}
                         onSave={() => toggleSave(course.id)}
                         isSaved={savedIds.includes(course.id)}
-                    >
-                      <div
-                          onClick={() => navigate(`/playground/course/${course.id}`)}
-                          className="w-full cursor-pointer h-full transition-transform hover:-translate-y-1 flex flex-col group bg-[var(--color-background-secondary)] rounded-2xl border border-t-[3px] border-[var(--color-border-light)] shadow-md hover:border-[var(--color-accent)]/30 hover:shadow-xl overflow-hidden"
-                          style={{ borderTopColor: getTopicColor(course.topics) }}
-                      >
-                        {/* Thumbnail */}
-                        <div className="relative w-full aspect-video overflow-hidden bg-[var(--color-background-tertiary)] shrink-0">
-                          <div className="absolute inset-0 bg-gradient-to-t from-[#000000]/80 via-[#000000]/20 to-transparent z-10 opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
-                          <img
-                              src={course.image}
-                              alt={course.title}
-                              onError={(e) => { (e.currentTarget as HTMLElement).style.display = "none"; }}
-                              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                          />
-                          <div className="absolute top-3 left-3 z-20 flex items-center gap-2">
-                            <div className="rounded-lg border border-[#ffffff]/20 bg-[#ffffff]/10 backdrop-blur-md text-[#ffffff] px-2.5 py-1 text-[10px] font-bold tracking-wider flex items-center gap-1 shadow-lg">
-                              <Signal size={11} /> {course.level}
-                            </div>
-                          </div>
-                          <button
-                              onClick={(e) => { e.stopPropagation(); toggleSave(course.id); }}
-                              className="absolute top-3 right-3 z-20 bg-[#ffffff]/10 backdrop-blur-md border border-[#ffffff]/20 w-8 h-8 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
-                          >
-                            <Heart size={14} className={savedIds.includes(course.id) ? "fill-red-500 text-red-500" : "text-[#fff]"} />
-                          </button>
-                          <div className="absolute bottom-3 left-3 z-20 right-3">
-                            <h4 className="text-[15px] font-bold text-[#ffffff] line-clamp-2 leading-tight drop-shadow-md">
-                              {course.title}
-                            </h4>
-                          </div>
-                        </div>
-
-                        {/* Card Body */}
-                        <div className="p-4 flex flex-col flex-1">
-                          <div className="flex items-center gap-2 mb-2 text-xs text-[var(--color-text-secondary)]">
-                            <img src={course.instructorAvatar} alt={course.instructor} className="w-5 h-5 rounded-full object-cover shrink-0" />
-                            <span className="truncate">{course.instructor}</span>
-                          </div>
-
-                          <div className="flex items-center gap-1.5 mb-3">
-                            <span className="text-xs font-bold text-[var(--color-warning)]">{course.rating.toFixed(1)}</span>
-                            <div className="flex items-center gap-0.5">
-                              {[...Array(5)].map((_, i) => (
-                                  <Star key={i} size={10} className="text-[var(--color-warning)]" fill={i < Math.round(course.rating) ? "var(--color-warning)" : "none"} />
-                              ))}
-                            </div>
-                            <span className="text-[10px] text-[var(--color-text-tertiary)]">({course.students >= 1000 ? `${(course.students / 1000).toFixed(1)}k` : course.students})</span>
-                          </div>
-
-                          <div className="flex items-center gap-3 mb-3 text-[10px] text-[var(--color-text-tertiary)] font-medium">
-                            <span className="flex items-center gap-1"><Clock size={11} /> {course.duration}</span>
-                            <span className="flex items-center gap-1"><PlayCircle size={11} /> {course.lessons} lessons</span>
-                          </div>
-
-                          {tab !== "saved" && (
-                              <div className="mb-3">
-                                <div className="flex justify-between items-center mb-1">
-                                  <span className="text-xs font-bold text-[var(--color-text-primary)]">{course.progress}% complete</span>
-                                  <span className="text-[10px] text-[var(--color-text-tertiary)] font-medium">{course.completed}/{course.total} lessons</span>
-                                </div>
-                                <div className="w-full h-2 rounded-full bg-[var(--color-border-light)] overflow-hidden shadow-inner">
-                                  <motion.div
-                                      className="h-full rounded-full bg-gradient-to-r from-[var(--color-accent)] to-[#ff9e88]"
-                                      initial={{ width: 0 }}
-                                      whileInView={{ width: `${course.progress}%` }}
-                                      viewport={{ once: true }}
-                                      transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-                                  />
-                                </div>
-                              </div>
-                          )}
-
-                          {course.progress === 100 && (
-                              <div className="mb-3 flex items-center gap-2 p-2.5 rounded-xl bg-[var(--color-success)]/10 border border-[var(--color-success)]/20">
-                                <Award size={14} className="text-[var(--color-success)] shrink-0" />
-                                <span className="text-[11px] font-bold text-[var(--color-success)]">Course complete</span>
-                                <button
-                                    onClick={(e) => { e.stopPropagation(); alert(`Certificate for: ${course.title}`); }}
-                                    className="ml-auto text-[10px] font-bold text-[var(--color-success)] hover:underline"
-                                >
-                                  View certificate
-                                </button>
-                              </div>
-                          )}
-
-                          <div className="mt-auto">
-                            <div className="w-full bg-[var(--color-background-tertiary)] text-[var(--color-text-primary)] border border-[var(--color-border-medium)] py-2.5 rounded-xl text-xs font-bold text-center group-hover:bg-[var(--color-accent)] group-hover:text-white group-hover:border-[var(--color-accent)] transition-all">
-                              {course.progress === 100 ? "View Certificate" : course.progress > 0 ? "Continue Learning" : "Start Course"}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </CoursePreviewPopover>
+                        cardClass="rounded-2xl border border-[var(--color-border-light)] bg-[var(--color-background-secondary)] shadow-md overflow-hidden"
+                      />
                   </motion.div>
               )) : (
                   <motion.div

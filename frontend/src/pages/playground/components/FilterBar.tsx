@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Star, Search, X, SlidersHorizontal } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface FilterBarProps {
   selectedDurations: string[];
@@ -34,9 +35,9 @@ function ActivePill({ label, active, onClick }: { label: React.ReactNode; active
   return (
     <button
       onClick={onClick}
-      className={`inline-flex min-h-9 items-center justify-center rounded-lg border px-3 py-1.5 text-center text-xs font-bold leading-none whitespace-nowrap transition-all cursor-pointer ${
+      className={`inline-flex min-h-9 items-center justify-center rounded-lg border px-3.5 py-1.5 text-center text-xs font-bold leading-none whitespace-nowrap transition-all duration-200 hover:scale-[1.03] active:scale-[0.97] cursor-pointer ${
         active
-          ? "bg-[var(--color-accent)]/10 text-[var(--color-accent)] border-[var(--color-accent)]/30"
+          ? "bg-[var(--color-accent)] text-white border-[var(--color-accent)] shadow-sm shadow-[var(--color-accent)]/15"
           : "bg-[var(--color-background-secondary)] text-[var(--color-text-secondary)] border-[var(--color-border-light)] hover:border-[var(--color-accent)]/30 hover:text-[var(--color-accent)]"
       }`}
     >
@@ -78,12 +79,12 @@ export default function FilterBar(props: FilterBarProps) {
     (props.priceFilter !== "all" ? 1 : 0);
 
   return (
-    <div ref={barRef} className="relative">
+    <div ref={barRef} className="sticky top-[-16px] sm:top-[-24px] lg:top-[-40px] z-30 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-10 lg:px-10 py-3 backdrop-blur-md bg-[var(--color-background-primary)]/80 border-b border-[var(--color-border-light)]/20 transition-all duration-300">
       <div className="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-1">
         {/* Filters trigger */}
         <button
           onClick={() => setPanelOpen(prev => !prev)}
-          className={`inline-flex min-h-10 shrink-0 items-center justify-center gap-1.5 rounded-lg border px-3.5 py-2 text-center text-xs font-bold leading-none transition-all cursor-pointer ${
+          className={`inline-flex min-h-10 shrink-0 items-center justify-center gap-1.5 rounded-lg border px-3.5 py-2 text-center text-xs font-bold leading-none transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] cursor-pointer ${
             panelOpen || props.hasFilters
               ? "bg-[var(--color-accent)]/10 text-[var(--color-accent)] border-[var(--color-accent)]/30"
               : "bg-[var(--color-background-secondary)] text-[var(--color-text-secondary)] border-[var(--color-border-light)] hover:border-[var(--color-accent)]/30 hover:text-[var(--color-accent)]"
@@ -107,114 +108,122 @@ export default function FilterBar(props: FilterBarProps) {
       </div>
 
       {/* Filters panel */}
-      {panelOpen && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] rounded-2xl shadow-xl z-[999] p-5">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-5">
-            {/* Duration */}
-            <FilterGroup title="Duration">
-              {DURATIONS.map(dur => (
-                <ActivePill
-                  key={dur}
-                  label={dur}
-                  active={props.selectedDurations.includes(dur)}
-                  onClick={() => props.toggleDuration(dur)}
-                />
-              ))}
-            </FilterGroup>
-
-            {/* Level */}
-            <FilterGroup title="Level">
-              {LEVELS.map(level => (
-                <ActivePill
-                  key={level}
-                  label={level}
-                  active={props.selectedLevels.includes(level)}
-                  onClick={() => props.toggleLevel(level)}
-                />
-              ))}
-            </FilterGroup>
-
-            {/* Rating */}
-            <FilterGroup title="Rating">
-              {RATING_OPTIONS.map(threshold => {
-                const key = `${threshold}+`;
-                const fullStars = Math.floor(threshold);
-                return (
+      <AnimatePresence>
+        {panelOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="absolute top-full left-4 right-4 sm:left-6 sm:right-6 lg:left-10 lg:right-10 mt-2 backdrop-blur-xl bg-[var(--color-background-secondary)]/90 border border-[var(--color-border-light)]/50 rounded-2xl shadow-2xl z-[999] p-6"
+          >
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-5">
+              {/* Duration */}
+              <FilterGroup title="Duration">
+                {DURATIONS.map(dur => (
                   <ActivePill
-                    key={key}
-                    label={
-                      <span className="flex items-center gap-1">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} size={11} className={i < fullStars ? "text-[var(--color-warning)] fill-[var(--color-warning)]" : "text-[var(--color-text-tertiary)]"} />
-                        ))}
-                        <span className="ml-0.5">{threshold}+</span>
-                      </span>
-                    }
-                    active={props.selectedRatings.includes(key)}
-                    onClick={() => props.toggleRating(key)}
-                  />
-                );
-              })}
-            </FilterGroup>
-
-            {/* Sort */}
-            <FilterGroup title="Sort">
-              {props.sortOptions.map(opt => (
-                <ActivePill
-                  key={opt.id}
-                  label={opt.label}
-                  active={props.sortBy === opt.id}
-                  onClick={() => props.setSortBy(opt.id)}
-                />
-              ))}
-            </FilterGroup>
-
-            {/* Price */}
-            <FilterGroup title="Price">
-              {PRICE_OPTIONS.map(opt => (
-                <ActivePill
-                  key={opt.id}
-                  label={opt.label}
-                  active={props.priceFilter === opt.id}
-                  onClick={() => props.setPriceFilter(opt.id)}
-                />
-              ))}
-            </FilterGroup>
-
-            {/* Topic */}
-            <FilterGroup title="Topic">
-              <div className="relative w-full mb-1">
-                <Search size={12} className="absolute left-2 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)]" />
-                <input
-                  type="text"
-                  placeholder="Search topics..."
-                  value={topicSearch}
-                  onChange={e => setTopicSearch(e.target.value)}
-                  className="w-full bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] rounded-lg pl-7 pr-2 py-1.5 text-[11px] font-medium text-[var(--color-text-primary)] placeholder:text-[var(--color-text-tertiary)] focus:outline-none focus:border-[var(--color-accent)] transition-colors"
-                />
-                {topicSearch && (
-                  <button onClick={() => setTopicSearch("")} className="absolute right-1.5 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)] cursor-pointer">
-                    <X size={12} />
-                  </button>
-                )}
-              </div>
-              <div className="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto">
-                {filteredTopics.map(topic => (
-                  <ActivePill
-                    key={topic}
-                    label={topic}
-                    active={props.selectedTopics.includes(topic)}
-                    onClick={() => props.toggleTopic(topic)}
+                    key={dur}
+                    label={dur}
+                    active={props.selectedDurations.includes(dur)}
+                    onClick={() => props.toggleDuration(dur)}
                   />
                 ))}
-                {filteredTopics.length === 0 && (
-                  <p className="text-[11px] text-[var(--color-text-tertiary)] py-2">No topics match</p>
-                )}
-              </div>
-            </FilterGroup>
-          </div>
-        </div>
-      )}
+              </FilterGroup>
+
+              {/* Level */}
+              <FilterGroup title="Level">
+                {LEVELS.map(level => (
+                  <ActivePill
+                    key={level}
+                    label={level}
+                    active={props.selectedLevels.includes(level)}
+                    onClick={() => props.toggleLevel(level)}
+                  />
+                ))}
+              </FilterGroup>
+
+              {/* Rating */}
+              <FilterGroup title="Rating">
+                {RATING_OPTIONS.map(threshold => {
+                  const key = `${threshold}+`;
+                  const fullStars = Math.floor(threshold);
+                  return (
+                    <ActivePill
+                      key={key}
+                      label={
+                        <span className="flex items-center gap-1">
+                          {[...Array(5)].map((_, i) => (
+                            <Star key={i} size={11} className={i < fullStars ? "text-[var(--color-warning)] fill-[var(--color-warning)]" : "text-[var(--color-text-tertiary)]"} />
+                          ))}
+                          <span className="ml-0.5">{threshold}+</span>
+                        </span>
+                      }
+                      active={props.selectedRatings.includes(key)}
+                      onClick={() => props.toggleRating(key)}
+                    />
+                  );
+                })}
+              </FilterGroup>
+
+              {/* Sort */}
+              <FilterGroup title="Sort">
+                {props.sortOptions.map(opt => (
+                  <ActivePill
+                    key={opt.id}
+                    label={opt.label}
+                    active={props.sortBy === opt.id}
+                    onClick={() => props.setSortBy(opt.id)}
+                  />
+                ))}
+              </FilterGroup>
+
+              {/* Price */}
+              <FilterGroup title="Price">
+                {PRICE_OPTIONS.map(opt => (
+                  <ActivePill
+                    key={opt.id}
+                    label={opt.label}
+                    active={props.priceFilter === opt.id}
+                    onClick={() => props.setPriceFilter(opt.id)}
+                  />
+                ))}
+              </FilterGroup>
+
+              {/* Topic */}
+              <FilterGroup title="Topic">
+                <div className="relative w-full mb-1">
+                  <Search size={12} className="absolute left-2 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)]" />
+                  <input
+                    type="text"
+                    placeholder="Search topics..."
+                    value={topicSearch}
+                    onChange={e => setTopicSearch(e.target.value)}
+                    className="w-full bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] rounded-lg pl-7 pr-2 py-1.5 text-[11px] font-medium text-[var(--color-text-primary)] placeholder:text-[var(--color-text-tertiary)] focus:outline-none focus:border-[var(--color-accent)] transition-colors"
+                  />
+                  {topicSearch && (
+                    <button onClick={() => setTopicSearch("")} className="absolute right-1.5 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)] cursor-pointer">
+                      <X size={12} />
+                    </button>
+                  )}
+                </div>
+                <div className="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto">
+                  {filteredTopics.map(topic => (
+                    <ActivePill
+                      key={topic}
+                      label={topic}
+                      active={props.selectedTopics.includes(topic)}
+                      onClick={() => props.toggleTopic(topic)}
+                    />
+                  ))}
+                  {filteredTopics.length === 0 && (
+                    <p className="text-[11px] text-[var(--color-text-tertiary)] py-2">No topics match</p>
+                  )}
+                </div>
+              </FilterGroup>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
