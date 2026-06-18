@@ -34,12 +34,29 @@ public class AdminCourseService {
                         course.getIsFree() != null ? course.getIsFree() : true,
                         course.getAgeSegment() != null ? course.getAgeSegment() : "All Levels",
                         course.getImage() != null ? course.getImage() : "",
+                        course.getDescription() != null ? course.getDescription() : "",
                         "Published",
                         moduleRepository.countByCourse_Id(course.getId()),
                         videoRepository.countByModule_Course_Id(course.getId()),
                         course.getCreatedAt()
                 ))
                 .toList();
+    }
+
+    @Transactional
+    public void updateCourse(Long courseId, com.ateion.backend.dto.CourseUpdateDTO dto) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found"));
+
+        course.setTitle(dto.getTitle());
+        course.setDescription(dto.getDescription());
+        course.setCategory(dto.getCategory());
+        course.setAgeSegment(dto.getAgeSegment());
+        course.setPrice(dto.getPrice());
+        course.setIsFree(dto.getPrice() == null || dto.getPrice().trim().equals("0") || dto.getPrice().trim().isEmpty());
+        course.setImage(dto.getImage());
+
+        courseRepository.save(course);
     }
 
     @Transactional

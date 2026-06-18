@@ -15,6 +15,7 @@ public class AdminCourseSummaryDTO {
     private Boolean isFree;
     private String ageSegment;
     private String image;
+    private String description;
     private String status;
     private long moduleCount;
     private long videoCount;

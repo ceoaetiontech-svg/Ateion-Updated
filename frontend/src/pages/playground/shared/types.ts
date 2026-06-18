@@ -5,7 +5,7 @@ export interface UserProfile {
   isPremium: boolean;
 }
 
-export type AgeGroupId = "Sproutlings (5-7)" | "Saplings (7-14)" | "Pathfinders (14-18)" | "Dreamers (18+)";
+export type AgeGroupId = "Sproutlings (5-7 age)" | "Saplings (7-14 age)" | "Pathfinders (14-18 age)" | "Dreamers (18+ age)";
 
 export interface Task {
   id: number;
@@ -45,6 +45,7 @@ export interface Course {
   topics: string[];
   enrollments: number;
   createdAt: number;
+  previewModuleId: number | null;
   isEnrolled?: boolean;
 }
 
@@ -92,3 +93,24 @@ export const slideInItem = {
     transition: { type: "spring", stiffness: 300, damping: 26 },
   },
 };
+
+export interface IAudioChapter {
+  id: string;
+  title: string;
+  audioUrl: string;
+  duration: number;
+  startTimestamp?: number;
+}
+
+export interface IAudiobook {
+  id: string;
+  title: string;
+  author: string;
+  description: string;
+  coverUrl: string;
+  category: string;
+  duration: number;
+  isSingleFile: boolean;
+  chapters: IAudioChapter[];
+  createdAt: string;
+}

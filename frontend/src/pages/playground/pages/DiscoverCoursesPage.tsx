@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Compass, Sprout, Sparkles, Search, Bot, Code, Languages, Cat, DollarSign, Palette, Award, Heart } from "lucide-react";
+import { Compass, Sprout, Sparkles, Search, Bot, Code, Languages, Cat, DollarSign, Palette, Award, Heart, RefreshCw } from "lucide-react";
 import type { AgeGroupId } from "../shared/types";
 import { slideInItem } from "../shared/types";
 import { courseMatchesAgeGroup, normalizeAgeGroupId } from "../shared/courseAgeGroups";
@@ -17,10 +17,10 @@ type AgeGroupFilterId = "All" | AgeGroupId;
 
 const AGE_GROUPS: { id: AgeGroupFilterId; label: string; icon: JSX.Element }[] = [
   { id: "All", label: "All", icon: <Compass size={18} /> },
-  { id: "Sproutlings (5-7)", label: "Sproutlings (5-7)", icon: <Sprout size={18} /> },
-  { id: "Saplings (7-14)", label: "Saplings (7-14)", icon: <Sprout size={18} /> },
-  { id: "Pathfinders (14-18)", label: "Pathfinders (14-18)", icon: <Compass size={18} /> },
-  { id: "Dreamers (18+)", label: "Dreamers (18+)", icon: <Sparkles size={18} /> },
+  { id: "Sproutlings (5-7 age)", label: "Sproutlings (5-7 age)", icon: <Sprout size={18} /> },
+  { id: "Saplings (7-14 age)", label: "Saplings (7-14 age)", icon: <Sprout size={18} /> },
+  { id: "Pathfinders (14-18 age)", label: "Pathfinders (14-18 age)", icon: <Compass size={18} /> },
+  { id: "Dreamers (18+ age)", label: "Dreamers (18+ age)", icon: <Sparkles size={18} /> },
 ];
 
 const AGE_GROUP_THEMES: Record<AgeGroupFilterId, {
@@ -31,7 +31,7 @@ const AGE_GROUP_THEMES: Record<AgeGroupFilterId, {
     title: "All learning paths",
     description: "Browse every course across age groups, goals and skill levels.",
     accent: "var(--color-accent)",
-    activePill: "linear-gradient(135deg, #2b244f 0%, #d66f55 58%, #ff9b82 100%)",
+    activePill: "var(--color-accent)",
     wallpaper: "radial-gradient(circle at 12% 18%, rgba(232,133,106,0.14), transparent 24%), radial-gradient(circle at 86% 12%, rgba(99,102,241,0.10), transparent 22%)",
     panelClass: "border-[var(--color-border-light)] bg-[var(--color-background-secondary)]",
     cardClass: "rounded-2xl border border-t-[3px] border-[var(--color-border-light)] bg-[var(--color-background-secondary)] shadow-md hover:border-[var(--color-accent)]/30 hover:shadow-xl overflow-hidden",
@@ -40,7 +40,7 @@ const AGE_GROUP_THEMES: Record<AgeGroupFilterId, {
     buttonClass: "border border-[var(--color-border-light)] bg-[var(--color-background-secondary)] text-[var(--color-text-primary)] group-hover:border-[var(--color-accent)] group-hover:bg-[var(--color-accent)] group-hover:text-[#fff] group-hover:shadow-[0_8px_20px_rgba(232,133,106,0.3)]",
     listClass: "rounded-xl border border-l-[3px] border-[var(--color-border-light)] bg-[var(--color-background-secondary)] hover:shadow-md",
   },
-  "Sproutlings (5-7)": {
+  "Sproutlings (5-7 age)": {
     kicker: "Playful quest path",
     title: "Tiny quests, bright wins",
     description: "Short playful lessons, cheerful progress cues and simple cards for early learners.",
@@ -54,7 +54,7 @@ const AGE_GROUP_THEMES: Record<AgeGroupFilterId, {
     buttonClass: "border border-[#46a302] bg-[#58cc02] text-[#ffffff] shadow-[0_4px_0_#46a302] hover:bg-[#62df05] active:translate-y-0.5 active:shadow-[0_2px_0_#46a302]",
     listClass: "rounded-[20px] border-2 border-l-[6px] border-[#d7efc8] bg-[#ffffff] shadow-[0_4px_0_#d7efc8]",
   },
-  "Saplings (7-14)": {
+  "Saplings (7-14 age)": {
     kicker: "Build and explore",
     title: "Creative skill labs",
     description: "Hands-on beginner projects for curious learners moving from play into creation.",
@@ -68,7 +68,7 @@ const AGE_GROUP_THEMES: Record<AgeGroupFilterId, {
     buttonClass: "border border-[#0f766e] bg-[#14b8a6] text-[#ffffff] shadow-[0_4px_0_#0f766e] hover:bg-[#16cfc0] active:translate-y-0.5 active:shadow-[0_2px_0_#0f766e]",
     listClass: "rounded-[18px] border-2 border-l-[6px] border-[#bdebe5] bg-[#ffffff] shadow-[0_4px_0_#bdebe5]",
   },
-  "Pathfinders (14-18)": {
+  "Pathfinders (14-18 age)": {
     kicker: "Portfolio-ready growth",
     title: "Skill tracks for teen builders",
     description: "Focused courses with clearer career signals, project depth and measurable progress.",
@@ -82,7 +82,7 @@ const AGE_GROUP_THEMES: Record<AgeGroupFilterId, {
     buttonClass: "border border-[#5558e8] bg-[#6366f1] text-[#ffffff] shadow-sm hover:bg-[#5558e8]",
     listClass: "rounded-[16px] border border-l-[5px] border-[#d7d8ff] bg-[var(--color-background-secondary)] hover:shadow-md",
   },
-  "Dreamers (18+)": {
+  "Dreamers (18+ age)": {
     kicker: "Professional momentum",
     title: "Career-grade mastery",
     description: "Longer, deeper tracks for advanced upskilling and applied workplace readiness.",
@@ -117,8 +117,9 @@ const SORTS: { id: SortOption; label: string }[] = [
 ];
 
 export default function DiscoverCoursesPage() {
-  const { courseQuery, activeAgeGroup, setActiveAgeGroup, savedIds, toggleSave, enrolledIds, courseAccess } = usePlayground();
-  const { allCourses, discoverCourses } = useCourses(courseQuery, enrolledIds, courseAccess);
+  const { courseQuery, activeAgeGroup, setActiveAgeGroup, savedIds, toggleSave, enrolledIds, courseAccess, setToastMessage } = usePlayground();
+  const guestEnrolledIds = localStorage.getItem("token") ? enrolledIds : [];
+  const { allCourses, discoverCourses, isLoading, isWaking, error, refreshCourses } = useCourses(courseQuery, guestEnrolledIds, courseAccess);
   const navigate = useNavigate();
 
   const [sortBy, setSortBy] = useState<SortOption>("popular");
@@ -171,6 +172,28 @@ export default function DiscoverCoursesPage() {
 
   const hasFilters = selectedLevels.length > 0 || selectedDurations.length > 0 || selectedRatings.length > 0 || selectedTopics.length > 0 || priceFilter !== "all";
 
+  const openProtectedCourse = useCallback((courseId: number, previewModuleId?: number | null) => {
+    if (previewModuleId) {
+      navigate(`/course-preview/${previewModuleId}`);
+      return;
+    }
+    if (!localStorage.getItem("token")) {
+      window.dispatchEvent(new CustomEvent("open-login"));
+      return;
+    }
+    navigate(`/playground/course/${courseId}`);
+  }, [navigate]);
+
+  const openPublicPreview = useCallback((previewModuleId: number | null) => {
+    if (previewModuleId) {
+      navigate(`/course-preview/${previewModuleId}`);
+      return;
+    }
+
+    setToastMessage("A preview is not available for this course yet.");
+    window.setTimeout(() => setToastMessage(null), 3000);
+  }, [navigate, setToastMessage]);
+
   return (
       <div className="flex flex-col gap-6">
 
@@ -192,18 +215,18 @@ export default function DiscoverCoursesPage() {
           {CATEGORIES.map((cat) => {
             const Icon = cat.icon;
             return (
-              <button
-                key={cat.name}
-                onClick={() => toggleArray(setSelectedTopics, cat.name)}
-                className={`px-3 py-1.5 rounded-full border text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
-                  selectedTopics.includes(cat.name)
-                    ? "bg-[var(--color-accent)] text-white border-[var(--color-accent)]"
-                    : "bg-[var(--color-background-secondary)] text-[var(--color-text-secondary)] border-[var(--color-border-light)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
-                }`}
-              >
-                <Icon size={14} className="animate-pulse" />
-                {cat.name}
-              </button>
+                <button
+                    key={cat.name}
+                    onClick={() => toggleArray(setSelectedTopics, cat.name)}
+                    className={`px-3 py-1.5 rounded-full border text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                        selectedTopics.includes(cat.name)
+                            ? "bg-[var(--color-accent)] text-white border-[var(--color-accent)]"
+                            : "bg-[var(--color-background-secondary)] text-[var(--color-text-secondary)] border-[var(--color-border-light)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
+                    }`}
+                >
+                  <Icon size={14} className="animate-pulse" />
+                  {cat.name}
+                </button>
             );
           })}
         </div>
@@ -249,53 +272,85 @@ export default function DiscoverCoursesPage() {
         />
 
         {/* 5. Course Grid with Popovers */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-stretch auto-rows-fr">
-          <AnimatePresence mode="popLayout">
-            {displayCourses.map((course) => (
-                <motion.div
-                    key={course.id}
-                    layout
-                    variants={slideInItem}
-                    initial="hidden"
-                    animate="show"
-                    exit={{ opacity: 0, scale: 0.9 }}
-                    className="h-full flex w-full"
-                >
-                  <CoursePreviewPopover
-                      course={course}
-                      onReadMore={() => navigate(`/playground/course/${course.id}`)}
-                      onPreview={() => navigate(`/playground/course/${course.id}`)}
-                      onSave={() => toggleSave(course.id)}
-                      isSaved={savedIds.includes(course.id)}
-                  >
-                    <div
-                        onClick={() => navigate(`/playground/course/${course.id}`)}
-                        className={`w-full cursor-pointer h-full transition-transform hover:-translate-y-1 flex flex-col group ${activeTheme.cardClass}`}
-                    >
-                      <CoursePreviewCard course={course} />
-                    </div>
-                  </CoursePreviewPopover>
-                </motion.div>
-            ))}
-          </AnimatePresence>
+        {isLoading && (
+            <div className="rounded-2xl border border-[var(--color-border-light)] bg-[var(--color-background-secondary)] px-6 py-10 text-center">
+              <div className="mx-auto mb-4 h-9 w-9 animate-spin rounded-full border-4 border-[var(--color-accent)] border-t-transparent" />
+              <p className="font-bold text-[var(--color-text-primary)]">
+                {isWaking ? "The course server is waking up…" : "Loading courses…"}
+              </p>
+              <p className="mt-1 text-sm text-[var(--color-text-secondary)]">
+                {isWaking
+                    ? "The first request can take longer on Render's free tier."
+                    : "Fetching the latest courses from the database."}
+              </p>
+            </div>
+        )}
 
-          {/* Empty State */}
-          {displayCourses.length === 0 && (
-              <div className="col-span-full py-12 text-center text-[var(--color-text-tertiary)] flex flex-col items-center">
-                <Search size={48} className="mb-4 opacity-20" />
-                <p className="text-lg font-medium">No courses found</p>
-                <p className="text-sm">Try adjusting your filters or search query</p>
-                {hasFilters && (
-                    <button
-                        onClick={clearFilters}
-                        className="mt-4 text-[var(--color-accent)] font-bold hover:underline"
+        {!isLoading && error && (
+            <div className="rounded-2xl border border-red-500/20 bg-red-500/5 px-6 py-10 text-center">
+              <p className="font-bold text-[var(--color-text-primary)]">{error}</p>
+              <button
+                  onClick={() => void refreshCourses()}
+                  className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[var(--color-accent)] px-5 py-2.5 text-sm font-bold text-white"
+              >
+                <RefreshCw size={16} /> Retry
+              </button>
+            </div>
+        )}
+
+        {!isLoading && !error && (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-stretch auto-rows-fr">
+              <AnimatePresence mode="popLayout">
+                {displayCourses.map((course) => (
+                    <motion.div
+                        key={course.id}
+                        layout
+                        variants={slideInItem}
+                        initial="hidden"
+                        animate="show"
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        className="h-full flex w-full"
                     >
-                      Clear all filters
-                    </button>
-                )}
-              </div>
-          )}
-        </div>
+                      <CoursePreviewPopover
+                          course={course}
+                          onReadMore={() => openProtectedCourse(course.id, course.previewModuleId)}
+                          onPreview={() => openPublicPreview(course.previewModuleId)}
+                          onSave={() => toggleSave(course.id)}
+                          isSaved={savedIds.includes(course.id)}
+                      >
+                        <div
+                            onClick={() => openProtectedCourse(course.id, course.previewModuleId)}
+                            className={`w-full cursor-pointer h-full transition-transform hover:-translate-y-1 flex flex-col group ${activeTheme.cardClass}`}
+                        >
+                          <CoursePreviewCard
+                                        course={course}
+                                        onReadMore={() => openProtectedCourse(course.id, course.previewModuleId)}
+                                        onPreview={() => openPublicPreview(course.previewModuleId)}
+                                    />
+                        </div>
+                      </CoursePreviewPopover>
+                    </motion.div>
+                ))}
+              </AnimatePresence>
+
+              {/* Empty State */}
+              {displayCourses.length === 0 && (
+                  <div className="col-span-full py-12 text-center text-[var(--color-text-tertiary)] flex flex-col items-center">
+                    <Search size={48} className="mb-4 opacity-20" />
+                    <p className="text-lg font-medium">No courses found</p>
+                    <p className="text-sm">Try adjusting your filters or search query</p>
+                    {hasFilters && (
+                        <button
+                            onClick={clearFilters}
+                            className="mt-4 text-[var(--color-accent)] font-bold hover:underline"
+                        >
+                          Clear all filters
+                        </button>
+                    )}
+                  </div>
+              )}
+            </div>
+        )}
 
       </div>
   );

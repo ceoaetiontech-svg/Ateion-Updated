@@ -33,16 +33,16 @@ const marqueeStyles = `
 }
 `;
 
-import doorPeachnight from "../../assets/hero/door-peachnight.webp";
-import learnerPurple from "../../assets/hero/learner-purple.webp";
-import meetingsWhitepurple from "../../assets/hero/meetings-whitepurple.webp";
-import onlineWorkshopPurple from "../../assets/hero/online-workshop-purple.webp";
-import peachFixit from "../../assets/hero/peach-fixit.webp";
-import seesawPurplepeach from "../../assets/hero/seesaw-purplepeach.webp";
-import strengthsPurple from "../../assets/hero/strengths-purple.webp";
-import viewskyPeach from "../../assets/hero/viewsky-peach.webp";
-import wateringPurple from "../../assets/hero/watering-purple.webp";
-import yogaPurple from "../../assets/hero/yoga-purple.webp";
+import hero1 from "../../assets/hero/hero-1.webp";
+import hero2 from "../../assets/hero/hero-2.webp";
+import hero3 from "../../assets/hero/hero-3.webp";
+import hero4 from "../../assets/hero/hero-4.webp";
+import hero5 from "../../assets/hero/hero-5.webp";
+import hero6 from "../../assets/hero/hero-6.webp";
+import hero7 from "../../assets/hero/hero-7.webp";
+import hero8 from "../../assets/hero/hero-8.webp";
+import hero9 from "../../assets/hero/hero-9.webp";
+import hero10 from "../../assets/hero/hero-10.webp";
 import SharedNavbar from "./SharedNavbar";
 import NavbarSpacer from "./NavbarSpacer";
 
@@ -107,11 +107,11 @@ const Item = memo(function Item({ src, alt, width }: { src: string; alt: string;
 const Frame67 = memo(function Frame67() {
   return (
     <MarqueeTrack duration={50} direction="right" align="end">
-      <Item src={doorPeachnight} alt="" width="w-[280px]" />
-      <Item src={learnerPurple} alt="" width="w-[420px]" />
-      <Item src={meetingsWhitepurple} alt="" width="w-[380px]" />
-      <Item src={onlineWorkshopPurple} alt="" width="w-[350px]" />
-      <Item src={peachFixit} alt="" width="w-[360px]" />
+      <Item src={hero1} alt="" width="w-[280px]" />
+      <Item src={hero2} alt="" width="w-[420px]" />
+      <Item src={hero3} alt="" width="w-[380px]" />
+      <Item src={hero4} alt="" width="w-[350px]" />
+      <Item src={hero5} alt="" width="w-[360px]" />
     </MarqueeTrack>
   );
 });
@@ -119,11 +119,11 @@ const Frame67 = memo(function Frame67() {
 const Frame66 = memo(function Frame66() {
   return (
     <MarqueeTrack duration={35} direction="left" align="center">
-      <Item src={seesawPurplepeach} alt="" width="w-[400px]" />
-      <Item src={strengthsPurple} alt="" width="w-[320px]" />
-      <Item src={viewskyPeach} alt="" width="w-[380px]" />
-      <Item src={wateringPurple} alt="" width="w-[420px]" />
-      <Item src={yogaPurple} alt="" width="w-[350px]" />
+      <Item src={hero6} alt="" width="w-[400px]" />
+      <Item src={hero7} alt="" width="w-[320px]" />
+      <Item src={hero8} alt="" width="w-[380px]" />
+      <Item src={hero9} alt="" width="w-[420px]" />
+      <Item src={hero10} alt="" width="w-[350px]" />
     </MarqueeTrack>
   );
 });

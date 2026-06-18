@@ -51,15 +51,55 @@ const stars = [
   { left: "85%", top: "48%", size: 2, delay: "0.1s", duration: "3.3s" },
 ];
 
+function WaveBackdrop({ isDreamers }: { isDreamers: boolean }) {
+  const gradient = isDreamers
+    ? "linear-gradient(60deg, #171027 0%, #4c1d95 52%, #f59e0b 100%)"
+    : "linear-gradient(60deg, #543ab7 0%, #00acc1 100%)";
+
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <div className="absolute inset-0" style={{ background: gradient }} />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_22%,rgba(255,255,255,0.22),transparent_20%),radial-gradient(circle_at_72%_18%,rgba(255,255,255,0.12),transparent_24%),linear-gradient(180deg,rgba(10,16,34,0.05)_0%,rgba(10,16,34,0.22)_100%)]" />
+      <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[#ffffff]/10 to-transparent" />
+
+      <svg
+        className="playground-waves absolute bottom-[-1px] left-0 h-[120px] min-h-[80px] w-full sm:h-[150px]"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 24 150 28"
+        preserveAspectRatio="none"
+        shapeRendering="auto"
+        aria-hidden="true"
+      >
+        <defs>
+          <path
+            id="playground-gentle-wave"
+            d="M-160 44c30 0 58-18 88-18s58 18 88 18 58-18 88-18 58 18 88 18v44h-352z"
+          />
+        </defs>
+        <g className="playground-wave-parallax">
+          <use href="#playground-gentle-wave" x="48" y="0" fill="rgba(255,255,255,0.70)" />
+          <use href="#playground-gentle-wave" x="48" y="3" fill="rgba(255,255,255,0.50)" />
+          <use href="#playground-gentle-wave" x="48" y="5" fill="rgba(255,255,255,0.30)" />
+          <use href="#playground-gentle-wave" x="48" y="7" fill="rgba(255,255,255,0.92)" />
+        </g>
+      </svg>
+    </div>
+  );
+}
+
 export default function FallbackPage() {
   const location = useLocation();
   const activeView = getActiveView(location.pathname);
   const hasSkyTheme =
-    activeView === "Sproutlings (5-7)" || activeView === "Saplings (7-14)";
+    activeView === "Sproutlings (5-7 age)" || activeView === "Saplings (7-14 age)";
+  const hasWaveTheme =
+    activeView === "Pathfinders (14-18 age)" || activeView === "Dreamers (18+ age)";
+  const hasIllustratedTheme = hasSkyTheme || hasWaveTheme;
+  const isDreamers = activeView === "Dreamers (18+ age)";
 
   return (
     <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      {hasSkyTheme && (
+      {hasIllustratedTheme && (
         <style>{`
           @keyframes sproutlingTwinkle {
             0%, 100% { opacity: 0.35; transform: scale(0.75); }
@@ -74,6 +114,35 @@ export default function FallbackPage() {
           @keyframes sproutlingMoonFloat {
             0%, 100% { transform: translateY(0) rotate(-4deg); }
             50% { transform: translateY(-8px) rotate(2deg); }
+          }
+
+          .playground-wave-parallax > use {
+            animation: playgroundWaveMove 25s cubic-bezier(.55,.5,.45,.5) infinite;
+          }
+
+          .playground-wave-parallax > use:nth-child(1) {
+            animation-delay: -2s;
+            animation-duration: 7s;
+          }
+
+          .playground-wave-parallax > use:nth-child(2) {
+            animation-delay: -3s;
+            animation-duration: 10s;
+          }
+
+          .playground-wave-parallax > use:nth-child(3) {
+            animation-delay: -4s;
+            animation-duration: 13s;
+          }
+
+          .playground-wave-parallax > use:nth-child(4) {
+            animation-delay: -5s;
+            animation-duration: 20s;
+          }
+
+          @keyframes playgroundWaveMove {
+            0% { transform: translate3d(-90px, 0, 0); }
+            100% { transform: translate3d(85px, 0, 0); }
           }
         `}</style>
       )}
@@ -99,6 +168,8 @@ export default function FallbackPage() {
         className={`flex flex-col items-center justify-center px-4 text-center rounded-3xl border shadow-sm mt-8 relative overflow-hidden ${
           hasSkyTheme
             ? "min-h-[520px] border-[#184b82]/20 bg-[#0c4279] py-16 text-[#ffffff]"
+            : hasWaveTheme
+              ? "min-h-[520px] border-[#ffffff]/15 bg-[#543ab7] py-16 text-[#ffffff]"
             : "bg-[var(--color-background-secondary)] border-[var(--color-border-light)] py-20"
         }`}
       >
@@ -148,6 +219,8 @@ export default function FallbackPage() {
               />
             ))}
           </div>
+        ) : hasWaveTheme ? (
+          <WaveBackdrop isDreamers={isDreamers} />
         ) : (
           <>
             <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--color-accent)] opacity-5 rounded-bl-full blur-3xl pointer-events-none"></div>
@@ -167,19 +240,19 @@ export default function FallbackPage() {
           </div>
         </div>
         
-        <h4 className={`relative z-10 text-2xl font-bold mb-3 ${hasSkyTheme ? "text-[#ffffff]" : "text-[var(--color-text-primary)]"}`}>
+        <h4 className={`relative z-10 text-2xl font-bold mb-3 ${hasIllustratedTheme ? "text-[#ffffff]" : "text-[var(--color-text-primary)]"}`}>
           Something exciting is brewing
         </h4>
-        <p className={`relative z-10 max-w-md mx-auto mb-8 leading-relaxed ${hasSkyTheme ? "text-[#e8f5ff]" : "text-[var(--color-text-secondary)]"}`}>
+        <p className={`relative z-10 max-w-md mx-auto mb-8 leading-relaxed ${hasIllustratedTheme ? "text-[#e8f5ff]" : "text-[var(--color-text-secondary)]"}`}>
           We're currently crafting the{" "}
-          <span className={`font-bold ${hasSkyTheme ? "text-[#ffffff]" : "text-[var(--color-accent)]"}`}>
+          <span className={`font-bold ${hasIllustratedTheme ? "text-[#ffffff]" : "text-[var(--color-accent)]"}`}>
             {activeView}
           </span>{" "}
           experience. Check back soon to explore new tools and resources tailored just for you.
         </p>
         
         <button className={`relative z-10 px-6 py-3 rounded-xl font-bold transition-all duration-300 shadow-md hover:shadow-xl hover:-translate-y-1 ${
-          hasSkyTheme
+          hasIllustratedTheme
             ? "bg-[#ffffff] text-[#0d467d] hover:bg-[#eaf6ff]"
             : "bg-[var(--color-text-primary)] text-[var(--color-background-primary)] hover:bg-[var(--color-accent)] hover:text-[#ffffff]"
         }`}>

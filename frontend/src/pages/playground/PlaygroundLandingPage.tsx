@@ -554,72 +554,7 @@ export default function PlaygroundLandingPage() {
               worldwide.
             </p>
           </div>
-          <div className="w-full grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-8 md:gap-12 items-center justify-items-center opacity-70">
-            {[
-              {
-                name: "Delhi Public School",
-                sub: "",
-                svg: <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />,
-              },
-              { name: "KREA", sub: "university" },
-              {
-                name: "CHRIST",
-                sub: "deemed to be university",
-                svg: <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0" />,
-              },
-              { name: "AMITY", sub: "UNIVERSITY" },
-              {
-                name: "PODAR",
-                sub: "EDUCATION NETWORK",
-                svg: <circle cx="12" cy="12" r="10" />,
-                svg2: <path d="M8 12h8M12 8v8" />,
-              },
-              { name: "EuroSchool", sub: "", heart: true },
-            ].map((school, i) => (
-              <div key={i} className="flex items-center gap-2">
-                {school.svg && (
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-                    style={{ color: isDark ? "#E2E8F0" : "#FFFFFF" }} className="shrink-0">
-                    {school.svg}
-                    {school.svg2}
-                  </svg>
-                )}
-                <div className={school.name === "KREA" || school.name === "AMITY" ? "flex items-center gap-1.5" : "text-left"}>
-                  {school.name === "KREA" || school.name === "AMITY" ? (
-                    <>
-                      <span className={school.name === "KREA" ? "text-lg font-black tracking-widest font-display" : "text-lg font-black tracking-wider"}
-                        style={{ color: isDark ? "#E2E8F0" : "#FFFFFF" }}>
-                        {school.name}
-                      </span>
-                      <span className="text-[10px] font-extrabold uppercase tracking-widest mt-1"
-                        style={{ color: isDark ? "#64748B" : "#9CA3AF" }}>
-                        {school.sub}
-                      </span>
-                    </>
-                  ) : school.heart ? (
-                    <>
-                      <span className="text-base font-extrabold tracking-tight"
-                        style={{ color: isDark ? "#E2E8F0" : "#FFFFFF" }}>{school.name}</span>
-                      <span className="text-[14px] font-black text-[#f47265] ml-1">❤</span>
-                    </>
-                  ) : (
-                    <>
-                      <span className={school.name === "CHRIST" ? "text-sm font-extrabold tracking-tight" : "text-sm font-black tracking-tight"}
-                        style={{ color: isDark ? "#E2E8F0" : "#FFFFFF" }}>
-                        {school.name}
-                      </span>
-                      {school.sub && (
-                        <span className="text-[9px] font-semibold block uppercase tracking-widest mt-0.5"
-                          style={{ color: isDark ? "#64748B" : "#9CA3AF" }}>
-                          {school.sub}
-                        </span>
-                      )}
-                    </>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
+
           <div
             className="w-full pt-8 mt-4 flex flex-col sm:flex-row items-center justify-between text-xs gap-4"
             style={{ borderTop: "1px solid rgba(255,255,255,0.06)", color: "var(--color-text-muted)" }}

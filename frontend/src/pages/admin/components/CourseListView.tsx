@@ -12,20 +12,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { Link } from "react-router";
-
-interface AdminCourse {
-  id: number;
-  title: string;
-  category: string;
-  price: string;
-  isFree: boolean;
-  ageSegment: string;
-  image: string;
-  status: "Published" | "Draft";
-  moduleCount: number;
-  videoCount: number;
-  createdAt: string | null;
-}
+import CourseEditDrawer, { AdminCourse } from "./CourseEditDrawer";
 
 const containerVariants = {
   hidden: {},
@@ -36,6 +23,8 @@ const itemVariants = {
   hidden: { opacity: 0, y: 16 },
   show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" } },
 };
+
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
 
 function authHeaders(): HeadersInit {
   const token = localStorage.getItem("token");
@@ -66,6 +55,7 @@ export default function CourseListView() {
   const [isLoading, setIsLoading] = useState(true);
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [editingCourse, setEditingCourse] = useState<AdminCourse | null>(null);
 
   const fetchCourses = useCallback(async () => {
     setIsLoading(true);
@@ -73,7 +63,7 @@ export default function CourseListView() {
 
     try {
       const response = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/admin/courses`,
+          `${API_BASE}/admin/courses`,
           { headers: authHeaders() },
       );
 
@@ -111,7 +101,7 @@ export default function CourseListView() {
 
     try {
       const response = await fetch(
-          `${import.meta.env.VITE_API_BASE_URL}/admin/courses/${course.id}`,
+          `${API_BASE}/admin/courses/${course.id}`,
           {
             method: "DELETE",
             headers: authHeaders(),
@@ -162,44 +152,44 @@ export default function CourseListView() {
           initial="hidden"
           animate="show"
       >
-        <motion.div variants={itemVariants}>
+        <motion.div variants={itemVariants} className="mb-6">
           <motion.div
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="w-12 h-[3px] rounded-full bg-[var(--color-accent)] mb-4"
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="w-16 h-[2px] rounded-full bg-[var(--color-accent)] mb-4"
               style={{ transformOrigin: "left" }}
           />
-          <h2 className="text-3xl font-bold font-['OV_Soge'] mb-2">
+          <h2 className="text-3xl font-bold font-['OV_Soge'] mb-2 tracking-tight text-[var(--color-text-primary)]">
             Manage Courses
           </h2>
-          <p className="text-[var(--color-text-secondary)]">
+          <p className="text-sm text-[var(--color-text-secondary)]">
             Courses shown here come directly from the database.
           </p>
         </motion.div>
 
-        <motion.div className="flex flex-wrap gap-3 my-6" variants={itemVariants}>
+        <motion.div className="grid grid-cols-2 lg:grid-cols-4 gap-4 my-6" variants={itemVariants}>
           {[
-            { label: "Total Courses", value: totalCourses, color: "bg-blue-500/10 text-blue-600 border-blue-500/20" },
-            { label: "Published", value: published, color: "bg-emerald-500/10 text-emerald-600 border-emerald-500/20" },
-            { label: "Draft", value: draft, color: "bg-amber-500/10 text-amber-600 border-amber-500/20" },
-            { label: "Free Courses", value: free, color: "bg-purple-500/10 text-purple-600 border-purple-500/20" },
+            { label: "Total Courses", value: totalCourses, color: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20" },
+            { label: "Published Courses", value: published, color: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20" },
+            { label: "Drafts", value: draft, color: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20" },
+            { label: "Free Courses", value: free, color: "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20" },
           ].map((stat) => (
               <div
                   key={stat.label}
-                  className={`px-4 py-2 rounded-xl border ${stat.color} text-sm font-semibold flex items-center gap-2`}
+                  className={`p-5 rounded-2xl border ${stat.color} flex flex-col justify-between shadow-[var(--shadow-sm)] hover:shadow-[var(--shadow-md)] transition-all duration-200 hover:-translate-y-0.5`}
               >
-                <span className="text-lg font-bold">{stat.value}</span>
-                {stat.label}
+                <span className="text-3xl font-black tracking-tight mb-2">{stat.value}</span>
+                <span className="text-xs font-semibold uppercase tracking-wider opacity-80">{stat.label}</span>
               </div>
           ))}
         </motion.div>
 
         <motion.div
-            className="flex flex-wrap items-center justify-between gap-4 mb-6"
+            className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6"
             variants={itemVariants}
         >
-          <div className="relative flex-1 min-w-[240px] max-w-md">
+          <div className="relative flex-1 w-full md:max-w-md">
             <Search
                 className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-text-tertiary)]"
                 size={18}
@@ -209,16 +199,16 @@ export default function CourseListView() {
                 placeholder="Search courses..."
                 value={searchQuery}
                 onChange={(event) => setSearchQuery(event.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[var(--color-border-medium)] bg-[var(--color-background-primary)] text-[var(--color-text-primary)] outline-none transition-all duration-250 focus:border-[var(--color-accent)] focus:shadow-[0_0_0_3px_rgba(232,133,106,0.15)]"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-[var(--color-border-light)] hover:border-[var(--color-border-medium)] bg-[var(--color-background-primary)] text-[var(--color-text-primary)] outline-none transition-all duration-200 focus:border-[var(--color-accent)] focus:hover:border-[var(--color-accent)] focus:shadow-[0_0_0_3px_rgba(232,133,106,0.12)]"
             />
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 w-full md:w-auto justify-end">
             <button
                 type="button"
                 onClick={() => void fetchCourses()}
                 disabled={isLoading}
-                className="px-4 py-2.5 rounded-xl border border-[var(--color-border-medium)] text-[var(--color-text-secondary)] flex items-center gap-2 hover:bg-[var(--color-background-tertiary)] disabled:opacity-50"
+                className="px-4 py-2.5 rounded-xl border border-[var(--color-border-light)] text-[var(--color-text-secondary)] hover:bg-[var(--color-background-tertiary)]/50 transition-all duration-150 disabled:opacity-50 flex items-center gap-2 cursor-pointer active:scale-95"
             >
               <RefreshCw size={17} className={isLoading ? "animate-spin" : ""} />
               Refresh
@@ -226,7 +216,7 @@ export default function CourseListView() {
 
             <Link
                 to="/admin/upload"
-                className="bg-[var(--color-accent)] text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 transition-all duration-300 shadow-[0_4px_16px_rgba(232,133,106,0.25)] hover:shadow-[0_6px_24px_rgba(232,133,106,0.4)] hover:scale-[1.03] active:scale-[0.97]"
+                className="bg-[var(--color-accent)] text-white px-5 py-2.5 rounded-xl font-medium flex items-center gap-2 transition-all duration-300 shadow-[var(--shadow-accent)] hover:shadow-[var(--shadow-accent-hover)] hover:scale-[1.03] active:scale-[0.97] shrink-0"
             >
               <Plus size={18} />
               Add Course
@@ -247,7 +237,7 @@ export default function CourseListView() {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-              <tr className="border-b border-[var(--color-border-light)] text-[var(--color-text-tertiary)] text-sm">
+              <tr className="bg-[var(--color-background-tertiary)]/30 border-b border-[var(--color-border-light)] text-[var(--color-text-secondary)] text-xs font-semibold uppercase tracking-wider">
                 <th className="p-5 font-semibold">Course</th>
                 <th className="p-5 font-semibold">Category</th>
                 <th className="p-5 font-semibold">Curriculum</th>
@@ -269,14 +259,14 @@ export default function CourseListView() {
                   filteredCourses.map((course, index) => (
                       <motion.tr
                           key={course.id}
-                          className="hover:bg-[var(--color-background-primary)] transition-colors"
+                          className="hover:bg-[var(--color-background-primary)]/80 transition-colors group"
                           initial={{ opacity: 0, x: -8 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: 0.05 + index * 0.03 }}
                       >
                         <td className="p-5">
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--color-accent-light)] to-[var(--color-accent)]/20 flex items-center justify-center border border-[var(--color-border-medium)] text-[var(--color-accent)] overflow-hidden">
+                            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--color-accent)]/20 to-[var(--color-accent)]/5 flex items-center justify-center border border-[var(--color-accent)]/20 text-[var(--color-accent)] overflow-hidden shrink-0">
                               {course.image ? (
                                   <img src={course.image} alt="" className="h-full w-full object-cover" />
                               ) : course.status === "Published" ? (
@@ -297,7 +287,7 @@ export default function CourseListView() {
                         </td>
 
                         <td className="p-5">
-                      <span className="capitalize px-3 py-1 bg-[var(--color-background-tertiary)] rounded-full text-xs font-semibold text-[var(--color-text-secondary)]">
+                      <span className="capitalize px-3 py-1 bg-[var(--color-background-tertiary)]/50 rounded-full text-xs font-semibold text-[var(--color-text-secondary)]">
                         {course.category}
                       </span>
                         </td>
@@ -310,9 +300,9 @@ export default function CourseListView() {
 
                         <td className="p-5 font-medium text-[var(--color-text-primary)]">
                           {course.isFree || course.price === "0" ? (
-                              <span className="text-emerald-500 font-semibold">Free</span>
+                              <span className="text-emerald-600 dark:text-emerald-400 font-bold bg-emerald-500/10 px-2.5 py-1 rounded-lg text-xs tracking-wide border border-emerald-500/10">Free</span>
                           ) : (
-                              `₹${course.price}`
+                              `₹${parseFloat(course.price).toLocaleString("en-IN")}`
                           )}
                         </td>
 
@@ -320,8 +310,8 @@ export default function CourseListView() {
                       <span
                           className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold ${
                               course.status === "Published"
-                                  ? "bg-emerald-500/10 text-emerald-500"
-                                  : "bg-amber-500/10 text-amber-500"
+                                  ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20"
+                                  : "bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20"
                           }`}
                       >
                         <span
@@ -338,26 +328,27 @@ export default function CourseListView() {
                         </td>
 
                         <td className="p-5 text-right">
-                          <div className="flex items-center justify-end gap-1">
+                          <div className="flex items-center justify-end gap-1.5 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-all duration-200 transform translate-x-0 lg:translate-x-2 lg:group-hover:translate-x-0">
                             <button
                                 type="button"
-                                className="p-2 rounded-lg text-[var(--color-text-tertiary)] hover:text-blue-500 hover:bg-blue-500/10 transition-colors"
+                                className="p-2 rounded-lg text-[var(--color-text-tertiary)] hover:text-blue-650 dark:hover:text-blue-400 hover:bg-blue-500/10 transition-all cursor-pointer hover:scale-105 active:scale-95"
                                 title="Analytics coming later"
                             >
                               <TrendingUp size={16} />
                             </button>
-                            <button
-                                type="button"
-                                className="p-2 rounded-lg text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] hover:bg-[var(--color-accent)]/10 transition-colors"
-                                title="Editing coming later"
-                            >
-                              <Edit2 size={16} />
-                            </button>
+                             <button
+                                 type="button"
+                                 onClick={() => setEditingCourse(course)}
+                                 className="p-2 rounded-lg text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] hover:bg-[var(--color-accent)]/10 transition-all cursor-pointer hover:scale-105 active:scale-95"
+                                 title="Edit Course"
+                             >
+                               <Edit2 size={16} />
+                             </button>
                             <button
                                 type="button"
                                 onClick={() => void handleDelete(course)}
                                 disabled={deletingId === course.id}
-                                className="p-2 rounded-lg text-[var(--color-text-tertiary)] hover:text-red-500 hover:bg-red-500/10 transition-colors disabled:opacity-50"
+                                className="p-2 rounded-lg text-[var(--color-text-tertiary)] hover:text-red-650 dark:hover:text-red-400 hover:bg-red-500/10 transition-all cursor-pointer hover:scale-105 active:scale-95"
                                 title="Delete course"
                             >
                               {deletingId === course.id ? (
@@ -374,8 +365,8 @@ export default function CourseListView() {
                   <tr>
                     <td colSpan={7}>
                       <div className="flex flex-col items-center justify-center py-16 text-center">
-                        <div className="w-16 h-16 rounded-2xl bg-[var(--color-background-tertiary)] flex items-center justify-center mb-4 border border-[var(--color-border-light)]">
-                          <BookOpen size={28} className="text-[var(--color-text-tertiary)]" />
+                        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[var(--color-accent)]/20 to-[var(--color-accent)]/5 flex items-center justify-center mb-4 border border-[var(--color-accent)]/20 text-[var(--color-accent)]">
+                          <BookOpen size={28} className="opacity-95" />
                         </div>
                         <p className="text-lg font-semibold text-[var(--color-text-primary)] mb-1">
                           {searchQuery ? "No matching courses" : "No uploaded courses yet"}
@@ -406,6 +397,16 @@ export default function CourseListView() {
             Showing {filteredCourses.length} of {courses.length} courses
           </div>
         </motion.div>
+
+        <CourseEditDrawer
+          course={editingCourse}
+          onClose={() => setEditingCourse(null)}
+          onSave={(updatedCourse) => {
+            setCourses((current) =>
+              current.map((item) => (item.id === updatedCourse.id ? updatedCourse : item))
+            );
+          }}
+        />
       </motion.div>
   );
 }

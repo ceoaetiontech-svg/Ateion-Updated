@@ -66,7 +66,7 @@ export default function CoursePreviewPopover({
   return (
       <div
           ref={containerRef}
-          className={`relative flex w-full h-full ${isOpen ? "z-50" : "z-10"}`}
+          className={`relative w-full h-full ${isOpen ? "z-50" : "z-10"} ${isMobile ? "flex flex-col" : "flex"}`}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
       >

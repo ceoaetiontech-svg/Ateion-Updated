@@ -3,7 +3,6 @@ import {
   BookMarked,
   Compass,
   Award,
-  Sparkles,
   Sprout,
   Heart,
   Lightbulb,
@@ -13,6 +12,7 @@ import {
   Calendar,
   FileText,
   Milestone,
+  Headphones,
   type LucideIcon,
 } from "lucide-react";
 
@@ -58,13 +58,10 @@ export const navigationSections: NavSection[] = [
     ],
   },
   {
-    title: "Age Groups",
-    icon: Milestone,
+    title: "Audio Library",
+    icon: Headphones,
     items: [
-      { title: "Sproutlings (5-7)", icon: Sprout, path: "/playground/sproutlings" },
-      { title: "Saplings (7-14)", icon: Sprout, path: "/playground/saplings" },
-      { title: "Pathfinders (14-18)", icon: Compass, path: "/playground/pathfinders" },
-      { title: "Dreamers (18+)", icon: Sparkles, path: "/playground/dreamers" },
+      { title: "Audiobooks", icon: Headphones, path: "/playground/audiobooks" },
     ],
   },
 ];

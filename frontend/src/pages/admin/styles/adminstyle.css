@@ -1,3 +1,6 @@
+@import "./admin-tokens.css";
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700&family=Barlow:wght@300;400;500;600;700&display=swap");
+
 /* ─── OV Soge (Brand Heading Font) ──────────── */
 @font-face {
   font-family: "OV_Soge";
@@ -55,61 +58,6 @@
   font-display: swap;
 }
 
-/* ─── Frosted Glass Card ──────────────────── */
-.admin-glass-card {
-  background: linear-gradient(145deg, rgba(248, 248, 244, 0.35), rgba(232, 133, 106, 0.06), rgba(245, 241, 234, 0.4));
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
-  border-radius: 24px;
-  border: 1px solid rgba(255, 255, 255, 0.55);
-  padding: 40px;
-  box-shadow:
-    0 16px 48px rgba(26, 24, 51, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.7),
-    inset 0 -1px 0 rgba(26, 24, 51, 0.05);
-  overflow: hidden;
-}
-
-.admin-glass-icon {
-  background: rgba(232, 133, 106, 0.15);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(232, 133, 106, 0.15);
-}
-
-.admin-input {
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(26, 24, 51, 0.08);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-.admin-btn {
-  background: var(--color-primary);
-  border: 1px solid transparent;
-}
-
-[data-theme="dark"] .admin-glass-card {
-  background: linear-gradient(145deg, rgba(30, 41, 59, 0.35), rgba(232, 133, 106, 0.04), rgba(15, 23, 42, 0.4));
-  border: 1px solid rgba(226, 232, 240, 0.06);
-  box-shadow:
-    0 16px 48px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(226, 232, 240, 0.05);
-}
-
-[data-theme="dark"] .admin-glass-icon {
-  background: rgba(51, 65, 85, 0.5);
-}
-
-[data-theme="dark"] .admin-input {
-  background: rgba(15, 23, 42, 0.5);
-  border: 1px solid rgba(226, 232, 240, 0.1);
-}
-
-[data-theme="dark"] .admin-btn {
-  background: var(--color-accent);
-}
-
 /* ─── SF Pro Display (Admin Body Font) ──────── */
 @font-face {
   font-family: "SF Pro Display";
@@ -134,3 +82,211 @@
   font-style: normal;
   font-display: swap;
 }
+
+/* ─── Frosted Glass Card ──────────────────── */
+.admin-glass-card {
+  background: linear-gradient(145deg, rgba(248, 248, 244, 0.35), rgba(232, 133, 106, 0.06), rgba(245, 241, 234, 0.4));
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border-radius: var(--radius-2xl, 24px);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  padding: var(--space-10, 40px);
+  box-shadow:
+    0 16px 48px rgba(26, 24, 51, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    inset 0 -1px 0 rgba(26, 24, 51, 0.05);
+  overflow: hidden;
+}
+
+.admin-glass-icon {
+  background: rgba(232, 133, 106, 0.15);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(232, 133, 106, 0.15);
+}
+
+.admin-input {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(26, 24, 51, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: border-color var(--transition-base, 200ms ease), box-shadow var(--transition-base, 200ms ease);
+}
+
+.admin-input:focus {
+  border-color: var(--color-accent, #e8856a);
+  box-shadow: 0 0 0 3px rgba(232, 133, 106, 0.15);
+}
+
+/* ─── Solid Clay Card ────────────────────── */
+.admin-card {
+  background: var(--color-background-secondary, #1e293b);
+  border-radius: var(--radius-2xl, 24px);
+  border: 1px solid var(--color-border-light, rgba(226, 232, 240, 0.06));
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(0, 0, 0, 0.3));
+  overflow: hidden;
+}
+
+/* ─── Admin Table ────────────────────────── */
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-table thead th {
+  padding: var(--space-5, 20px);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-tertiary, #94a3b8);
+  text-align: left;
+  background: var(--color-background-tertiary, rgba(51, 65, 85, 0.5));
+  border-bottom: 1px solid var(--color-border-light, rgba(226, 232, 240, 0.06));
+}
+
+/* ─── Admin Buttons ──────────────────────── */
+.admin-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2, 8px);
+  padding: 10px 20px;
+  border-radius: var(--radius-xl, 20px);
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: all var(--transition-base, 200ms ease);
+  cursor: pointer;
+  border: none;
+}
+
+.admin-btn:hover {
+  transform: translateY(-1px);
+}
+
+.admin-btn:active {
+  transform: translateY(0);
+}
+
+.admin-btn-primary {
+  background: var(--color-accent, #e8856a);
+  color: white;
+  box-shadow: var(--shadow-accent, 0 4px 16px rgba(232, 133, 106, 0.25));
+}
+
+.admin-btn-primary:hover {
+  box-shadow: var(--shadow-accent-hover, 0 6px 24px rgba(232, 133, 106, 0.4));
+}
+
+.admin-btn-secondary {
+  background: var(--color-background-tertiary, rgba(51, 65, 85, 0.5));
+  color: var(--color-text-secondary, #cbd5e1);
+  border: 1px solid var(--color-border-medium, rgba(226, 232, 240, 0.1));
+}
+
+.admin-btn-secondary:hover {
+  background: var(--color-background-primary, #0f172a);
+  color: var(--color-text-primary, #f1f5f9);
+}
+
+/* ─── Status Badge Pills ─────────────────── */
+.admin-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1-5, 6px);
+  padding: 4px 12px;
+  border-radius: var(--radius-full, 9999px);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* ─── Scrollbar ──────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-medium, rgba(226, 232, 240, 0.1));
+  border-radius: var(--radius-full, 9999px);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-tertiary, #94a3b8);
+}
+
+/* ─── Dark Mode Overrides ────────────────── */
+[data-theme="dark"] .admin-glass-card {
+  background: linear-gradient(145deg, rgba(30, 41, 59, 0.35), rgba(232, 133, 106, 0.04), rgba(15, 23, 42, 0.4));
+  border: 1px solid rgba(226, 232, 240, 0.06);
+  box-shadow:
+    0 16px 48px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(226, 232, 240, 0.05);
+}
+
+[data-theme="dark"] .admin-glass-icon {
+  background: rgba(51, 65, 85, 0.5);
+}
+
+[data-theme="dark"] .admin-input {
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid rgba(226, 232, 240, 0.1);
+}
+
+/* ─── Utility Classes ────────────────────── */
+.truncate-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ─── Upload Page Tab Switcher ────────────── */
+#method-manual:checked ~ .tab-container .manual-label {
+  background: var(--color-accent);
+  color: #ffffff;
+}
+
+#method-youtube:checked ~ .tab-container .youtube-label {
+  background: var(--color-accent);
+  color: #ffffff;
+}
+
+#method-audiobook:checked ~ .tab-container .audiobook-label {
+  background: var(--color-accent);
+  color: #ffffff;
+}
+
+#method-manual:checked ~ .content-manual {
+  display: block;
+}
+
+#method-youtube:checked ~ .content-youtube {
+  display: block;
+}
+
+#method-audiobook:checked ~ .content-audiobook {
+  display: block;
+}
+
+.content-manual,
+.content-youtube,
+.content-audiobook {
+  display: none;
+}
+

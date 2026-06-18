@@ -3,6 +3,7 @@ package com.ateion.backend.controller;
 import com.ateion.backend.dto.VideoDTO;
 import com.ateion.backend.service.VideoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,16 @@ import java.util.List;
 public class VideoController {
 
     private final VideoService videoService;
+
+    // ─── PUBLIC ENDPOINT ────────────────────────────────────────────────────────
+    // No JWT required. Spring Security is configured to permitAll for
+    // GET /api/videos/public/** in SecurityConfig.
+    @GetMapping("/public/module/{moduleId}")
+    public ResponseEntity<List<VideoDTO>> getPublicVideosByModule(
+            @PathVariable Long moduleId) {
+        return ResponseEntity.ok(videoService.getVideosByModule(moduleId));
+    }
+    // ────────────────────────────────────────────────────────────────────────────
 
     @GetMapping
     public ResponseEntity<List<VideoDTO>> getAllVideos() {

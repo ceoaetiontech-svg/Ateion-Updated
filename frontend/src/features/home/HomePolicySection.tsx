@@ -56,7 +56,7 @@ function MiniPolicyCard({ policy, index }: { policy: PolicyEntry; index: number 
       className="clay-card"
       style={{
         background: "var(--color-background-secondary)",
-        borderRadius: 16,
+        borderRadius: 20,
         overflow: "hidden",
         cursor: "pointer",
         position: "relative",
@@ -94,30 +94,30 @@ function MiniPolicyCard({ policy, index }: { policy: PolicyEntry; index: number 
 
       {/* Bottom strip */}
       <div style={{
-        display: "flex", flexDirection: "column", alignItems: "center", gap: 2,
-        padding: "10px 13px",
+        display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
+        padding: "16px 20px",
         background: "var(--color-background-secondary)",
         borderTop: `3px solid ${policy.accentColor}`,
         flexShrink: 0,
       }}>
         <span style={{
           fontFamily: "var(--font-body)",
-          fontSize: "0.65rem", fontWeight: 800, letterSpacing: "0.06em",
+          fontSize: "0.72rem", fontWeight: 800, letterSpacing: "0.06em",
           color: "#fff", background: policy.accentColor,
-          borderRadius: 6, padding: "4px 10px", lineHeight: 1,
+          borderRadius: 8, padding: "5px 12px", lineHeight: 1,
         }}>
           {policy.code}
         </span>
         <span style={{
           fontFamily: "var(--font-display)",
-          fontSize: "0.82rem", fontWeight: 700, color: "var(--color-text-primary)",
-          lineHeight: 1.2, marginTop: 2,
+          fontSize: "0.98rem", fontWeight: 700, color: "var(--color-text-primary)",
+          lineHeight: 1.2, marginTop: 4,
         }}>
           {policy.country}
         </span>
         <span style={{
           fontFamily: "var(--font-body)",
-          fontSize: "0.55rem", fontWeight: 800, letterSpacing: "0.1em",
+          fontSize: "0.62rem", fontWeight: 800, letterSpacing: "0.1em",
           textTransform: "uppercase", color: "var(--color-text-secondary)",
           whiteSpace: "nowrap",
         }}>
@@ -134,42 +134,42 @@ function MiniPolicyCard({ policy, index }: { policy: PolicyEntry; index: number 
             exit={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
             style={{
-              position: "absolute", inset: 0, borderRadius: 16,
+              position: "absolute", inset: 0, borderRadius: 20,
               background: "var(--color-background-secondary)", borderTop: `3px solid ${policy.accentColor}`,
-              padding: "16px 14px 14px",
+              padding: "22px 20px 20px",
               display: "flex", flexDirection: "column", overflow: "hidden",
             }}
           >
             <p style={{
               fontFamily: "var(--font-body)",
-              fontSize: "0.54rem", fontWeight: 800, letterSpacing: "0.16em",
-              textTransform: "uppercase", color: "var(--color-text-tertiary)", margin: "0 0 6px",
+              fontSize: "0.6rem", fontWeight: 800, letterSpacing: "0.16em",
+              textTransform: "uppercase", color: "var(--color-text-tertiary)", margin: "0 0 8px",
             }}>
               HOW ATEION ALIGNS
             </p>
             <p style={{
               fontFamily: "var(--font-body)",
-              fontSize: "0.7rem", color: "var(--color-text-secondary)", lineHeight: 1.6,
-              flex: 1, margin: "0 0 10px",
+              fontSize: "0.78rem", color: "var(--color-text-secondary)", lineHeight: 1.6,
+              flex: 1, margin: "0 0 12px",
             }}>
               {policy.frameworks[0].hoverMessage}
             </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 5, marginBottom: 10 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 12 }}>
               {policy.frameworks.map((fw, i) => (
                 <div key={i} style={{
                   display: "flex", alignItems: "center", justifyContent: "space-between",
-                  gap: 6, padding: "6px 9px", background: "var(--color-background-tertiary)", borderRadius: 8,
+                  gap: 8, padding: "8px 12px", background: "var(--color-background-tertiary)", borderRadius: 10,
                 }}>
-                  <span style={{ fontFamily: "var(--font-body)", fontSize: "0.62rem", fontWeight: 600, color: "var(--color-text-secondary)", flex: 1, lineHeight: 1.3 }}>
+                  <span style={{ fontFamily: "var(--font-body)", fontSize: "0.7rem", fontWeight: 600, color: "var(--color-text-secondary)", flex: 1, lineHeight: 1.3 }}>
                     {fw.name}
                   </span>
                   <button
                     className="clay-button"
                     style={{
-                      fontFamily: "var(--font-body)", fontSize: "0.58rem", fontWeight: 700,
+                      fontFamily: "var(--font-body)", fontSize: "0.64rem", fontWeight: 700,
                       color: "#fff", background: policy.accentColor,
                       border: "1px solid rgba(255,255,255,0.15)",
-                      borderRadius: 100, padding: "4px 9px", cursor: "pointer",
+                      borderRadius: 100, padding: "5px 11px", cursor: "pointer",
                       whiteSpace: "nowrap", flexShrink: 0,
                     }}
                     onClick={(e) => handleOpenFramework(e, fw.policyLink)}
@@ -179,11 +179,11 @@ function MiniPolicyCard({ policy, index }: { policy: PolicyEntry; index: number 
                 </div>
               ))}
             </div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 3 }}>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
               {policy.frameworks[0].tags.map((tag) => (
                 <span key={tag} style={{
-                  fontFamily: "var(--font-body)", fontSize: "0.56rem", fontWeight: 700,
-                  padding: "2px 7px", borderRadius: 100,
+                  fontFamily: "var(--font-body)", fontSize: "0.62rem", fontWeight: 700,
+                  padding: "3px 9px", borderRadius: 100,
                   border: `1px solid ${policy.accentColor}38`,
                   background: `${policy.accentColor}0d`, color: "var(--color-text-secondary)",
                 }}>
@@ -207,16 +207,7 @@ export default function HomePolicySection() {
       padding: "0 5% 0",
       position: "relative",
     }}>
-      {/* Subtle radial glow */}
-      <div style={{
-        position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none",
-      }}>
-        <div style={{
-          position: "absolute", top: -80, right: -80,
-          width: 300, height: 300, borderRadius: "50%",
-          background: "radial-gradient(circle, var(--color-accent-light) 0%, transparent 70%)",
-        }} />
-      </div>
+
 
       {/* ── Header ── */}
       <div style={{ textAlign: "center", marginBottom: 52 }}>
@@ -283,8 +274,8 @@ export default function HomePolicySection() {
       <div className="home-policy-grid" style={{
         display: "grid",
         gridTemplateColumns: "repeat(4, 1fr)",
-        gap: 20,
-        maxWidth: 960,
+        gap: 28,
+        maxWidth: 1200,
         margin: "0 auto 0",
       }}>
         {featuredPolicies.map((policy, index) => (
@@ -295,6 +286,30 @@ export default function HomePolicySection() {
         @media (max-width: 1000px) {
           .home-policy-grid {
             grid-template-columns: repeat(2, 1fr) !important;
+            gap: 20px !important;
+          }
+        }
+        @media (max-width: 600px) {
+          .home-policy-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 12px !important;
+          }
+          /* Scale down card padding and font sizes to fit side-by-side on mobile */
+          .home-policy-grid .clay-card > div:nth-child(2) {
+            padding: 10px 8px !important;
+            gap: 2px !important;
+          }
+          .home-policy-grid .clay-card > div:nth-child(2) > span:nth-child(1) {
+            font-size: 0.55rem !important;
+            padding: 3px 8px !important;
+            border-radius: 4px !important;
+          }
+          .home-policy-grid .clay-card > div:nth-child(2) > span:nth-child(2) {
+            font-size: 0.75rem !important;
+            margin-top: 2px !important;
+          }
+          .home-policy-grid .clay-card > div:nth-child(2) > span:nth-child(3) {
+            font-size: 0.5rem !important;
           }
         }
       `}</style>

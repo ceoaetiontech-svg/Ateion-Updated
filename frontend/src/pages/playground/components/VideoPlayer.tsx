@@ -56,7 +56,7 @@ const VideoPlayer = memo(function VideoPlayer({
     return (
         <div
             className="relative w-full bg-black rounded-2xl overflow-hidden"
-            style={{ aspectRatio: "16 / 9", maxHeight: "55vh" }}
+            style={{ aspectRatio: "16 / 9" }}
         >
             {/* Keep Plyr mounted. Unmounting its DOM while YouTube/Plyr is cleaning up
           can cause React's removeChild NotFoundError. */}
