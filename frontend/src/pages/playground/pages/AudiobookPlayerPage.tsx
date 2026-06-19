@@ -30,7 +30,7 @@ export default function AudiobookPlayerPage() {
 
   // Audio References & State
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
   const { showToast } = useToast();
 
   const [currentChapterIdx, setCurrentChapterIdx] = useState(0);
@@ -153,7 +153,7 @@ export default function AudiobookPlayerPage() {
         activeEl && 
         (activeEl.tagName === "INPUT" || 
          activeEl.tagName === "TEXTAREA" || 
-         (activeEl as HTMLElement).isContentEditable)
+         activeEl.isContentEditable)
       ) {
         return;
       }

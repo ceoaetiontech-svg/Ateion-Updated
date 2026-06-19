@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Bell, BookOpen, Award, Clock, Check, Sparkles } from "lucide-react";
 
 interface Notification {
@@ -27,6 +27,18 @@ export default function NotificationDropdown() {
   const [open, setOpen] = useState(false);
   const [notifications, setNotifications] = useState(MOCK_NOTIFICATIONS);
   const unreadCount = notifications.filter(n => !n.read).length;
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [open]);
 
   const markAllRead = () => {
     setNotifications(prev => prev.map(n => ({ ...n, read: true })));
@@ -37,7 +49,7 @@ export default function NotificationDropdown() {
   };
 
   return (
-    <div className="relative">
+    <div className="relative" ref={ref}>
       <button
         onClick={() => setOpen(!open)}
         className="relative p-2 rounded-lg hover:bg-[var(--color-background-secondary)] transition-colors group/bell"
@@ -60,47 +72,44 @@ export default function NotificationDropdown() {
       </button>
 
       {open && (
-        <>
-          <div className="fixed inset-0 z-[9998]" onClick={() => setOpen(false)} />
-          <div className="absolute right-0 top-full mt-2 z-[9999] w-80 bg-[var(--color-background-primary)] border border-[var(--color-border-light)] rounded-xl shadow-2xl overflow-hidden">
-            <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--color-border-light)]">
-              <h3 className="text-sm font-bold text-[var(--color-text-primary)]">Notifications</h3>
-              {unreadCount > 0 && (
-                <button onClick={markAllRead} className="text-xs text-[var(--color-accent)] hover:underline font-medium">
-                  Mark all read
-                </button>
-              )}
-            </div>
-            <div className="max-h-80 overflow-y-auto">
-              {notifications.length === 0 ? (
-                <div className="flex flex-col items-center gap-2 py-10 text-[var(--color-text-tertiary)]">
-                  <Sparkles size={24} />
-                  <p className="text-sm">All caught up!</p>
-                </div>
-              ) : (
-                notifications.map(n => {
-                  const Icon = ICON_MAP[n.type];
-                  return (
-                    <button
-                      key={n.id}
-                      onClick={() => markRead(n.id)}
-                      className={`w-full flex items-start gap-3 px-4 py-3 text-left hover:bg-[var(--color-background-secondary)] transition-colors ${!n.read ? "bg-[var(--color-accent)]/5" : ""}`}
-                    >
-                      <div className={`p-1.5 rounded-lg shrink-0 ${n.type === "course" ? "bg-blue-500/10 text-blue-500" : n.type === "badge" ? "bg-amber-500/10 text-amber-500" : "bg-purple-500/10 text-purple-500"}`}>
-                        <Icon size={14} />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className={`text-sm ${!n.read ? "font-semibold" : "font-medium"} text-[var(--color-text-primary)]`}>{n.text}</p>
-                        <p className="text-xs text-[var(--color-text-tertiary)] mt-0.5">{n.time}</p>
-                      </div>
-                      {!n.read && <Check size={14} className="shrink-0 text-[var(--color-text-tertiary)] mt-1" />}
-                    </button>
-                  );
-                })
-              )}
-            </div>
+        <div className="fixed sm:absolute left-1/2 sm:left-auto -translate-x-1/2 sm:-translate-x-0 right-auto sm:right-0 top-20 sm:top-full mt-0 sm:mt-2 z-[9999] w-[calc(100vw-2rem)] sm:w-80 bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] rounded-xl shadow-[var(--shadow-2xl)] overflow-hidden">
+          <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--color-border-light)]">
+            <h3 className="text-sm font-bold text-[var(--color-text-primary)]">Notifications</h3>
+            {unreadCount > 0 && (
+              <button onClick={markAllRead} className="text-xs text-[var(--color-accent)] hover:underline font-medium">
+                Mark all read
+              </button>
+            )}
           </div>
-        </>
+          <div className="max-h-80 overflow-y-auto">
+            {notifications.length === 0 ? (
+              <div className="flex flex-col items-center gap-2 py-10 text-[var(--color-text-tertiary)]">
+                <Sparkles size={24} />
+                <p className="text-sm">All caught up!</p>
+              </div>
+            ) : (
+              notifications.map(n => {
+                const Icon = ICON_MAP[n.type];
+                return (
+                  <button
+                    key={n.id}
+                    onClick={() => markRead(n.id)}
+                    className={`w-full flex items-start gap-3 px-4 py-3 text-left hover:bg-[var(--color-background-secondary)] transition-colors ${!n.read ? "bg-[var(--color-accent_light)]" : ""}`}
+                  >
+                    <div className={`p-1.5 rounded-lg shrink-0 ${n.type === "course" ? "bg-blue-500/10 text-blue-500" : n.type === "badge" ? "bg-amber-500/10 text-amber-500" : "bg-purple-500/10 text-purple-500"}`}>
+                      <Icon size={14} />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className={`text-sm ${!n.read ? "font-semibold" : "font-medium"} text-[var(--color-text-primary)]`}>{n.text}</p>
+                      <p className="text-xs text-[var(--color-text-tertiary)] mt-0.5">{n.time}</p>
+                    </div>
+                    {!n.read && <Check size={14} className="shrink-0 text-[var(--color-text-tertiary)] mt-1" />}
+                  </button>
+                );
+              })
+            )}
+          </div>
+        </div>
       )}
     </div>
   );

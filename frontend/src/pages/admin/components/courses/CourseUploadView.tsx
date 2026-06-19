@@ -8,7 +8,7 @@ import Step2Media from "./steps/Step2Media";
 import Step3Curriculum, { IBuilderModule } from "./steps/Step3Curriculum";
 import { useCourses } from "../../context/CourseContext";
 import { useToast } from "../../utils/toast";
-
+import type { ICourseModule } from "../../types/types";
 
 const sections = [
   { num: 1, label: "Basic Information" },
@@ -108,11 +108,13 @@ export default function CourseUploadView({
       instructor: "Admin",
       price: parseFloat(price) || 0,
       status: "Draft",
-      modules: modules.filter((m) => m.title.trim().length > 0).map((m) => ({
-        id: m.id,
-        title: m.title,
-        lessons: m.lessons.map((l) => l.text),
-      })),
+      modules: modules
+        .filter((m) => m.title.trim().length > 0)
+        .map((m) => ({
+          id: m.id,
+          title: m.title.trim(),
+          lessons: m.lessons.map((l) => l.text.trim()).filter((t) => t.length > 0),
+        })),
       thumbnailUrl: thumbnailPreview || undefined,
     });
     showToast("Course saved as draft!", "success");
@@ -138,11 +140,13 @@ export default function CourseUploadView({
       instructor: "Admin",
       price: parseFloat(price) || 0,
       status: "Published",
-      modules: modules.filter((m) => m.title.trim().length > 0).map((m) => ({
-        id: m.id,
-        title: m.title,
-        lessons: m.lessons.map((l) => l.text),
-      })),
+      modules: modules
+        .filter((m) => m.title.trim().length > 0)
+        .map((m) => ({
+          id: m.id,
+          title: m.title.trim(),
+          lessons: m.lessons.map((l) => l.text.trim()).filter((t) => t.length > 0),
+        })),
       thumbnailUrl: thumbnailPreview || undefined,
     });
     showToast("Course Successfully Published!", "success");
