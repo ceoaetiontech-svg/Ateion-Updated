@@ -41,53 +41,56 @@ function GcoFeatureBadge({
 }) {
   const navigate = useNavigate();
 
-  const accentColor = activeData.id === "gco" || activeData.id === "playground"
-    ? "var(--color-accent)"
-    : "var(--color-primary_light)";
+  const accentColor = "var(--color-accent)";
 
   return (
-    <div className={`flex flex-col ${activeData.id === "gco" ? "" : "gap-[32px]"} items-start w-full md:w-[392px] md:shrink-0`}>
-      <div className="flex flex-col items-start w-full min-h-[180px] md:min-h-[220px]">
+    <div className="ecosystem-badge-card">
+      <div className="flex flex-col items-start w-full min-h-[160px] md:min-h-[180px]">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeData.id}
-            initial={{ opacity: 0, y: 10 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.35, ease: "easeOut" }}
             className="w-full flex flex-col items-start"
           >
-            <div className="flex flex-col gap-[20px] md:gap-[24px] items-start w-full">
+            <div className="flex flex-col gap-[16px] items-start w-full">
+              <span className="text-[12px] font-bold uppercase tracking-[0.2em] text-[var(--color-accent)]">
+                Featured Module
+              </span>
               <div className="flex items-center gap-3 w-full">
-                <div className="w-[4px] h-[32px] rounded-full shrink-0" style={{ background: accentColor }} />
+                <div className="w-[3px] h-[28px] rounded-full shrink-0" style={{ background: accentColor }} />
                 <p
-                  className="font-bold leading-[1.1] tracking-[-0.05em] not-italic text-[36px] sm:text-[42px] md:text-[48px] text-[var(--color-text-primary)] w-full max-w-[500px]"
+                  className="font-bold leading-[1.15] tracking-[-0.03em] not-italic text-[26px] sm:text-[30px] text-[var(--color-text-primary)] w-full"
                   style={{ fontFamily: "var(--font-display)" }}
                 >
                   {activeData.title}
                 </p>
               </div>
-              <div className="flex justify-start w-full">
-                {activeData.id !== "gco" && (
-                  <p className="font-['Manrope',sans-serif] text-[16px] md:text-[18px] text-[var(--color-text-muted)] leading-relaxed md:pr-8">
-                    {activeData.description}
-                  </p>
-                )}
-              </div>
+              <p className="font-['Manrope',sans-serif] text-[15px] sm:text-[16px] text-[var(--color-text-muted)] leading-relaxed pr-2">
+                {activeData.description}
+              </p>
+              {activeData.id === "gco" && (
+                <div className="flex flex-wrap gap-2 mt-2">
+                  <span className="text-[11px] font-bold px-3 py-1 rounded-full bg-[rgba(232,133,106,0.08)] text-[var(--color-accent)] border border-[rgba(232,133,106,0.15)]">National Olympiad</span>
+                  <span className="text-[11px] font-bold px-3 py-1 rounded-full bg-[rgba(26,24,51,0.05)] text-[var(--color-text-secondary)] border border-[var(--color-border-light)]">AI Integrated</span>
+                </div>
+              )}
             </div>
           </motion.div>
         </AnimatePresence>
       </div>
 
       <motion.div
-        className="clay-button flex items-center justify-between bg-[var(--color-accent)] h-[54px] pl-7 pr-6 rounded-full w-[174px] cursor-pointer group"
+        className="clay-button flex items-center justify-between bg-[var(--color-accent)] h-[48px] pl-6 pr-5 rounded-full w-[160px] cursor-pointer group"
         role="button"
         tabIndex={0}
         aria-label="View more details"
         whileHover={{ scale: 1.04 }}
         whileTap={{ scale: 0.97 }}
         transition={{ type: "spring", stiffness: 400, damping: 15 }}
-        style={{ boxShadow: "0 4px 14px rgba(232,133,106,0.3)" }}
+        style={{ boxShadow: "0 4px 14px rgba(232,133,106,0.25)" }}
         onClick={() => {
           if (activeData.id === "gco") navigate("/gco");
           if (activeData.id === "playground") navigate("/playground");
@@ -105,7 +108,7 @@ function GcoFeatureBadge({
         }}
       >
         <motion.p
-          className="font-['Outfit',sans-serif] leading-none text-[17px] text-white tracking-[0.16px] whitespace-nowrap pt-0.5"
+          className="font-['Outfit',sans-serif] leading-none text-[15px] text-white tracking-[0.16px] whitespace-nowrap pt-0.5"
           style={{ color: "#ffffff" }}
           whileHover={{ x: 4 }}
           transition={{ type: "spring", stiffness: 300, damping: 12 }}
@@ -119,14 +122,14 @@ function GcoFeatureBadge({
           whileHover={{ x: 4, y: -4 }}
           transition={{ type: "spring", stiffness: 300, damping: 12 }}
         >
-          <div className="flex items-center justify-center h-[26px] w-[26px]">
+          <div className="flex items-center justify-center h-[22px] w-[22px]">
             <svg
-              width="24"
-              height="24"
+              width="20"
+              height="20"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2"
+              strokeWidth="2.5"
               strokeLinecap="round"
               strokeLinejoin="round"
             >
@@ -139,164 +142,42 @@ function GcoFeatureBadge({
   );
 }
 
-function EcosystemBubble({
-  ml,
-  mt,
-  size,
-  defaultColor = "transparent",
-  hoverColor,
-  title,
-  description,
-  isDark = false,
-  titleSize = "18px",
-  titleClass = "font-['Outfit',sans-serif]",
-  gradientId,
-  descSize = "12px",
-  staticTextColor,
-  hoverTextColor,
-  hoverDescColor,
-  onClick,
-}: {
-  ml: string;
-  mt: string;
-  size: string;
-  defaultColor?: string;
-  hoverColor: string;
+interface PhysicsBubble {
+  id: string;
   title: string;
   description: string;
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  size: number;
+  r: number;
+  mass: number;
+  hoverColor: string;
+  defaultColor?: string;
   isDark?: boolean;
-  titleSize?: string;
-  titleClass?: string;
   gradientId?: string;
-  descSize?: string;
+  titleSize: string;
+  descSize: string;
+  titleClass?: string;
   staticTextColor?: string;
   hoverTextColor?: string;
   hoverDescColor?: string;
-  onClick?: () => void;
-}) {
-  const [isHovered, setIsHovered] = useState(false);
-
-  return (
-    <div
-      className="absolute flex items-center justify-center cursor-pointer pointer-events-auto"
-      style={{ left: ml, top: mt, width: size, height: size }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onClick={onClick}
-    >
-      <motion.div
-        className="absolute inset-0"
-        animate={{
-          y: isHovered ? -4 : 0,
-          rotate: isHovered ? 1 : 0,
-        }}
-        transition={{
-          type: "spring",
-          stiffness: 400,
-          damping: 25,
-        }}
-        style={{
-          filter: isHovered ? "drop-shadow(0 6px 14px rgba(248,248,244,0.14))" : "none",
-        }}
-      >
-        <svg
-          className="absolute block size-full overflow-visible"
-          fill="none"
-          preserveAspectRatio="none"
-          viewBox="0 0 100 100"
-        >
-          <AnimatePresence>
-            {isHovered && (
-              <motion.circle
-                cx="50"
-                cy="50"
-                r="54"
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 0.08, scale: 1.04 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                fill={hoverColor}
-                style={{ filter: "blur(8px)" }}
-                transition={{ duration: 0.5 }}
-              />
-            )}
-          </AnimatePresence>
-
-          <motion.circle
-            cx="50"
-            cy="50"
-            r="49.5"
-            animate={{
-              fill: isHovered
-                ? hoverColor
-                : gradientId
-                  ? `url(#${gradientId})`
-                  : defaultColor,
-              stroke: isHovered
-                ? hoverColor
-                : defaultColor !== "transparent"
-                  ? defaultColor
-                  : "var(--color-border-medium)",
-              strokeWidth: isHovered ? 1.2 : 0.8,
-              scale: isHovered ? 1.04 : 1,
-            }}
-            transition={{ type: "spring", stiffness: 400, damping: 25 }}
-          />
-        </svg>
-      </motion.div>
-
-      <div className="relative z-10 flex flex-col items-center justify-center p-5 text-center pointer-events-none gap-3">
-        <motion.p
-          className={`transition-all duration-500 not-italic ${titleClass} leading-tight font-bold`}
-          style={{
-            fontFamily: "var(--font-display)",
-            fontSize: titleSize,
-            color:
-              isHovered && hoverTextColor
-                ? hoverTextColor
-                : isHovered && isDark
-                  ? "white"
-                  : staticTextColor || "var(--color-text-primary)",
-            textShadow:
-              isHovered && isDark
-                ? "0 1px 8px rgba(0,0,0,0.18)"
-                : "none",
-          }}
-          animate={{
-            y: isHovered ? -3 : 0,
-            scale: isHovered ? 1.04 : 1,
-          }}
-        >
-          {title}
-        </motion.p>
-
-        <motion.p
-          className="font-['Manrope',sans-serif] leading-snug not-italic"
-          style={{
-            fontSize: descSize,
-            maxWidth: "84%",
-            color:
-              isHovered && hoverDescColor
-                ? hoverDescColor
-                : isHovered && isDark
-                ? "rgba(255,255,255,0.9)"
-                : staticTextColor || "var(--color-text-muted)",
-          }}
-          animate={{
-            opacity: isHovered ? 1 : 0.6,
-            y: isHovered ? -1 : 0,
-          }}
-        >
-          {description}
-        </motion.p>
-      </div>
-    </div>
-  );
+  url: string;
+  isDragging: boolean;
+  dragStartX: number;
+  dragStartY: number;
+  ref: HTMLDivElement | null;
 }
 
-// The bubble cluster keeps its exact original pixel coordinates.
-// It lives inside a fixed-size container so the layout never collapses.
-// Canvas dimensions: rightmost edge = 601.32 + 333.67 = 934.99 ≈ 935px wide
-//                    bottom edge    = 414.51 + 248.27 = 662.78 ≈ 663px tall
+const CONNECTIONS = [
+  ["gco", "ateion"],
+  ["ateion", "playground"],
+  ["playground", "psychometric"],
+  ["psychometric", "gco"],
+  ["ateion", "psychometric"],
+];
+
 const CANVAS_WIDTH = 935;
 const CANVAS_HEIGHT = 663;
 
@@ -306,160 +187,385 @@ function EcosystemCluster({
   onBubbleClick: (id: string) => void;
 }) {
   const navigate = useNavigate();
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [draggedId, setDraggedId] = useState<string | null>(null);
+
+  const bubblesRef = useRef<PhysicsBubble[]>([
+    {
+      id: "gco",
+      title: "GCO",
+      description: "From early AI PlayGround to the Global Capability Olympiad, with psychometric readiness tools.",
+      x: 230,
+      y: 210,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      size: 320,
+      r: 160,
+      mass: 224,
+      hoverColor: "var(--color-accent)",
+      isDark: true,
+      gradientId: "themeGrad",
+      titleSize: "36px",
+      descSize: "16px",
+      url: "/gco",
+      isDragging: false,
+      dragStartX: 0,
+      dragStartY: 0,
+      ref: null,
+    },
+    {
+      id: "ateion",
+      title: "Ateion",
+      description: "Ateion is building the infrastructure for a capability-based future by integrating early AI PlayGround with standard-setting competitions.",
+      x: 450,
+      y: 300,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      size: 330,
+      r: 165,
+      mass: 231,
+      hoverColor: "var(--color-accent)",
+      isDark: true,
+      gradientId: "themeGrad",
+      titleSize: "36px",
+      descSize: "16px",
+      titleClass: "font-['Outfit:Semi_Bold',sans-serif]",
+      url: "/contact",
+      isDragging: false,
+      dragStartX: 0,
+      dragStartY: 0,
+      ref: null,
+    },
+    {
+      id: "psychometric",
+      title: "Psychometric Tests",
+      description: "Discover strengths, mindset, and learning style.",
+      x: 560,
+      y: 480,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      size: 300,
+      r: 150,
+      mass: 210,
+      hoverColor: "var(--color-accent)",
+      isDark: true,
+      gradientId: "themeGrad",
+      titleSize: "28px",
+      descSize: "15px",
+      url: "https://www.ateion.com/psychometric-assessment",
+      isDragging: false,
+      dragStartX: 0,
+      dragStartY: 0,
+      ref: null,
+    },
+    {
+      id: "playground",
+      title: "PlayGround",
+      description: "Engaging, hands-on learning experiences designed to bridge theory with practical AI execution.",
+      x: 740,
+      y: 240,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      size: 340,
+      r: 170,
+      mass: 238,
+      hoverColor: "var(--color-accent)",
+      isDark: true,
+      gradientId: "themeGrad",
+      titleSize: "32px",
+      descSize: "16px",
+      url: "/playground",
+      isDragging: false,
+      dragStartX: 0,
+      dragStartY: 0,
+      ref: null,
+    }
+  ]);
+
+  const connectionPathsRef = useRef<{ [key: string]: SVGPathElement | null }>({});
+  const activeDragRef = useRef<PhysicsBubble | null>(null);
+  const dragStartPosRef = useRef({ x: 0, y: 0, time: 0, hasMoved: false });
+
+  const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>, b: PhysicsBubble) => {
+    e.preventDefault();
+    e.currentTarget.setPointerCapture(e.pointerId);
+    activeDragRef.current = b;
+    b.isDragging = true;
+    setDraggedId(b.id);
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const clientX = e.clientX - rect.left;
+    const clientY = e.clientY - rect.top;
+    b.dragStartX = clientX - b.x;
+    b.dragStartY = clientY - b.y;
+    dragStartPosRef.current = {
+      x: e.clientX,
+      y: e.clientY,
+      time: Date.now(),
+      hasMoved: false
+    };
+  };
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    const b = activeDragRef.current;
+    if (!b || !b.isDragging) return;
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const clientX = e.clientX - rect.left;
+    const clientY = e.clientY - rect.top;
+    const targetX = clientX - b.dragStartX;
+    const targetY = clientY - b.dragStartY;
+    
+    b.vx = (targetX - b.x) * 0.8;
+    b.vy = (targetY - b.y) * 0.8;
+    b.x = targetX;
+    b.y = targetY;
+    
+    const dx = Math.abs(e.clientX - dragStartPosRef.current.x);
+    const dy = Math.abs(e.clientY - dragStartPosRef.current.y);
+    if (dx > 5 || dy > 5) {
+      dragStartPosRef.current.hasMoved = true;
+    }
+  };
+
+  const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    const b = activeDragRef.current;
+    if (!b) return;
+    e.currentTarget.releasePointerCapture(e.pointerId);
+    b.isDragging = false;
+    setDraggedId(null);
+    activeDragRef.current = null;
+    const dt = Date.now() - dragStartPosRef.current.time;
+    if (!dragStartPosRef.current.hasMoved && dt < 250) {
+      onBubbleClick(b.id);
+      if (b.id === "gco") navigate("/gco");
+      else if (b.id === "playground") navigate("/playground");
+      else if (b.id === "psychometric") window.location.assign("https://www.ateion.com/psychometric-assessment");
+      else navigate("/contact");
+    }
+  };
+
+  useEffect(() => {
+    let animationFrameId: number;
+    const updatePhysics = () => {
+      const bubbles = bubblesRef.current;
+      const numBubbles = bubbles.length;
+      
+      for (let i = 0; i < numBubbles; i++) {
+        const b = bubbles[i];
+        if (!b.isDragging) {
+          b.vx += (Math.random() - 0.5) * 0.05;
+          b.vy += (Math.random() - 0.5) * 0.05;
+          b.vx *= 0.992;
+          b.vy *= 0.992;
+          b.x += b.vx;
+          b.y += b.vy;
+        }
+      }
+      
+      for (let i = 0; i < numBubbles; i++) {
+        for (let j = i + 1; j < numBubbles; j++) {
+          const b1 = bubbles[i];
+          const b2 = bubbles[j];
+          const dx = b2.x - b1.x;
+          const dy = b2.y - b1.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          const minDist = b1.r + b2.r;
+          
+          if (dist < minDist && dist > 0.001) {
+            const overlap = minDist - dist;
+            const nx = dx / dist;
+            const ny = dy / dist;
+            
+            if (b1.isDragging && !b2.isDragging) {
+              b2.x += nx * overlap;
+              b2.y += ny * overlap;
+            } else if (b2.isDragging && !b1.isDragging) {
+              b1.x -= nx * overlap;
+              b1.y -= ny * overlap;
+            } else if (!b1.isDragging && !b2.isDragging) {
+              b1.x -= nx * overlap * 0.5;
+              b1.y -= ny * overlap * 0.5;
+              b2.x += nx * overlap * 0.5;
+              b2.y += ny * overlap * 0.5;
+            }
+            
+            const rvx = b2.vx - b1.vx;
+            const rvy = b2.vy - b1.vy;
+            const velAlongNormal = rvx * nx + rvy * ny;
+            
+            if (velAlongNormal < 0) {
+              const restitution = 0.85;
+              let impulse = -(1 + restitution) * velAlongNormal;
+              impulse /= (1 / b1.mass + 1 / b2.mass);
+              if (!b1.isDragging) {
+                b1.vx -= (impulse / b1.mass) * nx;
+                b1.vy -= (impulse / b1.mass) * ny;
+              }
+              if (!b2.isDragging) {
+                b2.vx += (impulse / b2.mass) * nx;
+                b2.vy += (impulse / b2.mass) * ny;
+              }
+            }
+          }
+        }
+      }
+      
+      for (let i = 0; i < numBubbles; i++) {
+        const b = bubbles[i];
+        if (!b.isDragging) {
+          const bounce = -0.7;
+          if (b.x - b.r < 0) {
+            b.x = b.r;
+            b.vx *= bounce;
+          } else if (b.x + b.r > CANVAS_WIDTH) {
+            b.x = CANVAS_WIDTH - b.r;
+            b.vx *= bounce;
+          }
+          if (b.y - b.r < 0) {
+            b.y = b.r;
+            b.vy *= bounce;
+          } else if (b.y + b.r > CANVAS_HEIGHT) {
+            b.y = CANVAS_HEIGHT - b.r;
+            b.vy *= bounce;
+          }
+        }
+      }
+      
+      for (let i = 0; i < numBubbles; i++) {
+        const b = bubbles[i];
+        if (b.ref) {
+          b.ref.style.transform = `translate3d(${b.x - b.r}px, ${b.y - b.r}px, 0)`;
+        }
+      }
+      
+      const connectionPaths = connectionPathsRef.current;
+      CONNECTIONS.forEach(([id1, id2]) => {
+        const b1 = bubbles.find(b => b.id === id1);
+        const b2 = bubbles.find(b => b.id === id2);
+        if (b1 && b2) {
+          const key = `${id1}-${id2}`;
+          const pathEl = connectionPaths[key];
+          if (pathEl) {
+            pathEl.setAttribute("d", `M ${b1.x} ${b1.y} L ${b2.x} ${b2.y}`);
+          }
+        }
+      });
+      
+      animationFrameId = requestAnimationFrame(updatePhysics);
+    };
+    
+    animationFrameId = requestAnimationFrame(updatePhysics);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, []);
 
   return (
-    // Explicit width + height so the cluster never collapses and never
-    // causes the next section to overlap.
     <div
-      className="relative shrink-0"
+      ref={containerRef}
+      className="relative shrink-0 select-none overflow-visible"
       style={{ width: CANVAS_WIDTH, height: CANVAS_HEIGHT }}
     >
-      {/* SVG gradient defs */}
+      <style>{`
+        @keyframes pulseFlow {
+          to {
+            stroke-dashoffset: -20;
+          }
+        }
+        .pulse-flow-animation {
+          animation: pulseFlow 1s linear infinite;
+        }
+      `}</style>
+
       <svg width="0" height="0" className="absolute">
         <defs>
           <linearGradient id="themeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="var(--color-accent)" />
             <stop offset="100%" stopColor="var(--color-accent_light, var(--color-accent))" />
           </linearGradient>
-
-          <linearGradient
-            id="softGrad"
-            x1="0%"
-            y1="0%"
-            x2="100%"
-            y2="100%"
-          >
-            <stop offset="0%" stopColor="rgba(247, 243, 235, 0.4)" />
-            <stop offset="100%" stopColor="rgba(255, 255, 255, 0.8)" />
-          </linearGradient>
         </defs>
       </svg>
 
-      {/* Curved connector arrows — Kronos lines removed */}
-      <div
-        className="absolute pointer-events-none opacity-20"
-        style={{
-          left: "179.61px",
-          top: "108.13px",
-          width: "471.022px",
-          height: "294.499px",
-        }}
-      >
-        <svg
-          className="block size-full"
-          fill="none"
-          preserveAspectRatio="none"
-          viewBox="0 0 471.903 299.228"
-        >
-          <path
-            d={svgPaths.p3938fb80}
-            fill="var(--color-text-primary)"
-            id="Vector 466"
-          />
-        </svg>
-      </div>
-      <div
-        className="absolute pointer-events-none opacity-20"
-        style={{
-          left: "474.98px",
-          top: "280.69px",
-          width: "84.96px",
-          height: "178.284px",
-        }}
-      >
-        <svg
-          className="block size-full"
-          fill="none"
-          preserveAspectRatio="none"
-          viewBox="0 0 85.8082 178.495"
-        >
-          <path
-            d={svgPaths.pe1a2a00}
-            id="Vector 468"
-            stroke="var(--color-text-primary)"
-            strokeWidth="0.88"
-          />
-        </svg>
-      </div>
+      <svg className="absolute inset-0 size-full pointer-events-none z-0 overflow-visible">
+        {CONNECTIONS.map(([id1, id2]) => {
+          const key = `${id1}-${id2}`;
+          return (
+            <path
+              key={key}
+              ref={(el) => (connectionPathsRef.current[key] = el)}
+              stroke="var(--color-accent)"
+              strokeWidth="1.2"
+              strokeDasharray="6 6"
+              opacity="0.4"
+              fill="none"
+              className="pulse-flow-animation"
+            />
+          );
+        })}
+      </svg>
 
-      {/* Bubbles — exact original coordinates, now using left/top instead of marginLeft/marginTop */}
-      <EcosystemBubble
-        ml="274.69px"
-        mt="137.18px"
-        size="272.92px"
-        defaultColor="var(--color-accent)"
-        staticTextColor="white"
-        hoverColor="var(--color-accent)"
-        isDark={true}
-        gradientId="themeGrad"
-        title="Ateion"
-        description="Ateion is building the infrastructure for a capability-based future by integrating early AI PlayGround with standard-setting competitions."
-        titleSize="31px"
-        descSize="15px"
-        titleClass="font-['Outfit:Semi_Bold',sans-serif]"
-        onClick={() => {
-          onBubbleClick("ateion");
-          navigate("/contact");
-        }}
-      />
+      {bubblesRef.current.map((b) => {
+        const isHovered = hoveredId === b.id;
+        const isDragged = draggedId === b.id;
+        return (
+          <div
+            key={b.id}
+            ref={(el) => (b.ref = el)}
+            className="absolute flex items-center justify-center cursor-grab active:cursor-grabbing pointer-events-auto select-none"
+            style={{
+              width: b.size,
+              height: b.size,
+              left: 0,
+              top: 0,
+              transform: `translate3d(${b.x - b.r}px, ${b.y - b.r}px, 0)`
+            }}
+            onPointerDown={(e) => handlePointerDown(e, b)}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
+            onMouseEnter={() => setHoveredId(b.id)}
+            onMouseLeave={() => setHoveredId(null)}
+          >
+            <motion.div
+              className={`ecosystem-bubble-bg ${isHovered ? "is-hovered" : ""} ${isDragged ? "is-dragged" : ""}`}
+              animate={{
+                scale: isDragged ? 1.08 : isHovered ? 1.04 : 1,
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 400,
+                damping: 25,
+              }}
+            />
 
-      <EcosystemBubble
-        ml="0px"
-        mt="0px"
-        size="274.68px"
-        defaultColor="var(--color-accent)"
-        staticTextColor="white"
-        hoverColor="var(--color-accent)"
-        isDark={true}
-        gradientId="themeGrad"
-        title="GCO"
-        description="From early AI PlayGround to the Global Capability Olympiad, with psychometric readiness tools."
-        titleSize="38px"
-        descSize="14px"
-        onClick={() => {
-          onBubbleClick("gco");
-          navigate("/gco");
-        }}
-      />
+            <div className="relative z-10 flex flex-col items-center justify-center p-6 text-center pointer-events-none gap-2">
+              <motion.p
+                className={`transition-all duration-300 not-italic ${b.titleClass || "font-['Outfit',sans-serif]"} leading-tight font-bold`}
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: b.titleSize,
+                  color: "var(--color-text-primary)",
+                }}
+              >
+                {b.title}
+              </motion.p>
 
-
-      <EcosystemBubble
-        ml="468.38px"
-        mt="369.61px"
-        size="248.27px"
-        defaultColor="var(--color-accent)"
-        staticTextColor="white"
-        hoverColor="var(--color-accent)"
-        isDark={true}
-        gradientId="themeGrad"
-        title="Psychometric Tests"
-        description="Discover strengths, mindset, and learning style."
-        titleSize="24px"
-        descSize="14px"
-        onClick={() => {
-          onBubbleClick("psychometric");
-          window.location.assign("https://www.ateion.com/psychometric-assessment");
-        }}
-      />
-
-      <EcosystemBubble
-        ml="601.32px"
-        mt="57.94px"
-        size="333.67px"
-        defaultColor="var(--color-accent)"
-        staticTextColor="white"
-        hoverColor="var(--color-accent)"
-        isDark={true}
-        gradientId="themeGrad"
-        title="PlayGround"
-        description="Engaging, hands-on learning experiences designed to bridge theory with practical AI execution."
-        titleSize="25px"
-        descSize="14px"
-        onClick={() => {
-          onBubbleClick("playground");
-          navigate("/playground");
-        }}
-      />
+              <motion.p
+                className="font-['Manrope',sans-serif] leading-snug not-italic"
+                style={{
+                  fontSize: b.descSize,
+                  maxWidth: "92%",
+                  color: "var(--color-text-muted)",
+                }}
+                animate={{
+                  opacity: isHovered || isDragged ? 1 : 0.65,
+                }}
+              >
+                {b.description}
+              </motion.p>
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -526,19 +632,20 @@ function MobileEcosystemCluster({
           <div
             className="shrink-0 flex items-center justify-center rounded-full font-bold"
             style={{
-              width: 64,
-              height: 64,
+              width: 76,
+              height: 76,
               background: b.circleColor,
               color: b.textColor,
               fontFamily: "var(--font-display)",
-              fontSize: 16,
+              fontSize: 18,
             }}
           >
             {b.title === "PlayGround" ? "PG" : b.title === "Psychometric Tests" ? "PT" : b.title}
           </div>
-          <div className="flex flex-col gap-1 min-w-0">
+
+          <div className="flex flex-col gap-1.5 min-w-0">
             <p
-              className="font-bold text-[18px] leading-tight"
+              className="font-bold text-[21px] leading-tight"
               style={{
                 fontFamily: "var(--font-display)",
                 color: "var(--color-text-primary)",
@@ -547,7 +654,7 @@ function MobileEcosystemCluster({
               {b.title}
             </p>
             <p
-              className="text-[14px] leading-relaxed"
+              className="text-[15px] leading-relaxed"
               style={{ color: "var(--color-text-muted)" }}
             >
               {b.description}

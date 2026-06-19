@@ -37,6 +37,7 @@ import Toast from "../components/Toast";
 import { slideInItem } from "../shared/types";
 import SkeletonCourseCard from "../components/SkeletonCourseCard";
 import { ApiRequestError, fetchJsonWithRetry } from "../../../lib/apiClient";
+import playgroundBg from "../../../assets/hero/playground_bg.png";
 
 const CoursePlayerPage = lazy(() => import("../pages/CoursePlayerPage"));
 const FallbackPage = lazy(() => import("../pages/FallbackPage"));
@@ -235,6 +236,13 @@ function PlaygroundInner() {
               style={{
                 height: `calc(100dvh - ${navbarHeight}px)`,
                 marginTop: navbarHeight,
+                backgroundImage: theme === "dark"
+                  ? "radial-gradient(circle at 50% 30%, rgba(112, 94, 242, 0.08) 0%, transparent 60%)"
+                  : `linear-gradient(rgba(248, 248, 244, 0.88), rgba(248, 248, 244, 0.88)), url(${playgroundBg})`,
+                backgroundSize: "contain",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center",
+                backgroundAttachment: "fixed",
               }}
           >
             <Sidebar
@@ -391,8 +399,23 @@ function PlaygroundInner() {
                               letterSpacing: "-0.02em",
                             }}
                         >
-                      {activeView}
-                    </span>
+                          {activeView}
+                        </span>
+                      </div>
+
+                      {/* Left-aligned larger motivational quote pill */}
+                      <div className="hidden xl:flex items-center ml-4 shrink-0">
+                        <div 
+                          className="px-6 py-2.5 rounded-full border border-[var(--color-border-light)] bg-[var(--color-background-primary)]/50 backdrop-blur-sm shadow-sm flex items-center gap-2.5 transition-all duration-300 hover:border-[var(--color-accent)]/20"
+                        >
+                          <span className="w-2 h-2 rounded-full bg-[var(--color-accent)] animate-pulse shrink-0" />
+                          <p 
+                            className="text-xs sm:text-[13px] text-[var(--color-text-primary)] font-bold tracking-tight leading-none"
+                            style={{ fontFamily: "var(--font-display)", letterSpacing: "-0.015em" }}
+                          >
+                            Everything worth learning....Curated for the person you're becoming.
+                          </p>
+                        </div>
                       </div>
                     </div>
 

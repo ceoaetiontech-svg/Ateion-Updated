@@ -49,7 +49,7 @@ function MiniPolicyCard({ policy, index }: { policy: PolicyEntry; index: number 
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.45, delay: index * 0.055, ease: "easeOut" }}
-      whileHover={{ scale: 1.04, y: -6 }}
+      whileHover={{ y: -6 }}
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
       onClick={() => navigate(`/policy/${policy.id}`)}
@@ -62,7 +62,8 @@ function MiniPolicyCard({ policy, index }: { policy: PolicyEntry; index: number 
         position: "relative",
         display: "flex",
         flexDirection: "column",
-        border: "1.5px solid var(--color-border-light)",
+        border: "1px solid var(--color-border-light)",
+        boxShadow: "0 8px 24px rgba(26,24,51,0.03)",
       }}
     >
       {/* Logo image */}
@@ -78,7 +79,7 @@ function MiniPolicyCard({ policy, index }: { policy: PolicyEntry; index: number 
               objectPosition: "center",
               display: "block",
               transition: "transform 0.4s ease",
-              transform: hovered ? "scale(1.06)" : "scale(1)",
+              transform: hovered ? "scale(1.04)" : "scale(1)",
             }}
           />
         ) : (
@@ -97,7 +98,7 @@ function MiniPolicyCard({ policy, index }: { policy: PolicyEntry; index: number 
         display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
         padding: "16px 20px",
         background: "var(--color-background-secondary)",
-        borderTop: `3px solid ${policy.accentColor}`,
+        borderTop: `2px solid ${policy.accentColor}`,
         flexShrink: 0,
       }}>
         <span style={{
@@ -135,7 +136,7 @@ function MiniPolicyCard({ policy, index }: { policy: PolicyEntry; index: number 
             transition={{ duration: 0.2, ease: "easeOut" }}
             style={{
               position: "absolute", inset: 0, borderRadius: 20,
-              background: "var(--color-background-secondary)", borderTop: `3px solid ${policy.accentColor}`,
+              background: "var(--color-background-secondary)", borderTop: `2px solid ${policy.accentColor}`,
               padding: "22px 20px 20px",
               display: "flex", flexDirection: "column", overflow: "hidden",
             }}

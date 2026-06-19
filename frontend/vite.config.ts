@@ -36,6 +36,7 @@ export default defineConfig({
 
   // Fix for motion-dom and lucide-react build issues
   build: {
+    outDir: "dist-build",
     chunkSizeWarningLimit: 1600,
     rollupOptions: {
       output: {

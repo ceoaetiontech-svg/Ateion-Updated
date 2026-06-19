@@ -539,7 +539,30 @@ html[data-theme="dark"] body {
   position: relative;
   isolation: isolate;
   color: var(--color-text-primary);
-  background: #fff;
+  background: #F8F8F4;
+}
+
+/* Subtle background grid pattern for light mode */
+.ateion-metallic-bg::before,
+.ateion-metallic-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.ateion-metallic-bg::before {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(26, 24, 51, 0.015) 0%, transparent 60%),
+    repeating-linear-gradient(90deg, rgba(26, 24, 51, 0.008) 0px, rgba(26, 24, 51, 0.008) 1px, transparent 1px, transparent 40px),
+    repeating-linear-gradient(0deg, rgba(26, 24, 51, 0.008) 0px, rgba(26, 24, 51, 0.008) 1px, transparent 1px, transparent 40px);
+  opacity: 0.85;
+}
+
+.ateion-metallic-bg::after {
+  background: transparent;
+  opacity: 0;
 }
 
 html[data-theme="dark"] .ateion-metallic-bg {
@@ -875,3 +898,72 @@ html[data-theme="dark"] .social-png-icon {
   clip-path: polygon(0 0, 100% 0, 100% 100%);
   margin-bottom: -1px;
 }
+
+/* ==========================================================================
+   ECOSYSTEM BADGE & BUBBLE STYLES (Minimalist Pristine)
+   ========================================================================== */
+.ecosystem-badge-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3); /* 24px */
+  align-items: flex-start;
+  width: 100%;
+  padding: 40px;
+  border-radius: var(--radius-xl); /* 24px */
+  border: 1px solid var(--color-border-light);
+  background: rgba(248, 248, 244, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 12px 32px rgba(26, 24, 51, 0.02);
+  transition: all var(--transition-base);
+}
+
+html[data-theme="dark"] .ecosystem-badge-card {
+  background: rgba(30, 41, 59, 0.55);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+}
+
+.ecosystem-bubble-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(248, 248, 244, 0.75);
+  border: 1px solid var(--color-border-light);
+  box-shadow: 0 10px 24px -6px rgba(26, 24, 51, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition:
+    background-color var(--transition-base),
+    border-color var(--transition-base),
+    box-shadow var(--transition-base);
+}
+
+.ecosystem-bubble-bg.is-hovered {
+  border-color: var(--color-accent);
+  box-shadow: 0 12px 30px -4px rgba(232, 133, 106, 0.12);
+  background: rgba(248, 248, 244, 0.9);
+}
+
+.ecosystem-bubble-bg.is-dragged {
+  border-color: var(--color-accent);
+  box-shadow: 0 20px 40px -8px rgba(232, 133, 106, 0.2);
+  background: rgba(248, 248, 244, 0.95);
+}
+
+html[data-theme="dark"] .ecosystem-bubble-bg {
+  background: rgba(30, 41, 59, 0.6);
+  box-shadow: 0 10px 24px -6px rgba(0, 0, 0, 0.2);
+}
+
+html[data-theme="dark"] .ecosystem-bubble-bg.is-hovered {
+  border-color: var(--color-accent);
+  box-shadow: 0 12px 30px -4px rgba(232, 133, 106, 0.2);
+  background: rgba(30, 41, 59, 0.85);
+}
+
+html[data-theme="dark"] .ecosystem-bubble-bg.is-dragged {
+  border-color: var(--color-accent);
+  box-shadow: 0 20px 40px -8px rgba(232, 133, 106, 0.35);
+  background: rgba(30, 41, 59, 0.9);
+}
+

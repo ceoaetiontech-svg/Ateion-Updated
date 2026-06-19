@@ -25,6 +25,7 @@ import SharedNavbar from "../app/components/SharedNavbar";
 
 import HomePolicySection from "../features/home/HomePolicySection";
 import EcosystemSection from "../features/home/EcosystemSection";
+import bunnyMascot from "../assets/IMG_0989.png";
 
 /* ─────────────────────────────────────────────
    UTILITY COMPONENTS
@@ -232,12 +233,38 @@ function HeroFeatureCardsRow() {
 ───────────────────────────────────────────── */
 function GlobalPresenceMapSection() {
   return (
-    <div className="w-full flex flex-col items-center justify-center relative bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] pt-6 sm:pt-8 pb-0 overflow-hidden">
+    <div className="w-full flex flex-col items-center justify-center relative bg-transparent border-t border-[var(--color-border-light)] pt-12 sm:pt-16 pb-0 overflow-hidden">
       {/* Decorative top accent */}
       <div
-        className="absolute top-0 left-[10%] right-[10%] h-[3px] rounded-full"
+        className="absolute top-0 left-[15%] right-[15%] h-[2px] rounded-full"
         style={{ background: "linear-gradient(90deg, transparent, var(--color-accent), transparent)" }}
       />
+
+      {/* Mascot directly above Global Footprint */}
+      <motion.div
+        className="z-10 mb-4 mt-6 flex justify-center"
+        initial={{ opacity: 0, scale: 0.96 }}
+        animate={{
+          opacity: 1,
+          scale: 1,
+          y: [0, -8, 0],
+        }}
+        transition={{
+          opacity: { duration: 0.6 },
+          scale: { duration: 0.6 },
+          y: {
+            duration: 6,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }
+        }}
+      >
+        <img
+          src={bunnyMascot}
+          alt="Ateion Mascot"
+          className="w-[280px] h-[280px] sm:w-[480px] sm:h-[480px] object-contain"
+        />
+      </motion.div>
 
       <div className="z-10 text-center mb-8 sm:mb-12 px-4 relative">
         <div className="flex items-center justify-center gap-3 mb-5">
@@ -424,13 +451,13 @@ export function EducationStatusWrapper() {
           background: "var(--color-background-secondary)",
           borderRadius: 20,
           border: "1px solid var(--color-border-light)",
-          boxShadow: "0 4px 24px rgba(0,0,0,0.04), 0 1px 4px rgba(0,0,0,0.02)",
+          boxShadow: "0 10px 30px rgba(26,24,51,0.03), 0 1px 4px rgba(26,24,51,0.015)",
           position: "relative",
           overflow: "hidden",
         }}
         className="clay-card content-stretch flex flex-col items-center justify-center w-full transition-shadow duration-300 sm:p-[32px_28px_32px_28px] md:p-[40px_32px_40px_32px]"
-        onMouseEnter={(e) => e.currentTarget.style.boxShadow = "0 8px 40px rgba(232,133,106,0.08), 0 2px 8px rgba(0,0,0,0.04)"}
-        onMouseLeave={(e) => e.currentTarget.style.boxShadow = "0 4px 24px rgba(0,0,0,0.04), 0 1px 4px rgba(0,0,0,0.02)"}
+        onMouseEnter={(e) => e.currentTarget.style.boxShadow = "0 20px 48px rgba(26,24,51,0.06), 0 2px 8px rgba(26,24,51,0.03)"}
+        onMouseLeave={(e) => e.currentTarget.style.boxShadow = "0 10px 30px rgba(26,24,51,0.03), 0 1px 4px rgba(26,24,51,0.015)"}
       >
         {/* Coral accent bar */}
         <div
@@ -654,7 +681,7 @@ function FAQItem({ question, answer, isOpen, toggle }: { question: string; answe
       style={{
         background: "var(--color-background-secondary)",
         border: "1px solid var(--color-border-light)",
-        boxShadow: isOpen ? "0 4px 20px rgba(232,133,106,0.1)" : "0 1px 3px rgba(0,0,0,0.03)",
+        boxShadow: isOpen ? "0 12px 28px -4px rgba(26,24,51,0.06)" : "0 2px 8px -2px rgba(26,24,51,0.03)",
       }}
     >
       {/* Accent left bar */}
@@ -820,40 +847,40 @@ export default function Homepage() {
 
       {/* 1 & 2. Unified Hero Branding + Capability Cards */}
       <motion.section
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.1 }}
-        transition={{ duration: 1, ease: "easeOut" }}
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
       >
         <HeroHeaderSection />
       </motion.section>
 
       {/* 4. Ateion ecosystem */}
       <motion.section
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
+        transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
       >
         <EcosystemSection />
       </motion.section>
 
       {/* 5. Global Presence Map */}
       <motion.section
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
+        transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
       >
         <GlobalPresenceMapSection />
       </motion.section>
 
       {/* 6. Education is not broken — clay card + ticker */}
       <motion.section
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+        transition={{ duration: 0.85, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
         style={{ contentVisibility: "auto", containIntrinsicSize: "auto 600px" }}
       >
         <EducationStatusWrapper />
@@ -861,10 +888,10 @@ export default function Homepage() {
 
       {/* 7. FAQ */}
       <motion.section
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
+        transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
         style={{ contentVisibility: "auto", containIntrinsicSize: "auto 500px" }}
       >
         <FAQSectionContainer />

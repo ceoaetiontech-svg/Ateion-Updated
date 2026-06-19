@@ -176,6 +176,17 @@ export default function CoursePreviewPage() {
                                     error={null}
                                 />
                             </div>
+                            <div className="mt-2.5 flex items-center justify-end gap-1.5 px-1.5 opacity-85 hover:opacity-100 transition-opacity">
+                                <span className="text-[10px] font-semibold uppercase tracking-wider text-[var(--color-text-muted)]" style={{ fontFamily: "var(--font-display)" }}>
+                                    Powered by
+                                </span>
+                                <span className="text-[11px] font-extrabold text-[#FF0000] flex items-center gap-1">
+                                    <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M23.498 6.163c-.272-.98-1.04-1.748-2.02-2.02C19.716 3.745 12 3.745 12 3.745s-7.715 0-9.478.398c-.98.272-1.748 1.04-2.02 2.02C.104 7.928.104 12 .104 12s0 4.072.398 5.837c.272.98 1.04 1.748 2.02 2.02 1.763.398 9.478.398 9.478.398s7.715 0 9.478-.398c.98-.272 1.748-1.04 2.02-2.02.398-1.765.398-5.837.398-5.837s0-4.07-.398-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                                    </svg>
+                                    YouTube
+                                </span>
+                            </div>
 
                             <div className="mt-5">
                                 <h1
