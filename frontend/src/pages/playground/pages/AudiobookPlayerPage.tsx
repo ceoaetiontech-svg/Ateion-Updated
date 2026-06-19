@@ -30,7 +30,7 @@ export default function AudiobookPlayerPage() {
 
   // Audio References & State
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { showToast } = useToast();
 
   const [currentChapterIdx, setCurrentChapterIdx] = useState(0);
@@ -148,7 +148,7 @@ export default function AudiobookPlayerPage() {
   // 9. Keyboard Shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      const activeEl = document.activeElement;
+      const activeEl = document.activeElement as HTMLElement | null;
       if (
         activeEl && 
         (activeEl.tagName === "INPUT" || 
