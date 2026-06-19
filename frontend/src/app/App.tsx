@@ -6,7 +6,6 @@ import { ToastProvider } from "../pages/admin/utils/toast";
 import ToastContainer from "../pages/admin/components/ui/Toast";
 import { AdminAuthProvider } from "../pages/admin/context/AdminAuthContext";
 
-
 const AIChatBot = lazy(() => import("./components/AIChatbot"));
 
 const Homepage = lazy(() => import("../pages/Homepage"));
