@@ -348,34 +348,45 @@ export default function PlaygroundLandingPage() {
               </button>
             </div>
             <div
-              className="mt-12 md:mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 pt-8 w-full"
+              className="mt-12 md:mt-16 grid grid-cols-2 gap-4 md:gap-5 pt-8 w-full"
               style={{ borderTop: "1px solid var(--color-border-light)" }}
             >
               {[
-                { icon: GraduationCap, value: "200+", label: "Skills & Courses" },
-                { icon: Users, value: "50K+", label: "Students" },
-                { icon: School, value: "250+", label: "Institutions" },
-                { icon: TrendingUp, value: "98%", label: "Satisfaction Rate" },
+                { icon: GraduationCap, value: "200+", label: "Skills & Courses", color: "#705ef2" },
+                { icon: Users, value: "50K+", label: "Students", color: "var(--color-accent)" },
+                { icon: School, value: "250+", label: "Institutions", color: "#705ef2" },
+                { icon: TrendingUp, value: "98%", label: "Satisfaction Rate", color: "var(--color-accent)" },
               ].map((stat, i) => (
                 <div
                   key={i}
-                  className="flex flex-col items-start gap-2 p-4 rounded-2xl border border-[var(--color-border-light)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1 hover:shadow-sm"
+                  className="flex flex-col items-start p-5 sm:p-6 rounded-[24px] border border-[var(--color-border-light)] backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5 hover:shadow-md group cursor-default"
                   style={{
-                    backgroundColor: isDark ? "rgba(30, 41, 59, 0.4)" : "rgba(255, 255, 255, 0.45)",
+                    backgroundColor: isDark ? "rgba(30, 41, 59, 0.4)" : "rgba(255, 255, 255, 0.55)",
                   }}
                 >
-                  <div className="flex items-center gap-2" style={{ color: "#705ef2" }}>
-                    <div className="w-8 h-8 rounded-lg bg-[#705ef2]/10 flex items-center justify-center">
-                      <stat.icon size={16} className="stroke-[2.5]" />
-                    </div>
-                    <span
-                      className="text-lg md:text-xl font-extrabold"
-                      style={{ color: "var(--color-text-primary)" }}
-                    >
-                      <StatCounter value={stat.value} />
-                    </span>
+                  <div 
+                    className="w-10 h-10 rounded-xl flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110"
+                    style={{ 
+                      backgroundColor: `${stat.color}15`, 
+                      color: stat.color,
+                      border: `1px solid ${stat.color}25`
+                    }}
+                  >
+                    <stat.icon size={20} className="stroke-[2.5]" />
                   </div>
-                  <span className="text-xs font-semibold" style={{ color: "var(--color-text-muted)" }}>
+                  <span
+                    className="text-3xl md:text-4xl font-black tracking-tight leading-none"
+                    style={{ 
+                      color: "var(--color-text-primary)",
+                      fontFamily: "var(--font-display)"
+                    }}
+                  >
+                    <StatCounter value={stat.value} />
+                  </span>
+                  <span 
+                    className="text-[10px] sm:text-xs font-bold mt-2.5 uppercase tracking-wider text-left" 
+                    style={{ color: "var(--color-text-secondary)" }}
+                  >
                     {stat.label}
                   </span>
                 </div>
