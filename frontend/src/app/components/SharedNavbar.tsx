@@ -141,6 +141,7 @@ const NavButton = memo(function NavButton({
   href,
   isActive = false,
   style,
+  tourId,
 }: {
   children: React.ReactNode;
   variant?: "default" | "muted" | "primary" | "accent" | "white" | "outline-dark";
@@ -148,6 +149,7 @@ const NavButton = memo(function NavButton({
   href?: string;
   isActive?: boolean;
   style?: React.CSSProperties;
+  tourId?: string;
 }) {
   const navigate = useNavigate();
 
@@ -163,6 +165,7 @@ const NavButton = memo(function NavButton({
       transition={{ type: "spring", stiffness: 400, damping: 17 }}
       onClick={handleClick}
       data-active={isActive}
+      data-tour={tourId}
       style={style}
       className={`clay-button nav-btn ${VARIANT_CLASSES[variant]} rounded-full flex h-[36px] items-center justify-center px-[12px] xl:px-[24px] shrink-0 cursor-pointer transition-colors relative`}
     >
@@ -272,6 +275,7 @@ function ResourcesBtn({ onClick }: { onClick?: () => void }) {
     <NavButton
       variant="default"
       isActive={isActive}
+      tourId="main-playground-nav"
       style={{
         background: "linear-gradient(135deg, #2b244f 0%, #d66f55 58%, #ff9b82 100%)",
         border: "none",
@@ -521,6 +525,7 @@ function MobileMenuIcon({
     <button
       type="button"
       onClick={onClick}
+      data-tour="main-mobile-menu"
       className={`lg:hidden flex flex-col justify-center items-center w-[44px] h-[44px] cursor-pointer z-[150] relative rounded-2xl border transition-all duration-200 ${
         isOpen
           ? "bg-[var(--color-background-primary)] border-[var(--color-border-medium)] shadow-lg"
@@ -772,6 +777,7 @@ export default function SharedNavbar() {
                       key={path}
                       type="button"
                       onClick={() => handleNavClick(path)}
+                      data-tour={path === "/playground" ? "mobile-playground-nav" : undefined}
                       className={`mobile-nav-row group flex min-h-[48px] w-full items-center gap-3 rounded-2xl border px-3 text-left transition-all duration-200 ${
                         active
                           ? "mobile-nav-row-active border-transparent bg-[var(--color-accent)] text-[#ffffff] shadow-[0_10px_28px_rgba(232,133,106,0.28)]"

@@ -323,6 +323,7 @@ export default function PlaygroundLandingPage() {
             <div className="mt-8 flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
               <button
                 onClick={() => navigate("/playground/dashboard")}
+                data-tour="explore-playground-cta"
                 className="w-full sm:w-auto justify-center text-white font-bold text-base px-8 py-3.5 rounded-full flex items-center gap-2 transition-all hover:scale-102 active:scale-98 cursor-pointer"
                 style={{
                   backgroundColor: "var(--color-accent)",

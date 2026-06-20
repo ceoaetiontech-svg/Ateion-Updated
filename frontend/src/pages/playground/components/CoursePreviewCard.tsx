@@ -8,11 +8,12 @@ interface CoursePreviewCardProps {
     onReadMore?: () => void;
     onPreview?: () => void;
     accentColor?: string;
+    tourId?: string;
 }
 
 const FALLBACK_COURSE_IMAGE = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1964&auto=format&fit=crop";
 
-export default function CoursePreviewCard({ course, onReadMore, onPreview, accentColor }: CoursePreviewCardProps) {
+export default function CoursePreviewCard({ course, onReadMore, onPreview, accentColor, tourId }: CoursePreviewCardProps) {
     const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
@@ -136,6 +137,7 @@ export default function CoursePreviewCard({ course, onReadMore, onPreview, accen
                         {onPreview && (
                             <button
                                 onClick={(e) => { e.stopPropagation(); if (onPreview) onPreview(); }}
+                                data-tour={tourId}
                                 className="w-full bg-[var(--color-background-tertiary)] text-[var(--color-text-primary)] border border-[var(--color-border-medium)] py-3 rounded-xl text-sm font-bold hover:border-[var(--color-accent)] transition-all text-center flex items-center justify-center gap-2 cursor-pointer"
                             >
                                 <PlayCircle size={16} /> Preview Course
@@ -145,6 +147,7 @@ export default function CoursePreviewCard({ course, onReadMore, onPreview, accen
                 ) : (
                     <button
                         onClick={(e) => { e.stopPropagation(); if (onPreview) onPreview(); }}
+                        data-tour={tourId}
                         style={{
                             "--hover-bg": cardAccent,
                             "--hover-border": cardAccent
