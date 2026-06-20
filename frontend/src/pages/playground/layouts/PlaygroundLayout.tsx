@@ -296,6 +296,7 @@ function PlaygroundInner() {
                                       <SidebarMenuButton
                                           className={`group/btn relative overflow-hidden text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-background-tertiary)] transition-all duration-300 py-2.5 ${location.pathname === item.path ? "bg-[var(--color-accent_light)] text-[var(--color-accent)] font-bold shadow-sm border-l-[3px] border-[var(--color-accent)] rounded-r-xl rounded-l-none pl-3" : "rounded-xl pl-3 hover:translate-x-1"}`}
                                           onClick={() => navigate(item.path)}
+                                          data-tour={item.path === "/playground/discover" ? "sidebar-discover-courses" : undefined}
                                           aria-current={location.pathname === item.path ? "page" : undefined}
                                       >
                                         <item.icon className="h-4 w-4 mr-2 group-hover/btn:scale-110 group-hover/btn:-rotate-6 transition-transform duration-300" />

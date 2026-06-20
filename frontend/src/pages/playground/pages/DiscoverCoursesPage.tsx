@@ -366,7 +366,7 @@ export default function DiscoverCoursesPage() {
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-stretch auto-rows-fr"
             >
               <AnimatePresence mode="popLayout">
-                {displayCourses.map((course) => (
+                {displayCourses.map((course, index) => (
                     <motion.div
                         key={course.id}
                         layout
@@ -390,6 +390,7 @@ export default function DiscoverCoursesPage() {
                               onReadMore={() => openProtectedCourse(course.id)}
                               onPreview={() => openPublicPreview(course.previewModuleId)}
                               accentColor={activeTheme.accent}
+                              tourId={index === 0 ? "discover-preview-course" : undefined}
                           />
                         </div>
                       </CoursePreviewPopover>

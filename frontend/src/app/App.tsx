@@ -31,6 +31,7 @@ const SettingsPage = lazy(() => import("../pages/admin/pages/SettingsPage"));
 const CoursePreviewPage = lazy(() => import("../pages/CoursePreviewPage"));
 import ThemeProvider from "./components/ThemeProvider";
 import PageTransition from "./components/PageTransition";
+import GuidedTutorial from "./components/GuidedTutorial";
 
 const AdminLoginPage = lazy(() => import("../pages/admin/pages/AdminLoginPage"));
 const TeacherLoginPage = lazy(() => import("../pages/teacher/pages/TeacherLoginPage"));
@@ -122,6 +123,7 @@ export default function App() {
                         <ToastProvider>
                             <AnimatedRoutes />
                             <ToastContainer />
+                            <GuidedTutorial />
                         </ToastProvider>
                     </AdminAuthProvider>
                     <ChatBotWrapper />
