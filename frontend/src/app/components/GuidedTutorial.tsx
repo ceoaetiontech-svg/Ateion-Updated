@@ -87,6 +87,8 @@ function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
 
+const scrollKeys = new Set(["ArrowDown", "ArrowLeft", "ArrowRight", "ArrowUp", "End", "Home", "PageDown", "PageUp", " "]);
+
 export default function GuidedTutorial() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -94,6 +96,7 @@ export default function GuidedTutorial() {
   const [stepIndex, setStepIndex] = useState(0);
   const [targetRect, setTargetRect] = useState<TargetRect | null>(null);
   const step = steps[stepIndex];
+  const hasTourSurface = Boolean(targetRect) || Boolean(step.waitLabel);
 
   const isSupportedRoute = useMemo(() => {
     return location.pathname === "/" || location.pathname.startsWith("/playground");
@@ -116,6 +119,8 @@ export default function GuidedTutorial() {
 
   useEffect(() => {
     if (!isActive) return;
+    setTargetRect(null);
+
     if (location.pathname.startsWith("/course-preview") && stepIndex >= 3) {
       completeTour();
       setIsActive(false);
@@ -138,6 +143,10 @@ export default function GuidedTutorial() {
   }, [isActive, location.pathname, stepIndex]);
 
   useEffect(() => {
+    setTargetRect(null);
+  }, [stepIndex]);
+
+  useEffect(() => {
     if (!isActive || !isSupportedRoute) return;
 
     let frame = 0;
@@ -154,6 +163,14 @@ export default function GuidedTutorial() {
         }
 
         const rect = target.getBoundingClientRect();
+        const isOutsideViewport = rect.bottom < 28 || rect.top > window.innerHeight - 28;
+
+        if (isOutsideViewport) {
+          target.scrollIntoView({ block: "center", inline: "nearest" });
+          window.setTimeout(updateTarget, 120);
+          return;
+        }
+
         setTargetRect({
           top: rect.top,
           left: rect.left,
@@ -179,7 +196,45 @@ export default function GuidedTutorial() {
     };
   }, [isActive, isSupportedRoute, location.pathname, step]);
 
-  if (!isActive || !isSupportedRoute) return null;
+  useEffect(() => {
+    if (!isActive || !isSupportedRoute || !hasTourSurface) return;
+
+    const originalBodyOverflow = document.body.style.overflow;
+    const originalHtmlOverflow = document.documentElement.style.overflow;
+    const originalBodyOverscroll = document.body.style.overscrollBehavior;
+    const originalBodyTouchAction = document.body.style.touchAction;
+
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+    document.body.style.overscrollBehavior = "contain";
+    document.body.style.touchAction = "none";
+
+    const preventScroll = (event: Event) => {
+      event.preventDefault();
+    };
+
+    const preventScrollKeys = (event: KeyboardEvent) => {
+      if (scrollKeys.has(event.key)) {
+        event.preventDefault();
+      }
+    };
+
+    window.addEventListener("wheel", preventScroll, { passive: false, capture: true });
+    window.addEventListener("touchmove", preventScroll, { passive: false, capture: true });
+    window.addEventListener("keydown", preventScrollKeys, { capture: true });
+
+    return () => {
+      document.body.style.overflow = originalBodyOverflow;
+      document.documentElement.style.overflow = originalHtmlOverflow;
+      document.body.style.overscrollBehavior = originalBodyOverscroll;
+      document.body.style.touchAction = originalBodyTouchAction;
+      window.removeEventListener("wheel", preventScroll, { capture: true });
+      window.removeEventListener("touchmove", preventScroll, { capture: true });
+      window.removeEventListener("keydown", preventScrollKeys, { capture: true });
+    };
+  }, [hasTourSurface, isActive, isSupportedRoute]);
+
+  if (!isActive || !isSupportedRoute || !hasTourSurface) return null;
 
   const finish = () => {
     completeTour();
@@ -188,6 +243,7 @@ export default function GuidedTutorial() {
 
   const handlePrimary = () => {
     if (step.nextRoute) {
+      setTargetRect(null);
       setStepIndex(Math.min(stepIndex + 1, steps.length - 1));
       navigate(step.nextRoute);
       return;
@@ -215,7 +271,7 @@ export default function GuidedTutorial() {
   return (
     <AnimatePresence>
       <motion.div
-        className="fixed inset-0 z-[260] pointer-events-none"
+        className="fixed inset-0 z-[260] pointer-events-auto"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
