@@ -5,6 +5,7 @@ import type { AgeGroupId, Course } from "../shared/types";
 interface BackendCourse {
   id: number | string;
   title?: string | null;
+  description?: string | null;
   category?: string | null;
   ageSegment?: string | null;
   isFree?: boolean | null;
@@ -55,6 +56,7 @@ function mapBackendCourse(course: BackendCourse): Course {
   return {
     id: toNumber(course.id),
     title: course.title?.trim() || "Untitled Course",
+    description: course.description?.trim() || "",
     instructor: "Ateion Instructor",
     instructorAvatar: "https://i.pravatar.cc/150?u=ateion",
     image: course.image?.trim() || "",
@@ -63,7 +65,7 @@ function mapBackendCourse(course: BackendCourse): Course {
     total: videoCount,
     students: enrollments,
     enrollments,
-    level: "All Levels",
+    level: course.ageSegment?.trim() || "All Levels",
     duration: "Self-paced",
     lessons: videoCount,
     lastAccessedAt: 0,

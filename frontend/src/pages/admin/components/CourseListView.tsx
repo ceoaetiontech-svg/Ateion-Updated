@@ -12,10 +12,12 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { Link } from "react-router";
+import EditCourseModal from "./courses/EditCourseModal";
 
 interface AdminCourse {
   id: number;
   title: string;
+  description: string;
   category: string;
   price: string;
   isFree: boolean;
@@ -68,6 +70,7 @@ export default function CourseListView() {
   const [isLoading, setIsLoading] = useState(true);
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [editingCourse, setEditingCourse] = useState<AdminCourse | null>(null);
 
   const fetchCourses = useCallback(async () => {
     setIsLoading(true);
@@ -158,6 +161,7 @@ export default function CourseListView() {
   const free = courses.filter((course) => course.isFree).length;
 
   return (
+      <>
       <motion.div
           className="pb-20"
           variants={containerVariants}
@@ -350,8 +354,9 @@ export default function CourseListView() {
                             </button>
                             <button
                                 type="button"
+                                onClick={() => setEditingCourse(course)}
                                 className="p-2 rounded-lg text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] hover:bg-[var(--color-accent)]/10 transition-all cursor-pointer hover:scale-105 active:scale-95"
-                                title="Editing coming later"
+                                title="Edit course"
                             >
                               <Edit2 size={16} />
                             </button>
@@ -409,5 +414,18 @@ export default function CourseListView() {
           </div>
         </motion.div>
       </motion.div>
+
+      {/* Edit Course Modal */}
+      <EditCourseModal
+        course={editingCourse}
+        onClose={() => setEditingCourse(null)}
+        onSaved={(updated) => {
+          setCourses((prev) =>
+            prev.map((c) => (c.id === updated.id ? { ...c, ...updated } : c))
+          );
+          setEditingCourse(null);
+        }}
+      />
+      </>
   );
 }
