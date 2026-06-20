@@ -663,6 +663,43 @@ export default function SharedNavbar() {
     return () => ac.abort();
   }, []);
 
+  // Lock body scroll when mobile menu is open
+  // Uses position:fixed trick — the only approach that works on iOS Safari
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      const scrollY = window.scrollY;
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.left = "0";
+      document.body.style.right = "0";
+      document.body.style.overflow = "hidden";
+    } else {
+      const savedTop = document.body.style.top;
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
+      document.body.style.overflow = "";
+      // Restore scroll position so page doesn't jump to top
+      if (savedTop) {
+        window.scrollTo(0, -parseInt(savedTop, 10));
+      }
+    }
+
+    return () => {
+      // Cleanup on unmount — always restore body
+      const savedTop = document.body.style.top;
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
+      document.body.style.overflow = "";
+      if (savedTop) {
+        window.scrollTo(0, -parseInt(savedTop, 10));
+      }
+    };
+  }, [isMobileMenuOpen]);
+
   // Handle click outside to close mobile menu
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
