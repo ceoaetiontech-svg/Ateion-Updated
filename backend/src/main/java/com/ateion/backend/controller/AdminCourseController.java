@@ -1,12 +1,15 @@
 package com.ateion.backend.controller;
 
 import com.ateion.backend.dto.AdminCourseSummaryDTO;
+import com.ateion.backend.dto.UpdateCourseRequestDTO;
 import com.ateion.backend.service.AdminCourseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,6 +25,13 @@ public class AdminCourseController {
     @GetMapping
     public ResponseEntity<List<AdminCourseSummaryDTO>> getCourses() {
         return ResponseEntity.ok(adminCourseService.getCourses());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<AdminCourseSummaryDTO> updateCourse(
+            @PathVariable Long id,
+            @RequestBody UpdateCourseRequestDTO request) {
+        return ResponseEntity.ok(adminCourseService.updateCourse(id, request));
     }
 
     @DeleteMapping("/{id}")

@@ -1,6 +1,7 @@
 package com.ateion.backend.service;
 
 import com.ateion.backend.dto.AdminCourseSummaryDTO;
+import com.ateion.backend.dto.UpdateCourseRequestDTO;
 import com.ateion.backend.entity.Course;
 import com.ateion.backend.repository.CourseRepository;
 import com.ateion.backend.repository.ModuleRepository;
@@ -29,6 +30,7 @@ public class AdminCourseService {
                 .map(course -> new AdminCourseSummaryDTO(
                         course.getId(),
                         course.getTitle(),
+                        course.getDescription() != null ? course.getDescription() : "",
                         course.getCategory() != null ? course.getCategory() : "technology",
                         course.getPrice() != null ? course.getPrice() : "0",
                         course.getIsFree() != null ? course.getIsFree() : true,
@@ -40,6 +42,37 @@ public class AdminCourseService {
                         course.getCreatedAt()
                 ))
                 .toList();
+    }
+
+    @Transactional
+    public AdminCourseSummaryDTO updateCourse(Long courseId, UpdateCourseRequestDTO request) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found"));
+
+        if (request.getTitle() != null)       course.setTitle(request.getTitle());
+        if (request.getDescription() != null) course.setDescription(request.getDescription());
+        if (request.getCategory() != null)    course.setCategory(request.getCategory());
+        if (request.getAgeSegment() != null)  course.setAgeSegment(request.getAgeSegment());
+        if (request.getPrice() != null)       course.setPrice(request.getPrice());
+        if (request.getIsFree() != null)      course.setIsFree(request.getIsFree());
+        if (request.getImage() != null)       course.setImage(request.getImage());
+
+        courseRepository.save(course);
+
+        return new AdminCourseSummaryDTO(
+                course.getId(),
+                course.getTitle(),
+                course.getDescription() != null ? course.getDescription() : "",
+                course.getCategory() != null ? course.getCategory() : "technology",
+                course.getPrice() != null ? course.getPrice() : "0",
+                course.getIsFree() != null ? course.getIsFree() : true,
+                course.getAgeSegment() != null ? course.getAgeSegment() : "All Levels",
+                course.getImage() != null ? course.getImage() : "",
+                "Published",
+                moduleRepository.countByCourse_Id(course.getId()),
+                videoRepository.countByModule_Course_Id(course.getId()),
+                course.getCreatedAt()
+        );
     }
 
     @Transactional

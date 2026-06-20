@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 public class AdminCourseSummaryDTO {
     private Long id;
     private String title;
+    private String description;
     private String category;
     private String price;
     private Boolean isFree;
