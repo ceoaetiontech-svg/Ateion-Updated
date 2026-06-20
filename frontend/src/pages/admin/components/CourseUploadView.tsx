@@ -1,17 +1,31 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, CheckCircle, Save, Video, Search } from "lucide-react";
+import { ArrowLeft, CheckCircle, Save, Video, Search, ChevronDown } from "lucide-react";
 import { Link } from "react-router";
 
 export default function CourseUploadView({ onUploadSuccess }: { onUploadSuccess: () => void }) {
   const [playlistUrl, setPlaylistUrl] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("technology");
+  const [category, setCategory] = useState("AI");
   const [ageSegment, setAgeSegment] = useState("All Levels");
   const [price, setPrice] = useState("0");
   const [previewData, setPreviewData] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const categories = ["AI", "Coding", "Languages", "Curious Kitty", "Finance", "Art", "Advance Skills", "Mental Health"];
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
 
@@ -80,7 +94,24 @@ export default function CourseUploadView({ onUploadSuccess }: { onUploadSuccess:
           </button>
         </div>
 
-        <div className="admin-glass-card space-y-6">
+        <div className="admin-glass-card space-y-6" style={{ overflow: "visible" }}>
+          <div>
+            <label className="block text-sm font-semibold mb-2">Category</label>
+            <div className="relative" ref={dropdownRef}>
+              <button type="button" onClick={() => setDropdownOpen(!dropdownOpen)} className="w-full flex items-center justify-between px-4 py-3 rounded-xl border border-[var(--color-border-light)] hover:border-[var(--color-border-medium)] bg-[var(--color-background-primary)]/40 backdrop-blur-sm text-[var(--color-text-primary)] outline-none transition-all">
+                {category} <ChevronDown size={16} className={`transition-transform ${dropdownOpen ? "rotate-180" : ""}`} />
+              </button>
+              {dropdownOpen && (
+                <div className="absolute z-50 mt-1 w-full rounded-xl border border-[var(--color-border-light)] bg-[var(--color-background-primary)] backdrop-blur-xl shadow-xl overflow-hidden">
+                  {categories.map((cat) => (
+                    <button key={cat} type="button" onClick={() => { setCategory(cat); setDropdownOpen(false); }} className={`w-full text-left px-4 py-2.5 text-sm transition-colors hover:bg-[var(--color-accent)]/10 ${category === cat ? "text-[var(--color-accent)] font-semibold" : "text-[var(--color-text-primary)]"}`}>
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
           <div>
             <label className="block text-sm font-semibold mb-2">YouTube Playlist URL</label>
             <div className="flex flex-col sm:flex-row gap-4">
