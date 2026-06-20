@@ -37,6 +37,7 @@
   --color-accent: #E8856A;
   --color-accent-hover: #D97A60;
   --color-accent_light: rgba(232, 133, 106, 0.15);
+  --color-accent-light: var(--color-accent_light);
 
   /* Neutral Grays */
   --color-white: #F8F8F4;
@@ -76,6 +77,13 @@
 
   --color-text-link: #1A1833;
   --color-text-link-hover: #2E2C40;
+
+  /* Homepage ecosystem bubble refinements */
+  --ecosystem-bubble-hover-title: #ffffff;
+  --ecosystem-bubble-hover-description: rgba(255, 255, 255, 0.9);
+  --ecosystem-light-bubble-text: #ffffff;
+  --ecosystem-playground-bubble: #ffffff;
+  --ecosystem-playground-bubble-hover: #f8f8f4;
 
   /* Border Colors */
   --color-border-light: rgba(26, 24, 51, 0.1);
@@ -404,6 +412,7 @@
   --color-accent: #E8856A;
   --color-accent-hover: #F0957C;
   --color-accent_light: rgba(232, 133, 106, 0.15);
+  --color-accent-light: var(--color-accent_light);
 
   /* Neutral Grays - Clean slate scale (higher number = lighter) */
   --color-white: #0F172A;
@@ -442,6 +451,13 @@
 
   --color-text-link: #CBD5E1;
   --color-text-link-hover: #F8FAFC;
+
+  /* Homepage ecosystem bubble refinements */
+  --ecosystem-bubble-hover-title: #1a1833;
+  --ecosystem-bubble-hover-description: rgba(26, 24, 51, 0.76);
+  --ecosystem-light-bubble-text: #1a1833;
+  --ecosystem-playground-bubble: #475569;
+  --ecosystem-playground-bubble-hover: #64748b;
 
   /* Border Colors */
   --color-border-light: rgba(226, 232, 240, 0.08);
@@ -514,6 +530,97 @@ html[data-theme="dark"] .bg-\[var\(--color-background-secondary\)\] {
 html[data-theme="dark"] body {
   background: radial-gradient(circle at 50% 0%, #1E293B 0%, #0F172A 100%);
   background-attachment: fixed;
+}
+
+/* ==========================================================================
+   METALLIC BRAND BACKGROUND
+   ========================================================================== */
+.ateion-metallic-bg {
+  position: relative;
+  isolation: isolate;
+  color: var(--color-text-primary);
+  background: #F8F8F4;
+}
+
+/* Subtle background grid pattern for light mode */
+.ateion-metallic-bg::before,
+.ateion-metallic-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.ateion-metallic-bg::before {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(26, 24, 51, 0.015) 0%, transparent 60%),
+    repeating-linear-gradient(90deg, rgba(26, 24, 51, 0.008) 0px, rgba(26, 24, 51, 0.008) 1px, transparent 1px, transparent 40px),
+    repeating-linear-gradient(0deg, rgba(26, 24, 51, 0.008) 0px, rgba(26, 24, 51, 0.008) 1px, transparent 1px, transparent 40px);
+  opacity: 0.85;
+}
+
+.ateion-metallic-bg::after {
+  background: transparent;
+  opacity: 0;
+}
+
+html[data-theme="dark"] .ateion-metallic-bg {
+  --color-background-primary: rgba(8, 8, 14, 0.52);
+  --color-background-secondary: #1E293B;
+  --color-background-tertiary: #334155;
+  --color-border-light: rgba(248, 248, 244, 0.12);
+  --color-border-medium: rgba(248, 248, 244, 0.18);
+  --color-border-dark: rgba(248, 248, 244, 0.28);
+  --color-text-primary: #f8f8f4;
+  --color-text-secondary: rgba(248, 248, 244, 0.74);
+  --color-text-tertiary: rgba(248, 248, 244, 0.52);
+  --color-text-muted: rgba(248, 248, 244, 0.58);
+  --color-text-subtle: rgba(248, 248, 244, 0.38);
+  --color-text-inverse: #111018;
+
+  color: var(--color-text-primary);
+  background:
+    radial-gradient(ellipse 74% 46% at 50% 44%, rgba(64, 58, 128, 0.72) 0%, rgba(31, 29, 72, 0.58) 36%, rgba(15, 16, 28, 0.18) 70%, transparent 100%),
+    radial-gradient(ellipse 38% 22% at 52% 48%, rgba(232, 133, 106, 0.08) 0%, transparent 68%),
+    linear-gradient(180deg, #111114 0%, #11131c 20%, #171840 52%, #0b0c12 100%);
+  background-attachment: fixed;
+}
+
+html[data-theme="dark"] .ateion-metallic-bg::before,
+html[data-theme="dark"] .ateion-metallic-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+html[data-theme="dark"] .ateion-metallic-bg::before {
+  background:
+    linear-gradient(118deg, transparent 0%, transparent 31%, rgba(255, 255, 255, 0.08) 42%, transparent 54%, transparent 100%),
+    radial-gradient(ellipse 62% 30% at 50% 50%, rgba(255, 255, 255, 0.06), transparent 72%);
+  mix-blend-mode: screen;
+  opacity: 0.86;
+}
+
+html[data-theme="dark"] .ateion-metallic-bg::after {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 28%, rgba(0, 0, 0, 0.24) 100%),
+    repeating-linear-gradient(115deg, rgba(255, 255, 255, 0.024) 0 1px, transparent 1px 18px);
+  opacity: 0.68;
+}
+
+.ateion-metallic-bg > * {
+  position: relative;
+  z-index: 1;
+}
+
+html[data-theme="dark"] .ateion-metallic-bg .clay-card,
+html[data-theme="dark"] .ateion-metallic-bg .clay-faq,
+html[data-theme="dark"] .ateion-metallic-bg .bg-\[var\(--color-background-secondary\)\] {
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
 }
 
 /* Exclude elements that should not animate */
@@ -791,3 +898,72 @@ html[data-theme="dark"] .social-png-icon {
   clip-path: polygon(0 0, 100% 0, 100% 100%);
   margin-bottom: -1px;
 }
+
+/* ==========================================================================
+   ECOSYSTEM BADGE & BUBBLE STYLES (Minimalist Pristine)
+   ========================================================================== */
+.ecosystem-badge-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3); /* 24px */
+  align-items: flex-start;
+  width: 100%;
+  padding: 40px;
+  border-radius: var(--radius-xl); /* 24px */
+  border: 1px solid var(--color-border-light);
+  background: rgba(248, 248, 244, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 12px 32px rgba(26, 24, 51, 0.02);
+  transition: all var(--transition-base);
+}
+
+html[data-theme="dark"] .ecosystem-badge-card {
+  background: rgba(30, 41, 59, 0.55);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+}
+
+.ecosystem-bubble-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(248, 248, 244, 0.75);
+  border: 1px solid var(--color-border-light);
+  box-shadow: 0 10px 24px -6px rgba(26, 24, 51, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition:
+    background-color var(--transition-base),
+    border-color var(--transition-base),
+    box-shadow var(--transition-base);
+}
+
+.ecosystem-bubble-bg.is-hovered {
+  border-color: var(--color-accent);
+  box-shadow: 0 12px 30px -4px rgba(232, 133, 106, 0.12);
+  background: rgba(248, 248, 244, 0.9);
+}
+
+.ecosystem-bubble-bg.is-dragged {
+  border-color: var(--color-accent);
+  box-shadow: 0 20px 40px -8px rgba(232, 133, 106, 0.2);
+  background: rgba(248, 248, 244, 0.95);
+}
+
+html[data-theme="dark"] .ecosystem-bubble-bg {
+  background: rgba(30, 41, 59, 0.6);
+  box-shadow: 0 10px 24px -6px rgba(0, 0, 0, 0.2);
+}
+
+html[data-theme="dark"] .ecosystem-bubble-bg.is-hovered {
+  border-color: var(--color-accent);
+  box-shadow: 0 12px 30px -4px rgba(232, 133, 106, 0.2);
+  background: rgba(30, 41, 59, 0.85);
+}
+
+html[data-theme="dark"] .ecosystem-bubble-bg.is-dragged {
+  border-color: var(--color-accent);
+  box-shadow: 0 20px 40px -8px rgba(232, 133, 106, 0.35);
+  background: rgba(30, 41, 59, 0.9);
+}
+

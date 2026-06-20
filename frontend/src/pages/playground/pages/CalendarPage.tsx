@@ -36,7 +36,10 @@ export default function CalendarPage() {
 
   const daysInMonth = getDaysInMonth(year, month);
   const firstDay = getFirstDayOfMonth(year, month);
-  const prevMonthDays = getDaysInMonth(year, month - 1 < 0 ? month - 1 + 12 : month - 1, (month - 1 + 12) % 12);
+  const prevMonthDays = getDaysInMonth(
+    month === 0 ? year - 1 : year,
+    month === 0 ? 11 : month - 1
+  );
 
   const calendarDays = useMemo(() => {
     const days: { day: number; isCurrent: boolean; isToday: boolean }[] = [];

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
@@ -16,8 +16,6 @@ import PolicyAlignmentSection from "../features/gco/PolicyAlignmentSection";
 import "../styles/gco/index.css";
 import "../styles/gco/fonts.css";
 import "../styles/gco/theme.css";
-import { useInView } from "framer-motion";
-import { useRef } from "react";
 
 const GCOPage = () => {
   const navigate = useNavigate();
@@ -35,7 +33,7 @@ const GCOPage = () => {
       <NavbarSpacer />
       <div
         id="gco-root"
-        className="bg-[var(--color-background-primary)] w-full relative"
+        className="ateion-metallic-bg min-h-screen w-full relative"
       >
         <main>
 

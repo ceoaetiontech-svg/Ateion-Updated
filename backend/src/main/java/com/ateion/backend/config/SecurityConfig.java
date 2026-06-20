@@ -1,7 +1,6 @@
 package com.ateion.backend.config;
 
 import com.ateion.backend.util.JwtUtil;
-import com.ateion.backend.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -36,23 +36,24 @@ public class SecurityConfig {
     private final JwtUtil jwtUtil;
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(exceptions -> exceptions
+                        .authenticationEntryPoint((request, response, exception) ->
+                                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized"))
+                )
                 .authorizeHttpRequests(auth -> auth
-                                .requestMatchers(
-                                        "/api/auth/**",
-                                        "/api/ping",
-                                        "/api/videos/**"
-                                ).permitAll()
-//                        .anyRequest().authenticated()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/api/auth/**", "/api/contact/**", "/api/admin/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/ping").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/content/courses").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/videos/public/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/videos/**").permitAll()
+                        .requestMatchers("/api/chat").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter(), UsernamePasswordAuthenticationFilter.class);
 
@@ -60,40 +61,59 @@ public class SecurityConfig {
     }
 
     @Bean
-    public OncePerRequestFilter jwtAuthFilter() {
-        return new OncePerRequestFilter() {
-            @Override
-            protected void doFilterInternal(HttpServletRequest req,
-                                            HttpServletResponse res,
-                                            FilterChain chain) throws ServletException, IOException {
-                String header = req.getHeader("Authorization");
-                if (header != null && header.startsWith("Bearer ")) {
-                    String token = header.substring(7);
-                    try {
-                        if (jwtUtil.validateToken(token)) {
-                            String email = jwtUtil.extractEmail(token);
-                            UsernamePasswordAuthenticationToken auth =
-                                    new UsernamePasswordAuthenticationToken(email, null, Collections.emptyList());
-                            SecurityContextHolder.getContext().setAuthentication(auth);
-                        }
-                    } catch (Exception ignored) {}
-                }
-                chain.doFilter(req, res);
-            }
-        };
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration config = new CorsConfiguration();
-        // FIXED: single source of truth for CORS — WebConfig.java should be deleted
-        config.setAllowedOrigins(List.of("https://www.ateion.com", "http://localhost:5173", "http://localhost:3000"));
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("*"));
-        config.setAllowCredentials(true);
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOriginPatterns(Collections.singletonList("*"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Collections.singletonList("*"));
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);
+        source.registerCorsConfiguration("/**", configuration);
         return source;
+    }
+
+    @Bean
+    public OncePerRequestFilter jwtAuthFilter() {
+        return new OncePerRequestFilter() {
+            @Override
+            protected void doFilterInternal(
+                    HttpServletRequest request,
+                    HttpServletResponse response,
+                    FilterChain filterChain
+            ) throws ServletException, IOException {
+                String authHeader = request.getHeader("Authorization");
+
+                if (authHeader != null && authHeader.startsWith("Bearer ")) {
+                    String token = authHeader.substring(7).trim();
+
+                    if (!token.isEmpty() && SecurityContextHolder.getContext().getAuthentication() == null) {
+                        try {
+                            if (jwtUtil.validateToken(token)) {
+                                String email = jwtUtil.extractEmail(token);
+                                UsernamePasswordAuthenticationToken authentication =
+                                        new UsernamePasswordAuthenticationToken(
+                                                email,
+                                                null,
+                                                Collections.emptyList()
+                                        );
+                                SecurityContextHolder.getContext().setAuthentication(authentication);
+                            }
+                        } catch (Exception ignored) {
+                            // Invalid or expired tokens are treated as unauthenticated.
+                            // Public routes continue; protected routes are rejected by Spring Security.
+                        }
+                    }
+                }
+
+                filterChain.doFilter(request, response);
+            }
+        };
     }
 }

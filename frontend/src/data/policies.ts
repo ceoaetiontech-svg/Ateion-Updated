@@ -20,7 +20,7 @@ export interface PolicyEntry {
   flag: string; // emoji (used in detail page)
   region: string;
   accentColor: string;
-  featured: boolean; // shown on Ateion homepage (5 cards)
+  featured: boolean; // shown on Ateion homepage (4 cards)
   frameworks: PolicyFramework[];
 }
 
@@ -175,7 +175,7 @@ export const policies: PolicyEntry[] = [
     flag: "🇦🇪",
     region: "Middle East",
     accentColor: "#009B3A",
-    featured: true,
+    featured: false,
     frameworks: [
       {
         name: "UAE National Education Strategy",

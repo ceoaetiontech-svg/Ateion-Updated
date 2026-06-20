@@ -150,7 +150,7 @@ export default function PsychometricAssessmentPage() {
   if (finished) {
     return (
       <motion.div
-        className="min-h-screen bg-[var(--color-background-primary)] flex flex-col justify-center items-center p-4 sm:p-8 relative overflow-hidden"
+        className="ateion-metallic-bg min-h-screen flex flex-col justify-center items-center p-4 sm:p-8 relative overflow-hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
@@ -281,7 +281,7 @@ export default function PsychometricAssessmentPage() {
   if (!hasStarted) {
     return (
       <motion.div
-        className="min-h-screen bg-[var(--color-background-primary)] flex flex-col justify-center items-center p-4 sm:p-8 relative overflow-hidden"
+        className="ateion-metallic-bg min-h-screen flex flex-col justify-center items-center p-4 sm:p-8 relative overflow-hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
@@ -360,7 +360,7 @@ export default function PsychometricAssessmentPage() {
   // ─── QUESTION SCREEN ─────────────────────────────────────────────
   return (
     <motion.div
-      className="min-h-screen bg-[var(--color-background-primary)] flex flex-col justify-center items-center p-4 sm:p-8 relative overflow-hidden"
+      className="ateion-metallic-bg min-h-screen flex flex-col justify-center items-center p-4 sm:p-8 relative overflow-hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}

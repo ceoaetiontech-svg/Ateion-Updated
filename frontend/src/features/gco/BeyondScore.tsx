@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import imgChild from "../../assets/beyond-child.png";
-import imgPink from "../../assets/beyond-pink.png";
-import imgCode from "../../assets/beyond-code.png";
+import imgChild from "../../assets/beyond-child.webp";
+import imgPink from "../../assets/beyond-pink.webp";
+import imgCode from "../../assets/beyond-code.webp";
 
 export default function BeyondScoreClone() {
   const [viewportWidth, setViewportWidth] = useState(

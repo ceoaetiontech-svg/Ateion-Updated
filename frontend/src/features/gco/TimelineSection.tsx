@@ -41,97 +41,101 @@ function TimelineStepComponent({
   step,
   index,
   isLast,
+  isMobile,
 }: {
   step: TimelineStep;
   index: number;
   isLast: boolean;
+  isMobile: boolean;
 }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
     <div ref={ref}>
-      <div className="timeline-step timeline-step-desktop" style={{ marginBottom: isLast ? 0 : undefined }}>
-        <motion.div
-          className={`timeline-content-side timeline-left ${step.side === "left" ? "text-side" : "icon-side"}`}
-          initial={{ opacity: 0, x: 50 }}
-          animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          {step.side === "left" ? (
-            <div className="timeline-text-card">
-              <p className="timeline-text text-right">{step.text}</p>
-            </div>
-          ) : (
-            <motion.div
-              className="timeline-icon-container"
-              initial={{ scale: 0, opacity: 0 }}
-              animate={
-                isInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }
-              }
-              transition={{ duration: 0.5, delay: 0.3 }}
-              whileHover={{ scale: 1.1, rotate: -6 }}
-            >
-              {step.icon}
-            </motion.div>
-          )}
-        </motion.div>
+      {!isMobile ? (
+        <div className="timeline-step timeline-step-desktop" style={{ marginBottom: isLast ? 0 : undefined }}>
+          <motion.div
+            className={`timeline-content-side timeline-left ${step.side === "left" ? "text-side" : "icon-side"}`}
+            initial={{ opacity: 0, x: 50 }}
+            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            {step.side === "left" ? (
+              <div className="timeline-text-card">
+                <p className="timeline-text text-right">{step.text}</p>
+              </div>
+            ) : (
+              <motion.div
+                className="timeline-icon-container"
+                initial={{ scale: 0, opacity: 0 }}
+                animate={
+                  isInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }
+                }
+                transition={{ duration: 0.5, delay: 0.3 }}
+                whileHover={{ scale: 1.1, rotate: -6 }}
+              >
+                {step.icon}
+              </motion.div>
+            )}
+          </motion.div>
 
-        <motion.div
-          className="timeline-circle"
-          initial={{ scale: 0, opacity: 0 }}
-          animate={
-            isInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }
-          }
-          transition={{ duration: 0.6, delay: 0 }}
-          whileHover={{ scale: 1.15 }}
-        >
-          <span className="timeline-number">{step.number}</span>
-        </motion.div>
+          <motion.div
+            className="timeline-circle"
+            initial={{ scale: 0, opacity: 0 }}
+            animate={
+              isInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }
+            }
+            transition={{ duration: 0.6, delay: 0 }}
+            whileHover={{ scale: 1.15 }}
+          >
+            <span className="timeline-number">{step.number}</span>
+          </motion.div>
 
-        <motion.div
-          className={`timeline-content-side timeline-right ${step.side === "right" ? "text-side" : "icon-side"}`}
-          initial={{ opacity: 0, x: -50 }}
-          animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          {step.side === "right" ? (
-            <div className="timeline-text-card">
-              <p className="timeline-text text-left">{step.text}</p>
-            </div>
-          ) : (
-            <motion.div
-              className="timeline-icon-container"
-              initial={{ scale: 0, opacity: 0 }}
-              animate={
-                isInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }
-              }
-              transition={{ duration: 0.5, delay: 0.3 }}
-              whileHover={{ scale: 1.1, rotate: 6 }}
-            >
-              {step.icon}
-            </motion.div>
-          )}
-        </motion.div>
-      </div>
-
-      <motion.div
-        className="timeline-step-mobile"
-        initial={{ opacity: 0, y: 24 }}
-        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
-        transition={{ duration: 0.55, delay: 0.15 }}
-        style={{ marginBottom: isLast ? 0 : undefined }}
-      >
-        <div className="timeline-circle timeline-circle-mobile">
-          <span className="timeline-number">{step.number}</span>
+          <motion.div
+            className={`timeline-content-side timeline-right ${step.side === "right" ? "text-side" : "icon-side"}`}
+            initial={{ opacity: 0, x: -50 }}
+            animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            {step.side === "right" ? (
+              <div className="timeline-text-card">
+                <p className="timeline-text text-left">{step.text}</p>
+              </div>
+            ) : (
+              <motion.div
+                className="timeline-icon-container"
+                initial={{ scale: 0, opacity: 0 }}
+                animate={
+                  isInView ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }
+                }
+                transition={{ duration: 0.5, delay: 0.3 }}
+                whileHover={{ scale: 1.1, rotate: 6 }}
+              >
+                {step.icon}
+              </motion.div>
+            )}
+          </motion.div>
         </div>
-        <div className="timeline-mobile-card">
-          <div className="timeline-icon-container timeline-icon-container-mobile">
-            {step.icon}
+      ) : (
+        <motion.div
+          className="timeline-step-mobile"
+          initial={{ opacity: 0, y: 24 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+          transition={{ duration: 0.55, delay: 0.15 }}
+          style={{ marginBottom: isLast ? 0 : undefined }}
+        >
+          <div className="timeline-circle timeline-circle-mobile">
+            <span className="timeline-number">{step.number}</span>
           </div>
-          <p className="timeline-text timeline-text-mobile">{step.text}</p>
-        </div>
-      </motion.div>
+          <div className="timeline-mobile-card">
+            <div className="timeline-icon-container timeline-icon-container-mobile">
+              {step.icon}
+            </div>
+            <p className="timeline-text timeline-text-mobile">{step.text}</p>
+          </div>
+        </motion.div>
+      )}
     </div>
   );
 }
@@ -232,7 +236,7 @@ export default function TimelineSection() {
 
           <div className="timeline-steps-wrapper">
             {timelineSteps.map((step, index) => (
-              <TimelineStepComponent key={index} step={step} index={index} isLast={index === timelineSteps.length - 1} />
+              <TimelineStepComponent key={index} step={step} index={index} isLast={index === timelineSteps.length - 1} isMobile={isMobile} />
             ))}
           </div>
         </div>

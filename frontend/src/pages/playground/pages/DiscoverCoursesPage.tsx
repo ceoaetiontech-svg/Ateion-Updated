@@ -1,24 +1,104 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, Star, X, Search, LayoutGrid, List, BookOpen, Compass, Sprout, Sparkles, Clock, Signal, BarChart2, PlayCircle, GraduationCap } from "lucide-react";
-import { staggerContainer, fadeUpItem } from "../shared/types";
+import { Compass, Sprout, Sparkles, Search, Bot, Code, Languages, Cat, DollarSign, Palette, Award, Heart, RefreshCw } from "lucide-react";
+import type { AgeGroupId } from "../shared/types";
+import { slideInItem, staggerContainer, fadeUpItem } from "../shared/types";
+import { courseMatchesAgeGroup, normalizeAgeGroupId } from "../shared/courseAgeGroups";
 import { usePlayground } from "../shared/PlaygroundContext";
 import { useCourses } from "../hooks/useCourses";
 import { useNavigate } from "react-router";
-import { getTopicColor } from "../shared/topicColors";
 import { useState, useMemo, useCallback } from "react";
 import FilterBar from "../components/FilterBar";
 import CoursePreviewPopover from "../components/CoursePreviewPopover";
+import CoursePreviewCard from "../components/CoursePreviewCard";
 
 type SortOption = "popular" | "rating" | "newest" | "free";
 type ViewMode = "grid" | "list";
+type AgeGroupFilterId = "All" | AgeGroupId;
 
-const AGE_GROUPS = [
+const AGE_GROUPS: { id: AgeGroupFilterId; label: string; icon: JSX.Element }[] = [
   { id: "All", label: "All", icon: <Compass size={18} /> },
-  { id: "Sproutlings (5–7)", label: "Sproutlings (5–7)", icon: <Sprout size={18} /> },
-  { id: "Saplings (7–14)", label: "Saplings (7–14)", icon: <Sprout size={18} /> },
-  { id: "Pathfinders (14–18)", label: "Pathfinders (14–18)", icon: <Compass size={18} /> },
-  { id: "Dreamers (18+)", label: "Dreamers (18+)", icon: <Sparkles size={18} /> },
+  { id: "Sproutlings (5-7 age)", label: "Sproutlings (5-7 age)", icon: <Sprout size={18} /> },
+  { id: "Saplings (7-14 age)", label: "Saplings (7-14 age)", icon: <Sprout size={18} /> },
+  { id: "Pathfinders (14-18 age)", label: "Pathfinders (14-18 age)", icon: <Compass size={18} /> },
+  { id: "Dreamers (18+ age)", label: "Dreamers (18+ age)", icon: <Sparkles size={18} /> },
 ];
+
+const ALL_THEME = {
+  kicker: "Universal course library",
+  title: "All learning paths",
+  description: "Browse every course across age groups, goals and skill levels.",
+  accent: "var(--color-accent)",
+  activePill: "var(--color-accent)",
+  wallpaper: "radial-gradient(circle at 12% 18%, rgba(232,133,106,0.14), transparent 24%), radial-gradient(circle at 86% 12%, rgba(99,102,241,0.10), transparent 22%)",
+  panelClass: "border border-[var(--color-border-light)] bg-[var(--color-background-secondary)] shadow-sm",
+  cardClass: "rounded-3xl border border-[var(--color-border-light)] bg-[var(--color-background-secondary)] hover:border-[var(--color-accent)]/30 hover:shadow-[0_12px_30px_rgba(0,0,0,0.06)] overflow-hidden transition-all duration-300 relative",
+  imageOverlayClass: "bg-gradient-to-t from-[#000000]/80 via-[#000000]/20 to-transparent opacity-60 group-hover:opacity-80",
+  badgeClass: "rounded-lg border border-[#ffffff]/20 bg-[#ffffff]/10 text-[#ffffff]",
+  buttonClass: "border border-[var(--color-border-light)] bg-[var(--color-background-secondary)] text-[var(--color-text-primary)] group-hover:border-[var(--color-accent)] group-hover:bg-[var(--color-accent)] group-hover:text-[#fff] group-hover:shadow-[0_8px_20px_rgba(232,133,106,0.3)]",
+  listClass: "rounded-xl border border-l-[3px] border-[var(--color-border-light)] bg-[var(--color-background-secondary)] hover:shadow-md",
+};
+
+const AGE_GROUP_THEMES: Record<AgeGroupFilterId, typeof ALL_THEME> = {
+  All: ALL_THEME,
+  "Sproutlings (5-7 age)": ALL_THEME,
+  "Saplings (7-14 age)": ALL_THEME,
+  "Pathfinders (14-18 age)": ALL_THEME,
+  "Dreamers (18+ age)": ALL_THEME,
+};
+
+const CATEGORIES = [
+  { name: "AI", icon: Bot },
+  { name: "Coding", icon: Code },
+  { name: "Languages", icon: Languages },
+  { name: "Curious Kitty", icon: Cat },
+  { name: "Finance", icon: DollarSign },
+  { name: "Art", icon: Palette },
+  { name: "Advanced Skills", icon: Award },
+  { name: "Mental Health", icon: Heart },
+];
+
+const CATEGORY_THEMES: Record<string, { gradient: string; color: string; shadow: string }> = {
+  "AI": { 
+    gradient: "linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(217, 70, 239, 0.08) 100%)", 
+    color: "#a78bfa", 
+    shadow: "rgba(139, 92, 246, 0.25)" 
+  },
+  "Coding": { 
+    gradient: "linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(6, 182, 212, 0.08) 100%)", 
+    color: "#60a5fa", 
+    shadow: "rgba(59, 130, 246, 0.25)" 
+  },
+  "Languages": { 
+    gradient: "linear-gradient(135deg, rgba(249, 115, 22, 0.08) 0%, rgba(239, 68, 68, 0.08) 100%)", 
+    color: "#fb923c", 
+    shadow: "rgba(249, 115, 22, 0.25)" 
+  },
+  "Curious Kitty": { 
+    gradient: "linear-gradient(135deg, rgba(234, 179, 8, 0.08) 0%, rgba(249, 115, 22, 0.08) 100%)", 
+    color: "#facc15", 
+    shadow: "rgba(234, 179, 8, 0.25)" 
+  },
+  "Finance": { 
+    gradient: "linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(20, 184, 166, 0.08) 100%)", 
+    color: "#34d399", 
+    shadow: "rgba(16, 185, 129, 0.25)" 
+  },
+  "Art": { 
+    gradient: "linear-gradient(135deg, rgba(236, 72, 153, 0.08) 0%, rgba(244, 63, 94, 0.08) 100%)", 
+    color: "#f472b6", 
+    shadow: "rgba(236, 72, 153, 0.25)" 
+  },
+  "Advanced Skills": { 
+    gradient: "linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(59, 130, 246, 0.08) 100%)", 
+    color: "#818cf8", 
+    shadow: "rgba(99, 102, 241, 0.25)" 
+  },
+  "Mental Health": { 
+    gradient: "linear-gradient(135deg, rgba(13, 148, 136, 0.08) 0%, rgba(34, 197, 94, 0.08) 100%)", 
+    color: "#2dd4bf", 
+    shadow: "rgba(13, 148, 136, 0.25)" 
+  },
+};
 
 const SORTS: { id: SortOption; label: string }[] = [
   { id: "popular", label: "Most popular" },
@@ -27,38 +107,40 @@ const SORTS: { id: SortOption; label: string }[] = [
   { id: "free", label: "Free first" },
 ];
 
-const TOPIC_QUICK_FILTERS = ["Programming", "Data", "Design", "Video", "Excel", "Python", "Animation", "Languages"];
-
-function formatStudents(n: number): string {
-  return n >= 1000 ? `${(n / 1000).toFixed(1)}k` : String(n);
-}
-
 export default function DiscoverCoursesPage() {
-  const { courseQuery, setCourseQuery, activeAgeGroup, setActiveAgeGroup, savedIds, toggleSave, enrolledIds, enrollCourse, courseAccess } = usePlayground();
-  const { allCourses, discoverCourses } = useCourses(courseQuery, enrolledIds, courseAccess);
+  const { courseQuery, activeAgeGroup, setActiveAgeGroup, savedIds, toggleSave, enrolledIds, courseAccess, setToastMessage } = usePlayground();
+  const guestEnrolledIds = localStorage.getItem("token") ? enrolledIds : [];
+  const { allCourses, discoverCourses, isLoading, isWaking, error, refreshCourses } = useCourses(courseQuery, guestEnrolledIds, courseAccess);
   const navigate = useNavigate();
+
   const [sortBy, setSortBy] = useState<SortOption>("popular");
-  const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const [selectedLevels, setSelectedLevels] = useState<string[]>([]);
   const [selectedDurations, setSelectedDurations] = useState<string[]>([]);
   const [selectedRatings, setSelectedRatings] = useState<string[]>([]);
   const [selectedTopics, setSelectedTopics] = useState<string[]>([]);
   const [priceFilter, setPriceFilter] = useState<"all" | "free" | "paid">("all");
 
+  const normalizedAgeGroup = normalizeAgeGroupId(activeAgeGroup) as AgeGroupFilterId;
+  const activeTheme = AGE_GROUP_THEMES[normalizedAgeGroup] ?? AGE_GROUP_THEMES.All;
+
   const toggleArray = useCallback((setter: React.Dispatch<React.SetStateAction<string[]>>, val: string) => {
     setter(prev => prev.includes(val) ? prev.filter(v => v !== val) : [...prev, val]);
   }, []);
 
   const allTopics = useMemo(() => [...new Set(allCourses.flatMap(c => c.topics))], [allCourses]);
-  const freeCount = useMemo(() => allCourses.filter(c => c.isFree).length, [allCourses]);
+
+  const getCategoryCount = useCallback((catName: string) => {
+    return allCourses.filter(c => 
+      c.topics.some(t => t.toLowerCase() === catName.toLowerCase())
+    ).length;
+  }, [allCourses]);
 
   const displayCourses = useMemo(() => {
-    let filtered = discoverCourses.filter(c => {
-      const queryMatch = !courseQuery ||
-        c.title.toLowerCase().includes(courseQuery.toLowerCase()) ||
-        c.instructor.toLowerCase().includes(courseQuery.toLowerCase());
-      const ageMatch = activeAgeGroup === "All" || c.level.includes(activeAgeGroup);
+    return discoverCourses.filter(c => {
+      const queryMatch = !courseQuery || c.title.toLowerCase().includes(courseQuery.toLowerCase()) || c.instructor.toLowerCase().includes(courseQuery.toLowerCase());
+      const ageMatch = courseMatchesAgeGroup(c, activeAgeGroup);
       const levelMatch = !selectedLevels.length || selectedLevels.some(l => c.level.includes(l));
+
       const durationMatch = !selectedDurations.length || selectedDurations.some(d => {
         const hours = parseInt(c.duration);
         if (isNaN(hours)) return true;
@@ -68,381 +150,275 @@ export default function DiscoverCoursesPage() {
         if (d === "10h+") return hours >= 10;
         return true;
       });
+
       const ratingMatch = !selectedRatings.length || selectedRatings.some(r => c.rating >= parseFloat(r));
       const topicMatch = !selectedTopics.length || c.topics.some(t => selectedTopics.includes(t));
       const freeMatch = priceFilter === "all" || (priceFilter === "free" ? c.isFree : !c.isFree);
+
       return queryMatch && ageMatch && levelMatch && durationMatch && ratingMatch && topicMatch && freeMatch;
     });
-
-    switch (sortBy) {
-      case "popular": filtered.sort((a, b) => b.enrollments - a.enrollments); break;
-      case "rating": filtered.sort((a, b) => b.rating - a.rating); break;
-      case "newest": filtered.sort((a, b) => b.createdAt - a.createdAt); break;
-      case "free": filtered.sort((a, b) => Number(b.isFree) - Number(a.isFree)); break;
-    }
-    return filtered;
-  }, [discoverCourses, courseQuery, activeAgeGroup, selectedLevels, selectedDurations, selectedRatings, selectedTopics, priceFilter, sortBy]);
-
-  const chips = useMemo(() => [
-    ...selectedLevels.map(l => ({ label: l, onRemove: () => setSelectedLevels(selectedLevels.filter(v => v !== l)) })),
-    ...selectedDurations.map(d => ({ label: d, onRemove: () => setSelectedDurations(selectedDurations.filter(v => v !== d)) })),
-    ...selectedRatings.map(r => ({ label: `${r}+ stars`, onRemove: () => setSelectedRatings(selectedRatings.filter(v => v !== r)) })),
-    ...selectedTopics.map(t => ({ label: t, onRemove: () => setSelectedTopics(selectedTopics.filter(v => v !== t)) })),
-    ...(priceFilter !== "all" ? [{ label: priceFilter === "free" ? "Free" : "Paid", onRemove: () => setPriceFilter("all") }] : []),
-  ], [selectedLevels, selectedDurations, selectedRatings, selectedTopics, priceFilter]);
+  }, [discoverCourses, courseQuery, activeAgeGroup, selectedLevels, selectedDurations, selectedRatings, selectedTopics, priceFilter]);
 
   const clearFilters = useCallback(() => {
-    setSelectedLevels([]); setSelectedDurations([]); setSelectedRatings([]);
-    setSelectedTopics([]); setPriceFilter("all");
+    setSelectedLevels([]);
+    setSelectedDurations([]);
+    setSelectedRatings([]);
+    setSelectedTopics([]);
+    setPriceFilter("all");
   }, []);
 
-  const hasFilters = chips.length > 0;
+  const hasFilters = selectedLevels.length > 0 || selectedDurations.length > 0 || selectedRatings.length > 0 || selectedTopics.length > 0 || priceFilter !== "all";
 
-  const renderStars = useCallback((rating: number, size = 12) => (
-    <div className="flex items-center gap-0.5">
-      {[...Array(5)].map((_, i) => (
-        <Star key={i} size={size} className="text-[var(--color-warning)]" fill={i < Math.round(rating) ? "var(--color-warning)" : "none"} />
-      ))}
-    </div>
-  ), []);
+  const openProtectedCourse = useCallback((courseId: number) => {
+    if (!localStorage.getItem("token")) {
+      window.dispatchEvent(new CustomEvent("open-login"));
+      return;
+    }
+    navigate(`/playground/course/${courseId}`);
+  }, [navigate]);
 
-  const handleEnroll = useCallback((id: number, title: string) => {
-    enrollCourse(id, title);
-    navigate("/playground/my-courses");
-  }, [enrollCourse, navigate]);
+  const openPublicPreview = useCallback((previewModuleId: number | null) => {
+    if (previewModuleId) {
+      navigate(`/course-preview/${previewModuleId}`);
+      return;
+    }
 
-  const handleQuickTopic = useCallback((topic: string) => {
-    setSelectedTopics(prev => prev.includes(topic) ? prev.filter(t => t !== topic) : [...prev, topic]);
-  }, []);
+    setToastMessage("A preview is not available for this course yet.");
+    window.setTimeout(() => setToastMessage(null), 3000);
+  }, [navigate, setToastMessage]);
 
   return (
-    <div className="flex flex-col gap-6">
-
-      {/* Hero header */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[var(--color-background-secondary)] to-[var(--color-background-primary)] p-8 border border-[var(--color-border-light)]">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-[var(--color-accent)]/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />
-        <div className="absolute bottom-0 left-0 w-48 h-48 bg-[var(--color-info)]/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/4" />
-        <div className="relative z-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2 text-sm text-[var(--color-accent)] font-bold mb-2">
-              <Compass size={18} /> Discover
-            </div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-[var(--color-text-primary)]" style={{ fontFamily: "var(--font-display)" }}>
-              Explore {allCourses.length} courses
+      <motion.div
+        className="space-y-8"
+        variants={staggerContainer}
+        initial="hidden"
+        animate="show"
+      >
+        {/* 1. Dynamic Header Banner */}
+        <motion.div 
+          variants={fadeUpItem}
+          className={`p-8 rounded-3xl ${activeTheme.panelClass} relative overflow-hidden transition-all duration-300`} 
+          style={{ background: activeTheme.wallpaper }}
+        >
+          <div className="relative z-10 flex flex-col gap-2">
+            <span className="text-xs font-bold uppercase tracking-widest" style={{ color: activeTheme.accent }}>
+              {activeTheme.kicker}
+            </span>
+            <h1 
+              className="text-3xl md:text-4xl font-extrabold text-[var(--color-text-primary)] tracking-tight font-display" 
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              {activeTheme.title}
             </h1>
-            <p className="text-sm text-[var(--color-text-secondary)] mt-2 max-w-xl">
-              Find the perfect course for your goals — from programming and design to data science and languages.
+            <p className="text-sm text-[var(--color-text-secondary)] mt-1 max-w-2xl leading-relaxed">
+              {activeTheme.description}
             </p>
           </div>
-          <div className="flex items-center gap-6">
-            <div className="flex flex-col items-center">
-              <span className="text-2xl font-bold text-[var(--color-text-primary)]">{discoverCourses.length}</span>
-              <span className="text-[10px] text-[var(--color-text-tertiary)] uppercase tracking-wider font-bold">Available</span>
-            </div>
-            <div className="flex flex-col items-center">
-              <span className="text-2xl font-bold text-[var(--color-text-primary)]">{allTopics.length}</span>
-              <span className="text-[10px] text-[var(--color-text-tertiary)] uppercase tracking-wider font-bold">Topics</span>
-            </div>
-            <div className="flex flex-col items-center">
-              <span className="text-2xl font-bold text-[var(--color-text-primary)]">{freeCount}</span>
-              <span className="text-[10px] text-[var(--color-text-tertiary)] uppercase tracking-wider font-bold">Free</span>
-            </div>
-          </div>
-        </div>
-      </div>
+        </motion.div>
 
-      {/* Quick topic pills */}
-      <div className="flex snap-x overflow-x-auto hide-scrollbar gap-2 pb-1">
-        {TOPIC_QUICK_FILTERS.map(topic => (
-          <button
-            key={topic}
-            onClick={() => handleQuickTopic(topic)}
-            className={`inline-flex min-h-10 shrink-0 snap-start items-center justify-center rounded-full px-4 py-2 text-center text-xs font-bold leading-none transition-all ${
-              selectedTopics.includes(topic)
-                ? "bg-[var(--color-accent)] text-[#fff] shadow-md"
-                : "bg-[var(--color-background-secondary)] text-[var(--color-text-secondary)] border border-[var(--color-border-light)] hover:border-[var(--color-accent)]/30 hover:text-[var(--color-accent)]"
-            }`}
-          >
-            {topic}
-          </button>
-        ))}
-      </div>
+        {/* 2. Visual Glassmorphic Category Pills */}
+        <motion.div 
+          variants={fadeUpItem} 
+          className="flex md:flex-wrap gap-3 overflow-x-auto md:overflow-x-visible pb-2.5 md:pb-0 snap-x snap-mandatory scrollbar-none"
+        >
+          {CATEGORIES.map((cat) => {
+            const Icon = cat.icon;
+            const isSelected = selectedTopics.includes(cat.name);
+            const count = getCategoryCount(cat.name);
+            const theme = CATEGORY_THEMES[cat.name] || CATEGORY_THEMES.Coding;
 
-      {/* Search + controls row */}
-      <div className="flex items-center gap-3">
-        <div className="relative flex-1 max-w-lg group">
-          <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-[var(--color-text-tertiary)] group-focus-within:text-[var(--color-accent)] transition-colors">
-            <Search size={18} />
-          </div>
-          <input
-            type="text"
-            placeholder="Search courses, skills, instructors..."
-            value={courseQuery}
-            onChange={(e) => setCourseQuery(e.target.value)}
-            className="w-full bg-[var(--color-background-secondary)] border-2 border-[var(--color-border-light)] hover:border-[var(--color-border-medium)] focus:border-[var(--color-accent)] pl-12 pr-4 py-3.5 rounded-2xl text-[15px] font-medium focus:outline-none focus:ring-4 focus:ring-[var(--color-accent)]/10 text-[var(--color-text-primary)] transition-colors placeholder:text-[var(--color-text-tertiary)] placeholder:font-normal shadow-sm"
-          />
-        </div>
-        <div className="flex items-center gap-1 bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] rounded-xl p-1">
-          <button
-            onClick={() => setViewMode("grid")}
-            className={`p-2 rounded-lg transition-colors ${viewMode === "grid" ? "bg-[var(--color-background-primary)] text-[var(--color-accent)] shadow-sm" : "text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)]"}`}
-          >
-            <LayoutGrid size={16} />
-          </button>
-          <button
-            onClick={() => setViewMode("list")}
-            className={`p-2 rounded-lg transition-colors ${viewMode === "list" ? "bg-[var(--color-background-primary)] text-[var(--color-accent)] shadow-sm" : "text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)]"}`}
-          >
-            <List size={16} />
-          </button>
-        </div>
-      </div>
+            return (
+              <motion.button
+                key={cat.name}
+                onClick={() => toggleArray(setSelectedTopics, cat.name)}
+                whileHover={{ y: -2, scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                animate={isSelected ? {
+                  boxShadow: [`0 0 8px ${theme.shadow}`, `0 0 16px ${theme.shadow}`, `0 0 8px ${theme.shadow}`],
+                  borderColor: theme.color,
+                  background: theme.gradient,
+                } : {
+                  boxShadow: "0 2px 4px rgba(0,0,0,0.01)",
+                  borderColor: "var(--color-border-light)",
+                  background: "var(--color-background-secondary)",
+                }}
+                transition={isSelected ? {
+                  boxShadow: {
+                    repeat: Infinity,
+                    duration: 2,
+                    ease: "easeInOut"
+                  },
+                  borderColor: { duration: 0.2 },
+                  background: { duration: 0.2 }
+                } : { duration: 0.2 }}
+                className={`snap-start shrink-0 flex items-center gap-3 px-4 py-2.5 rounded-full border cursor-pointer transition-colors duration-200 outline-none backdrop-blur-md`}
+              >
+                {/* Left: Icon */}
+                <div 
+                  className="w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300 shrink-0"
+                  style={{
+                    backgroundColor: isSelected ? `${theme.color}25` : "var(--color-background-tertiary)",
+                    color: isSelected ? theme.color : "var(--color-text-secondary)",
+                  }}
+                >
+                  <Icon size={14} className="transition-transform group-hover:scale-110" />
+                </div>
 
-      {/* Age group pills */}
-      <div className="flex snap-x overflow-x-auto hide-scrollbar gap-3 pb-1 px-0.5">
-        {AGE_GROUPS.map((g) => (
-          <button
-            key={g.id}
-            onClick={() => setActiveAgeGroup(g.id)}
-            className={`relative inline-flex min-h-12 min-w-[112px] shrink-0 snap-start items-center justify-center gap-2.5 overflow-hidden rounded-2xl px-5 py-3 text-center text-[14px] font-bold leading-none transition-colors duration-500 group sm:min-w-0 sm:px-6 ${
-              activeAgeGroup === g.id
-                ? "text-[#fff] shadow-[0_8px_20px_rgba(0,0,0,0.12)] scale-105 border-transparent ring-4 ring-[var(--color-accent)]/10"
-                : "bg-[var(--color-background-secondary)] text-[var(--color-text-secondary)] border border-[var(--color-border-light)] hover:border-[var(--color-accent)]/30 hover:shadow-lg hover:-translate-y-1"
-            }`}
-          >
-            {activeAgeGroup === g.id && (
-              <div className="absolute inset-0 bg-gradient-to-br from-[#d97a60] via-[var(--color-accent)] to-[#ff9e88] z-0 opacity-90" />
-            )}
-            <div className={`relative z-10 flex min-w-0 items-center justify-center gap-2 ${activeAgeGroup === g.id ? "" : "group-hover:text-[var(--color-accent)] transition-colors duration-300"}`}>
-              <span className="shrink-0">{g.icon}</span>
-              <span className="truncate text-center">{g.label}</span>
-            </div>
-          </button>
-        ))}
-      </div>
+                {/* Center: Title */}
+                <span 
+                  className="text-xs font-bold transition-colors duration-200 truncate"
+                  style={{ color: isSelected ? theme.color : "var(--color-text-primary)" }}
+                >
+                  {cat.name}
+                </span>
 
-      {/* Filter bar */}
-      <div className="relative z-50 isolation-isolate">
-      <FilterBar
-        selectedDurations={selectedDurations}
-        toggleDuration={(v) => toggleArray(setSelectedDurations, v)}
-        selectedLevels={selectedLevels}
-        toggleLevel={(v) => toggleArray(setSelectedLevels, v)}
-        selectedRatings={selectedRatings}
-        toggleRating={(v) => toggleArray(setSelectedRatings, v)}
-        selectedTopics={selectedTopics}
-        toggleTopic={(v) => toggleArray(setSelectedTopics, v)}
-        allTopics={allTopics}
-        priceFilter={priceFilter}
-        setPriceFilter={setPriceFilter}
-        sortBy={sortBy}
-        setSortBy={setSortBy}
-        sortOptions={SORTS}
-        totalCount={displayCourses.length}
-        onClear={clearFilters}
-        hasFilters={hasFilters}
-      />
-      </div>
+                {/* Right: Count Badge */}
+                <span 
+                  className="text-[10px] font-bold px-2 py-0.5 rounded-full transition-colors duration-200"
+                  style={{
+                    backgroundColor: isSelected ? `${theme.color}20` : "var(--color-background-tertiary)",
+                    color: isSelected ? theme.color : "var(--color-text-tertiary)",
+                  }}
+                >
+                  {count}
+                </span>
+              </motion.button>
+            );
+          })}
+        </motion.div>
 
-      {/* Active filter chips */}
-      {hasFilters && (
-        <div className="flex flex-wrap items-center gap-2">
-          {chips.map((chip) => (
-            <span
-              key={chip.label}
-              className="flex items-center gap-1 text-xs bg-[var(--color-accent)]/10 text-[var(--color-accent)] px-3 py-1.5 rounded-full font-bold"
-            >
-              {chip.label}
-              <X size={12} className="cursor-pointer hover:scale-110 transition-transform" onClick={chip.onRemove} />
-            </span>
-          ))}
-        </div>
-      )}
 
-      {/* Course grid */}
-          {displayCourses.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-20 text-center bg-[var(--color-background-secondary)] rounded-3xl border border-dashed border-[var(--color-border-medium)]">
-              <div className="w-16 h-16 rounded-full bg-[var(--color-background-tertiary)] flex items-center justify-center text-[var(--color-text-tertiary)] mb-4">
-                <BookOpen size={32} />
-              </div>
-              <p className="text-[var(--color-text-primary)] font-bold text-lg mb-2">No courses match your filters</p>
-              <p className="text-sm text-[var(--color-text-secondary)] max-w-sm">Try adjusting your search or clearing filters</p>
-              {(courseQuery || hasFilters) && (
+        {/* 3. Age Group Tabs - Sleek & Modern Tab Pill Design */}
+        <motion.div variants={fadeUpItem} className="flex gap-2.5 flex-wrap">
+          {AGE_GROUPS.map((group) => {
+            const isActive = activeAgeGroup === group.id;
+            return (
                 <button
-                  onClick={() => { setCourseQuery(""); clearFilters(); }}
-                  className="mt-4 px-4 py-2 rounded-xl bg-[var(--color-accent)] text-[#fff] text-sm font-bold hover:brightness-110 transition-all"
+                    key={group.id}
+                    onClick={() => setActiveAgeGroup(group.id)}
+                    style={isActive ? { background: activeTheme.activePill } : {}}
+                    className={`px-4.5 py-2.5 rounded-full text-sm font-semibold cursor-pointer transition-all duration-200 flex items-center gap-2 ${
+                        isActive
+                            ? "text-white shadow-md shadow-[var(--color-accent_light)] border-transparent"
+                            : "bg-[var(--color-background-secondary)] text-[var(--color-text-secondary)] border border-[var(--color-border-light)] hover:bg-[var(--color-background-tertiary)] hover:border-[var(--color-accent)]"
+                    }`}
                 >
-                  Clear all filters
+                  <span className={`opacity-85 transition-transform ${isActive ? "scale-110" : ""}`}>{group.icon}</span>
+                  <span>{group.label}</span>
                 </button>
-              )}
-            </div>
-          ) : (
-            <AnimatePresence mode="wait">
-              {viewMode === "grid" ? (
-                <motion.div
-                  key="grid"
-                  className="grid auto-rows-fr grid-cols-1 justify-center gap-4 sm:grid-cols-[repeat(2,minmax(0,330px))] sm:gap-5 xl:grid-cols-[repeat(3,minmax(0,330px))]"
-                  variants={staggerContainer}
-                  initial="hidden"
-                  animate="show"
-                  exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.15 } }}
-                >
-                  {displayCourses.map(course => (
-                    <motion.div variants={fadeUpItem} key={course.id} className="h-full">
-                      <CoursePreviewPopover course={course} onEnroll={() => handleEnroll(course.id, course.title)}>
+            );
+          })}
+        </motion.div>
+
+        {/* 4. Filter Bar */}
+        <motion.div variants={fadeUpItem}>
+          <FilterBar
+              selectedDurations={selectedDurations}
+              toggleDuration={(v) => toggleArray(setSelectedDurations, v)}
+              selectedLevels={selectedLevels}
+              toggleLevel={(v) => toggleArray(setSelectedLevels, v)}
+              selectedRatings={selectedRatings}
+              toggleRating={(v) => toggleArray(setSelectedRatings, v)}
+              selectedTopics={selectedTopics}
+              toggleTopic={(v) => toggleArray(setSelectedTopics, v)}
+              allTopics={allTopics}
+              priceFilter={priceFilter}
+              setPriceFilter={setPriceFilter}
+              sortBy={sortBy}
+              setSortBy={(v) => setSortBy(v as SortOption)}
+              sortOptions={SORTS}
+              totalCount={displayCourses.length}
+              onClear={clearFilters}
+              hasFilters={hasFilters}
+          />
+        </motion.div>
+
+        {/* 5. Course Grid with Popovers */}
+        {isLoading && (
+            <motion.div variants={fadeUpItem} className="rounded-3xl border border-[var(--color-border-light)] bg-[var(--color-background-secondary)] px-6 py-16 text-center shadow-sm">
+              <div className="mx-auto mb-4 h-10 w-10 animate-spin rounded-full border-4 border-[var(--color-accent)] border-t-transparent" />
+              <p className="font-bold text-[var(--color-text-primary)] text-lg">
+                {isWaking ? "The course server is waking up…" : "Loading courses…"}
+              </p>
+              <p className="mt-1 text-sm text-[var(--color-text-secondary)]">
+                {isWaking
+                    ? "The first request can take longer on Render's free tier."
+                    : "Fetching the latest courses from the database."}
+              </p>
+            </motion.div>
+        )}
+
+        {!isLoading && error && (
+            <motion.div variants={fadeUpItem} className="rounded-3xl border border-red-500/20 bg-red-500/5 px-6 py-12 text-center shadow-sm">
+              <p className="font-bold text-[var(--color-text-primary)] text-lg">{error}</p>
+              <button
+                  onClick={() => void refreshCourses()}
+                  className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[var(--color-accent)] px-5 py-2.5 text-sm font-bold text-white shadow-md hover:brightness-110 transition-all cursor-pointer"
+              >
+                <RefreshCw size={16} /> Retry
+              </button>
+            </motion.div>
+        )}
+
+        {!isLoading && !error && (
+            <motion.div 
+              variants={staggerContainer}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 items-stretch auto-rows-fr"
+            >
+              <AnimatePresence mode="popLayout">
+                {displayCourses.map((course, index) => (
+                    <motion.div
+                        key={course.id}
+                        layout
+                        variants={fadeUpItem}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        className="h-full flex w-full"
+                    >
+                      <CoursePreviewPopover
+                          course={course}
+                          onReadMore={() => openProtectedCourse(course.id)}
+                          onPreview={() => openPublicPreview(course.previewModuleId)}
+                          onSave={() => toggleSave(course.id)}
+                          isSaved={savedIds.includes(course.id)}
+                      >
                         <div
-                          className="mx-auto flex h-full min-h-[430px] w-full max-w-[330px] cursor-pointer flex-col overflow-hidden rounded-3xl border border-t-[3px] border-[var(--color-border-light)] bg-[var(--color-background-secondary)] shadow-md transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-1 hover:border-[var(--color-accent)]/30 hover:shadow-xl group"
-                          style={{ borderTopColor: getTopicColor(course.topics) }}
-                          onClick={() => navigate(`/playground/course/${course.id}`)}
+                            onClick={() => openProtectedCourse(course.id)}
+                            className={`w-full cursor-pointer h-full transition-transform hover:-translate-y-1 flex flex-col group ${activeTheme.cardClass}`}
                         >
-                          <div className="relative h-[150px] w-full overflow-hidden">
-                            <div className="absolute inset-0 bg-gradient-to-t from-[#000000]/80 via-[#000000]/20 to-transparent z-10 opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
-                            <img
-                              src={course.image}
-                              alt={course.title}
-                              loading="lazy"
-                              onError={(e) => { (e.currentTarget as HTMLElement).style.display = "none"; }}
-                              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                            />
-                            <div className="absolute left-3 right-12 top-3 z-20 flex flex-wrap items-center gap-1.5">
-                              <div className="flex items-center gap-1.5 rounded-lg border border-[#ffffff]/20 bg-[#ffffff]/10 px-2.5 py-1.5 text-[10px] font-bold tracking-wider text-[#ffffff] shadow-lg backdrop-blur-md">
-                                <Signal size={12} /> {course.level}
-                              </div>
-                              <div className="flex items-center gap-1.5 rounded-lg border border-[#ffffff]/20 bg-[#ffffff]/10 px-2.5 py-1.5 text-[10px] font-bold tracking-wider text-[#ffffff] shadow-lg backdrop-blur-md">
-                                <Clock size={12} /> {course.duration}
-                              </div>
-                              {course.isFree && (
-                                <div className="rounded-lg bg-[#22c55e]/80 px-2.5 py-1.5 text-[10px] font-bold tracking-wider text-[#fff] shadow-lg backdrop-blur-md">FREE</div>
-                              )}
-                            </div>
-                            <button
-                              onClick={(e) => { e.stopPropagation(); toggleSave(course.id); }}
-                              className="absolute right-3 top-3 z-20 flex h-8 w-8 items-center justify-center rounded-full border border-[#ffffff]/20 bg-[#ffffff]/10 shadow-lg backdrop-blur-md transition-transform hover:scale-110"
-                            >
-                              <Heart size={16} className={savedIds.includes(course.id) ? "fill-red-500 text-red-500" : "text-[#fff]"} />
-                            </button>
-                            <div className="absolute bottom-3 left-3 right-3 z-20">
-                              <h4 className="line-clamp-2 min-h-10 text-[16px] font-bold leading-tight text-[#ffffff] drop-shadow-md">{course.title}</h4>
-                            </div>
-                          </div>
-                          <div className="relative flex flex-1 flex-col bg-[var(--color-background-secondary)] p-4">
-                            <div className="mt-1 flex min-h-6 items-center gap-2">
-                              <img src={course.instructorAvatar} className="w-6 h-6 rounded-full object-cover" />
-                              <span className="truncate text-xs text-[var(--color-text-secondary)]">{course.instructor}</span>
-                            </div>
-
-                            <div className="mt-2 flex min-h-4 items-center gap-1.5">
-                              <span className="text-xs font-bold text-[var(--color-warning)]">{course.rating}</span>
-                              {renderStars(course.rating, 11)}
-                              <span className="text-xs text-[var(--color-text-tertiary)]">({formatStudents(course.students)})</span>
-                            </div>
-
-                            <div className="mt-2 flex min-h-7 flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-[var(--color-text-tertiary)]">
-                              <span className="flex items-center gap-1"><BarChart2 size={12} /> {course.level}</span>
-                              <span className="flex items-center gap-1"><Clock size={12} /> {course.duration}</span>
-                              <span className="flex items-center gap-1"><PlayCircle size={12} /> {course.lessons} lessons</span>
-                            </div>
-
-                            <div className="mt-2.5 flex min-h-5 flex-wrap gap-1.5">
-                              {course.topics.slice(0, 3).map(topic => (
-                                <span
-                                  key={topic}
-                                  className="px-2 py-0.5 rounded-md text-[10px] font-bold"
-                                  style={{ backgroundColor: getTopicColor(course.topics) + "20", color: getTopicColor(course.topics) }}
-                                >
-                                  {topic}
-                                </span>
-                              ))}
-                            </div>
-
-                            <div className="mt-2.5 flex min-h-6 items-baseline gap-2">
-                              {!course.isFree && course.price && (
-                                <>
-                                <span className="text-base font-bold text-[var(--color-text-primary)]">{course.price}</span>
-                                {course.originalPrice && <span className="text-xs text-[var(--color-text-tertiary)] line-through">{course.originalPrice}</span>}
-                                {course.originalPrice && (
-                                  <span className="text-[10px] font-bold text-[var(--color-success)] bg-[var(--color-success)]/10 px-1.5 py-0.5 rounded">
-                                    {Math.round((1 - parseInt(course.price.replace(/[^0-9]/g, "")) / parseInt(course.originalPrice.replace(/[^0-9]/g, ""))) * 100)}% off
-                                  </span>
-                                )}
-                                </>
-                              )}
-                            </div>
-
-                            <div className="mt-auto pt-3">
-                              <button
-                                onClick={(e) => { e.stopPropagation(); handleEnroll(course.id, course.title); }}
-                                className="flex min-h-10 w-full items-center justify-center gap-2 rounded-xl border border-[var(--color-border-light)] bg-[var(--color-background-secondary)] px-4 py-2.5 text-center text-[14px] font-bold leading-none text-[var(--color-text-primary)] shadow-sm transition-colors duration-300 group-hover:border-[var(--color-accent)] group-hover:bg-[var(--color-accent)] group-hover:text-[#fff] group-hover:shadow-[0_8px_20px_rgba(232,133,106,0.3)] active:scale-95"
-                              >
-                                <span className="min-w-0 truncate text-center">{course.isEnrolled ? "Continue Learning" : "Enroll now"}</span>
-                                <GraduationCap size={16} className="shrink-0" />
-                              </button>
-                            </div>
-                          </div>
+                          <CoursePreviewCard
+                              course={course}
+                              onReadMore={() => openProtectedCourse(course.id)}
+                              onPreview={() => openPublicPreview(course.previewModuleId)}
+                              accentColor={activeTheme.accent}
+                              tourId={index === 0 ? "discover-preview-course" : undefined}
+                          />
                         </div>
                       </CoursePreviewPopover>
                     </motion.div>
-                  ))}
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="list"
-                  className="flex flex-col gap-4"
-                  variants={staggerContainer}
-                  initial="hidden"
-                  animate="show"
-                  exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.15 } }}
-                >
-                  {displayCourses.map(course => (
-                    <motion.div
-                      variants={fadeUpItem}
-                      key={course.id}
-                      className="grid cursor-pointer grid-cols-[88px_minmax(0,1fr)] gap-x-3 gap-y-2 rounded-xl border border-l-[3px] border-[var(--color-border-light)] bg-[var(--color-background-secondary)] p-3 transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-0.5 hover:shadow-md sm:grid-cols-[100px_minmax(0,1fr)_auto] sm:items-center sm:gap-4 sm:p-4"
-                      style={{ borderLeftColor: getTopicColor(course.topics) }}
-                      onClick={() => navigate(`/playground/course/${course.id}`)}
-                    >
-                      <div className="row-span-2 h-[68px] w-[88px] shrink-0 overflow-hidden rounded-lg bg-[var(--color-background-primary)] sm:h-[72px] sm:w-[100px]">
-                        <img
-                          src={course.image}
-                          alt={course.title}
-                          loading="lazy"
-                          onError={(e) => { (e.currentTarget as HTMLElement).style.display = "none"; }}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <h4 className="text-[15px] font-bold text-[var(--color-text-primary)] leading-tight truncate">{course.title}</h4>
-                        <p className="text-[12px] text-[var(--color-text-tertiary)] truncate mt-0.5">
-                          {course.instructor} · {course.level} · {course.duration} · {course.lessons} lessons
-                        </p>
-                        <div className="flex items-center gap-1.5 mt-1.5">
-                          <span className="text-[11px] font-bold text-[var(--color-warning)]">{course.rating}</span>
-                          {renderStars(course.rating, 10)}
-                          <span className="text-[10px] text-[var(--color-text-tertiary)]">({formatStudents(course.students)})</span>
-                        </div>
-                      </div>
-                      <div className="flex min-w-0 shrink-0 items-center justify-between gap-2 sm:row-span-2 sm:flex-col sm:items-end sm:justify-center">
-                        {course.isFree ? (
-                          <span className="rounded-md bg-[var(--color-success)]/10 px-2 py-1 text-[10px] font-bold text-[var(--color-success)]">Free</span>
-                        ) : course.price && (
-                          <div className="flex min-w-0 items-baseline gap-1">
-                            <span className="text-xs font-bold text-[var(--color-text-primary)]">{course.price}</span>
-                            {course.originalPrice && <span className="text-[10px] text-[var(--color-text-tertiary)] line-through">{course.originalPrice}</span>}
-                          </div>
-                        )}
+                ))}
+              </AnimatePresence>
+
+              {/* Empty State */}
+              {displayCourses.length === 0 && (
+                  <div className="col-span-full py-16 text-center text-[var(--color-text-tertiary)] flex flex-col items-center justify-center">
+                    <div className="w-16 h-16 rounded-2xl bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] flex items-center justify-center mb-4 text-[var(--color-text-tertiary)]">
+                      <Search size={28} />
+                    </div>
+                    <p className="text-lg font-bold text-[var(--color-text-primary)]">No courses found</p>
+                    <p className="text-sm text-[var(--color-text-tertiary)] mt-1">Try adjusting your filters or search query.</p>
+                    {hasFilters && (
                         <button
-                          onClick={(e) => { e.stopPropagation(); handleEnroll(course.id, course.title); }}
-                          className="inline-flex min-h-9 shrink-0 items-center justify-center rounded-lg border border-[var(--color-border-light)] bg-[var(--color-background-primary)] px-3.5 py-2 text-center text-[12px] font-semibold text-[var(--color-text-primary)] transition-colors hover:border-[var(--color-accent)] hover:bg-[var(--color-accent)] hover:text-[#fff]"
+                            onClick={clearFilters}
+                            className="mt-4 text-[var(--color-accent)] font-bold hover:underline cursor-pointer text-sm"
                         >
-                          {course.isEnrolled ? "Continue" : "Enroll now"}
+                          Clear all filters
                         </button>
-                      </div>
-                    </motion.div>
-                  ))}
-                </motion.div>
+                    )}
+                  </div>
               )}
-            </AnimatePresence>
-          )}
-    </div>
+            </motion.div>
+        )}
+
+      </motion.div>
   );
 }

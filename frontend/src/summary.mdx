@@ -1,0 +1,27 @@
+## Reflow & Loading Optimization (Session 3 — Jun 2026)
+
+### Layout thrashing fixes
+
+**DotMap.tsx** (high severity)
+- `offsetWidth`/`offsetHeight` → `entry.contentRect` from ResizeObserver (zero reflow on resize)
+- Removed `requestAnimationFrame` wrapper (unnecessary for async work)
+- Removed unused `lastWidth`/`lastHeight` module-level globals
+- One-time `getBoundingClientRect()` on mount only (unavoidable initial read)
+
+**EcosystemSection.tsx** (medium severity)
+- Removed redundant `window.addEventListener("resize", updateScales)` — ResizeObserver already captures all size changes, dual listeners caused `updateScales` to fire twice per resize
+- ResizeObserver now passes `entry.contentRect.width` directly, avoiding `clientWidth` forced reflow on resize
+
+**SharedFooter.tsx** (low severity, 6 locations)
+- Replaced inline `style.transform`/`style.color`/`style.textDecoration` writes on `onMouseEnter`/`onMouseLeave` with Tailwind `hover:scale-110` and existing `group-hover` utilities — avoids direct DOM style mutations on every mouse interaction
+
+### Resource hints
+- Added `<link rel="dns-prefetch">` for `cdn.jsdelivr.net`, `fonts.googleapis.com`, `fonts.gstatic.com` in index.html
+- Existing: preconnect, preload for hero images, `fetchpriority="high"` on logo
+
+### What was already optimal (no change needed)
+- All routes lazy-loaded via `React.lazy()`
+- Google Fonts loaded with `media="print"` (non-blocking)
+- Scroll handlers use `passive: true`
+- Framer Motion AnimatePresence for route transitions (page-level, not hot path)
+- CSS marquee animations (no JS-driven layout reads)

@@ -1,20 +1,12 @@
-import { useState, useCallback, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useCallback, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
-import { BookOpen, StickyNote, MessageCircle, Download, ArrowLeft, Star, Clock, BarChart2, PlayCircle, Users, Copy, ThumbsUp, MessageSquare, Paperclip, ExternalLink, FileText, CheckCircle, Zap, X } from "lucide-react";
+import { BookOpen, StickyNote, MessageCircle, Download, ArrowLeft, CheckCircle, Zap } from "lucide-react";
 import VideoPlayer from "../components/VideoPlayer";
-import CurriculumSidebar, { COURSE_SECTIONS, SECTIONS, Lesson } from "../components/CurriculumSidebar";
-import { MY_COURSES_DATA } from "../shared/mockData";
+import CurriculumSidebar, { Section, Lesson } from "../components/CurriculumSidebar";
 import { usePlayground } from "../shared/PlaygroundContext";
 
 type TabId = "overview" | "notes" | "qa" | "resources";
-
-interface TabDef {
-  id: TabId;
-  label: string;
-  icon: React.ComponentType<{ size?: number }>;
-}
-
+interface TabDef { id: TabId; label: string; icon: React.ComponentType<{ size?: number | string }>; }
 const TABS: TabDef[] = [
   { id: "overview", label: "Overview", icon: BookOpen },
   { id: "notes", label: "My Notes", icon: StickyNote },
@@ -22,330 +14,355 @@ const TABS: TabDef[] = [
   { id: "resources", label: "Resources", icon: Download },
 ];
 
-function parseDuration(d: string): number {
-  const [m, s] = d.split(":").map(Number);
-  return m * 60 + s;
-}
-
 export default function CoursePlayerPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { addXp, incrementStreak, addNote, deleteNote, notes, touchCourse } = usePlayground();
+  const { addXp, incrementStreak, addNote, notes, touchCourse } = usePlayground();
+
+  const courseId = Number(id);
+  const [courseTitle, setCourseTitle] = useState("Loading Course...");
+  // FIX 4: Store raw sections without baking `completed` into them at fetch time.
+  // `completed` is derived reactively at render time from `completedIds` so it
+  // never goes stale when the user marks lessons complete.
+  const [sections, setSections] = useState<Section[]>([]);
+  const [currentLesson, setCurrentLesson] = useState<Lesson | null>(null);
+  const [backendVideoId, setBackendVideoId] = useState<string | null>(null);
+  const [isVideoLoading, setIsVideoLoading] = useState(false);
+  const [videoError, setVideoError] = useState<string | null>(null);
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<TabId>("overview");
   const [noteInput, setNoteInput] = useState("");
 
-  const courseId = Number(id);
-  const course = MY_COURSES_DATA.find((c) => c.id === courseId);
-
-  useEffect(() => {
-    if (courseId) {
-      touchCourse(courseId);
-    }
-  }, [courseId, touchCourse]);
-  const sections = COURSE_SECTIONS[courseId] ?? SECTIONS;
-
-  const allLessons = sections.flatMap(s => s.lessons);
-  const totalLessons = allLessons.length;
-  const firstUnlocked = allLessons.find(l => !l.isLocked) || allLessons[0];
-  const [currentLesson, setCurrentLesson] = useState<Lesson>(firstUnlocked);
-
   const progressKey = `ateion_progress_${courseId}`;
   const [completedIds, setCompletedIds] = useState<Set<number>>(() => {
-    try {
-      return new Set(JSON.parse(localStorage.getItem(progressKey) || "[]"));
-    } catch {
-      return new Set<number>();
-    }
+    try { return new Set(JSON.parse(localStorage.getItem(progressKey) || "[]")); }
+    catch { return new Set<number>(); }
   });
-
-  const [xpFloats, setXpFloats] = useState<{ id: number; x: number; y: number }[]>([]);
-  const xpIdRef = useRef(0);
-
-  const derivedProgress = Math.round((completedIds.size / totalLessons) * 100);
 
   const persistCompleted = useCallback((ids: Set<number>) => {
     localStorage.setItem(progressKey, JSON.stringify([...ids]));
   }, [progressKey]);
 
-  const addXpFloat = useCallback(() => {
-    const id = ++xpIdRef.current;
-    const x = 120 + Math.random() * 40;
-    const y = 60 + Math.random() * 20;
-    setXpFloats(prev => [...prev, { id, x, y }]);
-    setTimeout(() => setXpFloats(prev => prev.filter(f => f.id !== id)), 1200);
-  }, []);
+  useEffect(() => {
+    try {
+      setCompletedIds(new Set(JSON.parse(localStorage.getItem(progressKey) || "[]")));
+    } catch {
+      setCompletedIds(new Set<number>());
+    }
+  }, [progressKey]);
 
-  const markComplete = (lessonId: number) => {
+  useEffect(() => {
+    if (courseId) touchCourse(courseId);
+  }, [courseId, touchCourse]);
+
+  // 1. Fetch Dynamic Course Curriculum
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const fetchCourse = async () => {
+      setIsLoading(true);
+      setError(null);
+      setCurrentLesson(null);
+      setBackendVideoId(null);
+
+      try {
+        if (!Number.isFinite(courseId) || courseId <= 0) {
+          throw new Error("Invalid course ID");
+        }
+
+        const token = localStorage.getItem("token");
+        const apiBase = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
+        const res = await fetch(`${apiBase}/content/courses/${courseId}/full`, {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+          signal: controller.signal,
+        });
+
+        if (!res.ok) {
+          throw new Error(`Course request failed with status ${res.status}`);
+        }
+
+        const data = await res.json();
+        const modules = Array.isArray(data?.modules) ? data.modules : [];
+
+        const mappedSections: Section[] = modules.map((mod: any) => ({
+          title: String(mod?.title ?? "Module"),
+          lessons: (Array.isArray(mod?.videos) ? mod.videos : []).map((vid: any) => {
+            const durationSeconds = Number(vid?.durationSeconds ?? 0);
+            return {
+              id: Number(vid.id),
+              title: String(vid?.title ?? "Untitled lesson"),
+              duration: `${Math.floor(durationSeconds / 60)}:${String(durationSeconds % 60).padStart(2, "0")}`,
+              completed: false,
+              isLocked: false,
+              isCurrent: false,
+            };
+          }),
+        }));
+
+        const firstLesson = mappedSections.flatMap(section => section.lessons)[0] ?? null;
+
+        setCourseTitle(String(data?.title ?? "Course"));
+        setSections(mappedSections);
+        setCurrentLesson(firstLesson);
+
+        if (!firstLesson) {
+          setError("No lessons are available in this course.");
+        }
+      } catch (err) {
+        if (err instanceof DOMException && err.name === "AbortError") return;
+        console.error("Failed to load course curriculum:", err);
+        setError("Failed to load course curriculum.");
+      } finally {
+        if (!controller.signal.aborted) setIsLoading(false);
+      }
+    };
+
+    void fetchCourse();
+    return () => controller.abort();
+  }, [courseId]);
+
+  // 2. Fetch Secured Video Access whenever the selected lesson changes.
+  useEffect(() => {
+    if (!currentLesson) return;
+
+    const controller = new AbortController();
+    const selectedLessonId = currentLesson.id;
+
+    const fetchVideoAccess = async () => {
+      setIsVideoLoading(true);
+      setVideoError(null);
+
+      try {
+        const token = localStorage.getItem("token");
+        const apiBase = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
+        const res = await fetch(`${apiBase}/content/videos/${selectedLessonId}/access`, {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+          signal: controller.signal,
+        });
+
+        if (!res.ok) {
+          let message = `Video access failed with status ${res.status}`;
+          try {
+            const body = await res.json();
+            if (typeof body?.message === "string") message = body.message;
+          } catch {
+            // The server may return an empty body. Keep the status-based message.
+          }
+          throw new Error(message);
+        }
+
+        const data = await res.json();
+        if (typeof data?.youtubeVideoId !== "string" || !data.youtubeVideoId.trim()) {
+          throw new Error("The server returned no YouTube video ID.");
+        }
+
+        if (!controller.signal.aborted) {
+          setBackendVideoId(data.youtubeVideoId.trim());
+        }
+      } catch (err) {
+        if (err instanceof DOMException && err.name === "AbortError") return;
+        console.error(`Failed to load video ${selectedLessonId}:`, err);
+        setVideoError(err instanceof Error ? err.message : "Failed to load this video.");
+      } finally {
+        if (!controller.signal.aborted) setIsVideoLoading(false);
+      }
+    };
+
+    void fetchVideoAccess();
+    return () => controller.abort();
+  }, [currentLesson?.id]);
+
+  const markComplete = useCallback(() => {
+    if (!currentLesson) return;
     setCompletedIds(prev => {
       const next = new Set(prev);
-      next.add(lessonId);
+      next.add(currentLesson.id);
       persistCompleted(next);
       return next;
     });
-    addXpFloat();
     addXp(50);
     incrementStreak();
-  };
-
-  if (!course) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-center">
-          <p className="text-lg font-bold text-[var(--color-text-primary)] mb-2">Course not found</p>
-          <button onClick={() => navigate("/playground/my-courses")} className="text-sm text-[var(--color-accent)] hover:underline">
-            Back to courses
-          </button>
-        </div>
-      </div>
-    );
-  }
+  }, [currentLesson, addXp, incrementStreak, persistCompleted]);
 
   const handleAddNote = () => {
-    if (!noteInput.trim()) return;
+    if (!noteInput.trim() || !currentLesson) return;
     addNote({ courseId, lessonId: currentLesson.id, text: `${noteInput} — at "${currentLesson.title}"` });
     setNoteInput("");
   };
 
+  // FIX 4 (continued): Derive sections with live `completed` flags by merging
+  // the raw fetched sections with the current completedIds set. This runs on
+  // every render where either `sections` or `completedIds` changes, so the
+  // sidebar always reflects the true completion state without requiring a
+  // re-fetch or additional state management.
+  const derivedSections: Section[] = sections.map(section => ({
+    ...section,
+    lessons: section.lessons.map(lesson => ({
+      ...lesson,
+      completed: completedIds.has(lesson.id),
+    })),
+  }));
+
+  const totalLessons = sections.flatMap(s => s.lessons).length;
+  const derivedProgress = totalLessons === 0 ? 0 : Math.round((completedIds.size / totalLessons) * 100);
+
+  if (isLoading) {
+    return (
+        <div className="flex items-center justify-center h-screen bg-[var(--color-background-primary)]">
+          <div className="w-10 h-10 border-4 border-[var(--color-accent)] border-t-transparent rounded-full animate-spin"></div>
+        </div>
+    );
+  }
+
+  if (error || !currentLesson) {
+    return (
+        <div className="flex items-center justify-center h-screen bg-[var(--color-background-primary)]">
+          <div className="text-center p-8 bg-[var(--color-background-secondary)] rounded-2xl border border-[var(--color-border-light)]">
+            <p className="text-xl font-bold text-[var(--color-text-primary)] mb-4">{error || "No lessons available"}</p>
+            <button onClick={() => navigate("/playground/discover")} className="px-6 py-2 bg-[var(--color-accent)] text-white rounded-lg hover:opacity-90"> Back to Discover </button>
+          </div>
+        </div>
+    );
+  }
+
+  const courseNotes = notes.filter(n => n.courseId === courseId);
+
   return (
-    <div className="flex h-full">
-      <div className="flex-1 flex flex-col min-w-0">
-        <div className="flex items-center gap-3 px-6 py-3 border-b border-[var(--color-border-light)] bg-[var(--color-background-secondary)]/50">
-          <button onClick={() => navigate("/playground/my-courses")} className="flex items-center gap-1.5 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors">
-            <ArrowLeft size={16} />
-            My Courses
-          </button>
-          <span className="text-sm text-[var(--color-text-tertiary)]">›</span>
-          <span className="text-sm text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] transition-colors cursor-pointer truncate max-w-[200px]" onClick={() => navigate(`/playground/course/${course.id}`)}>{course.title}</span>
-          <span className="text-sm text-[var(--color-text-tertiary)]">›</span>
-          <span className="text-sm text-[var(--color-text-primary)] font-medium truncate max-w-[200px]">{currentLesson.title}</span>
-        </div>
-
-        <div className="relative">
-          <VideoPlayer title={currentLesson.title} key={currentLesson.id} duration={parseDuration(currentLesson.duration)} onComplete={() => markComplete(currentLesson.id)} />
-          <AnimatePresence>
-            {xpFloats.map(f => (
-              <motion.div
-                key={f.id}
-                initial={{ opacity: 1, y: 0, scale: 0.5 }}
-                animate={{ opacity: 0, y: -60, scale: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-                className="absolute z-20 flex items-center gap-1 text-[var(--color-accent)] font-bold text-sm pointer-events-none drop-shadow-lg"
-                style={{ top: f.y, right: f.x }}
-              >
-                <Zap size={16} /> +50 XP
-              </motion.div>
-            ))}
-          </AnimatePresence>
-          <div className="absolute top-4 right-4 z-10 flex items-center gap-2">
-            {!completedIds.has(currentLesson.id) && (
-              <button
-                onClick={() => markComplete(currentLesson.id)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--color-success)]/90 text-white text-xs font-bold hover:bg-[var(--color-success)] transition-colors shadow-lg backdrop-blur-sm"
-              >
-                <CheckCircle size={14} />
-                Mark complete
-              </button>
-            )}
-            {completedIds.has(currentLesson.id) && (
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 text-white/80 text-xs font-bold backdrop-blur-sm shadow-lg">
-                <CheckCircle size={14} className="text-[var(--color-success)]" />
-                Completed
-              </div>
-            )}
+      <div className="flex h-full bg-[var(--color-background-primary)]">
+        {/* MAIN CONTENT */}
+        <div className="flex-1 flex flex-col min-w-0">
+          <div className="flex items-center gap-3 px-6 py-3 border-b border-[var(--color-border-light)] bg-[var(--color-background-secondary)]/50">
+            <button onClick={() => navigate("/playground/my-courses")} className="flex items-center gap-1.5 text-sm text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors">
+              <ArrowLeft size={16} /> My Courses
+            </button>
+            <span className="text-sm text-[var(--color-text-tertiary)]">›</span>
+            <span className="text-sm text-[var(--color-text-tertiary)] truncate max-w-[200px]">{courseTitle}</span>
+            <span className="text-sm text-[var(--color-text-tertiary)]">›</span>
+            <span className="text-sm text-[var(--color-text-primary)] font-medium truncate max-w-[200px]">{currentLesson.title}</span>
           </div>
-        </div>
 
-        <div className="border-b border-[var(--color-border-light)] bg-[var(--color-background-secondary)]/30">
-          <div className="flex">
-            {TABS.map((tab) => {
-              const Icon = tab.icon;
-              return (
+          <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
+            <div className="max-w-4xl mx-auto">
+              {/* The Player */}
+              <VideoPlayer
+                  videoId={backendVideoId}
+                  title={currentLesson.title}
+                  loading={isVideoLoading}
+                  error={videoError}
+                  onComplete={markComplete}
+              />
+              <div className="mt-2.5 flex items-center justify-end gap-1.5 px-1.5 opacity-85 hover:opacity-100 transition-opacity">
+                <span className="text-[10px] font-semibold uppercase tracking-wider text-[var(--color-text-muted)]" style={{ fontFamily: "var(--font-display)" }}>
+                  Powered by
+                </span>
+                <span className="text-[11px] font-extrabold text-[#FF0000] flex items-center gap-1">
+                  <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M23.498 6.163c-.272-.98-1.04-1.748-2.02-2.02C19.716 3.745 12 3.745 12 3.745s-7.715 0-9.478.398c-.98.272-1.748 1.04-2.02 2.02C.104 7.928.104 12 .104 12s0 4.072.398 5.837c.272.98 1.04 1.748 2.02 2.02 1.763.398 9.478.398 9.478.398s7.715 0 9.478-.398c.98-.272 1.748-1.04 2.02-2.02.398-1.765.398-5.837.398-5.837s0-4.07-.398-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                  </svg>
+                  YouTube
+                </span>
+              </div>
+
+              <div className="mt-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-2xl font-bold text-[var(--color-text-primary)] font-['OV_Soge']">{currentLesson.title}</h2>
+                  <p className="text-[var(--color-text-secondary)] mt-1">Module: {sections.find(s => s.lessons.some(l => l.id === currentLesson.id))?.title}</p>
+                </div>
                 <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-5 py-3 text-sm font-medium transition-colors relative ${
-                    activeTab === tab.id
-                      ? "text-[var(--color-accent)]"
-                      : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-background-tertiary)]"
-                  }`}
+                    onClick={markComplete}
+                    className={`flex items-center gap-2 px-6 py-3 rounded-xl font-bold transition-all shadow-sm ${
+                        completedIds.has(currentLesson.id)
+                            ? "bg-[var(--color-success)]/10 text-[var(--color-success)] cursor-default"
+                            : "bg-[var(--color-accent)] text-white hover:shadow-md hover:-translate-y-0.5"
+                    }`}
                 >
-                  <Icon size={15} />
-                  {tab.label}
-                  {activeTab === tab.id && <motion.div layoutId="tab-underline" className="absolute bottom-0 left-0 right-0 h-0.5 bg-[var(--color-accent)]" />}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        <div className="flex-1 overflow-y-auto p-6">
-          {activeTab === "overview" && (
-            <div className="max-w-3xl space-y-6">
-              <div>
-                <h2 className="text-lg font-bold text-[var(--color-text-primary)] mb-3">About This Course</h2>
-                <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
-                  This comprehensive course covers everything you need to know about {course.title}. Designed for {course.level} learners,
-                  you'll master key concepts through hands-on projects and real-world examples.
-                </p>
-              </div>
-
-              <div className="flex flex-wrap gap-4">
-                <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[var(--color-background-tertiary)] text-xs text-[var(--color-text-secondary)]">
-                  <BarChart2 size={14} /> {course.level}
-                </div>
-                <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[var(--color-background-tertiary)] text-xs text-[var(--color-text-secondary)]">
-                  <Clock size={14} /> {course.duration}
-                </div>
-                <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[var(--color-background-tertiary)] text-xs text-[var(--color-text-secondary)]">
-                  <PlayCircle size={14} /> {totalLessons} lessons
-                </div>
-                <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-[var(--color-background-tertiary)] text-xs text-[var(--color-text-secondary)]">
-                  <Users size={14} /> {course.enrollments.toLocaleString()} enrolled
-                </div>
-                <div className="flex items-center gap-1 px-3 py-2 rounded-lg bg-[var(--color-warning)]/10 text-xs text-[var(--color-warning)] font-bold">
-                  <Star size={14} fill="currentColor" /> {course.rating.toFixed(1)}
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-md font-bold text-[var(--color-text-primary)] mb-3">Your Progress</h3>
-                <div className="p-4 rounded-xl bg-[var(--color-background-secondary)] border border-[var(--color-border-light)]">
-                  <div className="flex items-center justify-between mb-2">
-                    <span className="text-sm font-semibold text-[var(--color-text-primary)]">{derivedProgress}% complete</span>
-                    <span className="text-xs text-[var(--color-text-tertiary)]">{completedIds.size} / {totalLessons} lessons</span>
-                  </div>
-                  <div className="w-full h-2.5 rounded-full bg-[var(--color-border-light)] overflow-hidden shadow-inner">
-                    <motion.div
-                      className="h-full rounded-full bg-gradient-to-r from-[var(--color-accent)] to-[#ff9e88]"
-                      initial={{ width: 0 }}
-                      animate={{ width: `${derivedProgress}%` }}
-                      transition={{ duration: 0.8, ease: "easeOut" }}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="text-md font-bold text-[var(--color-text-primary)] mb-3">Instructor</h3>
-                <div className="flex items-center gap-4 p-4 rounded-xl bg-[var(--color-background-secondary)] border border-[var(--color-border-light)]">
-                  <img src={course.instructorAvatar} alt={course.instructor} className="w-14 h-14 rounded-full object-cover ring-2 ring-[var(--color-border-light)]" />
-                  <div>
-                    <p className="text-sm font-bold text-[var(--color-text-primary)]">{course.instructor}</p>
-                    <p className="text-xs text-[var(--color-text-secondary)] mt-0.5">
-                      Senior Developer & Educator with 10+ years of experience in building scalable applications.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {activeTab === "notes" && (
-            <div className="max-w-3xl space-y-4">
-              <div className="flex gap-3">
-                <input
-                  type="text"
-                  value={noteInput}
-                  onChange={(e) => setNoteInput(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && handleAddNote()}
-                  placeholder={`Add a note — "${currentLesson.title}"`}
-                  className="flex-1 bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] focus:border-[var(--color-accent)] px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/10 text-[var(--color-text-primary)] placeholder:text-[var(--color-text-tertiary)]"
-                />
-                <button onClick={handleAddNote} className="px-4 py-2.5 bg-[var(--color-accent)] text-white rounded-xl text-sm font-bold hover:brightness-110 transition-all">
-                  Add Note
+                  <CheckCircle size={18} />
+                  {completedIds.has(currentLesson.id) ? "Completed" : "Mark Complete"}
                 </button>
               </div>
-              <div className="space-y-2">
-                {notes.filter(n => n.courseId === courseId).map(note => {
-                  const lessonName = note.text.includes('"') ? note.text.split('"')[1] : "";
+
+              {/* Tabs */}
+              <div className="flex gap-6 border-b border-[var(--color-border-light)] mt-8 overflow-x-auto hide-scrollbar">
+                {TABS.map(tab => {
+                  const Icon = tab.icon;
+                  const isActive = activeTab === tab.id;
                   return (
-                    <div key={note.id} className="flex items-start gap-3 p-3 rounded-lg bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] group hover:border-[var(--color-accent)]/20 transition-colors">
-                      <StickyNote size={16} className="shrink-0 mt-0.5 text-[var(--color-accent)]" />
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm text-[var(--color-text-secondary)]">{note.text}</p>
-                        <div className="flex items-center gap-2 mt-1.5">
-                          <span className="text-[10px] text-[var(--color-text-tertiary)]">{new Date(note.createdAt).toLocaleDateString()}</span>
-                          {lessonName && <span className="text-[9px] font-medium text-[var(--color-accent)] bg-[var(--color-accent)]/10 px-1.5 py-0.5 rounded">{lessonName}</span>}
-                        </div>
-                      </div>
                       <button
-                        onClick={() => deleteNote(note.id)}
-                        className="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-red-500/10 rounded text-[var(--color-text-tertiary)] hover:text-red-500"
+                          key={tab.id}
+                          onClick={() => setActiveTab(tab.id)}
+                          className={`flex items-center gap-2 py-4 border-b-2 transition-colors whitespace-nowrap ${
+                              isActive ? "border-[var(--color-accent)] text-[var(--color-accent)]" : "border-transparent text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
+                          }`}
                       >
-                        <X size={14} />
+                        <Icon size={18} /> <span className="font-semibold text-sm">{tab.label}</span>
                       </button>
-                    </div>
                   );
                 })}
               </div>
-            </div>
-          )}
 
-          {activeTab === "qa" && (
-            <div className="max-w-3xl space-y-4">
-              <div className="flex gap-3">
-                <input type="text" placeholder="Ask a question about this lesson..." className="flex-1 bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] focus:border-[var(--color-accent)] px-4 py-2.5 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)]/10 text-[var(--color-text-primary)] placeholder:text-[var(--color-text-tertiary)]" />
-                <button className="px-4 py-2.5 bg-[var(--color-accent)] text-white rounded-xl text-sm font-bold hover:brightness-110 transition-all">Ask</button>
+              <div className="py-6">
+                {activeTab === "overview" && (
+                    <div className="text-[var(--color-text-secondary)] leading-relaxed space-y-4">
+                      <p>This is a dynamically generated lesson view for <strong>{currentLesson.title}</strong>.</p>
+                      <p>Watch the video above, and click "Mark Complete" when finished to earn XP and increase your streak!</p>
+                    </div>
+                )}
+                {activeTab === "notes" && (
+                    <div className="space-y-6">
+                      <div className="bg-[var(--color-background-secondary)] rounded-xl border border-[var(--color-border-light)] p-2 flex gap-2">
+                        <input
+                            type="text"
+                            value={noteInput}
+                            onChange={(e) => setNoteInput(e.target.value)}
+                            onKeyDown={(e) => e.key === "Enter" && handleAddNote()}
+                            placeholder="Type a note and press Enter..."
+                            className="flex-1 bg-transparent border-none outline-none px-3 text-sm text-[var(--color-text-primary)]"
+                        />
+                        <button onClick={handleAddNote} className="bg-[var(--color-accent)] text-white p-2 rounded-lg hover:opacity-90 transition-opacity">
+                          <Zap size={16} />
+                        </button>
+                      </div>
+                      <div className="space-y-3">
+                        {courseNotes.map(n => (
+                            <div key={n.id} className="p-4 rounded-xl bg-[var(--color-background-secondary)] border border-[var(--color-border-light)]">
+                              <p className="text-sm text-[var(--color-text-primary)]">{n.text}</p>
+                            </div>
+                        ))}
+                      </div>
+                    </div>
+                )}
               </div>
-              {[
-                { q: "How does this pattern compare to the Observer pattern?", a: "Great question! While both deal with event-driven communication, the key difference is that this pattern uses a centralized mediator rather than direct subscriptions.", votes: 24, replies: 3 },
-                { q: "Is there a practical example of this in the exercises?", a: "Yes, check out lesson 5 where we build a chat application using this exact pattern.", votes: 18, replies: 1 },
-              ].map((item, i) => (
-                <div key={i} className="p-4 rounded-xl bg-[var(--color-background-secondary)] border border-[var(--color-border-light)]">
-                  <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full bg-[var(--color-accent)]/20 flex items-center justify-center text-xs font-bold text-[var(--color-accent)] shrink-0">U</div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold text-[var(--color-text-primary)]">{item.q}</p>
-                      <p className="text-sm text-[var(--color-text-secondary)] mt-2 leading-relaxed">{item.a}</p>
-                      <div className="flex items-center gap-4 mt-3">
-                        <button className="flex items-center gap-1 text-xs text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] transition-colors"><ThumbsUp size={13} /> {item.votes}</button>
-                        <button className="flex items-center gap-1 text-xs text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] transition-colors"><MessageSquare size={13} /> {item.replies} replies</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
             </div>
-          )}
+          </div>
+        </div>
 
-          {activeTab === "resources" && (
-            <div className="max-w-3xl space-y-3">
-              {[
-                { name: "Lesson Slides (PDF)", size: "2.4 MB", icon: FileText },
-                { name: "Source Code - Lesson 3", size: "1.1 MB", icon: Paperclip },
-                { name: "Cheat Sheet Reference", size: "0.8 MB", icon: BookOpen },
-                { name: "External Reading List", size: "Link", icon: ExternalLink },
-              ].map((resource, i) => {
-                const Icon = resource.icon;
-                return (
-                  <div key={i} className="flex items-center justify-between p-4 rounded-xl bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] hover:border-[var(--color-accent)]/30 hover:shadow-sm transition-all group cursor-pointer">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-lg bg-[var(--color-accent)]/10 flex items-center justify-center">
-                        <Icon size={18} className="text-[var(--color-accent)]" />
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium text-[var(--color-text-primary)] group-hover:text-[var(--color-accent)] transition-colors">{resource.name}</p>
-                        <p className="text-xs text-[var(--color-text-tertiary)]">{resource.size}</p>
-                      </div>
-                    </div>
-                    <Download size={16} className="text-[var(--color-text-tertiary)] group-hover:text-[var(--color-accent)] transition-colors" />
-                  </div>
-                );
-              })}
+        {/* CURRICULUM SIDEBAR */}
+        <div className="w-80 border-l border-[var(--color-border-light)] bg-[var(--color-background-secondary)] flex-col hidden lg:flex">
+          <div className="p-4 border-b border-[var(--color-border-light)] bg-[var(--color-background-primary)]/50">
+            <h2 className="font-bold text-[var(--color-text-primary)] text-lg mb-4 truncate">{courseTitle}</h2>
+            <div className="flex justify-between items-center mb-1.5">
+              <span className="text-[var(--color-text-secondary)] text-xs font-bold">Course Progress</span>
+              <span className="text-[var(--color-accent)] text-xs font-bold">{derivedProgress}%</span>
             </div>
-          )}
+            <div className="w-full h-1.5 bg-[var(--color-border-light)] rounded-full overflow-hidden">
+              <div className="h-full bg-[var(--color-accent)] rounded-full transition-all duration-500" style={{ width: `${derivedProgress}%` }} />
+            </div>
+          </div>
+          <div className="flex-1 overflow-y-auto custom-scrollbar">
+            {/* FIX 4 (continued): Pass derivedSections (with live completed flags)
+                instead of raw sections so the sidebar always reflects real progress. */}
+            <CurriculumSidebar
+                sections={derivedSections}
+                currentLessonId={currentLesson.id}
+                completedIds={completedIds}
+                onLessonSelect={(lesson) => {
+                  if (lesson.id !== currentLesson.id) setCurrentLesson(lesson);
+                }}
+            />
+          </div>
         </div>
       </div>
-
-      <aside className="w-80 border-l border-[var(--color-border-light)] overflow-y-auto shrink-0 hidden lg:block">
-        <CurriculumSidebar
-          sections={sections}
-          currentLessonId={currentLesson.id}
-          completedIds={completedIds}
-          onLessonSelect={(lesson) => { if (!lesson.isLocked) setCurrentLesson(lesson); }}
-        />
-      </aside>
-    </div>
   );
 }

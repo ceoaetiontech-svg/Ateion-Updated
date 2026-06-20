@@ -3,7 +3,6 @@
 @import "./tailwind.css";
 
 html {
-  overflow-x: hidden;
   overflow-y: auto;
   background-color: var(--color-background-primary);
   color: var(--color-text-primary);

@@ -68,6 +68,7 @@ export default function DashboardPage() {
             <div className="flex flex-wrap gap-4">
               <button
                 onClick={() => navigate(lastResume ? `/playground/course/${lastResume.id}` : "/playground/discover")}
+                data-tour={!lastResume ? "dashboard-discover-courses" : undefined}
                 className="bg-[var(--color-accent)] hover:bg-[var(--color-accent)]/90 text-[#ffffff] px-8 py-3.5 rounded-2xl font-bold shadow-[0_0_20px_rgba(232,133,106,0.3)] hover:shadow-[0_0_30px_rgba(232,133,106,0.5)] hover:-translate-y-1 transition-[transform,box-shadow,background-color] duration-200 ease-out flex items-center gap-2 border border-transparent"
               >
                 {lastResume ? <><Play size={18} /> Resume Learning</> : <><Compass size={18} /> Discover Courses</>} <ChevronRight size={18} />

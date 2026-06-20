@@ -74,7 +74,7 @@ function loadEnrolledIds(): number[] {
   } catch {
     /* ignore */
   }
-  return [1, 2, 4];
+  return [];
 }
 
 function loadStreak(): number {
@@ -217,7 +217,7 @@ export function PlaygroundProvider({ children }: { children: ReactNode }) {
 
   const toggleTask = useCallback((id: number) => {
     setTasks((prev) =>
-      prev.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t)),
+        prev.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t)),
     );
   }, []);
 
@@ -236,28 +236,28 @@ export function PlaygroundProvider({ children }: { children: ReactNode }) {
   }, [newTask]);
 
   return (
-    <PlaygroundContext.Provider
-      value={{
-        courseQuery, setCourseQuery,
-        userProfile, setUserProfile,
-        activeAgeGroup, setActiveAgeGroup,
-        tasks, toggleTask,
-        selectedMood, setSelectedMood,
-        showAddTask, setShowAddTask,
-        newTask, setNewTask,
-        handleAddTask,
-        savedIds, toggleSave,
-        enrolledIds, enrollCourse,
-        toastMessage, setToastMessage,
-        streak, incrementStreak, xp, addXp,
-        notes, addNote, deleteNote,
-        events, addEvent, removeEvent,
-        selectedDate, setSelectedDate,
-        courseAccess, touchCourse,
-      }}
-    >
-      {children}
-    </PlaygroundContext.Provider>
+      <PlaygroundContext.Provider
+          value={{
+            courseQuery, setCourseQuery,
+            userProfile, setUserProfile,
+            activeAgeGroup, setActiveAgeGroup,
+            tasks, toggleTask,
+            selectedMood, setSelectedMood,
+            showAddTask, setShowAddTask,
+            newTask, setNewTask,
+            handleAddTask,
+            savedIds, toggleSave,
+            enrolledIds, enrollCourse,
+            toastMessage, setToastMessage,
+            streak, incrementStreak, xp, addXp,
+            notes, addNote, deleteNote,
+            events, addEvent, removeEvent,
+            selectedDate, setSelectedDate,
+            courseAccess, touchCourse,
+          }}
+      >
+        {children}
+      </PlaygroundContext.Provider>
   );
 }
 

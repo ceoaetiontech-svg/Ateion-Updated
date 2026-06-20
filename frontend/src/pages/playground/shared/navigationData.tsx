@@ -2,38 +2,29 @@ import {
   BookOpen,
   BookMarked,
   Compass,
-  Map,
   Award,
-  Rocket,
-  ListVideo,
-  TrendingUp,
-  Zap,
-  Sparkles,
   Sprout,
   Heart,
-  Brain,
   Lightbulb,
-  Smile,
-  Wind,
   StickyNote,
   FolderKanban,
   CheckSquare,
   Calendar,
   FileText,
-  Target,
-  FolderOpen,
   Milestone,
+  Headphones,
+  type LucideIcon,
 } from "lucide-react";
 
 export interface NavItem {
   title: string;
-  icon: React.ComponentType<{ size?: number }>;
+  icon: LucideIcon;
   path: string;
 }
 
 export interface NavSection {
   title: string;
-  icon: React.ComponentType<{ size?: number }>;
+  icon: LucideIcon;
   items: NavItem[];
 }
 
@@ -45,17 +36,14 @@ export const navigationSections: NavSection[] = [
       { title: "My Courses", icon: BookMarked, path: "/playground/my-courses" },
       { title: "Saved Courses", icon: Heart, path: "/playground/saved" },
       { title: "Discover Courses", icon: Compass, path: "/playground/discover" },
-      { title: "Learning Paths", icon: Map, path: "/playground/learning-paths" },
       { title: "Completed Courses", icon: Award, path: "/playground/completed" },
     ],
   },
   {
-    title: "Upskill",
-    icon: Rocket,
+    title: "Audio Library",
+    icon: Headphones,
     items: [
-      { title: "Skill Playlists", icon: ListVideo, path: "/playground/playlists" },
-      { title: "Trending Skills", icon: TrendingUp, path: "/playground/trending" },
-      { title: "Quick Learning", icon: Zap, path: "/playground/quick-learning" },
+      { title: "Audiobooks", icon: Headphones, path: "/playground/audiobooks" },
     ],
   },
   {
@@ -74,18 +62,6 @@ export const navigationSections: NavSection[] = [
       { title: "Tasks", icon: CheckSquare, path: "/playground/tasks" },
       { title: "Calendar", icon: Calendar, path: "/playground/calendar" },
       { title: "Notes", icon: FileText, path: "/playground/notes" },
-      { title: "Goal Planning", icon: Target, path: "/playground/goal-planning" },
-      { title: "Resources", icon: FolderOpen, path: "/playground/resources" },
-    ],
-  },
-  {
-    title: "Pillar",
-    icon: Milestone,
-    items: [
-      { title: "Sproutlings (5-7)", icon: Sprout, path: "/playground/sproutlings" },
-      { title: "Saplings (7-14)", icon: Sprout, path: "/playground/saplings" },
-      { title: "Pathfinders (14-18)", icon: Compass, path: "/playground/pathfinders" },
-      { title: "Dreamers (18+)", icon: Sparkles, path: "/playground/dreamers" },
     ],
   },
 ];
