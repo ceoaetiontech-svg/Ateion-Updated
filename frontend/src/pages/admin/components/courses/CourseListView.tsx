@@ -311,6 +311,7 @@ export default function CourseListView({ onCourseSelect }: { onCourseSelect?: (i
                           <TrendingUp size={16} />
                         </button>
                         <button
+                          onClick={(e) => { e.stopPropagation(); onCourseSelect?.(course.id); }}
                           className="p-2 rounded-lg text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] hover:bg-[var(--color-accent)]/10 transition-all cursor-pointer hover:scale-105 active:scale-95"
                           title="Edit Course"
                         >
