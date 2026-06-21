@@ -30,8 +30,8 @@ const ALL_THEME = {
   accent: "var(--color-accent)",
   activePill: "var(--color-accent)",
   wallpaper: "radial-gradient(circle at 12% 18%, rgba(232,133,106,0.14), transparent 24%), radial-gradient(circle at 86% 12%, rgba(99,102,241,0.10), transparent 22%)",
-  panelClass: "border border-[var(--color-border-light)] bg-[var(--color-background-secondary)] shadow-sm",
-  cardClass: "rounded-3xl border border-[var(--color-border-light)] bg-[var(--color-background-secondary)] hover:border-[var(--color-accent)]/30 hover:shadow-[0_12px_30px_rgba(0,0,0,0.06)] overflow-hidden transition-all duration-300 relative",
+  panelClass: "border border-[var(--color-border-light)] bg-[var(--color-background-secondary)]/50 backdrop-blur-md shadow-sm",
+  cardClass: "rounded-[32px] border border-[var(--color-border-medium)] bg-[var(--color-background-secondary)]/60 backdrop-blur-md hover:border-[var(--color-accent)]/45 hover:shadow-[0_20px_40px_rgba(232,133,106,0.08)] overflow-hidden transition-all duration-300 relative",
   imageOverlayClass: "bg-gradient-to-t from-[#000000]/80 via-[#000000]/20 to-transparent opacity-60 group-hover:opacity-80",
   badgeClass: "rounded-lg border border-[#ffffff]/20 bg-[#ffffff]/10 text-[#ffffff]",
   buttonClass: "border border-[var(--color-border-light)] bg-[var(--color-background-secondary)] text-[var(--color-text-primary)] group-hover:border-[var(--color-accent)] group-hover:bg-[var(--color-accent)] group-hover:text-[#fff] group-hover:shadow-[0_8px_20px_rgba(232,133,106,0.3)]",
@@ -231,16 +231,16 @@ export default function DiscoverCoursesPage() {
               <motion.button
                 key={cat.name}
                 onClick={() => toggleArray(setSelectedTopics, cat.name)}
-                whileHover={{ y: -2, scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+                whileHover={{ y: -3, scale: 1.04 }}
+                whileTap={{ scale: 0.97 }}
                 animate={isSelected ? {
-                  boxShadow: [`0 0 8px ${theme.shadow}`, `0 0 16px ${theme.shadow}`, `0 0 8px ${theme.shadow}`],
+                  boxShadow: [`0 4px 12px ${theme.shadow}`, `0 6px 20px ${theme.shadow}`, `0 4px 12px ${theme.shadow}`],
                   borderColor: theme.color,
                   background: theme.gradient,
                 } : {
-                  boxShadow: "0 2px 4px rgba(0,0,0,0.01)",
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.02)",
                   borderColor: "var(--color-border-light)",
-                  background: "var(--color-background-secondary)",
+                  background: "var(--color-background-secondary)/50",
                 }}
                 transition={isSelected ? {
                   boxShadow: {
@@ -251,11 +251,11 @@ export default function DiscoverCoursesPage() {
                   borderColor: { duration: 0.2 },
                   background: { duration: 0.2 }
                 } : { duration: 0.2 }}
-                className={`snap-start shrink-0 flex items-center gap-3 px-4 py-2.5 rounded-full border cursor-pointer transition-colors duration-200 outline-none backdrop-blur-md`}
+                className={`snap-start shrink-0 flex items-center gap-3 px-5 py-3 rounded-2xl border cursor-pointer transition-colors duration-200 outline-none backdrop-blur-md font-bold`}
               >
                 {/* Left: Icon */}
                 <div 
-                  className="w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300 shrink-0"
+                  className="w-7 h-7 rounded-xl flex items-center justify-center transition-all duration-300 shrink-0"
                   style={{
                     backgroundColor: isSelected ? `${theme.color}25` : "var(--color-background-tertiary)",
                     color: isSelected ? theme.color : "var(--color-text-secondary)",
@@ -266,7 +266,7 @@ export default function DiscoverCoursesPage() {
 
                 {/* Center: Title */}
                 <span 
-                  className="text-xs font-bold transition-colors duration-200 truncate"
+                  className="text-xs transition-colors duration-200 truncate"
                   style={{ color: isSelected ? theme.color : "var(--color-text-primary)" }}
                 >
                   {cat.name}
@@ -274,7 +274,7 @@ export default function DiscoverCoursesPage() {
 
                 {/* Right: Count Badge */}
                 <span 
-                  className="text-[10px] font-bold px-2 py-0.5 rounded-full transition-colors duration-200"
+                  className="text-[10px] font-extrabold px-2 py-0.5 rounded-lg transition-colors duration-200"
                   style={{
                     backgroundColor: isSelected ? `${theme.color}20` : "var(--color-background-tertiary)",
                     color: isSelected ? theme.color : "var(--color-text-tertiary)",

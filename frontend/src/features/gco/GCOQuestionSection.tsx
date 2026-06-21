@@ -1,31 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router";
 import { motion } from "framer-motion";
 import { Scale, Network, ArrowLeftRight, Compass } from "lucide-react";
+import { useBreakpoints } from "../../app/components/hooks/use-breakpoints";
 
 export default function GCOQuestionSection() {
   const navigate = useNavigate();
-
-  const [viewportWidth, setViewportWidth] = useState(
-    typeof window !== "undefined" ? window.innerWidth : 1200,
-  );
-
-  useEffect(() => {
-    let ticking = false;
-    const handleResize = () => {
-      if (ticking) return;
-      requestAnimationFrame(() => {
-        setViewportWidth(window.innerWidth);
-        ticking = false;
-      });
-      ticking = true;
-    };
-    window.addEventListener("resize", handleResize, { passive: true });
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  const isMobile = viewportWidth <= 768;
-  const isSmallMobile = viewportWidth <= 480;
+  const { isMobile, isSmallMobile } = useBreakpoints();
 
   const cards = [
     {

@@ -328,47 +328,272 @@ function GlobalPresenceMapSection() {
    EDUCATION STATUS WRAPPER — clay card with ticker
 ───────────────────────────────────────────── */
 
-const cardAccents = [
-  "#E8856A",
-  "#C8C5DC",
-  "#E8856A",
-  "#C8C5DC",
-  "#E8856A",
-  "#C8C5DC",
+interface QuoteItem {
+  text: string;
+  highlight: string;
+  source: string;
+  link: string;
+  colSpan: string;
+  glowColor: string;
+  accentColor: string;
+}
+
+const bentoQuotes: QuoteItem[] = [
+  {
+    text: "Degrees Are Rising. ",
+    highlight: "Job Readiness Isn't.",
+    source: "World Economic Forum",
+    link: "https://www.weforum.org/reports/the-future-of-jobs-report-2023/",
+    colSpan: "md:col-span-7",
+    glowColor: "rgba(232, 133, 106, 0.15)",
+    accentColor: "var(--color-accent)",
+  },
+  {
+    text: "High Scores. ",
+    highlight: "Low Thinking.",
+    source: "Harvard Graduate School of Education",
+    link: "https://www.gse.harvard.edu/ideas/usable-knowledge/18/07/why-we-need-rethink-learning",
+    colSpan: "md:col-span-5",
+    glowColor: "rgba(167, 162, 196, 0.25)",
+    accentColor: "#A7A2C4",
+  },
+  {
+    text: "Education Moves in Years. ",
+    highlight: "The World Moves in Weeks.",
+    source: "McKinsey & Company",
+    link: "https://www.mckinsey.com/industries/education/our-insights/how-technology-is-shaping-learning",
+    colSpan: "md:col-span-5",
+    glowColor: "rgba(107, 142, 232, 0.15)",
+    accentColor: "#6B8EE8",
+  },
+  {
+    text: "Students Are Being Trained for a ",
+    highlight: "World That No Longer Exists.",
+    source: "Stanford AI Index",
+    link: "https://aiindex.stanford.edu/report/",
+    colSpan: "md:col-span-7",
+    glowColor: "rgba(242, 201, 76, 0.15)",
+    accentColor: "#F2C94C",
+  },
+  {
+    text: "The World Is Moving Beyond Marks. ",
+    highlight: "Most Schools Aren't.",
+    source: "OECD (PISA & Education Trends)",
+    link: "https://www.oecd.org/education/global-competence/",
+    colSpan: "md:col-span-6",
+    glowColor: "rgba(39, 174, 96, 0.15)",
+    accentColor: "#27AE60",
+  },
+  {
+    text: "What If Exams Measured ",
+    highlight: "Thinking Instead of Memory?",
+    source: "OECD Future of Education & Skills 2030",
+    link: "https://www.oecd.org/education/2030-project/",
+    colSpan: "md:col-span-6",
+    glowColor: "rgba(155, 81, 224, 0.15)",
+    accentColor: "#9B51E0",
+  },
 ];
 
-const gridItems = [
-  {
-    title: "Degrees Are Rising. Job Readiness Isn't.",
-    source: "World Economic Forum",
-    link: "https://www.weforum.org/reports/the-future-of-jobs-report-2023/"
-  },
-  {
-    title: "High Scores. Low Thinking.",
-    source: "Harvard Graduate School of Education",
-    link: "https://www.gse.harvard.edu/ideas/usable-knowledge/18/07/why-we-need-rethink-learning"
-  },
-  {
-    title: "Education Moves in Years. The World Moves in Weeks.",
-    source: "McKinsey & Company",
-    link: "https://www.mckinsey.com/industries/education/our-insights/how-technology-is-shaping-learning"
-  },
-  {
-    title: "Students Are Being Trained for a World That No Longer Exists.",
-    source: "Stanford AI Index",
-    link: "https://aiindex.stanford.edu/report/"
-  },
-  {
-    title: "The World Is Moving Beyond Marks. Most Schools Aren't.",
-    source: "OECD (PISA & Education Trends)",
-    link: "https://www.oecd.org/education/global-competence/"
-  },
-  {
-    title: "What If Exams Measured Thinking Instead of Memory?",
-    source: "OECD Future of Education & Skills 2030",
-    link: "https://www.oecd.org/education/2030-project/"
+function SourceIcon({ source, color }: { source: string; color: string }) {
+  if (source.includes("World Economic Forum")) {
+    return (
+      <svg className="w-8 h-8 opacity-80" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5">
+        <circle cx="12" cy="12" r="10" />
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+        <path d="M2 12h20" />
+      </svg>
+    );
   }
-];
+  if (source.includes("Harvard")) {
+    return (
+      <svg className="w-8 h-8 opacity-80" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        <path d="M12 6v10" />
+        <path d="M9 9h6" />
+        <path d="M9 13h6" />
+      </svg>
+    );
+  }
+  if (source.includes("McKinsey")) {
+    return (
+      <svg className="w-8 h-8 opacity-80" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5">
+        <path d="M3 3v18h18" />
+        <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3" />
+        <circle cx="18.7" cy="8" r="1" fill={color} />
+        <circle cx="13.6" cy="13.2" r="1" fill={color} />
+        <circle cx="10.8" cy="10.5" r="1" fill={color} />
+        <circle cx="7" cy="14.3" r="1" fill={color} />
+      </svg>
+    );
+  }
+  if (source.includes("Stanford")) {
+    return (
+      <svg className="w-8 h-8 opacity-80" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5">
+        <circle cx="12" cy="5" r="2.5" />
+        <circle cx="5" cy="12" r="2.5" />
+        <circle cx="19" cy="12" r="2.5" />
+        <circle cx="12" cy="19" r="2.5" />
+        <line x1="12" y1="7.5" x2="12" y2="16.5" />
+        <line x1="7.5" y1="12" x2="16.5" y2="12" />
+        <line x1="6.8" y1="10.2" x2="10.2" y2="6.8" />
+        <line x1="13.8" y1="6.8" x2="17.2" y2="10.2" />
+        <line x1="17.2" y1="13.8" x2="13.8" y2="17.2" />
+        <line x1="10.2" y1="17.2" x2="6.8" y2="13.8" />
+      </svg>
+    );
+  }
+  return (
+    <svg className="w-8 h-8 opacity-80" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5">
+      <path d="M12 2a10 10 0 0 1 10 10" />
+      <path d="M12 6a6 6 0 0 1 6 6" />
+      <circle cx="12" cy="12" r="2" />
+      <circle cx="12" cy="12" r="10" strokeDasharray="3 3" />
+    </svg>
+  );
+}
+
+function BentoQuoteCard({ item }: { item: QuoteItem }) {
+  const cardRef = useRef<HTMLAnchorElement>(null);
+  const [rotateX, setRotateX] = useState(0);
+  const [rotateY, setRotateY] = useState(0);
+  const [glowPos, setGlowPos] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const card = cardRef.current;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    
+    const mouseX = e.clientX - rect.left - width / 2;
+    const mouseY = e.clientY - rect.top - height / 2;
+    
+    const rX = -(mouseY / (height / 2)) * 8;
+    const rY = (mouseX / (width / 2)) * 8;
+    setRotateX(rX);
+    setRotateY(rY);
+
+    setGlowPos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top
+    });
+  };
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setRotateX(0);
+    setRotateY(0);
+  };
+
+  return (
+    <motion.div
+      variants={{
+        hidden: { opacity: 0, y: 24 },
+        visible: { opacity: 1, y: 0 },
+      }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      whileHover={{ y: -6 }}
+      className={`col-span-12 ${item.colSpan}`}
+    >
+      <a
+        href={item.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        ref={cardRef}
+        onMouseMove={handleMouseMove}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        className="relative overflow-hidden flex flex-col justify-between p-6 sm:p-8 rounded-[24px] border border-[var(--color-border-light)] dark:border-white/10 bg-[var(--color-background-secondary)]/70 backdrop-blur-md transition-shadow duration-300 min-h-[220px] sm:min-h-[260px] cursor-pointer group w-full h-full block"
+        style={{
+          transformStyle: "preserve-3d",
+          transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
+          boxShadow: isHovered
+            ? "0 20px 40px rgba(0, 0, 0, 0.08), inset 0 0 20px rgba(255, 255, 255, 0.2)"
+            : "0 10px 30px rgba(0, 0, 0, 0.02)",
+          transition: isHovered 
+            ? "transform 0.05s ease-out, border-color 0.3s ease, box-shadow 0.3s ease" 
+            : "transform 0.4s ease-out, border-color 0.3s ease, box-shadow 0.3s ease",
+        }}
+      >
+        <AnimatePresence>
+          {isHovered && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="absolute pointer-events-none rounded-full blur-[60px]"
+              style={{
+                left: glowPos.x - 120,
+                top: glowPos.y - 120,
+                width: 240,
+                height: 240,
+                background: `radial-gradient(circle, ${item.glowColor} 0%, transparent 80%)`,
+                zIndex: 1,
+              }}
+            />
+          )}
+        </AnimatePresence>
+
+        <div 
+          className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05] pointer-events-none"
+          style={{
+            backgroundImage: `radial-gradient(${item.accentColor} 1px, transparent 1px)`,
+            backgroundSize: "20px 20px",
+            zIndex: 0
+          }}
+        />
+
+        <div className="flex items-center justify-between w-full z-10 relative" style={{ transform: "translateZ(30px)" }}>
+          <SourceIcon source={item.source} color={item.accentColor} />
+          
+          <div 
+            className="flex items-center justify-center w-8 h-8 rounded-full border border-slate-200 dark:border-white/10 bg-white/50 dark:bg-black/20 text-slate-700 dark:text-slate-300 transition-all duration-300 group-hover:bg-[var(--color-accent)] group-hover:text-white group-hover:border-transparent"
+            style={{
+              transform: isHovered ? "translateY(-4px) rotate(-45deg)" : "none",
+            }}
+          >
+            <ChevronRight className="w-4 h-4" />
+          </div>
+        </div>
+
+        <div className="my-6 z-10 relative" style={{ transform: "translateZ(40px)" }}>
+          <span className="text-[32px] font-serif leading-[0] align-top mr-1 select-none" style={{ color: item.accentColor }}>&ldquo;</span>
+          <p className="inline text-[18px] sm:text-[20px] md:text-[22px] font-medium leading-[1.3] text-[var(--color-text-primary)]">
+            {item.text}
+            <span 
+              className="font-bold italic transition-colors duration-300"
+              style={{ color: isHovered ? "var(--color-accent)" : item.accentColor }}
+            >
+              {item.highlight}
+            </span>
+          </p>
+          <span className="text-[32px] font-serif leading-[0] align-bottom ml-1 select-none" style={{ color: item.accentColor }}>&rdquo;</span>
+        </div>
+
+        <div 
+          className="pt-4 border-t border-slate-100 dark:border-white/5 flex flex-col z-10 relative"
+          style={{ transform: "translateZ(20px)" }}
+        >
+          <span 
+            className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em]" 
+            style={{ color: item.accentColor }}
+          >
+            Source Document
+          </span>
+          <span className="text-[13px] sm:text-[14px] font-semibold text-[var(--color-text-primary)] mt-1">
+            {item.source}
+          </span>
+        </div>
+      </a>
+    </motion.div>
+  );
+}
 
 const tickerWords = ["Inefficient", "Outdated", "Deprecated", "Stagnant"];
 const TICKER_REPEAT = 3;
@@ -586,53 +811,19 @@ export function EducationStatusWrapper() {
         </div>
       </motion.div>
 
-      {/* ─── QUOTE CARDS ─── */}
+      {/* ─── QUOTE CARDS (Bento Grid) ─── */}
       <motion.div
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.1 }}
+        viewport={{ once: true, amount: 0.05 }}
         variants={{
           hidden: {},
           visible: { transition: { staggerChildren: 0.08 } },
         }}
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-[16px] sm:gap-[24px] w-full mt-[32px] sm:mt-[48px]"
+        className="grid grid-cols-1 md:grid-cols-12 gap-[16px] sm:gap-[24px] w-full mt-[32px] sm:mt-[48px]"
       >
-        {gridItems.map((item, i) => (
-          <motion.a
-            variants={{
-              hidden: { opacity: 0, y: 24 },
-              visible: { opacity: 1, y: 0 },
-            }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            whileHover={{ y: -6, transition: { duration: 0.3 } }}
-            href={item.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            key={i}
-            className="clay-card min-h-[200px] sm:min-h-[240px] md:min-h-[260px] p-[28px] sm:p-[32px] flex flex-col justify-between group"
-            style={{ background: "var(--color-background-secondary)", position: "relative", overflow: "hidden" }}
-          >
-            {/* Top accent bar */}
-            <div
-              className="absolute top-0 left-0 right-0 h-[3px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-              style={{ background: "var(--color-accent)" }}
-            />
-            <div>
-              <span className="text-[28px] sm:text-[32px] leading-[0] align-top mr-1" style={{ color: cardAccents[i] }}>&ldquo;</span>
-              <p className="inline text-[20px] sm:text-[22px] md:text-[26px] font-medium text-[var(--color-text-primary)] leading-[1.15] group-hover:text-[var(--color-accent)] transition-colors duration-200">
-                {item.title}
-              </p>
-              <span className="text-[28px] sm:text-[32px] leading-[0] align-bottom ml-1" style={{ color: cardAccents[i] }}>&rdquo;</span>
-            </div>
-            <div className="mt-[20px] sm:mt-[24px] pt-[16px] sm:pt-[20px]" style={{ borderTop: "1px solid var(--color-border-light)" }}>
-              <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.15em]" style={{ color: cardAccents[i], fontFamily: "var(--font-body)" }}>
-                Source
-              </span>
-              <p className="text-[13px] sm:text-[14px] font-semibold mt-1.5" style={{ color: "var(--color-text-primary)", fontFamily: "var(--font-body)" }}>
-                {item.source}
-              </p>
-            </div>
-          </motion.a>
+        {bentoQuotes.map((item, i) => (
+          <BentoQuoteCard key={i} item={item} />
         ))}
       </motion.div>
     </div>
