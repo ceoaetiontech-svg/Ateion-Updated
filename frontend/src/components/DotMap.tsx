@@ -25,7 +25,8 @@ const nodesData = [
 let globalCachedWorld: any = null;
 let dotsCanvas: OffscreenCanvas | null = null;
 
-function getThemeColor(ctx: CanvasRenderingContext2D, isDark: boolean) {
+function getThemeColor(ctx: CanvasRenderingContext2D, isDark: boolean, isMobile: boolean) {
+  if (isMobile) return "rgba(128, 128, 128, 0.5)";
   return isDark ? "rgba(255, 255, 255, 0.4)" : "rgba(0, 0, 0, 0.5)";
 }
 
@@ -35,13 +36,14 @@ function renderDotsFromCache(canvas: HTMLCanvasElement, isDark: boolean) {
   const dpr = Math.min(window.devicePixelRatio || 1, 2);
   const width = canvas.width / dpr;
   const height = canvas.height / dpr;
+  const isMobile = width < 768;
 
   ctx.save();
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.scale(dpr, dpr);
   ctx.drawImage(dotsCanvas, 0, 0);
-  ctx.fillStyle = getThemeColor(ctx, isDark);
+  ctx.fillStyle = getThemeColor(ctx, isDark, isMobile);
   ctx.globalCompositeOperation = "source-atop";
   ctx.fillRect(0, 0, width, height);
   ctx.globalCompositeOperation = "source-over";
@@ -109,11 +111,11 @@ async function renderMapCore(
   const imgWidth = imageData.width;
 
   ctx.clearRect(0, 0, width, height);
-  ctx.fillStyle = getThemeColor(ctx, isDark);
 
   const isMobile = width < 768;
-  const step = isMobile ? 12 : 8;
+  const step = isMobile ? 6 : 8;
   const dotRadius = 1.5;
+  ctx.fillStyle = getThemeColor(ctx, isDark, isMobile);
 
   const dotsOffCanvas = new OffscreenCanvas(width, height);
   const dotsOffCtx = dotsOffCanvas.getContext("2d");
@@ -130,7 +132,7 @@ async function renderMapCore(
     }
     dotsCanvas = dotsOffCanvas;
     ctx.drawImage(dotsCanvas, 0, 0);
-    ctx.fillStyle = getThemeColor(ctx, isDark);
+    ctx.fillStyle = getThemeColor(ctx, isDark, isMobile);
     ctx.globalCompositeOperation = "source-atop";
     ctx.fillRect(0, 0, width, height);
     ctx.globalCompositeOperation = "source-over";
@@ -146,6 +148,7 @@ export default function DotMap() {
     { id: string; label: string; x: number; y: number }[]
   >([]);
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     if (!containerRef.current || !canvasRef.current) return;
@@ -164,6 +167,7 @@ export default function DotMap() {
     };
 
     const onResize = (width: number, height: number) => {
+      setIsMobile(width < 768);
       dotsCanvas = null;
       renderMap(width, height);
     };
@@ -196,6 +200,9 @@ export default function DotMap() {
     };
   }, []);
 
+  const markerSize = isMobile ? 16 : 14;
+  const rippleSize = isMobile ? 36 : 48;
+
   return (
     <div ref={containerRef} className="relative w-full h-full bg-transparent">
       <canvas ref={canvasRef} className="absolute inset-0" />
@@ -221,6 +228,11 @@ export default function DotMap() {
           }}
           onMouseEnter={() => setHoveredNode(node.id)}
           onMouseLeave={() => setHoveredNode(null)}
+          onTouchStart={(e) => {
+            e.preventDefault();
+            setHoveredNode(node.id);
+          }}
+          onTouchEnd={() => setTimeout(() => setHoveredNode(null), 2000)}
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.9, y: 10 }}
@@ -230,7 +242,7 @@ export default function DotMap() {
                 : { opacity: 0, scale: 0.9, y: 10 }
             }
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 pointer-events-none"
+            className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 pointer-events-none z-20"
           >
             <div className="bg-[var(--color-background-primary)] px-3 py-1.5 rounded-lg shadow-lg border border-[var(--color-border-medium)] whitespace-nowrap">
               <span className="text-[var(--color-text-primary)] text-[13px] font-semibold tracking-tight uppercase">
@@ -241,12 +253,49 @@ export default function DotMap() {
             </div>
           </motion.div>
 
-          <div className="relative w-3 h-3 bg-[var(--color-accent)] rounded-full shadow-[0_0_15px_4px_var(--color-accent-light)] transition-transform duration-300 group-hover:scale-125" />
+          <div
+            className="relative flex items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-125"
+            style={{
+              width: markerSize,
+              height: markerSize,
+              backgroundColor: "var(--color-accent)",
+              boxShadow: `0 0 ${isMobile ? 12 : 18}px ${isMobile ? 3 : 5}px color-mix(in srgb, var(--color-accent) 60%, transparent)`,
+            }}
+          >
+            <div
+              className="rounded-full bg-white"
+              style={{
+                width: `${Math.round(markerSize * 0.36)}px`,
+                height: `${Math.round(markerSize * 0.36)}px`,
+              }}
+            />
+          </div>
 
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="absolute w-12 h-12 border border-[var(--color-accent)]/40 rounded-full animate-ripple" />
-            <div className="absolute w-12 h-12 border border-[var(--color-accent)]/30 rounded-full animate-ripple animate-ripple-delay-1" />
-            <div className="absolute w-12 h-12 border border-[var(--color-accent)]/20 rounded-full animate-ripple animate-ripple-delay-2" />
+            <div
+              className="absolute rounded-full animate-ripple"
+              style={{
+                width: rippleSize,
+                height: rippleSize,
+                border: "1.5px solid color-mix(in srgb, var(--color-accent) 40%, transparent)",
+              }}
+            />
+            <div
+              className="absolute rounded-full animate-ripple animate-ripple-delay-1"
+              style={{
+                width: rippleSize,
+                height: rippleSize,
+                border: "1.5px solid color-mix(in srgb, var(--color-accent) 25%, transparent)",
+              }}
+            />
+            <div
+              className="absolute rounded-full animate-ripple animate-ripple-delay-2"
+              style={{
+                width: rippleSize,
+                height: rippleSize,
+                border: "1.5px solid color-mix(in srgb, var(--color-accent) 15%, transparent)",
+              }}
+            />
           </div>
         </div>
       ))}

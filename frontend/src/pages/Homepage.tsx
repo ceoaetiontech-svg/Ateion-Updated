@@ -313,7 +313,7 @@ function GlobalPresenceMapSection() {
         </div>
       </div>
 
-      <div className="w-full max-w-[var(--max-width)] relative px-0 aspect-[2/1] sm:aspect-[2.2/1] md:aspect-[2.5/1]">
+      <div className="w-full max-w-[var(--max-width)] relative px-0 aspect-[1.2/1] sm:aspect-[1.6/1] md:aspect-[2.2/1] lg:aspect-[2.5/1]">
         <DotMap />
       </div>
     </div>
