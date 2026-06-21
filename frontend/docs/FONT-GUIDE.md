@@ -8,12 +8,12 @@ This project uses **4 Google Fonts** to replace the original proprietary fonts (
 
 ## Font Mapping
 
-| Original Font | Replacement | Weights | Usage |
-|---------------|-------------|---------|-------|
-| **OV Soge** | **Outfit** | 400, 500, 600, 700, 800 | Headlines, hero text, section titles, brand elements |
-| **SF Pro Display** | **Inter** | 300, 400, 500, 600, 700 | Body text, descriptions, paragraphs, labels |
-| **Manrope** | **Manrope** (kept) | 400, 500, 600, 700, 800 | Navigation, buttons, CTAs, UI elements |
-| **DM Sans** | **DM Sans** (kept) | 200-700 + italic | Stats counters, numeric displays, tags |
+| Original Font      | Replacement        | Weights                 | Usage                                                |
+| ------------------ | ------------------ | ----------------------- | ---------------------------------------------------- |
+| **OV Soge**        | **Outfit**         | 400, 500, 600, 700, 800 | Headlines, hero text, section titles, brand elements |
+| **SF Pro Display** | **Inter**          | 300, 400, 500, 600, 700 | Body text, descriptions, paragraphs, labels          |
+| **Manrope**        | **Manrope** (kept) | 400, 500, 600, 700, 800 | Navigation, buttons, CTAs, UI elements               |
+| **DM Sans**        | **DM Sans** (kept) | 200-700 + italic        | Stats counters, numeric displays, tags               |
 
 ---
 

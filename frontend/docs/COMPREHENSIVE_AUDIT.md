@@ -11,15 +11,15 @@
 
 ### Overall Health Score: 72/100
 
-| Category | Score | Status | Critical Issues |
-|----------|-------|--------|-----------------|
-| **Color Consistency** | 65% | ❌ POOR | 8 |
-| **Typography** | 70% | ⚠️ FAIR | 12 |
-| **Spacing** | 60% | ❌ POOR | 15 |
-| **Component Consistency** | 55% | ❌ POOR | 10 |
-| **Code Quality** | 75% | ⚠️ FAIR | 5 |
-| **Accessibility** | 80% | ✅ GOOD | 3 |
-| **Documentation** | 90% | ✅ EXCELLENT | 0 |
+| Category                  | Score   | Status      | Critical Issues   |
+| ------------------------- | ------- | ----------- | ----------------- |
+| **Color Consistency**     | 65%     | ❌ POOR      | 8                 |
+| **Typography**            | 70%     | ⚠️ FAIR     | 12                |
+| **Spacing**               | 60%     | ❌ POOR      | 15                |
+| **Component Consistency** | 55%     | ❌ POOR      | 10                |
+| **Code Quality**          | 75%     | ⚠️ FAIR     | 5                 |
+| **Accessibility**         | 80%     | ✅ GOOD      | 3                 |
+| **Documentation**         | 90%     | ✅ EXCELLENT | 0                 |
 
 **Total Issues Found:** 53
 **Critical:** 25
@@ -32,16 +32,16 @@
 
 ### Background Colors - INCONSISTENT ❌
 
-| Location | Current Value | Should Be | Status |
-|----------|--------------|-----------|--------|
-| **Homepage** | `#f7f3eb` | `#f7f3eb` | ✅ Correct |
-| **GCO Page** | `#f7f3eb` | `#f7f3eb` | ✅ Fixed |
-| **Contact Page** | `#f7f3eb` | `#f7f3eb` | ✅ Fixed |
-| **GCO Theme CSS** | `#f3efe7` | `#f7f3eb` | ❌ **WRONG** |
-| **GCO Footer CSS** | `#F3EFE7` | `#f7f3eb` | ❌ **WRONG** |
-| **GCO FAQ CSS** | `#F3EFE7` | `#f7f3eb` | ❌ **WRONG** |
-| **GCO CircleHero CSS** | `#F3EFE7` | `#f7f3eb` | ❌ **WRONG** |
-| **SharedFooter** | `#f7f3eb` | `#f7f3eb` | ✅ Fixed |
+| Location               | Current Value  | Should Be   | Status      |
+| ---------------------- | -------------- | ----------- | ----------- |
+| **Homepage**           | `#f7f3eb`      | `#f7f3eb`   | ✅ Correct   |
+| **GCO Page**           | `#f7f3eb`      | `#f7f3eb`   | ✅ Fixed     |
+| **Contact Page**       | `#f7f3eb`      | `#f7f3eb`   | ✅ Fixed     |
+| **GCO Theme CSS**      | `#f3efe7`      | `#f7f3eb`   | ❌ **WRONG** |
+| **GCO Footer CSS**     | `#F3EFE7`      | `#f7f3eb`   | ❌ **WRONG** |
+| **GCO FAQ CSS**        | `#F3EFE7`      | `#f7f3eb`   | ❌ **WRONG** |
+| **GCO CircleHero CSS** | `#F3EFE7`      | `#f7f3eb`   | ❌ **WRONG** |
+| **SharedFooter**       | `#f7f3eb`      | `#f7f3eb`   | ✅ Fixed     |
 
 **Files Requiring Updates:**
 1. `src/styles/gco/theme.css` - Line 3
@@ -51,11 +51,11 @@
 
 ### Nav Button Backgrounds - INCONSISTENT ❌
 
-| Component | Current | Standard | Issue |
-|-----------|---------|----------|-------|
-| **Navbar.tsx** | `rgba(235,235,235,0.8)` | ✅ Standard | Correct |
-| **Homepage Frame9** | `rgba(235,235,235,0.8)` | ✅ Standard | Correct |
-| **Homepage Frame3** | `rgba(235,235,235,0.8)` | ✅ Standard | Correct |
+| Component           | Current                  | Standard    | Issue            |
+| ------------------- | ------------------------ | ----------- | ---------------- |
+| **Navbar.tsx**      | `rgba(235,235,235,0.8)`  | ✅ Standard  | Correct          |
+| **Homepage Frame9** | `rgba(235,235,235,0.8)`  | ✅ Standard  | Correct          |
+| **Homepage Frame3** | `rgba(235,235,235,0.8)`  | ✅ Standard  | Correct          |
 | **Homepage Frame5** | `rgba(227,227,227,0.72)` | ❌ Different | **INCONSISTENT** |
 | **Homepage Frame6** | `rgba(227,227,227,0.72)` | ❌ Different | **INCONSISTENT** |
 
@@ -63,11 +63,11 @@
 
 ### Text Colors - MOSTLY CONSISTENT ⚠️
 
-| Element | Current | Standard | Status |
-|---------|---------|----------|--------|
-| Primary text | `#1a1a1a` / `#292929` | `#1a1a1a` | ⚠️ Minor variance |
-| Muted text | `rgba(0,0,0,0.6)` | `rgba(0,0,0,0.6)` | ✅ Correct |
-| Footer text | `#18px` / `#14px` mixed | `14px` | ❌ Inconsistent |
+| Element      | Current                 | Standard          | Status            |
+| ------------ | ----------------------- | ----------------- | ----------------- |
+| Primary text | `#1a1a1a` / `#292929`   | `#1a1a1a`         | ⚠️ Minor variance |
+| Muted text   | `rgba(0,0,0,0.6)`       | `rgba(0,0,0,0.6)` | ✅ Correct         |
+| Footer text  | `#18px` / `#14px` mixed | `14px`            | ❌ Inconsistent    |
 
 ---
 
@@ -75,33 +75,33 @@
 
 ### Component Heights - INCONSISTENT ❌
 
-| Component | Current | Standard | Variance |
-|-----------|---------|----------|----------|
-| **Nav Buttons (Homepage)** | 34px | 36px | -2px ❌ |
-| **Nav Buttons (Navbar)** | 36px | 36px | ✅ |
-| **CTA Button** | 36px | 36px | ✅ |
-| **Global Olympiad Btn** | 32px | 36px | -4px ❌ |
-| **Resources Btn** | 32px | 36px | -4px ❌ |
+| Component                  | Current   | Standard   | Variance   |
+| -------------------------- | --------- | ---------- | ---------- |
+| **Nav Buttons (Homepage)** | 34px      | 36px       | -2px ❌     |
+| **Nav Buttons (Navbar)**   | 36px      | 36px       | ✅          |
+| **CTA Button**             | 36px      | 36px       | ✅          |
+| **Global Olympiad Btn**    | 32px      | 36px       | -4px ❌     |
+| **Resources Btn**          | 32px      | 36px       | -4px ❌     |
 
 ### Padding Values - INCONSISTENT ❌
 
-| Element | Current Values | Standard | Issue |
-|---------|---------------|----------|-------|
-| **Nav Buttons** | 22px, 20px, 14px | 20px | ❌ 3 different values |
-| **About Us** | px-[22px] | 20px | +2px |
-| **Workshops** | px-[20px] | 20px | ✅ |
-| **Global Olympiad** | px-[20px] | 20px | ✅ |
-| **Resources** | px-[20px] | 20px | ✅ |
+| Element             | Current Values   | Standard   | Issue                |
+| ------------------- | ---------------- | ---------- | -------------------- |
+| **Nav Buttons**     | 22px, 20px, 14px | 20px       | ❌ 3 different values |
+| **About Us**        | px-[22px]        | 20px       | +2px                 |
+| **Workshops**       | px-[20px]        | 20px       | ✅                    |
+| **Global Olympiad** | px-[20px]        | 20px       | ✅                    |
+| **Resources**       | px-[20px]        | 20px       | ✅                    |
 
 ### Section Spacing - INCONSISTENT ❌
 
-| Section | Current | Standard | Issue |
-|---------|---------|----------|-------|
-| Footer padding-Y | 48px | 48px | ✅ |
-| Footer column gap | 64px | 64px | ✅ |
-| Hero section | 665px | 665px | ✅ |
-| Content padding | 64px / 16px | 64px desktop, 16px mobile | ✅ Responsive |
-| GCO CSS sections | 80px / 64px | 64px | ❌ Too large |
+| Section           | Current     | Standard                  | Issue        |
+| ----------------- | ----------- | ------------------------- | ------------ |
+| Footer padding-Y  | 48px        | 48px                      | ✅            |
+| Footer column gap | 64px        | 64px                      | ✅            |
+| Hero section      | 665px       | 665px                     | ✅            |
+| Content padding   | 64px / 16px | 64px desktop, 16px mobile | ✅ Responsive |
+| GCO CSS sections  | 80px / 64px | 64px                      | ❌ Too large  |
 
 ---
 
@@ -109,27 +109,27 @@
 
 ### Font Sizes - CRITICAL INCONSISTENCIES ❌
 
-| Element | Location | Current | Standard | Variance |
-|---------|----------|---------|----------|----------|
-| **Footer Brand** | SharedFooter | 18px | 18px | ✅ |
-| **Footer Contact** | SharedFooter | 15.78px | 14px | +1.78px ❌ |
-| **Footer Legal** | SharedFooter | 14.85px | 14px | +0.85px ❌ |
-| **Footer Copyright** | SharedFooter | 14px | 14px | ✅ |
-| **Nav Buttons** | Homepage | 13px | 12-13px | ✅ |
-| **Nav Buttons** | Navbar | 11px/13px | 12-13px | ✅ |
-| **Body Text** | Homepage | 14px/20px | 14px/16px | ⚠️ Mixed |
-| **Hero Title** | Homepage | 36px/72px | 36px/72px | ✅ |
+| Element              | Location     | Current   | Standard   | Variance   |
+| -------------------- | ------------ | --------- | ---------- | ---------- |
+| **Footer Brand**     | SharedFooter | 18px      | 18px       | ✅          |
+| **Footer Contact**   | SharedFooter | 15.78px   | 14px       | +1.78px ❌  |
+| **Footer Legal**     | SharedFooter | 14.85px   | 14px       | +0.85px ❌  |
+| **Footer Copyright** | SharedFooter | 14px      | 14px       | ✅          |
+| **Nav Buttons**      | Homepage     | 13px      | 12-13px    | ✅          |
+| **Nav Buttons**      | Navbar       | 11px/13px | 12-13px    | ✅          |
+| **Body Text**        | Homepage     | 14px/20px | 14px/16px  | ⚠️ Mixed   |
+| **Hero Title**       | Homepage     | 36px/72px | 36px/72px  | ✅          |
 
 ### Font Families - MOSTLY CONSISTENT ⚠️
 
-| Element | Current | Standard | Status |
-|---------|---------|----------|--------|
-| Headings | 'OV Soge' | 'OV Soge' | ✅ |
-| Body | 'Inter' | 'Inter' | ✅ |
-| Nav Buttons | 'Manrope' | 'Manrope' | ✅ |
-| Footer | 'Lato' | 'Lato' | ✅ |
-| Cards | 'SF Pro Display' | 'SF Pro Display' | ✅ |
-| Accent Text | 'IBM Plex Sans' | 'IBM Plex Sans' | ✅ |
+| Element     | Current          | Standard         | Status   |
+| ----------- | ---------------- | ---------------- | -------- |
+| Headings    | 'OV Soge'        | 'OV Soge'        | ✅        |
+| Body        | 'Inter'          | 'Inter'          | ✅        |
+| Nav Buttons | 'Manrope'        | 'Manrope'        | ✅        |
+| Footer      | 'Lato'           | 'Lato'           | ✅        |
+| Cards       | 'SF Pro Display' | 'SF Pro Display' | ✅        |
+| Accent Text | 'IBM Plex Sans'  | 'IBM Plex Sans'  | ✅        |
 
 ---
 
@@ -171,7 +171,7 @@ function TopNavBar() { /* Navbar wrapper */ }
 // Line 327 - About Us
 text-[13px] whitespace-nowrap pt-[1px]  // ❌ Hidden top padding!
 
-// Line 339 - Workshops  
+// Line 339 - Workshops
 text-[13px] whitespace-nowrap pt-[1px]  // ❌ Hidden top padding!
 ```
 
@@ -200,12 +200,12 @@ style={{ pointerEvents: 'auto' }}  // ❌ Should use CSS class
 
 ### Mobile Responsiveness - MOSTLY GOOD ✅
 
-| Component | Mobile | Desktop | Status |
-|-----------|--------|---------|--------|
-| Navbar | ✅ Responsive | ✅ Responsive | Good |
-| Hero Section | ✅ 36px title | ✅ 72px title | Good |
-| Cards | ✅ Stacked | ✅ Horizontal | Good |
-| Footer | ✅ Stacked | ✅ Horizontal | Good |
+| Component    | Mobile       | Desktop      | Status   |
+| ------------ | ------------ | ------------ | -------- |
+| Navbar       | ✅ Responsive | ✅ Responsive | Good     |
+| Hero Section | ✅ 36px title | ✅ 72px title | Good     |
+| Cards        | ✅ Stacked    | ✅ Horizontal | Good     |
+| Footer       | ✅ Stacked    | ✅ Horizontal | Good     |
 
 ### Issues Found:
 1. GCO CSS uses `clamp()` but values inconsistent with Homepage
@@ -217,20 +217,20 @@ style={{ pointerEvents: 'auto' }}  // ❌ Should use CSS class
 
 ### Focus States - IMPROVED ✅
 
-| Element | Status | Notes |
-|---------|--------|-------|
-| Nav Buttons | ✅ Fixed | Added focus:ring |
-| CTA Button | ✅ Fixed | Added focus:ring |
-| Mobile Menu | ✅ Fixed | Added focus states |
+| Element     | Status   | Notes              |
+| ----------- | -------- | ------------------ |
+| Nav Buttons | ✅ Fixed  | Added focus:ring   |
+| CTA Button  | ✅ Fixed  | Added focus:ring   |
+| Mobile Menu | ✅ Fixed  | Added focus states |
 | Form Inputs | ⚠️ Check | Needs verification |
 
 ### Color Contrast - NEEDS VERIFICATION ⚠️
 
-| Combination | Ratio | Required | Status |
-|-------------|-------|----------|--------|
-| Red CTA on white | 4.5:1 | 4.5:1 | ⚠️ Borderline |
-| Grey nav on white | 7:1 | 4.5:1 | ✅ Pass |
-| Footer text on beige | 5.2:1 | 4.5:1 | ✅ Pass |
+| Combination          | Ratio   | Required   | Status        |
+| -------------------- | ------- | ---------- | ------------- |
+| Red CTA on white     | 4.5:1   | 4.5:1      | ⚠️ Borderline |
+| Grey nav on white    | 7:1     | 4.5:1      | ✅ Pass        |
+| Footer text on beige | 5.2:1   | 4.5:1      | ✅ Pass        |
 
 **Recommendation:** Run automated accessibility audit with Lighthouse
 

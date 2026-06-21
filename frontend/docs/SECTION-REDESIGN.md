@@ -54,10 +54,10 @@ border border-white/10 → hover:border-white/20
 ```
 
 #### Animations
-| Element | Animation |
-|---------|-----------|
-| Card entrance | Fade in + slide up (30px) |
-| Logo hover | Scale 1.05 + lift 4px |
+| Element         | Animation                     |
+| --------------- | ----------------------------- |
+| Card entrance   | Fade in + slide up (30px)     |
+| Logo hover      | Scale 1.05 + lift 4px         |
 | Border on hover | Brightens (opacity 10% → 20%) |
 
 ---
@@ -169,16 +169,16 @@ transition: { duration: 0.8, delay: 0.2 }
 
 ## 📊 Before & After Comparison
 
-| Aspect | Before | After |
-|--------|--------|-------|
-| **Card 1 Background** | Flat black `#202020` | Dark with purple glow |
-| **Card 2 Background** | Solid `#ff6b6b` | Gradient with dot pattern |
-| **Logo Presentation** | Inconsistent | Glassmorphism containers |
-| **Word Animation** | Vertical scroll | Smooth fade + scale |
-| **Border Radius** | 19px | 24px (consistent) |
-| **Hover Effects** | None | Lift + border brighten |
-| **Text Hierarchy** | Unclear | Clear visual hierarchy |
-| **Shadow Depth** | Basic | `shadow-2xl` |
+| Aspect                | Before               | After                     |
+| --------------------- | -------------------- | ------------------------- |
+| **Card 1 Background** | Flat black `#202020` | Dark with purple glow     |
+| **Card 2 Background** | Solid `#ff6b6b`      | Gradient with dot pattern |
+| **Logo Presentation** | Inconsistent         | Glassmorphism containers  |
+| **Word Animation**    | Vertical scroll      | Smooth fade + scale       |
+| **Border Radius**     | 19px                 | 24px (consistent)         |
+| **Hover Effects**     | None                 | Lift + border brighten    |
+| **Text Hierarchy**    | Unclear              | Clear visual hierarchy    |
+| **Shadow Depth**      | Basic                | `shadow-2xl`              |
 
 ---
 
@@ -245,6 +245,6 @@ Current design is desktop-optimized (1280px base).
 
 ---
 
-**Status:** ✅ Complete  
-**Build:** ✅ Passing  
+**Status:** ✅ Complete
+**Build:** ✅ Passing
 **User Feedback Addressed:** ✅ "Animation is trash" → Fixed

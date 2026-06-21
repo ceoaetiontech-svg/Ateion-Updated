@@ -13,10 +13,10 @@ This document outlines all UI/UX improvements made to elevate the Ateion platfor
 **Problem:** Menu labels were vague and used internal terminology.
 
 **Changes:**
-| Before | After | Rationale |
-|--------|-------|-----------|
-| GCO | Global Olympiad | Clearer description of the program |
-| Learn | Resources | More intuitive for users seeking materials |
+| Before   | After           | Rationale                                  |
+| -------- | --------------- | ------------------------------------------ |
+| GCO      | Global Olympiad | Clearer description of the program         |
+| Learn    | Resources       | More intuitive for users seeking materials |
 
 **Impact:** Users can now navigate based on their goals rather than deciphering internal terms.
 
@@ -47,11 +47,11 @@ This document outlines all UI/UX improvements made to elevate the Ateion platfor
   - Changed to animate once on view (better performance)
 
 - **Improved stat labels:**
-  | Before | After |
-  |--------|-------|
-  | Institutions | Partner Institutions |
-  | Students | Students Empowered |
-  | Alliances | Global Alliances |
+| Before       | After                |
+| ------------ | -------------------- |
+| Institutions | Partner Institutions |
+| Students     | Students Empowered   |
+| Alliances    | Global Alliances     |
 
 - **Better color contrast:** Changed label color from `#9165ff` to `#a78bfa` for better readability
 
@@ -101,10 +101,10 @@ This document outlines all UI/UX improvements made to elevate the Ateion platfor
 
 **Changes:**
 - **Vertical ticker words:**
-  | Before | After |
-  |--------|-------|
-  | Deprecated | Limited |
-  | Stagnant | Restrictive |
+| Before     | After       |
+| ---------- | ----------- |
+| Deprecated | Limited     |
+| Stagnant   | Restrictive |
 
 - **Typo fix:** "Power By Proven Numbers" → "Powered by Proven Numbers"
 
@@ -128,15 +128,15 @@ This document outlines all UI/UX improvements made to elevate the Ateion platfor
 
 ## 📊 Before & After Comparison
 
-| Aspect | Before | After |
-|--------|--------|-------|
-| **Value Proposition** | Unclear | Clear within 5 seconds |
-| **Navigation Labels** | Internal jargon | User-centered language |
-| **Stat Section** | Static numbers | Animated, glowing counters |
-| **Red Card Contrast** | Poor (2.5:1) | Excellent (8:1) |
-| **CTA Feedback** | Basic scale | Scale + glow shadow |
-| **Card Interactions** | None | Lift + shadow on hover |
-| **Typography** | Mixed weights | Consistent hierarchy |
+| Aspect                | Before          | After                      |
+| --------------------- | --------------- | -------------------------- |
+| **Value Proposition** | Unclear         | Clear within 5 seconds     |
+| **Navigation Labels** | Internal jargon | User-centered language     |
+| **Stat Section**      | Static numbers  | Animated, glowing counters |
+| **Red Card Contrast** | Poor (2.5:1)    | Excellent (8:1)            |
+| **CTA Feedback**      | Basic scale     | Scale + glow shadow        |
+| **Card Interactions** | None            | Lift + shadow on hover     |
+| **Typography**        | Mixed weights   | Consistent hierarchy       |
 
 ---
 
@@ -144,13 +144,13 @@ This document outlines all UI/UX improvements made to elevate the Ateion platfor
 
 These improvements address the following success criteria from the audit:
 
-| Criterion | Status |
-|-----------|--------|
+| Criterion                                      | Status     |
+| ---------------------------------------------- | ---------- |
 | Communicate value proposition within 5 seconds | ✅ Achieved |
-| Improve perceived brand credibility | ✅ Achieved |
-| Improve user comprehension | ✅ Achieved |
-| Maintain visual consistency | ✅ Achieved |
-| Elevate to premium product-level experience | ✅ Achieved |
+| Improve perceived brand credibility            | ✅ Achieved |
+| Improve user comprehension                     | ✅ Achieved |
+| Maintain visual consistency                    | ✅ Achieved |
+| Elevate to premium product-level experience    | ✅ Achieved |
 
 ---
 
@@ -175,13 +175,13 @@ These improvements address the following success criteria from the audit:
 
 The following elements were **intentionally preserved**:
 
-| Element | Reason |
-|---------|--------|
-| **Layout structure** | Section order is logical and usable |
-| **Color palette** | Brand identity preservation |
-| **Typography system** | Font families already optimized |
-| **Global map section** | Provides credibility and scale |
-| **Core functionality** | All interactions work as designed |
+| Element                | Reason                              |
+| ---------------------- | ----------------------------------- |
+| **Layout structure**   | Section order is logical and usable |
+| **Color palette**      | Brand identity preservation         |
+| **Typography system**  | Font families already optimized     |
+| **Global map section** | Provides credibility and scale      |
+| **Core functionality** | All interactions work as designed   |
 
 ---
 
@@ -212,13 +212,13 @@ All quick win improvements from the audit have been implemented:
 
 Based on industry benchmarks, these improvements should deliver:
 
-| Metric | Expected Improvement |
-|--------|---------------------|
+| Metric                     | Expected Improvement         |
+| -------------------------- | ---------------------------- |
 | Time to understand product | ↓ 60% (faster comprehension) |
-| CTA click rate | ↑ 25-40% |
-| Perceived credibility | ↑ 35% |
-| Navigation success rate | ↑ 50% |
-| Bounce rate | ↓ 20% |
+| CTA click rate             | ↑ 25-40%                     |
+| Perceived credibility      | ↑ 35%                        |
+| Navigation success rate    | ↑ 50%                        |
+| Bounce rate                | ↓ 20%                        |
 
 ---
 
@@ -261,6 +261,6 @@ Consider these enhancements for Phase 2:
 
 ---
 
-**Status:** ✅ Complete  
-**Build:** ✅ Passing  
+**Status:** ✅ Complete
+**Build:** ✅ Passing
 **Ready for:** Production Deployment

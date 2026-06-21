@@ -1,61 +1,42 @@
-**Add your own guidelines here**
-<!--
+# 📐 Ateion Frontend Coding & Design Guidelines
 
-System Guidelines
+These guidelines define the standards for layouts, styling, components, and code structure in the Ateion frontend project.
 
-Use this file to provide the AI with rules and guidelines you want it to follow.
-This template outlines a few examples of things you can add. You can add your own sections and format it to suit your needs
+---
 
-TIP: More context isn't always better. It can confuse the LLM. Try and add the most important rules you need
+## 🎨 General Layout Guidelines
 
-# General guidelines
+1. **Prefer Responsive Layouts**: Avoid using hardcoded absolute positions (`absolute`, `top-[Xpx]`, `left-[Ypx]`) unless absolutely necessary (e.g., decorative background ornaments). By default, build layouts using **CSS Flexbox** and **CSS Grid**.
+2. **Spacing & Sizing**:
+   - Use standard padding and margin increments (prefer multiples of `4px` / `8px` or Tailwind spacing scales).
+   - Ensure component outer containers do not enforce hardcoded widths unless specifying a max-width; components should adapt to their parent container's layout.
+3. **Typography**: Always assign fonts according to their category mapping. Refer to [FONT-GUIDE.md](../docs/FONT-GUIDE.md) for full mappings:
+   - **Outfit** for major headers, heroes, and prominent brand words.
+   - **Inter** for body copy and general description blocks.
+   - **Manrope** for navigation, UI actions, and button text.
+   - **DM Sans** for numeric displays, badges, statistics counters, and tags.
 
-Any general rules you want the AI to follow.
-For example:
+---
 
-* Only use absolute positioning when necessary. Opt for responsive and well structured layouts that use flexbox and grid by default
-* Refactor code as you go to keep code clean
-* Keep file sizes small and put helper functions and components in their own files.
+## 🧩 Component & React Standards
 
---------------
+1. **Granularity**: Keep file sizes small. Extract sub-components and helper functions into separate files or subfolders rather than nesting them all in a single large file.
+2. **Primitive Reusability**:
+   - Build UI components using the custom primitives in `src/app/components/ui/` (built on top of shadcn/ui and Radix UI).
+   - Avoid creating ad-hoc, duplicate styled elements (like custom input boxes or buttons) when standard primitive options already exist.
+3. **Dynamic State & Hooks**:
+   - Keep page-level layouts focused on composition.
+   - Put repeated logic (timers, viewport tracking, mouse movements) into custom hooks located in `src/app/components/hooks/`.
 
-# Design system guidelines
-Rules for how the AI should make generations look like your company's design system
+---
 
-Additionally, if you select a design system to use in the prompt box, you can reference
-your design system's components, tokens, variables and components.
-For example:
+## 💅 Styling Practices
 
-* Use a base font-size of 14px
-* Date formats should always be in the format “Jun 10”
-* The bottom toolbar should only ever have a maximum of 4 items
-* Never use the floating action button with the bottom toolbar
-* Chips should always come in sets of 3 or more
-* Don't use a dropdown if there are 2 or fewer options
-
-You can also create sub sections and add more specific details
-For example:
-
-
-## Button
-The Button component is a fundamental interactive element in our design system, designed to trigger actions or navigate
-users through the application. It provides visual feedback and clear affordances to enhance user experience.
-
-### Usage
-Buttons should be used for important actions that users need to take, such as form submissions, confirming choices,
-or initiating processes. They communicate interactivity and should have clear, action-oriented labels.
-
-### Variants
-* Primary Button
-  * Purpose : Used for the main action in a section or page
-  * Visual Style : Bold, filled with the primary brand color
-  * Usage : One primary button per section to guide users toward the most important action
-* Secondary Button
-  * Purpose : Used for alternative or supporting actions
-  * Visual Style : Outlined with the primary color, transparent background
-  * Usage : Can appear alongside a primary button for less important actions
-* Tertiary Button
-  * Purpose : Used for the least important actions
-  * Visual Style : Text-only with no border, using primary color
-  * Usage : For actions that should be available but not emphasized
--->
+1. **Tailwind and Custom CSS**:
+   - Combine Tailwind utility classes with modular custom CSS where necessary to avoid cluttering JSX files.
+   - Store generic layout/color design tokens in `src/styles/design-tokens.css` and font classes in `src/styles/fonts.css`.
+2. **Background Colors**: Keep background shades consistent across all pages. The base neutral light shade for the Ateion canvas is `#f7f3eb`. Do not inject darker beige variations (like `#f3efe7`) unless explicitly styling card boundaries or section splits.
+3. **Buttons**:
+   - **Primary Button**: Filled with the primary brand accent, with a height of `36px` and padding of `20px` x-axis.
+   - **Secondary Button**: Outlined border with transparent background.
+   - **Muted/Ghost Button**: Borderless text-only interactions.

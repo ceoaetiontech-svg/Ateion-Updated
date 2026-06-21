@@ -11,18 +11,18 @@
 
 ### Overall Health Score: **68/100** ⚠️
 
-| Category | Score | Status | Issues Found |
-|----------|-------|--------|--------------|
-| **Architecture & Structure** | 60% | ❌ POOR | 18 |
-| **Code Quality** | 65% | ⚠️ FAIR | 24 |
-| **Performance** | 55% | ❌ POOR | 15 |
-| **Styling & Design System** | 60% | ❌ POOR | 20 |
-| **TypeScript & Type Safety** | 70% | ⚠️ FAIR | 8 |
-| **Accessibility (a11y)** | 50% | ❌ POOR | 16 |
-| **Security** | 80% | ✅ GOOD | 4 |
-| **SEO & Metadata** | 35% | ❌ CRITICAL | 8 |
-| **Build & Deployment** | 75% | ⚠️ FAIR | 5 |
-| **Documentation** | 85% | ✅ GOOD | 2 |
+| Category                     | Score   | Status     | Issues Found   |
+| ---------------------------- | ------- | ---------- | -------------- |
+| **Architecture & Structure** | 60%     | ❌ POOR     | 18             |
+| **Code Quality**             | 65%     | ⚠️ FAIR    | 24             |
+| **Performance**              | 55%     | ❌ POOR     | 15             |
+| **Styling & Design System**  | 60%     | ❌ POOR     | 20             |
+| **TypeScript & Type Safety** | 70%     | ⚠️ FAIR    | 8              |
+| **Accessibility (a11y)**     | 50%     | ❌ POOR     | 16             |
+| **Security**                 | 80%     | ✅ GOOD     | 4              |
+| **SEO & Metadata**           | 35%     | ❌ CRITICAL | 8              |
+| **Build & Deployment**       | 75%     | ⚠️ FAIR    | 5              |
+| **Documentation**            | 85%     | ✅ GOOD     | 2              |
 
 **Total Unique Issues:** 120
 **Critical:** 12
@@ -86,7 +86,7 @@
 
 **Problem:** The hero slider image is a 2.18 MB PNG file loaded as-is with no compression, no lazy loading, no WebP/AVIF conversion, no `loading="lazy"`, and no responsive `srcset`.
 
-**Impact:** 
+**Impact:**
 - Single asset is **larger than the entire JS bundle** (453 KB) + CSS (115 KB) combined
 - First Contentful Paint (FCP) severely impacted on 3G/mobile
 - Lighthouse performance score will be < 30
@@ -200,7 +200,7 @@
 
 **Problem:** The Homepage renders **two instances** of SharedNavbar simultaneously — one inside the hero slider header and one at the page root level. The navbar also renders itself inside `GCOPage.tsx` and `ContactPage.tsx`.
 
-**Impact:** 
+**Impact:**
 - Potential z-index conflicts
 - Duplicate scroll event listeners from `useNavbarOnDark()`
 - Memory overhead
@@ -268,7 +268,7 @@ const handleMouseMove = throttle((e: MouseEvent) => {
 - `src/imports/gco/BeyondScore.tsx` — `useState` + `window.addEventListener("resize")`
 - `src/imports/gco/GCOQuestionSection.tsx` — same pattern
 
-**Problem:** 
+**Problem:**
 1. Causes **hydration mismatch** in SSR scenarios (server renders desktop, client renders mobile)
 2. Triggers full React re-renders on every pixel of resize (no debounce)
 3. Entirely replaceable with CSS `@media` queries or Tailwind responsive utilities
@@ -314,12 +314,12 @@ const isInView = useInView(ref, { once: true, margin: "-100px" });
 ### 2.8 — Bundle Size: All Vendors in Single Main Chunk
 
 **Build output:**
-| Chunk | Size | Gzipped |
-|-------|------|---------|
-| `index-*.js` (main) | 322.83 kB | 103.36 kB |
-| `motion-*.js` | 127.20 kB | 42.53 kB |
-| `lucide-*.js` | 3.21 kB | 1.02 kB |
-| **Total JS** | **453.24 kB** | **146.91 kB** |
+| Chunk               | Size          | Gzipped       |
+| ------------------- | ------------- | ------------- |
+| `index-*.js` (main) | 322.83 kB     | 103.36 kB     |
+| `motion-*.js`       | 127.20 kB     | 42.53 kB      |
+| `lucide-*.js`       | 3.21 kB       | 1.02 kB       |
+| **Total JS**        | **453.24 kB** | **146.91 kB** |
 
 **Problem:** All vendor libraries (`@mui/material`, `recharts`, `d3`, `gsap`, `react-dnd`, `react-slick`, `react-router`, `@radix-ui/*`, `embla-carousel`) are lumped into the main `index-*.js` chunk. No separate vendor chunk exists.
 
@@ -381,16 +381,16 @@ manualChunks: {
 
 ### 2.10 — Dead Code: Unused Components and Files
 
-| File | Issue |
-|------|-------|
-| `src/imports/gco/CircleHero.tsx` | Unused alternative hero layout |
-| `src/imports/gco/FAQ.tsx` | Duplicate FAQ with empty answers |
-| `src/imports/gco/Slide.tsx` | Renders only a gray placeholder box |
-| `src/styles/gco/GridSection.css` | No corresponding TSX file |
-| `src/imports/svg-8pvzwocq57.ts` | Duplicate of svg-paths.ts |
-| `guidelines/Guidelines.md` | Empty template |
-| `src/styles/merged-all-styles.css` | 1297-line monolith, likely unused or duplicated |
-| `src/imports/home/EcosystemSection.tsx` variable renames | `imgChildNew`, `imgPinkNew`, `imgCodeNew` |
+| File                                                     | Issue                                           |
+| -------------------------------------------------------- | ----------------------------------------------- |
+| `src/imports/gco/CircleHero.tsx`                         | Unused alternative hero layout                  |
+| `src/imports/gco/FAQ.tsx`                                | Duplicate FAQ with empty answers                |
+| `src/imports/gco/Slide.tsx`                              | Renders only a gray placeholder box             |
+| `src/styles/gco/GridSection.css`                         | No corresponding TSX file                       |
+| `src/imports/svg-8pvzwocq57.ts`                          | Duplicate of svg-paths.ts                       |
+| `guidelines/Guidelines.md`                               | Empty template                                  |
+| `src/styles/merged-all-styles.css`                       | 1297-line monolith, likely unused or duplicated |
+| `src/imports/home/EcosystemSection.tsx` variable renames | `imgChildNew`, `imgPinkNew`, `imgCodeNew`       |
 
 ---
 
@@ -402,15 +402,15 @@ manualChunks: {
 
 **Problem:** A comprehensive design tokens system exists with 80+ well-defined CSS custom properties, but **components barely use them**. Instead, hardcoded values are everywhere:
 
-| Hardcoded Value | Should Be Token | Occurrences |
-|-----------------|-----------------|-------------|
-| `#f7f3eb` | `var(--color-background-primary)` | 10+ |
-| `#fb4444` | `var(--color-primary)` | 8+ |
-| `#1e1632` | `var(--color-background-dark)` | 5+ |
-| `#1a1a1a` | `var(--color-text-primary)` | 12+ |
-| `'OV Soge', sans-serif` | `var(--font-family-heading)` | 20+ |
-| `rgba(0, 0, 0, 0.6)` | `var(--color-text-muted)` | 6+ |
-| `rgba(235, 235, 235, 0.8)` | `var(--color-nav-button)` | 2+ |
+| Hardcoded Value            | Should Be Token                   | Occurrences   |
+| -------------------------- | --------------------------------- | ------------- |
+| `#f7f3eb`                  | `var(--color-background-primary)` | 10+           |
+| `#fb4444`                  | `var(--color-primary)`            | 8+            |
+| `#1e1632`                  | `var(--color-background-dark)`    | 5+            |
+| `#1a1a1a`                  | `var(--color-text-primary)`       | 12+           |
+| `'OV Soge', sans-serif`    | `var(--font-family-heading)`      | 20+           |
+| `rgba(0, 0, 0, 0.6)`       | `var(--color-text-muted)`         | 6+            |
+| `rgba(235, 235, 235, 0.8)` | `var(--color-nav-button)`         | 2+            |
 
 **Impact:** Design system exists on paper but provides zero benefit. Changing brand colors requires editing 30+ files instead of 1.
 
@@ -422,12 +422,12 @@ manualChunks: {
 
 **Problem:** Five different red color values exist across the codebase:
 
-| Value | Location | Usage |
-|-------|----------|-------|
-| `#fb4444` | Design tokens (`--color-primary`) | Primary brand |
-| `#e03a3a` | Homepage explore button | Hero CTA |
-| `#c92e2e` | Homepage hover state | Button hover |
-| `#fa4f54` | Various | Ticker card |
+| Value     | Location                           | Usage           |
+| --------- | ---------------------------------- | --------------- |
+| `#fb4444` | Design tokens (`--color-primary`)  | Primary brand   |
+| `#e03a3a` | Homepage explore button            | Hero CTA        |
+| `#c92e2e` | Homepage hover state               | Button hover    |
+| `#fa4f54` | Various                            | Ticker card     |
 | `#ff6b6b` | Design tokens (`--color-red-card`) | Card background |
 
 **Fix:** Consolidate to a single red palette with defined variants:
@@ -445,13 +445,13 @@ manualChunks: {
 
 **File:** `src/app/components/SharedNavbar.tsx`
 
-| Button | Background | Height | Padding |
-|--------|-----------|--------|---------|
-| About Us | `rgba(235,235,235,0.8)` | 36px | 20px |
-| Workshops | `rgba(235,235,235,0.8)` | 36px | 20px |
-| Global Olympiad | `rgba(227,227,227,0.72)` | 36px | 20px |
-| Resources | `rgba(227,227,227,0.72)` | 36px | 20px |
-| Get Connected | `#fb4444` | 36px | 20px |
+| Button          | Background               | Height   | Padding   |
+| --------------- | ------------------------ | -------- | --------- |
+| About Us        | `rgba(235,235,235,0.8)`  | 36px     | 20px      |
+| Workshops       | `rgba(235,235,235,0.8)`  | 36px     | 20px      |
+| Global Olympiad | `rgba(227,227,227,0.72)` | 36px     | 20px      |
+| Resources       | `rgba(227,227,227,0.72)` | 36px     | 20px      |
+| Get Connected   | `#fb4444`                | 36px     | 20px      |
 
 **Problem:** Two different background color schemes for nav buttons with no documented reason.
 
@@ -467,7 +467,7 @@ manualChunks: {
 const darkSections = document.querySelectorAll('.dark-section');
 ```
 
-**Problem:** 
+**Problem:**
 1. Uses `document.querySelector` inside a scroll event handler — DOM query runs on every scroll tick
 2. Depends on `.dark-section` class being applied to all dark sections — fragile coupling
 3. Falls back to `data-theme` attribute which is never set anywhere in the codebase
@@ -511,11 +511,11 @@ These are **Figma absolute coordinates** that do not adapt to different screen s
 
 **Problem:** Three different CSS files define overlapping CSS custom properties with different names for the same values:
 
-| design-tokens.css | theme.css | contact-styles.css |
-|-------------------|-----------|-------------------|
-| `--color-text-primary` | `--primary-color` | `--color-black` |
-| `--color-background-primary` | `--bg-color` | (inherits) |
-| `--color-primary` | `--accent-color` | `--color-error` |
+| design-tokens.css            | theme.css         | contact-styles.css  |
+| ---------------------------- | ----------------- | ------------------- |
+| `--color-text-primary`       | `--primary-color` | `--color-black`     |
+| `--color-background-primary` | `--bg-color`      | (inherits)          |
+| `--color-primary`            | `--accent-color`  | `--color-error`     |
 
 **Fix:** Single source of truth in `design-tokens.css`. Remove duplicates.
 
@@ -684,7 +684,7 @@ createRoot(document.getElementById("root")!).render(
 
 **Problem:** Three separate animation/animation libraries are installed. `framer-motion` and `motion` are from the same team (motion v11 is essentially framer-motion v11 split). This creates potential conflicts and bloat.
 
-**Impact:** 
+**Impact:**
 - `framer-motion`: 127 KB chunk
 - `motion`: bundled separately
 - `gsap`: additional ~30 KB
@@ -764,12 +764,12 @@ createRoot(document.getElementById("root")!).render(
 
 ### 5.1 — Missing ARIA Labels on Interactive Sections
 
-| Location | Element | Missing |
-|----------|---------|---------|
-| `Homepage.tsx` — HeroSection | `<div>` wrapper | `role="banner"` or `aria-label="Hero"` |
-| `Homepage.tsx` — GlobalPresenceMapSection | Stats section | `aria-label="Global statistics"` |
-| `Homepage.tsx` — FAQSectionContainer | FAQ section | `aria-label="Frequently Asked Questions"` |
-| `DotMap.tsx` — Map container | `<div>` | `role="img" aria-label="World map showing Ateion presence"` |
+| Location                                  | Element         | Missing                                                     |
+| ----------------------------------------- | --------------- | ----------------------------------------------------------- |
+| `Homepage.tsx` — HeroSection              | `<div>` wrapper | `role="banner"` or `aria-label="Hero"`                      |
+| `Homepage.tsx` — GlobalPresenceMapSection | Stats section   | `aria-label="Global statistics"`                            |
+| `Homepage.tsx` — FAQSectionContainer      | FAQ section     | `aria-label="Frequently Asked Questions"`                   |
+| `DotMap.tsx` — Map container              | `<div>`         | `role="img" aria-label="World map showing Ateion presence"` |
 
 ### 5.2 — Missing Keyboard Navigation on Ecosystem Bubbles
 
@@ -779,11 +779,11 @@ Bubbles use `onClick` but have no `role="button"`, `tabIndex={0}`, or `onKeyDown
 
 ### 5.3 — No `aria-live` for Dynamic Content
 
-| Component | Dynamic Content | Impact |
-|-----------|----------------|--------|
-| `Counter` (Homepage) | Number changes | Screen readers don't announce count |
-| `RedIntelligenceCard` ticker | Word cycles | Screen readers don't announce new word |
-| `FAQItem` (Homepage) | Answer expands | Screen readers don't announce content change |
+| Component                    | Dynamic Content  | Impact                                       |
+| ---------------------------- | ---------------- | -------------------------------------------- |
+| `Counter` (Homepage)         | Number changes   | Screen readers don't announce count          |
+| `RedIntelligenceCard` ticker | Word cycles      | Screen readers don't announce new word       |
+| `FAQItem` (Homepage)         | Answer expands   | Screen readers don't announce content change |
 
 **Fix:** Add `aria-live="polite"` to containers with dynamic content.
 
@@ -797,12 +797,12 @@ Multiple buttons lack `type="button"` attribute. Inside any `<form>` context (li
 
 ### 5.5 — Color Contrast Unverified
 
-| Combination | Estimated Ratio | Required (AA) | Status |
-|-------------|----------------|---------------|--------|
-| `#fb4444` on `#ffffff` | ~4.3:1 | 4.5:1 | ⚠️ Borderline fail |
-| `rgba(0,0,0,0.6)` on `#f7f3eb` | ~5.8:1 | 4.5:1 | ✅ Pass |
-| `#a78bfa` on `#000000` | ~5.2:1 | 4.5:1 | ✅ Pass |
-| White text on `#e03a3a` | ~4.2:1 | 4.5:1 | ⚠️ Borderline fail |
+| Combination                    | Estimated Ratio  | Required (AA)   | Status             |
+| ------------------------------ | ---------------- | --------------- | ------------------ |
+| `#fb4444` on `#ffffff`         | ~4.3:1           | 4.5:1           | ⚠️ Borderline fail |
+| `rgba(0,0,0,0.6)` on `#f7f3eb` | ~5.8:1           | 4.5:1           | ✅ Pass             |
+| `#a78bfa` on `#000000`         | ~5.2:1           | 4.5:1           | ✅ Pass             |
+| White text on `#e03a3a`        | ~4.2:1           | 4.5:1           | ⚠️ Borderline fail |
 
 ### 5.6 — No Skip Navigation Link
 
@@ -895,23 +895,23 @@ No `.env` file or environment variable usage detected. This is fine for a static
 
 ### Bundle Analysis
 
-| Resource | Size | Gzipped | Assessment |
-|----------|------|---------|------------|
-| Main JS | 322.83 kB | 103.36 kB | ⚠️ Large |
-| Motion chunk | 127.20 kB | 42.53 kB | ⚠️ Large |
-| Lucide chunk | 3.21 kB | 1.02 kB | ✅ Fine |
-| CSS | 115.62 kB | 21.41 kB | ⚠️ Large |
-| Hero PNG | 2,236.52 kB | — | 🔴 Critical |
-| **Total JS** | **453.24 kB** | **146.91 kB** | ⚠️ |
+| Resource     | Size          | Gzipped       | Assessment   |
+| ------------ | ------------- | ------------- | ------------ |
+| Main JS      | 322.83 kB     | 103.36 kB     | ⚠️ Large     |
+| Motion chunk | 127.20 kB     | 42.53 kB      | ⚠️ Large     |
+| Lucide chunk | 3.21 kB       | 1.02 kB       | ✅ Fine       |
+| CSS          | 115.62 kB     | 21.41 kB      | ⚠️ Large     |
+| Hero PNG     | 2,236.52 kB   | —             | 🔴 Critical   |
+| **Total JS** | **453.24 kB** | **146.91 kB** | ⚠️           |
 
 ### Estimated Lighthouse Scores
 
-| Metric | Estimated Score | Target |
-|--------|----------------|--------|
-| Performance | 35-45 | 90+ |
-| Accessibility | 55-65 | 90+ |
-| Best Practices | 75-85 | 90+ |
-| SEO | 30-40 | 90+ |
+| Metric         | Estimated Score  | Target   |
+| -------------- | ---------------- | -------- |
+| Performance    | 35-45            | 90+      |
+| Accessibility  | 55-65            | 90+      |
+| Best Practices | 75-85            | 90+      |
+| SEO            | 30-40            | 90+      |
 
 ---
 
@@ -919,29 +919,29 @@ No `.env` file or environment variable usage detected. This is fine for a static
 
 ### Total Files Analyzed
 
-| Category | Count | Notes |
-|----------|-------|-------|
-| Page components | 3 | Homepage, GCOPage, ContactPage |
-| Shared components | 2 | SharedNavbar, SharedFooter |
-| GCO sub-components | 8 | HeroSection, Slide, GCOComparison, TimelineSection, GCOQuestionSection, BeyondScore, CircleHero, FAQ |
-| Home sub-components | 2 | EcosystemSection, RedIntelligenceCard |
-| Standalone components | 1 | DotMap |
-| UI primitives | 49 | shadcn-style components |
-| Custom hooks | 2 | use-mouse-vector, use-mobile |
-| CSS files | 18 | Design tokens, fonts, Tailwind, GCO styles |
-| Config files | 6 | package.json, vite.config.ts, tsconfig.json, vercel.json, postcss.config.mjs, .gitignore |
-| Utility files | 3 | svg-paths.ts, svg-8pvzwocq57.ts (duplicate), utils.ts |
-| Documentation | 5 | README, ATTRIBUTIONS, FONT-GUIDE, PREMIUM-IMPROVEMENTS, COMPREHENSIVE_AUDIT |
+| Category              | Count   | Notes                                                                                                |
+| --------------------- | ------- | ---------------------------------------------------------------------------------------------------- |
+| Page components       | 3       | Homepage, GCOPage, ContactPage                                                                       |
+| Shared components     | 2       | SharedNavbar, SharedFooter                                                                           |
+| GCO sub-components    | 8       | HeroSection, Slide, GCOComparison, TimelineSection, GCOQuestionSection, BeyondScore, CircleHero, FAQ |
+| Home sub-components   | 2       | EcosystemSection, RedIntelligenceCard                                                                |
+| Standalone components | 1       | DotMap                                                                                               |
+| UI primitives         | 49      | shadcn-style components                                                                              |
+| Custom hooks          | 2       | use-mouse-vector, use-mobile                                                                         |
+| CSS files             | 18      | Design tokens, fonts, Tailwind, GCO styles                                                           |
+| Config files          | 6       | package.json, vite.config.ts, tsconfig.json, vercel.json, postcss.config.mjs, .gitignore             |
+| Utility files         | 3       | svg-paths.ts, svg-8pvzwocq57.ts (duplicate), utils.ts                                                |
+| Documentation         | 5       | README, ATTRIBUTIONS, FONT-GUIDE, PREMIUM-IMPROVEMENTS, COMPREHENSIVE_AUDIT                          |
 
 ### File Size Concerns
 
-| File | Lines | Issue |
-|------|-------|-------|
-| `Homepage.tsx` | 571 | Should be split into sub-components |
-| `merged-all-styles.css` | 1,297 | Monolithic stylesheet |
-| `BeyondScore.tsx` | ~350 | Too many inline styles |
-| `EcosystemSection.tsx` | ~340 | Magic numbers, Figma coords |
-| `design-tokens.css` | ~350 | Well-organized but underutilized |
+| File                    | Lines   | Issue                               |
+| ----------------------- | ------- | ----------------------------------- |
+| `Homepage.tsx`          | 571     | Should be split into sub-components |
+| `merged-all-styles.css` | 1,297   | Monolithic stylesheet               |
+| `BeyondScore.tsx`       | ~350    | Too many inline styles              |
+| `EcosystemSection.tsx`  | ~340    | Magic numbers, Figma coords         |
+| `design-tokens.css`     | ~350    | Well-organized but underutilized    |
 
 ---
 
@@ -949,57 +949,57 @@ No `.env` file or environment variable usage detected. This is fine for a static
 
 ### 🔴 Phase 1: Critical (Fix This Week)
 
-| # | Task | Effort | Impact |
-|---|------|--------|--------|
-| 1 | Add SEO meta tags to `index.html` | 30min | 🔴 High |
-| 2 | Optimize hero image (convert to WebP, compress) | 1hr | 🔴 High |
-| 3 | Fix font format declaration mismatch | 15min | 🔴 High |
-| 4 | Delete duplicate `svg-8pvzwocq57.ts` | 5min | 🔴 High |
-| 5 | Delete unused `gco/FAQ.tsx` | 5min | 🔴 High |
-| 6 | Merge duplicate contact button styles | 10min | 🔴 High |
-| 7 | Fix `once: false` on counter animation | 2min | 🔴 High |
-| 8 | Add privacy checkbox validation | 5min | 🔴 High |
+| #   | Task                                            | Effort   | Impact   |
+| --- | ----------------------------------------------- | -------- | -------- |
+| 1   | Add SEO meta tags to `index.html`               | 30min    | 🔴 High   |
+| 2   | Optimize hero image (convert to WebP, compress) | 1hr      | 🔴 High   |
+| 3   | Fix font format declaration mismatch            | 15min    | 🔴 High   |
+| 4   | Delete duplicate `svg-8pvzwocq57.ts`            | 5min     | 🔴 High   |
+| 5   | Delete unused `gco/FAQ.tsx`                     | 5min     | 🔴 High   |
+| 6   | Merge duplicate contact button styles           | 10min    | 🔴 High   |
+| 7   | Fix `once: false` on counter animation          | 2min     | 🔴 High   |
+| 8   | Add privacy checkbox validation                 | 5min     | 🔴 High   |
 
 ### 🟠 Phase 2: High Priority (Fix This Sprint)
 
-| # | Task | Effort | Impact |
-|---|------|--------|--------|
-| 9 | Throttle scroll events (Timeline, Navbar) | 1hr | 🟠 High |
-| 10 | Throttle mouse events (use-mouse-vector) | 30min | 🟠 High |
-| 11 | Replace JS-based responsive detection with CSS | 2hr | 🟠 High |
-| 12 | Extract inline styles to CSS classes | 3hr | 🟠 High |
-| 13 | Add vendor chunk splitting in Vite config | 30min | 🟠 High |
-| 14 | Audit and remove unused UI components | 2hr | 🟠 Medium |
-| 15 | Fix div-inside-p HTML invalidity | 5min | 🟠 Medium |
-| 16 | Add ErrorBoundary wrapper | 30min | 🟠 Medium |
+| #   | Task                                           | Effort   | Impact   |
+| --- | ---------------------------------------------- | -------- | -------- |
+| 9   | Throttle scroll events (Timeline, Navbar)      | 1hr      | 🟠 High   |
+| 10  | Throttle mouse events (use-mouse-vector)       | 30min    | 🟠 High   |
+| 11  | Replace JS-based responsive detection with CSS | 2hr      | 🟠 High   |
+| 12  | Extract inline styles to CSS classes           | 3hr      | 🟠 High   |
+| 13  | Add vendor chunk splitting in Vite config      | 30min    | 🟠 High   |
+| 14  | Audit and remove unused UI components          | 2hr      | 🟠 Medium |
+| 15  | Fix div-inside-p HTML invalidity               | 5min     | 🟠 Medium |
+| 16  | Add ErrorBoundary wrapper                      | 30min    | 🟠 Medium |
 
 ### 🟡 Phase 3: Medium Priority (Fix This Month)
 
-| # | Task | Effort | Impact |
-|---|------|--------|--------|
-| 17 | Migrate hardcoded values to design tokens | 4hr | 🟡 High |
-| 18 | Fix nav button color inconsistency | 30min | 🟡 Medium |
-| 19 | Replace DOM query with IntersectionObserver in Navbar | 1hr | 🟡 Medium |
-| 20 | Convert Ecosystem Figma coordinates to relative positioning | 2hr | 🟡 Medium |
-| 21 | Bundle TopoJSON data locally | 30min | 🟡 Medium |
-| 22 | Add TypeScript interfaces for all data structures | 2hr | 🟡 Medium |
-| 23 | Fix Google Fonts `display=swap` | 5min | 🟡 Medium |
-| 24 | Add `type="button"` to all non-submit buttons | 30min | 🟡 Medium |
+| #   | Task                                                        | Effort   | Impact   |
+| --- | ----------------------------------------------------------- | -------- | -------- |
+| 17  | Migrate hardcoded values to design tokens                   | 4hr      | 🟡 High   |
+| 18  | Fix nav button color inconsistency                          | 30min    | 🟡 Medium |
+| 19  | Replace DOM query with IntersectionObserver in Navbar       | 1hr      | 🟡 Medium |
+| 20  | Convert Ecosystem Figma coordinates to relative positioning | 2hr      | 🟡 Medium |
+| 21  | Bundle TopoJSON data locally                                | 30min    | 🟡 Medium |
+| 22  | Add TypeScript interfaces for all data structures           | 2hr      | 🟡 Medium |
+| 23  | Fix Google Fonts `display=swap`                             | 5min     | 🟡 Medium |
+| 24  | Add `type="button"` to all non-submit buttons               | 30min    | 🟡 Medium |
 
 ### 🟢 Phase 4: Low Priority (Backlog)
 
-| # | Task | Effort | Impact |
-|---|------|--------|--------|
-| 25 | Add ESLint + Prettier | 1hr | 🟢 Medium |
-| 26 | Add testing infrastructure (Vitest + RTL) | 2hr | 🟢 Medium |
-| 27 | Remove unused dependencies | 2hr | 🟢 Medium |
-| 28 | Rename package name | 5min | 🟢 Low |
-| 29 | Add Content Security Policy | 30min | 🟢 Medium |
-| 30 | Add skip navigation link | 10min | 🟢 Medium |
-| 31 | Fix touch target sizes to 44px minimum | 1hr | 🟢 Medium |
-| 32 | Audit MUI usage and remove if unused | 1hr | 🟢 Medium |
-| 33 | Consolidate animation libraries | 2hr | 🟢 Medium |
-| 34 | Split Homepage.tsx into sub-components | 3hr | 🟢 High |
+| #   | Task                                      | Effort   | Impact   |
+| --- | ----------------------------------------- | -------- | -------- |
+| 25  | Add ESLint + Prettier                     | 1hr      | 🟢 Medium |
+| 26  | Add testing infrastructure (Vitest + RTL) | 2hr      | 🟢 Medium |
+| 27  | Remove unused dependencies                | 2hr      | 🟢 Medium |
+| 28  | Rename package name                       | 5min     | 🟢 Low    |
+| 29  | Add Content Security Policy               | 30min    | 🟢 Medium |
+| 30  | Add skip navigation link                  | 10min    | 🟢 Medium |
+| 31  | Fix touch target sizes to 44px minimum    | 1hr      | 🟢 Medium |
+| 32  | Audit MUI usage and remove if unused      | 1hr      | 🟢 Medium |
+| 33  | Consolidate animation libraries           | 2hr      | 🟢 Medium |
+| 34  | Split Homepage.tsx into sub-components    | 3hr      | 🟢 High   |
 
 ---
 

@@ -22,7 +22,7 @@ Reimagining Education
 ```
 Reimagining Education
 
-A capability-based education ecosystem that replaces 
+A capability-based education ecosystem that replaces
 memory-based assessment with real-world measurable skills.
 
 [Explore the Framework]
@@ -79,13 +79,13 @@ memory-based assessment with real-world measurable skills.
 
 ### Design System Rules Applied
 
-| Property | Value |
-|----------|-------|
+| Property      | Value                |
+| ------------- | -------------------- |
 | Border radius | 12-15px (consistent) |
-| Card padding | 24-32px |
-| Card spacing | 16-24px gap |
-| Hover lift | 8px upward |
-| Shadow | Consistent elevation |
+| Card padding  | 24-32px              |
+| Card spacing  | 16-24px gap          |
+| Hover lift    | 8px upward           |
+| Shadow        | Consistent elevation |
 
 ### Cards Standardized
 - ✅ Institutional alignment card (black)
@@ -134,12 +134,12 @@ memory-based assessment with real-world measurable skills.
 
 ### Section Spacing Changes
 
-| Section | Before | After | Increase |
-|---------|--------|-------|----------|
-| Frame76 (Main) | 64px | 80px | +25% |
-| Frame75 (Footer) | 48px | 80px | +67% |
-| Frame74 (FAQ) | 64px | 80px | +25% |
-| Footer padding | 48px | 80px | +67% |
+| Section          | Before   | After   | Increase   |
+| ---------------- | -------- | ------- | ---------- |
+| Frame76 (Main)   | 64px     | 80px    | +25%       |
+| Frame75 (Footer) | 48px     | 80px    | +67%       |
+| Frame74 (FAQ)    | 64px     | 80px    | +25%       |
+| Footer padding   | 48px     | 80px    | +67%       |
 
 ### Result
 ```
@@ -158,8 +158,8 @@ AFTER:  80px gaps → Luxury
 ## 6. ✅ Improved CTA Copy
 
 ### Changes
-| Old CTA | New CTA |
-|---------|---------|
+| Old CTA        | New CTA                 |
+| -------------- | ----------------------- |
 | "Explore more" | "Explore the Framework" |
 
 ### Why It Works
@@ -220,32 +220,32 @@ aspect-[1280/400] scale-[0.85]  // Full map visible
 ## 📊 Before & After Comparison
 
 ### Hero Section
-| Aspect | Before | After |
-|--------|--------|-------|
-| Clarity | Vague | Clear value prop |
-| CTA | Generic | Specific action |
-| Subtext | Missing | Present |
+| Aspect   | Before   | After            |
+| -------- | -------- | ---------------- |
+| Clarity  | Vague    | Clear value prop |
+| CTA      | Generic  | Specific action  |
+| Subtext  | Missing  | Present          |
 
 ### Purple Block
-| Aspect | Before | After |
-|--------|--------|-------|
-| Content | Empty | Feature highlights |
-| Purpose | Unclear | Intentional |
-| Value | None | High |
+| Aspect   | Before   | After              |
+| -------- | -------- | ------------------ |
+| Content  | Empty    | Feature highlights |
+| Purpose  | Unclear  | Intentional        |
+| Value    | None     | High               |
 
 ### Spacing
-| Section | Before | After |
-|---------|--------|-------|
-| Between sections | 64px | 80px |
-| Footer padding | 48px | 80px |
-| Visual breathing room | Good | Excellent |
+| Section               | Before   | After     |
+| --------------------- | -------- | --------- |
+| Between sections      | 64px     | 80px      |
+| Footer padding        | 48px     | 80px      |
+| Visual breathing room | Good     | Excellent |
 
 ### Micro-Interactions
-| Element | Before | After |
-|---------|--------|-------|
-| Stats hover | None | 8px lift |
-| Cards | Basic | Enhanced |
-| Map | Full size | Scaled 85% |
+| Element     | Before    | After      |
+| ----------- | --------- | ---------- |
+| Stats hover | None      | 8px lift   |
+| Cards       | Basic     | Enhanced   |
+| Map         | Full size | Scaled 85% |
 
 ---
 
@@ -316,12 +316,12 @@ Build time: ~2.1s
 ## 📈 Expected Outcomes
 
 ### User Metrics
-| Metric | Expected Change |
-|--------|-----------------|
-| Time to understand | ↓ 50% faster |
-| CTA click rate | ↑ 30-40% |
-| Perceived credibility | ↑ 50% |
-| Bounce rate | ↓ 20% |
+| Metric                | Expected Change   |
+| --------------------- | ----------------- |
+| Time to understand    | ↓ 50% faster      |
+| CTA click rate        | ↑ 30-40%          |
+| Perceived credibility | ↑ 50%             |
+| Bounce rate           | ↓ 20%             |
 
 ### Business Impact
 - ✅ **3× higher perceived value**
@@ -384,9 +384,9 @@ Build time: ~2.1s
 
 ## ✅ Final Status
 
-**All 7 improvements:** ✅ Complete  
-**Colors changed:** ❌ No (per request)  
-**Build status:** ✅ Passing  
-**Perceived value:** ✅ ~3× higher  
+**All 7 improvements:** ✅ Complete
+**Colors changed:** ❌ No (per request)
+**Build status:** ✅ Passing
+**Perceived value:** ✅ ~3× higher
 
 **The website now feels like a premium education platform.** 🎉
