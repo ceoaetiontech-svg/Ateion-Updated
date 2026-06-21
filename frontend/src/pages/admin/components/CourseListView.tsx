@@ -27,6 +27,12 @@ interface AdminCourse {
   moduleCount: number;
   videoCount: number;
   createdAt: string | null;
+  // ── Pricing v2 ────────────────────────────────────────────────
+  originalPrice?: number | null;
+  sellingPrice?: number | null;
+  discountPercentage?: number | null;
+  currency?: string | null;
+  buttonText?: string | null;
 }
 
 const containerVariants = {
@@ -314,9 +320,27 @@ export default function CourseListView() {
                           {course.videoCount} video{course.videoCount === 1 ? "" : "s"}
                         </td>
 
-                        <td className="p-5 font-medium text-[var(--color-text-primary)]">
+                        <td className="p-5">
                           {course.isFree || course.price === "0" ? (
                               <span className="text-emerald-600 dark:text-emerald-400 font-bold bg-emerald-500/10 px-2.5 py-1 rounded-lg text-xs tracking-wide border border-emerald-500/10">Free</span>
+                          ) : course.sellingPrice != null ? (
+                              <div className="flex flex-col gap-0.5">
+                                <div className="flex items-center gap-2 flex-wrap">
+                                  {course.originalPrice != null && course.originalPrice > course.sellingPrice && (
+                                      <span className="text-xs text-[var(--color-text-tertiary)] line-through">
+                                        ₹{course.originalPrice.toLocaleString("en-IN")}
+                                      </span>
+                                  )}
+                                  <span className="font-bold text-[var(--color-text-primary)] text-sm">
+                                    ₹{course.sellingPrice.toLocaleString("en-IN")}
+                                  </span>
+                                </div>
+                                {course.discountPercentage != null && course.discountPercentage > 0 && (
+                                    <span className="inline-flex w-fit items-center px-1.5 py-0.5 rounded-md bg-orange-500/10 border border-orange-500/20 text-orange-600 dark:text-orange-400 text-[10px] font-extrabold">
+                                      {course.discountPercentage}% OFF
+                                    </span>
+                                )}
+                              </div>
                           ) : (
                               `₹${parseFloat(course.price).toLocaleString("en-IN")}`
                           )}

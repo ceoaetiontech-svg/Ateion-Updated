@@ -27,20 +27,7 @@ public class AdminCourseService {
     @Transactional(readOnly = true)
     public List<AdminCourseSummaryDTO> getCourses() {
         return courseRepository.findAllByOrderByCreatedAtDesc().stream()
-                .map(course -> new AdminCourseSummaryDTO(
-                        course.getId(),
-                        course.getTitle(),
-                        course.getDescription() != null ? course.getDescription() : "",
-                        course.getCategory() != null ? course.getCategory() : "technology",
-                        course.getPrice() != null ? course.getPrice() : "0",
-                        course.getIsFree() != null ? course.getIsFree() : true,
-                        course.getAgeSegment() != null ? course.getAgeSegment() : "All Levels",
-                        course.getImage() != null ? course.getImage() : "",
-                        "Published",
-                        moduleRepository.countByCourse_Id(course.getId()),
-                        videoRepository.countByModule_Course_Id(course.getId()),
-                        course.getCreatedAt()
-                ))
+                .map(this::toSummaryDTO)
                 .toList();
     }
 
@@ -49,30 +36,22 @@ public class AdminCourseService {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found"));
 
-        if (request.getTitle() != null)       course.setTitle(request.getTitle());
-        if (request.getDescription() != null) course.setDescription(request.getDescription());
-        if (request.getCategory() != null)    course.setCategory(request.getCategory());
-        if (request.getAgeSegment() != null)  course.setAgeSegment(request.getAgeSegment());
-        if (request.getPrice() != null)       course.setPrice(request.getPrice());
-        if (request.getIsFree() != null)      course.setIsFree(request.getIsFree());
-        if (request.getImage() != null)       course.setImage(request.getImage());
+        if (request.getTitle() != null)              course.setTitle(request.getTitle());
+        if (request.getDescription() != null)        course.setDescription(request.getDescription());
+        if (request.getCategory() != null)           course.setCategory(request.getCategory());
+        if (request.getAgeSegment() != null)         course.setAgeSegment(request.getAgeSegment());
+        if (request.getPrice() != null)              course.setPrice(request.getPrice());
+        if (request.getIsFree() != null)             course.setIsFree(request.getIsFree());
+        if (request.getImage() != null)              course.setImage(request.getImage());
+        // ── Pricing v2 — now fully stored in DB ─────────────────────────────
+        if (request.getOriginalPrice() != null)      course.setOriginalPrice(request.getOriginalPrice());
+        if (request.getSellingPrice() != null)       course.setSellingPrice(request.getSellingPrice());
+        if (request.getDiscountPercentage() != null) course.setDiscountPercentage(request.getDiscountPercentage());
+        if (request.getCurrency() != null)           course.setCurrency(request.getCurrency());
+        if (request.getButtonText() != null)         course.setButtonText(request.getButtonText());
 
         courseRepository.save(course);
-
-        return new AdminCourseSummaryDTO(
-                course.getId(),
-                course.getTitle(),
-                course.getDescription() != null ? course.getDescription() : "",
-                course.getCategory() != null ? course.getCategory() : "technology",
-                course.getPrice() != null ? course.getPrice() : "0",
-                course.getIsFree() != null ? course.getIsFree() : true,
-                course.getAgeSegment() != null ? course.getAgeSegment() : "All Levels",
-                course.getImage() != null ? course.getImage() : "",
-                "Published",
-                moduleRepository.countByCourse_Id(course.getId()),
-                videoRepository.countByModule_Course_Id(course.getId()),
-                course.getCreatedAt()
-        );
+        return toSummaryDTO(course);
     }
 
     @Transactional
@@ -85,9 +64,32 @@ public class AdminCourseService {
             userProgressRepository.deleteByVideoIdIn(videoIds);
         }
 
-        // Course -> Module -> Videos is configured with cascade + orphanRemoval,
-        // so deleting the course removes its curriculum from the database too.
         courseRepository.delete(course);
         courseRepository.flush();
+    }
+
+    // ── Private helpers ───────────────────────────────────────────────────────
+
+    private AdminCourseSummaryDTO toSummaryDTO(Course course) {
+        return new AdminCourseSummaryDTO(
+                course.getId(),
+                course.getTitle(),
+                course.getDescription()    != null ? course.getDescription()    : "",
+                course.getCategory()       != null ? course.getCategory()       : "technology",
+                course.getPrice()          != null ? course.getPrice()          : "0",
+                course.getIsFree()         != null ? course.getIsFree()         : true,
+                course.getAgeSegment()     != null ? course.getAgeSegment()     : "All Levels",
+                course.getImage()          != null ? course.getImage()          : "",
+                "Published",
+                moduleRepository.countByCourse_Id(course.getId()),
+                videoRepository.countByModule_Course_Id(course.getId()),
+                course.getCreatedAt(),
+                // ── Pricing v2 — read from real DB columns ───────────────────
+                course.getOriginalPrice(),
+                course.getSellingPrice(),
+                course.getDiscountPercentage(),
+                course.getCurrency()   != null ? course.getCurrency()   : "INR",
+                course.getButtonText() != null ? course.getButtonText() : "Unlock Course"
+        );
     }
 }

@@ -41,7 +41,13 @@ export interface Course {
   language: string;
   isFree: boolean;
   price?: string;
-  originalPrice?: string;
+  // ── Pricing v2 ──────────────────────────────────────────────────────────────
+  originalPrice?: string;      // e.g. "2000" — displayed with strikethrough
+  sellingPrice?: string;       // e.g. "1500" — the actual price shown large & bold
+  discountPercentage?: number; // e.g. 25   — shown as "25% OFF" badge
+  currency?: string;           // "INR" | "USD" | "EUR" — defaults to INR
+  buttonText?: string;         // unlock CTA label, defaults to "Unlock Course"
+  // ────────────────────────────────────────────────────────────────────────────
   ageGroups?: AgeGroupId[];
   topics: string[];
   enrollments: number;
@@ -49,6 +55,7 @@ export interface Course {
   previewModuleId: number | null;
   isEnrolled?: boolean;
 }
+
 
 export interface Note {
   id: number;

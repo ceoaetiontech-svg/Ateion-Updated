@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Play, ArrowRight, Code, Palette, Heart, Globe, Brain, Bot, Sparkles, BookOpen, Trophy, Users } from "lucide-react";
+import { Play, ArrowRight, Code, Palette, Heart, Globe, Brain, Bot, Sparkles, BookOpen, Trophy, Users, Unlock } from "lucide-react";
 import type { Course } from "../shared/types";
 import { getTopicColor } from "../shared/topicColors";
 
@@ -22,6 +22,15 @@ const TOPIC_ICONS: Record<string, typeof Brain> = {
     "Advanced Skills": Sparkles,
 };
 
+// Returns currency symbol from currency code
+function getCurrencySymbol(currency?: string): string {
+    switch ((currency || "INR").toUpperCase()) {
+        case "USD": return "$";
+        case "EUR": return "€";
+        default:    return "₹";
+    }
+}
+
 export default function CoursePreviewCard({ course }: CoursePreviewCardProps) {
     const coverGradient = useMemo(() => {
         const color = getTopicColor(course.topics);
@@ -34,6 +43,16 @@ export default function CoursePreviewCard({ course }: CoursePreviewCardProps) {
     }, [course.topics]);
 
     const topicColor = getTopicColor(course.topics);
+    const currencySymbol = getCurrencySymbol(course.currency);
+
+    // Resolve pricing display values
+    const hasPricing = !course.isFree && (course.sellingPrice || course.price);
+    const selling = parseFloat(course.sellingPrice || course.price || "0");
+    const original = parseFloat(course.originalPrice || "0");
+    const hasDiscount = original > 0 && original > selling;
+    const discount = course.discountPercentage ??
+        (hasDiscount ? Math.round(((original - selling) / original) * 100) : 0);
+    const unlockLabel = course.buttonText || "Unlock Course";
 
     return (
         <div className="w-full h-full flex flex-col group">
@@ -49,12 +68,18 @@ export default function CoursePreviewCard({ course }: CoursePreviewCardProps) {
                 {/* Decorative Icon */}
                 <DecorativeIcon size={80} className="text-white/10 absolute -right-4 -bottom-4 rotate-12 transition-transform duration-500 group-hover:scale-110" />
 
-                {/* Free/Premium Badge */}
-                <div className={`absolute top-3 left-3 z-10 px-2.5 py-0.5 rounded-md backdrop-blur-md text-[9px] font-extrabold uppercase tracking-wider border ${course.isFree ? "bg-black/50 border-white/10 text-white" : "bg-gradient-to-r from-yellow-600/90 to-amber-500/90 border-yellow-400/40 text-white shadow-[0_0_10px_rgba(234,179,8,0.3)]"}`}>
-                    {course.isFree ? "Free" : "Premium"}
-                </div>
+                {/* Free / Paid Badge (top-left overlay) */}
+                {course.isFree ? (
+                    <div className="absolute top-3 left-3 z-10 px-2.5 py-0.5 rounded-md backdrop-blur-md text-[9px] font-extrabold uppercase tracking-wider border bg-emerald-500/80 border-emerald-400/40 text-white shadow-[0_0_10px_rgba(16,185,129,0.4)]">
+                        Free
+                    </div>
+                ) : (
+                    <div className="absolute top-3 left-3 z-10 px-2.5 py-0.5 rounded-md backdrop-blur-md text-[9px] font-extrabold uppercase tracking-wider border bg-gradient-to-r from-orange-600/90 to-amber-500/90 border-amber-400/40 text-white shadow-[0_0_10px_rgba(234,88,12,0.35)]">
+                        {hasDiscount ? `${discount}% OFF` : "Premium"}
+                    </div>
+                )}
 
-                {/* Glowing Overlay */}
+                {/* Glowing Overlay on hover */}
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
 
                 {/* Animated Play button Overlay */}
@@ -64,9 +89,9 @@ export default function CoursePreviewCard({ course }: CoursePreviewCardProps) {
             </div>
 
             {/* Content Area */}
-            <div className="p-6 flex-1 flex flex-col justify-between">
+            <div className="p-5 flex-1 flex flex-col justify-between">
                 <div className="space-y-2.5">
-                    {/* Topic Badge */}
+                    {/* Topic Badge + Enrollment count */}
                     <div className="flex items-center gap-2 flex-wrap">
                         <span
                             className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-md"
@@ -106,9 +131,10 @@ export default function CoursePreviewCard({ course }: CoursePreviewCardProps) {
                     </p>
                 </div>
 
-                {/* Footer */}
-                <div className="flex items-center justify-between pt-4 mt-4 border-t border-[var(--color-border-light)]/60 text-[var(--color-text-tertiary)]">
-                    <div className="flex items-center gap-3 text-xs">
+                {/* ── Pricing + CTA block ─────────────────────────────────────── */}
+                <div className="pt-4 mt-4 border-t border-[var(--color-border-light)]/60 space-y-3">
+                    {/* Lesson + Level meta */}
+                    <div className="flex items-center gap-3 text-xs text-[var(--color-text-tertiary)]">
                         <span className="flex items-center gap-1">
                             <BookOpen size={13} />
                             {course.lessons} lessons
@@ -118,10 +144,53 @@ export default function CoursePreviewCard({ course }: CoursePreviewCardProps) {
                             {course.level}
                         </span>
                     </div>
-                    <div className="text-[var(--color-accent)] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 flex items-center gap-1 text-xs font-bold">
-                        <span>Explore</span>
-                        <ArrowRight size={14} />
-                    </div>
+
+                    {/* Price row */}
+                    {course.isFree ? (
+                        /* ── FREE badge ─────────────────────────────────────── */
+                        <div className="flex items-center justify-between">
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/12 border border-emerald-500/25 text-emerald-600 dark:text-emerald-400 text-sm font-extrabold tracking-wide">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                    <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+                                    <path d="m9 12 2 2 4-4"/>
+                                </svg>
+                                FREE
+                            </span>
+                            <div className="text-[var(--color-accent)] opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 flex items-center gap-1 text-xs font-bold">
+                                <span>Explore</span>
+                                <ArrowRight size={14} />
+                            </div>
+                        </div>
+                    ) : (
+                        /* ── PAID pricing block ──────────────────────────────── */
+                        <div className="space-y-2.5">
+                            {/* Price figures */}
+                            <div className="flex items-center gap-2 flex-wrap">
+                                {hasDiscount && (
+                                    <span className="text-sm text-[var(--color-text-tertiary)] line-through">
+                                        {currencySymbol}{original.toLocaleString("en-IN")}
+                                    </span>
+                                )}
+                                <span className="text-xl font-extrabold text-[var(--color-text-primary)]">
+                                    {currencySymbol}{selling.toLocaleString("en-IN")}
+                                </span>
+                                {hasDiscount && discount > 0 && (
+                                    <span className="inline-flex items-center px-2 py-0.5 rounded-md bg-orange-500/12 border border-orange-500/25 text-orange-600 dark:text-orange-400 text-[10px] font-extrabold tracking-wide">
+                                        {discount}% OFF
+                                    </span>
+                                )}
+                            </div>
+                            {/* Unlock CTA */}
+                            <button
+                                type="button"
+                                className="w-full flex items-center justify-center gap-2 py-2 rounded-xl text-white text-sm font-bold transition-all duration-200 hover:brightness-110 hover:scale-[1.02] active:scale-[0.98] shadow-md"
+                                style={{ background: "linear-gradient(135deg, #2b244f 0%, #d66f55 58%, #ff9b82 100%)" }}
+                            >
+                                <Unlock size={14} />
+                                {unlockLabel}
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

@@ -64,6 +64,12 @@ public class CourseController {
                     map.put("createdAt", course.getCreatedAt());
                     map.put("videoCount", videoSummary != null ? videoSummary.getVideoCount() : 0L);
                     map.put("previewModuleId", videoSummary != null ? videoSummary.getPreviewModuleId() : null);
+                    // ── Pricing v2 ──────────────────────────────────────────────────────
+                    map.put("originalPrice", course.getOriginalPrice());
+                    map.put("sellingPrice", course.getSellingPrice());
+                    map.put("discountPercentage", course.getDiscountPercentage());
+                    map.put("currency", course.getCurrency() != null ? course.getCurrency() : "INR");
+                    map.put("buttonText", course.getButtonText() != null ? course.getButtonText() : "Unlock Course");
                     return map;
                 })
                 .toList();
