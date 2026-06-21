@@ -53,77 +53,96 @@ function MiniPolicyCard({ policy, index }: { policy: PolicyEntry; index: number 
       onHoverStart={() => setHovered(true)}
       onHoverEnd={() => setHovered(false)}
       onClick={() => navigate(`/policy/${policy.id}`)}
-      className="clay-card"
-      style={{
-        background: "var(--color-background-secondary)",
-        borderRadius: 20,
-        overflow: "hidden",
-        cursor: "pointer",
-        position: "relative",
-        display: "flex",
-        flexDirection: "column",
-        border: "1px solid var(--color-border-light)",
-        boxShadow: "0 8px 24px rgba(26,24,51,0.03)",
-      }}
+      className="group relative flex flex-col rounded-3xl border border-[var(--color-border-light)] bg-[var(--color-background-secondary)] overflow-hidden cursor-pointer transition-all duration-300 hover:border-[var(--color-accent)]/30 hover:shadow-[0_12px_30px_rgba(0,0,0,0.06)]"
     >
-      {/* Logo image */}
-      <div style={{ width: "100%", aspectRatio: "1/1", overflow: "hidden", background: "var(--color-background-secondary)", flexShrink: 0 }}>
+      {/* Logo area with accent gradient background */}
+      <div
+        className="w-full aspect-[4/3] relative flex items-center justify-center overflow-hidden shrink-0"
+        style={{ background: `${policy.accentColor}12` }}
+      >
+        {/* Decorative corner gradient */}
+        <div
+          className="absolute -top-16 -right-16 w-48 h-48 rounded-full pointer-events-none opacity-40"
+          style={{
+            background: `radial-gradient(circle, ${policy.accentColor}30 0%, transparent 70%)`,
+          }}
+        />
+
         {img ? (
           <img
             src={img}
             alt={`${policy.country} education policy`}
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "contain",
-              objectPosition: "center",
-              display: "block",
-              transition: "transform 0.4s ease",
-              transform: hovered ? "scale(1.04)" : "scale(1)",
-            }}
+            className="w-3/5 h-3/5 object-contain object-center block transition-transform duration-500 group-hover:scale-110 relative z-10"
           />
         ) : (
-          <div style={{
-            width: "100%", height: "100%",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: "3rem", background: `${policy.accentColor}08`,
-          }}>
+          <div className="w-full h-full flex items-center justify-center text-5xl relative z-10">
             {policy.flag}
           </div>
         )}
+
+        {/* Flag badge top-right */}
+        <div
+          className="absolute top-3 right-3 z-10 px-2.5 py-0.5 rounded-md backdrop-blur-md border text-[10px] font-extrabold uppercase tracking-wider shadow-sm"
+          style={{
+            backgroundColor: `${policy.accentColor}cc`,
+            borderColor: `${policy.accentColor}88`,
+            color: "#fff",
+          }}
+        >
+          {policy.flag} {policy.code}
+        </div>
       </div>
 
-      {/* Bottom strip */}
-      <div style={{
-        display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
-        padding: "16px 20px",
-        background: "var(--color-background-secondary)",
-        borderTop: `2px solid ${policy.accentColor}`,
-        flexShrink: 0,
-      }}>
-        <span style={{
-          fontFamily: "var(--font-body)",
-          fontSize: "0.72rem", fontWeight: 800, letterSpacing: "0.06em",
-          color: "#fff", background: policy.accentColor,
-          borderRadius: 8, padding: "5px 12px", lineHeight: 1,
-        }}>
-          {policy.code}
-        </span>
-        <span style={{
-          fontFamily: "var(--font-display)",
-          fontSize: "0.98rem", fontWeight: 700, color: "var(--color-text-primary)",
-          lineHeight: 1.2, marginTop: 4,
-        }}>
+      {/* Content area */}
+      <div className="p-5 flex-1 flex flex-col">
+        <div className="flex items-center gap-2 mb-2">
+          <div
+            className="text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-md"
+            style={{
+              color: policy.accentColor,
+              backgroundColor: `${policy.accentColor}15`,
+            }}
+          >
+            {policy.region}
+          </div>
+          <span className="text-[10px] font-bold text-[var(--color-text-tertiary)]">
+            {policy.frameworks.length} framework{policy.frameworks.length > 1 ? "s" : ""}
+          </span>
+        </div>
+
+        <h3
+          className="text-base font-extrabold text-[var(--color-text-primary)] group-hover:text-[var(--color-accent)] transition-colors leading-tight mb-1"
+        >
           {policy.country}
-        </span>
-        <span style={{
-          fontFamily: "var(--font-body)",
-          fontSize: "0.62rem", fontWeight: 800, letterSpacing: "0.1em",
-          textTransform: "uppercase", color: "var(--color-text-secondary)",
-          whiteSpace: "nowrap",
-        }}>
-          {policy.frameworks.length} FRAMEWORK{policy.frameworks.length > 1 ? "S" : ""}
-        </span>
+        </h3>
+
+        <p className="text-xs text-[var(--color-text-tertiary)] font-medium leading-relaxed line-clamp-2">
+          {policy.frameworks[0].hoverMessage}
+        </p>
+
+        {/* Spacer */}
+        <div className="flex-1" />
+
+        {/* Framework tags */}
+        <div className="flex flex-wrap gap-1.5 mt-3 pt-3.5 border-t border-[var(--color-border-light)]/60">
+          {policy.frameworks.slice(0, 2).map((fw) => (
+            <span
+              key={fw.name}
+              className="text-[9px] font-bold px-2 py-0.5 rounded-md"
+              style={{
+                color: policy.accentColor,
+                backgroundColor: `${policy.accentColor}10`,
+              }}
+            >
+              {fw.name}
+            </span>
+          ))}
+          {policy.frameworks.length > 2 && (
+            <span className="text-[9px] font-bold text-[var(--color-text-tertiary)] px-1.5">
+              +{policy.frameworks.length - 2}
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Hover overlay */}
@@ -134,63 +153,56 @@ function MiniPolicyCard({ policy, index }: { policy: PolicyEntry; index: number 
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            style={{
-              position: "absolute", inset: 0, borderRadius: 20,
-              background: "var(--color-background-secondary)", borderTop: `2px solid ${policy.accentColor}`,
-              padding: "22px 20px 20px",
-              display: "flex", flexDirection: "column", overflow: "hidden",
-            }}
+            className="absolute inset-0 rounded-3xl flex flex-col overflow-hidden"
+            style={{ background: "var(--color-background-secondary)" }}
           >
-            <p style={{
-              fontFamily: "var(--font-body)",
-              fontSize: "0.6rem", fontWeight: 800, letterSpacing: "0.16em",
-              textTransform: "uppercase", color: "var(--color-text-tertiary)", margin: "0 0 8px",
-            }}>
-              HOW ATEION ALIGNS
-            </p>
-            <p style={{
-              fontFamily: "var(--font-body)",
-              fontSize: "0.78rem", color: "var(--color-text-secondary)", lineHeight: 1.6,
-              flex: 1, margin: "0 0 12px",
-            }}>
-              {policy.frameworks[0].hoverMessage}
-            </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 12 }}>
-              {policy.frameworks.map((fw, i) => (
-                <div key={i} style={{
-                  display: "flex", alignItems: "center", justifyContent: "space-between",
-                  gap: 8, padding: "8px 12px", background: "var(--color-background-tertiary)", borderRadius: 10,
-                }}>
-                  <span style={{ fontFamily: "var(--font-body)", fontSize: "0.7rem", fontWeight: 600, color: "var(--color-text-secondary)", flex: 1, lineHeight: 1.3 }}>
-                    {fw.name}
-                  </span>
-                  <button
-                    className="clay-button"
-                    style={{
-                      fontFamily: "var(--font-body)", fontSize: "0.64rem", fontWeight: 700,
-                      color: "#fff", background: policy.accentColor,
-                      border: "1px solid rgba(255,255,255,0.15)",
-                      borderRadius: 100, padding: "5px 11px", cursor: "pointer",
-                      whiteSpace: "nowrap", flexShrink: 0,
-                    }}
-                    onClick={(e) => handleOpenFramework(e, fw.policyLink)}
+            {/* Accent top bar */}
+            <div className="h-1 w-full shrink-0" style={{ background: policy.accentColor }} />
+
+            <div className="flex-1 p-5 flex flex-col overflow-hidden">
+              <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--color-text-tertiary)] mb-2">
+                HOW ATEION ALIGNS
+              </p>
+              <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed mb-3 line-clamp-2">
+                {policy.frameworks[0].hoverMessage}
+              </p>
+
+              <div className="flex flex-col gap-2 mb-3">
+                {policy.frameworks.map((fw, i) => (
+                  <div
+                    key={i}
+                    className="flex items-center justify-between gap-2 p-2.5 rounded-xl"
+                    style={{ background: "var(--color-background-tertiary)" }}
                   >
-                    Open →
-                  </button>
-                </div>
-              ))}
-            </div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
-              {policy.frameworks[0].tags.map((tag) => (
-                <span key={tag} style={{
-                  fontFamily: "var(--font-body)", fontSize: "0.62rem", fontWeight: 700,
-                  padding: "3px 9px", borderRadius: 100,
-                  border: `1px solid ${policy.accentColor}38`,
-                  background: `${policy.accentColor}0d`, color: "var(--color-text-secondary)",
-                }}>
-                  {tag}
-                </span>
-              ))}
+                    <span className="text-[11px] font-semibold text-[var(--color-text-secondary)] flex-1 leading-tight line-clamp-1">
+                      {fw.name}
+                    </span>
+                    <button
+                      className="shrink-0 text-[10px] font-bold text-white rounded-full px-3 py-1 cursor-pointer transition-all hover:brightness-110 whitespace-nowrap border border-white/15"
+                      style={{ background: policy.accentColor }}
+                      onClick={(e) => handleOpenFramework(e, fw.policyLink)}
+                    >
+                      Open →
+                    </button>
+                  </div>
+                ))}
+              </div>
+
+              <div className="flex flex-wrap gap-1.5 mt-auto">
+                {policy.frameworks[0].tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="text-[9px] font-bold px-2 py-0.5 rounded-full"
+                    style={{
+                      border: `1px solid ${policy.accentColor}38`,
+                      background: `${policy.accentColor}0d`,
+                      color: "var(--color-text-secondary)",
+                    }}
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
             </div>
           </motion.div>
         )}
@@ -294,23 +306,6 @@ export default function HomePolicySection() {
           .home-policy-grid {
             grid-template-columns: repeat(2, 1fr) !important;
             gap: 12px !important;
-          }
-          /* Scale down card padding and font sizes to fit side-by-side on mobile */
-          .home-policy-grid .clay-card > div:nth-child(2) {
-            padding: 10px 8px !important;
-            gap: 2px !important;
-          }
-          .home-policy-grid .clay-card > div:nth-child(2) > span:nth-child(1) {
-            font-size: 0.55rem !important;
-            padding: 3px 8px !important;
-            border-radius: 4px !important;
-          }
-          .home-policy-grid .clay-card > div:nth-child(2) > span:nth-child(2) {
-            font-size: 0.75rem !important;
-            margin-top: 2px !important;
-          }
-          .home-policy-grid .clay-card > div:nth-child(2) > span:nth-child(3) {
-            font-size: 0.5rem !important;
           }
         }
       `}</style>

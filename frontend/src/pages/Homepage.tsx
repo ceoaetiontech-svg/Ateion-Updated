@@ -406,7 +406,7 @@ function VerticalTicker() {
           const fontSize = isActive
             ? "clamp(32px, 4vw, 52px)"
             : "clamp(24px, 3vw, 38px)";
-          const opacity = isActive ? 1 : isAdjacent ? 0.35 : 0;
+          const opacity = isActive ? 1 : isAdjacent ? 0.8 : 0;
           const scale = isActive ? 1 : 0.88;
 
           return (
@@ -427,7 +427,7 @@ function VerticalTicker() {
                 opacity,
                 transform: `scale(${scale})`,
                 color: isActive
-                  ? "var(--color-text-primary)"
+                  ? "var(--color-accent)"
                   : "var(--color-text-muted)",
                 transition: "color 0.4s ease, opacity 0.4s ease",
               }}
