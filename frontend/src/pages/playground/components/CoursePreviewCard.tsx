@@ -31,7 +31,11 @@ export default function CoursePreviewCard({ course, onReadMore, onPreview, accen
             {/* Thumbnail with Dynamic Badges & Hover Overlay */}
             <div className="w-full aspect-video relative overflow-hidden bg-[var(--color-background-tertiary)] shrink-0">
                 {/* Level Badge (Top-Left) */}
-                <div className="absolute top-3 left-3 z-10 px-2 py-0.5 rounded-md bg-black/50 backdrop-blur-md border border-white/10 text-[9px] font-extrabold text-white uppercase tracking-wider">
+                <div className={`absolute top-3 left-3 z-10 px-2 py-0.5 rounded-md backdrop-blur-md border text-[9px] font-extrabold uppercase tracking-wider ${
+                    course.isFree
+                        ? "bg-black/50 border-white/10 text-white"
+                        : "bg-gradient-to-r from-yellow-600/90 to-amber-500/90 border-yellow-400/40 text-white shadow-[0_0_10px_rgba(234,179,8,0.3)]"
+                }`}>
                     {course.isFree ? "Free" : "Premium"}
                 </div>
 
