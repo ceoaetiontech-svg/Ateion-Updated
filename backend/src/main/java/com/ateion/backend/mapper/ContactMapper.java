@@ -3,18 +3,45 @@ package com.ateion.backend.mapper;
 import com.ateion.backend.dto.ContactRequestDTO;
 import com.ateion.backend.dto.ContactResponseDTO;
 import com.ateion.backend.entity.Contact;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import java.util.stream.Collectors;
 
-@Mapper(componentModel = "spring")
-public interface ContactMapper {
+/**
+ * Manual mapper — replaces MapStruct @Mapper so no annotation processing
+ * is required at compile time. Spring Boot picks this up as a plain bean.
+ */
+@Component
+public class ContactMapper {
 
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    Contact toEntity(ContactRequestDTO requestDTO);
+    public Contact toEntity(ContactRequestDTO requestDTO) {
+        if (requestDTO == null) return null;
+        return Contact.builder()
+                .name(requestDTO.getName())
+                .email(requestDTO.getEmail())
+                .subject(requestDTO.getSubject())
+                .message(requestDTO.getMessage())
+                // id and createdAt are set by JPA / @CreationTimestamp
+                .build();
+    }
 
-    ContactResponseDTO toResponseDTO(Contact contact);
+    public ContactResponseDTO toResponseDTO(Contact contact) {
+        if (contact == null) return null;
+        return ContactResponseDTO.builder()
+                .id(contact.getId())
+                .name(contact.getName())
+                .email(contact.getEmail())
+                .subject(contact.getSubject())
+                .message(contact.getMessage())
+                .createdAt(contact.getCreatedAt())
+                .build();
+    }
 
-    List<ContactResponseDTO> toResponseDTOList(List<Contact> contacts);
+    public List<ContactResponseDTO> toResponseDTOList(List<Contact> contacts) {
+        if (contacts == null) return List.of();
+        return contacts.stream()
+                .map(this::toResponseDTO)
+                .collect(Collectors.toList());
+    }
 }

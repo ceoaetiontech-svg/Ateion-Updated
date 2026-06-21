@@ -20,4 +20,10 @@ public class AdminCourseSummaryDTO {
     private long moduleCount;
     private long videoCount;
     private LocalDateTime createdAt;
+    // ── Pricing v2 ────────────────────────────────────────────────────────────
+    private Double originalPrice;
+    private Double sellingPrice;
+    private Double discountPercentage;
+    private String currency;
+    private String buttonText;
 }

@@ -46,4 +46,21 @@ public class Course {
     private LocalDateTime updatedAt;
 
     private String createdBy;
+
+    // ── Pricing v2 ────────────────────────────────────────────────────────────
+    // Columns added via Supabase SQL migration — now fully mapped to the DB.
+    @Column(name = "original_price")
+    private Double originalPrice;
+
+    @Column(name = "selling_price")
+    private Double sellingPrice;
+
+    @Column(name = "discount_percentage")
+    private Double discountPercentage;
+
+    @Column(name = "currency")
+    private String currency;
+
+    @Column(name = "button_text")
+    private String buttonText;
 }

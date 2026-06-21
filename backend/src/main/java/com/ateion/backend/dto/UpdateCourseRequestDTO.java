@@ -15,4 +15,10 @@ public class UpdateCourseRequestDTO {
     private String price;
     private Boolean isFree;
     private String image;
+    // ── Pricing v2 ────────────────────────────────────────────────────────────
+    private Double originalPrice;
+    private Double sellingPrice;
+    private Double discountPercentage;
+    private String currency;
+    private String buttonText;
 }

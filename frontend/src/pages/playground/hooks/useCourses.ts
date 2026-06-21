@@ -16,6 +16,12 @@ interface BackendCourse {
   videoCount?: number | string | null;
   createdAt?: string | number | null;
   previewModuleId?: number | string | null;
+  // ── Pricing v2 ────────────────────────────────────────────────────────────
+  originalPrice?: number | string | null;
+  sellingPrice?: number | string | null;
+  discountPercentage?: number | string | null;
+  currency?: string | null;
+  buttonText?: string | null;
 }
 
 const COURSE_REQUEST_ATTEMPTS = 8;
@@ -74,6 +80,13 @@ function mapBackendCourse(course: BackendCourse): Course {
     language: "English",
     isFree: course.isFree !== false,
     price: course.price != null ? String(course.price) : "0",
+    // ── Pricing v2 ──────────────────────────────────────────────────────────
+    originalPrice: course.originalPrice != null ? String(course.originalPrice) : undefined,
+    sellingPrice: course.sellingPrice != null ? String(course.sellingPrice) : undefined,
+    discountPercentage: course.discountPercentage != null ? toNumber(course.discountPercentage) : undefined,
+    currency: course.currency?.trim() || "INR",
+    buttonText: course.buttonText?.trim() || "Unlock Course",
+    // ────────────────────────────────────────────────────────────────────────
     ageGroups: toAgeGroups(course.ageSegment),
     topics: course.category?.trim()
         ? [course.category.trim()]
