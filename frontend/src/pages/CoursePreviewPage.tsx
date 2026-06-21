@@ -176,16 +176,32 @@ export default function CoursePreviewPage() {
                                     error={null}
                                 />
                             </div>
-                            <div className="mt-2.5 flex items-center justify-end gap-1.5 px-1.5 opacity-85 hover:opacity-100 transition-opacity">
-                                <span className="text-[10px] font-semibold uppercase tracking-wider text-[var(--color-text-muted)]" style={{ fontFamily: "var(--font-display)" }}>
-                                    Powered by
-                                </span>
-                                <span className="text-[11px] font-extrabold text-[#FF0000] flex items-center gap-1">
-                                    <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-current" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M23.498 6.163c-.272-.98-1.04-1.748-2.02-2.02C19.716 3.745 12 3.745 12 3.745s-7.715 0-9.478.398c-.98.272-1.748 1.04-2.02 2.02C.104 7.928.104 12 .104 12s0 4.072.398 5.837c.272.98 1.04 1.748 2.02 2.02 1.763.398 9.478.398 9.478.398s7.715 0 9.478-.398c.98-.272 1.748-1.04 2.02-2.02.398-1.765.398-5.837.398-5.837s0-4.07-.398-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                                    </svg>
-                                    YouTube
-                                </span>
+                            <div className="mt-3 flex justify-end">
+                                <a 
+                                    href={`https://www.youtube.com/watch?v=${currentVideo.videoId}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="group inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border text-xs font-semibold transition-all duration-300 backdrop-blur-sm shadow-sm hover:scale-[1.02] active:scale-95"
+                                    style={{
+                                        background: "var(--color-background-secondary)",
+                                        borderColor: "var(--color-border-light)",
+                                    }}
+                                >
+                                    <span 
+                                        className="transition-colors duration-300" 
+                                        style={{ color: "var(--color-text-tertiary)" }}
+                                    >
+                                        Powered by
+                                    </span>
+                                    <span 
+                                        className="flex items-center gap-1 font-bold transition-colors duration-300 text-[var(--color-text-secondary)] group-hover:text-[#FF0000]"
+                                    >
+                                        <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M23.498 6.163c-.272-.98-1.04-1.748-2.02-2.02C19.716 3.745 12 3.745 12 3.745s-7.715 0-9.478.398c-.98.272-1.748 1.04-2.02 2.02C.104 7.928.104 12 .104 12s0 4.072.398 5.837c.272.98 1.04 1.748 2.02 2.02 1.763.398 9.478.398 9.478.398s7.715 0 9.478-.398c.98-.272 1.748-1.04 2.02-2.02.398-1.765.398-5.837.398-5.837s0-4.07-.398-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                                        </svg>
+                                        YouTube
+                                    </span>
+                                </a>
                             </div>
 
                             <div className="mt-5">
@@ -195,12 +211,12 @@ export default function CoursePreviewPage() {
                                 >
                                     {currentVideo.title}
                                 </h1>
-                                <div className="flex items-center gap-3 mt-3 flex-wrap">
-                                    <span className="flex items-center gap-1.5 text-xs font-medium px-3 py-1 rounded-lg border"
-                                        style={{ borderColor: "var(--color-border-light)", color: "var(--color-accent)" }}>
-                                        <Monitor size={12} /> Preview
+                                <div className="flex items-center gap-3 mt-4 flex-wrap">
+                                    <span className="flex items-center gap-1.5 text-sm font-semibold px-3.5 py-1.5 rounded-xl border"
+                                        style={{ borderColor: "var(--color-border-light)", color: "var(--color-accent)", background: "var(--color-accent) / 8" }}>
+                                        <Monitor size={14} /> Preview
                                     </span>
-                                    <span className="text-xs" style={{ color: "var(--color-text-tertiary)" }}>
+                                    <span className="text-sm font-medium" style={{ color: "var(--color-text-secondary)" }}>
                                         {videos.length} video{videos.length > 1 ? "s" : ""} in this preview
                                     </span>
                                 </div>
@@ -212,16 +228,16 @@ export default function CoursePreviewPage() {
                                     <div className="rounded-2xl border" style={{ borderColor: "var(--color-border-light)", background: "var(--color-background-secondary)" }}>
                                         <div className="p-4 border-b" style={{ borderColor: "var(--color-border-light)" }}>
                                             <div className="flex items-center gap-2">
-                                                <ListVideo size={16} style={{ color: "var(--color-accent)" }} />
-                                                <span className="text-sm font-bold" style={{ color: "var(--color-text-primary)" }}>
+                                                <ListVideo size={18} style={{ color: "var(--color-accent)" }} />
+                                                <span className="text-base font-bold" style={{ color: "var(--color-text-primary)" }}>
                                                     Preview Lessons
                                                 </span>
-                                                <span className="ml-auto text-xs font-bold px-2 py-0.5 rounded-md" style={{ background: "var(--color-accent) / 12", color: "var(--color-accent)" }}>
+                                                <span className="ml-auto text-sm font-bold px-2.5 py-0.5 rounded-lg" style={{ background: "var(--color-accent) / 12", color: "var(--color-accent)" }}>
                                                     {videos.length}
                                                 </span>
                                             </div>
                                         </div>
-                                        <div className="p-2 flex flex-col gap-1">
+                                        <div className="p-2 flex flex-col gap-1 max-h-[600px] overflow-y-auto custom-scrollbar">
                                             {videos.map((video, index) => {
                                                 const isActive = currentVideo.id === video.id;
                                                 return (
@@ -335,16 +351,16 @@ export default function CoursePreviewPage() {
                                 <div className="lg:sticky lg:top-24 rounded-2xl border" style={{ borderColor: "var(--color-border-light)", background: "var(--color-background-secondary)" }}>
                                     <div className="p-4 border-b" style={{ borderColor: "var(--color-border-light)" }}>
                                         <div className="flex items-center gap-2">
-                                            <ListVideo size={16} style={{ color: "var(--color-accent)" }} />
-                                            <span className="text-sm font-bold" style={{ color: "var(--color-text-primary)" }}>
+                                            <ListVideo size={18} style={{ color: "var(--color-accent)" }} />
+                                            <span className="text-base font-bold" style={{ color: "var(--color-text-primary)" }}>
                                                 Preview Lessons
                                             </span>
-                                            <span className="ml-auto text-xs font-bold px-2 py-0.5 rounded-md" style={{ background: "var(--color-accent) / 12", color: "var(--color-accent)" }}>
+                                            <span className="ml-auto text-sm font-bold px-2.5 py-0.5 rounded-lg" style={{ background: "var(--color-accent) / 12", color: "var(--color-accent)" }}>
                                                 {videos.length}
                                             </span>
                                         </div>
                                     </div>
-                                    <div className="p-2 flex flex-col gap-1">
+                                    <div className="p-2 flex flex-col gap-1 max-h-[600px] overflow-y-auto custom-scrollbar">
                                         {videos.map((video, index) => {
                                             const isActive = currentVideo.id === video.id;
                                             return (
