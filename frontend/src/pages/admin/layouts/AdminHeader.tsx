@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { useLocation } from "react-router";
-import { Sun, Moon, User, Key, LogOut, ChevronDown, Bell, Menu } from "lucide-react";
+import { useLocation, Link } from "react-router";
+import { Sun, Moon, User, Key, LogOut, ChevronDown, Bell, Menu, House } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAdminAuth } from "../context/AdminAuthContext";
 
@@ -75,6 +75,14 @@ export default function AdminHeader() {
       </div>
 
       <div className="flex items-center gap-4">
+        <Link
+          to="/"
+          className="w-10 h-10 rounded-full flex items-center justify-center transition-colors bg-[var(--color-background-tertiary)] hover:bg-[var(--color-border-light)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
+          aria-label="Back to Homepage"
+          title="Home"
+        >
+          <House size={18} />
+        </Link>
         <div className="relative" ref={notifRef}>
           <button
             onClick={() => setNotifOpen(!notifOpen)}

@@ -1,6 +1,6 @@
-import { ShieldCheck, Sun, Moon, Loader2 } from "lucide-react";
+import { ShieldCheck, Sun, Moon, Loader2, House } from "lucide-react";
 import { useState } from "react";
-import { useNavigate, Navigate } from "react-router";
+import { useNavigate, Navigate, Link } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "../../../app/components/ThemeProvider";
 import { useAdminAuth } from "../context/AdminAuthContext";
@@ -37,6 +37,15 @@ export default function AdminLoginPage() {
       className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 relative overflow-hidden animated-gradient bg-[var(--color-background-primary)]"
       style={{ fontFamily: "var(--font-body)" }}
     >
+      <Link
+        to="/"
+        className="absolute top-6 left-6 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-[var(--color-background-secondary)]/80 backdrop-blur-md border border-[var(--color-border-medium)] text-[var(--color-text-primary)] hover:border-[var(--color-accent)]/40 transition-colors"
+        aria-label="Back to Homepage"
+        title="Home"
+      >
+        <House size={20} />
+      </Link>
+
       <motion.button
         type="button"
         whileHover={{ scale: 1.1 }}
