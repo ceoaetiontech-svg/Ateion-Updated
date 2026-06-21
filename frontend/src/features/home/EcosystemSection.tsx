@@ -183,8 +183,10 @@ const CANVAS_HEIGHT = 663;
 
 function EcosystemCluster({
   onBubbleClick,
+  onBubbleHover,
 }: {
   onBubbleClick: (id: string) => void;
+  onBubbleHover?: (id: string) => void;
 }) {
   const navigate = useNavigate();
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -522,7 +524,12 @@ function EcosystemCluster({
             onPointerDown={(e) => handlePointerDown(e, b)}
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
-            onMouseEnter={() => setHoveredId(b.id)}
+            onMouseEnter={() => {
+              setHoveredId(b.id);
+              if (!draggedId) {
+                onBubbleHover?.(b.id);
+              }
+            }}
             onMouseLeave={() => setHoveredId(null)}
           >
             <motion.div
@@ -812,7 +819,7 @@ export default function EcosystemSection() {
             }}
           >
             <GcoFeatureBadge activeData={activeData} />
-            <EcosystemCluster onBubbleClick={setActiveId} />
+            <EcosystemCluster onBubbleClick={setActiveId} onBubbleHover={setActiveId} />
           </div>
         </div>
       </div>
