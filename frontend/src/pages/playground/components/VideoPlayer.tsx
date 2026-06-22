@@ -178,6 +178,7 @@ const VideoPlayer = memo(function VideoPlayer({
         if (playerInstance && typeof playerInstance.play === "function") {
             playerInstance.play();
         }
+        setIsPaused(false);
     };
 
     return (
