@@ -33,7 +33,7 @@ export const navigationSections: NavSection[] = [
     title: "Courses",
     icon: BookOpen,
     items: [
-      { title: "My Courses", icon: BookMarked, path: "/playground/my-courses" },
+      { title: "My Courses", icon: BookMarked, path: "/playground/mycourses" },
       { title: "Saved Courses", icon: Heart, path: "/playground/saved" },
       { title: "Discover Courses", icon: Compass, path: "/playground/discover" },
       { title: "Completed Courses", icon: Award, path: "/playground/completed" },

@@ -39,10 +39,10 @@ import SkeletonCourseCard from "../components/SkeletonCourseCard";
 import { ApiRequestError, fetchJsonWithRetry } from "../../../lib/apiClient";
 import playgroundBg from "../../../assets/hero/playground_bg.png";
 
-const CoursePlayerPage = lazy(() => import("../pages/CoursePlayerPage"));
 const FallbackPage = lazy(() => import("../pages/FallbackPage"));
 const AudiobooksLibraryPage = lazy(() => import("../pages/AudiobooksLibraryPage"));
 const AudiobookPlayerPage = lazy(() => import("../pages/AudiobookPlayerPage"));
+const CoursePlayerPage = lazy(() => import("../pages/CoursePlayerPage"));
 
 const viewMap: Record<string, LazyExoticComponent<ComponentType<any>>> = {
   "Dashboard": lazy(() => import("../pages/DashboardPage")),
