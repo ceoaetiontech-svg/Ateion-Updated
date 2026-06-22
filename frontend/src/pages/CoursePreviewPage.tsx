@@ -105,7 +105,7 @@ export default function CoursePreviewPage() {
     }, [currentVideo, videos]);
 
     const currentIndex = currentVideo ? videos.findIndex(v => v.id === currentVideo.id) : -1;
-    const hasNext = currentIndex < videos.length - 1;
+    const hasNext = currentIndex < videos.length - 1 && currentIndex < 0;
     const hasPrev = currentIndex > 0;
 
     return (
@@ -322,15 +322,20 @@ export default function CoursePreviewPage() {
                                         <div className="p-2 flex flex-col gap-1.5 max-h-[600px] overflow-y-auto custom-scrollbar">
                                             {videos.map((video, index) => {
                                                 const isActive = currentVideo.id === video.id;
+                                                const isLocked = index > 0;
                                                 return (
                                                     <motion.button
                                                         key={video.id}
                                                         initial={{ opacity: 0, y: 10 }}
                                                         animate={{ opacity: 1, y: 0 }}
                                                         transition={{ delay: index * 0.05, type: "spring", stiffness: 300, damping: 25 }}
-                                                        whileHover={{ scale: 1.02, x: 2 }}
+                                                        whileHover={isLocked ? { scale: 1.01 } : { scale: 1.02, x: 2 }}
                                                         whileTap={{ scale: 0.98 }}
                                                         onClick={() => {
+                                                            if (isLocked) {
+                                                                window.dispatchEvent(new CustomEvent("open-register"));
+                                                                return;
+                                                            }
                                                             if (video.id !== currentVideo.id) {
                                                                 setTransitioning(true);
                                                                 setTimeout(() => {
@@ -344,7 +349,7 @@ export default function CoursePreviewPage() {
                                                              isActive 
                                                                  ? "bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/35 text-[var(--color-accent)] shadow-[0_4px_20px_rgba(232,133,106,0.12)]" 
                                                                  : "border border-transparent hover:bg-[var(--color-background-tertiary)]/20 hover:border-[var(--color-border-light)]/40 text-[var(--color-text-primary)]"
-                                                         }`}
+                                                         } ${isLocked ? "opacity-70 hover:opacity-90" : ""}`}
                                                     >
                                                         <div
                                                             className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 mt-0.5 text-sm font-extrabold transition-all ${
@@ -353,7 +358,13 @@ export default function CoursePreviewPage() {
                                                                     : "bg-[var(--color-background-primary)] text-[var(--color-text-tertiary)]"
                                                             }`}
                                                         >
-                                                            {isActive ? <Play size={12} className="fill-white stroke-[2.5]" /> : index + 1}
+                                                            {isActive ? (
+                                                                <Play size={12} className="fill-white stroke-[2.5]" />
+                                                            ) : isLocked ? (
+                                                                <Lock size={12} className="text-[var(--color-text-tertiary)]/80" />
+                                                            ) : (
+                                                                index + 1
+                                                            )}
                                                         </div>
                                                         <div className="min-w-0 flex-1">
                                                             <span
@@ -364,7 +375,15 @@ export default function CoursePreviewPage() {
                                                                 {video.title}
                                                             </span>
                                                             <span className="text-[11px] font-bold mt-1.5 flex items-center gap-1 text-[var(--color-text-tertiary)]">
-                                                                <Monitor size={11} /> Preview Lesson
+                                                                {isLocked ? (
+                                                                    <>
+                                                                        <Lock size={11} className="text-[var(--color-text-tertiary)]/70" /> Locked Lesson
+                                                                    </>
+                                                                ) : (
+                                                                    <>
+                                                                        <Monitor size={11} /> Preview Lesson
+                                                                    </>
+                                                                )}
                                                             </span>
                                                         </div>
                                                     </motion.button>
@@ -461,15 +480,20 @@ export default function CoursePreviewPage() {
                                     <div className="p-2 flex flex-col gap-1.5 max-h-[600px] overflow-y-auto custom-scrollbar">
                                         {videos.map((video, index) => {
                                             const isActive = currentVideo.id === video.id;
+                                            const isLocked = index > 0;
                                             return (
                                                 <motion.button
                                                     key={video.id}
                                                     initial={{ opacity: 0, y: 10 }}
                                                     animate={{ opacity: 1, y: 0 }}
                                                     transition={{ delay: index * 0.05, type: "spring", stiffness: 300, damping: 25 }}
-                                                    whileHover={{ scale: 1.02, x: 2 }}
+                                                    whileHover={isLocked ? { scale: 1.01 } : { scale: 1.02, x: 2 }}
                                                     whileTap={{ scale: 0.98 }}
                                                     onClick={() => {
+                                                        if (isLocked) {
+                                                            window.dispatchEvent(new CustomEvent("open-register"));
+                                                            return;
+                                                        }
                                                         if (video.id !== currentVideo.id) {
                                                             setTransitioning(true);
                                                             setTimeout(() => {
@@ -483,7 +507,7 @@ export default function CoursePreviewPage() {
                                                         isActive 
                                                             ? "bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/35 text-[var(--color-accent)] shadow-[0_4px_20px_rgba(232,133,106,0.12)]" 
                                                             : "border border-transparent hover:bg-[var(--color-background-tertiary)]/20 hover:border-[var(--color-border-light)]/40 text-[var(--color-text-primary)]"
-                                                    }`}
+                                                    } ${isLocked ? "opacity-70 hover:opacity-90" : ""}`}
                                                 >
                                                     <div
                                                         className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 mt-0.5 text-sm font-extrabold transition-all ${
@@ -492,7 +516,13 @@ export default function CoursePreviewPage() {
                                                                 : "bg-[var(--color-background-primary)] text-[var(--color-text-tertiary)]"
                                                         }`}
                                                     >
-                                                        {isActive ? <Play size={12} className="fill-white stroke-[2.5]" /> : index + 1}
+                                                        {isActive ? (
+                                                            <Play size={12} className="fill-white stroke-[2.5]" />
+                                                        ) : isLocked ? (
+                                                            <Lock size={12} className="text-[var(--color-text-tertiary)]/80" />
+                                                        ) : (
+                                                            index + 1
+                                                        )}
                                                     </div>
                                                     <div className="min-w-0 flex-1">
                                                         <span
@@ -503,7 +533,15 @@ export default function CoursePreviewPage() {
                                                             {video.title}
                                                         </span>
                                                         <span className="text-[11px] font-bold mt-1.5 flex items-center gap-1 text-[var(--color-text-tertiary)]">
-                                                            <Monitor size={11} /> Preview Lesson
+                                                            {isLocked ? (
+                                                                <>
+                                                                    <Lock size={11} className="text-[var(--color-text-tertiary)]/70" /> Locked Lesson
+                                                                </>
+                                                            ) : (
+                                                                <>
+                                                                    <Monitor size={11} /> Preview Lesson
+                                                                </>
+                                                            )}
                                                         </span>
                                                     </div>
                                                 </motion.button>
