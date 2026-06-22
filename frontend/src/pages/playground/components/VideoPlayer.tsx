@@ -187,7 +187,7 @@ const VideoPlayer = memo(function VideoPlayer({
         >
             <style>{`
                 .plyr__video-embed {
-                    transform: scale(1.18) !important;
+                    transform: scale(1) !important;
                     transform-origin: center center !important;
                 }
             `}</style>
