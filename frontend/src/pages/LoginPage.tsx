@@ -150,7 +150,6 @@ export default function LoginPage({ closeLogin, initialTab }: any) {
               <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password"
                 value={formData.confirmPassword} onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })} />
               <select id="ageSegment" name="ageSegment"
-                className="w-full p-[17px] my-[10px] rounded-[14px] border border-[#e5e7eb] bg-[#faf7f2] text-[15px] outline-none focus:border-[var(--color-primary)] text-[#374151]"
                 value={formData.ageSegment || ""}
                 onChange={(e) => setFormData({ ...formData, ageSegment: e.target.value })}
                 required

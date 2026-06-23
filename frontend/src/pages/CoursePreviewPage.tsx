@@ -267,24 +267,19 @@ export default function CoursePreviewPage() {
                                         </div>
                                     )}
                                 </div>
-                                <motion.a 
-                                    whileHover={{ scale: 1.03, y: -0.5 }}
-                                    whileTap={{ scale: 0.97 }}
-                                    href={`https://www.youtube.com/watch?v=${currentVideo.videoId}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="group inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[var(--color-border-medium)]/60 text-xs font-bold transition-all duration-300 bg-[var(--color-background-secondary)]/80 backdrop-blur-md shadow-sm cursor-pointer hover:shadow-md"
+                                <div 
+                                    className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[var(--color-border-medium)]/60 text-xs font-bold bg-[var(--color-background-secondary)]/80 backdrop-blur-md shadow-sm"
                                 >
-                                    <span className="transition-colors duration-300 text-[var(--color-text-tertiary)]">
+                                    <span className="text-[var(--color-text-tertiary)]">
                                         Powered by
                                     </span>
-                                    <span className="flex items-center gap-1 font-extrabold transition-colors duration-300 text-[var(--color-text-secondary)] group-hover:text-[#FF0000]">
+                                    <span className="flex items-center gap-1 font-extrabold text-[var(--color-text-secondary)]">
                                         <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M23.498 6.163c-.272-.98-1.04-1.748-2.02-2.02C19.716 3.745 12 3.745 12 3.745s-7.715 0-9.478.398c-.98.272-1.748 1.04-2.02 2.02C.104 7.928.104 12 .104 12s0 4.072.398 5.837c.272.98 1.04 1.748 2.02 2.02 1.763.398 9.478.398 9.478.398s7.715 0 9.478-.398c.98-.272 1.748-1.04 2.02-2.02.398-1.765.398-5.837.398-5.837s0-4.07-.398-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                                         </svg>
                                         YouTube
                                     </span>
-                                </motion.a>
+                                </div>
                             </div>
 
                             <div className="mt-6">
