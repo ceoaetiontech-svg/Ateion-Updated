@@ -425,7 +425,7 @@ function PlaygroundInner() {
                     <div className="flex shrink-0 items-center gap-2 sm:gap-5">
                       <button
                           onClick={() => navigate("/")}
-                          className="hidden xl:flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full border border-transparent bg-[var(--color-accent)] text-xs text-[var(--color-text-inverse)] shadow-[0_2px_10px_var(--color-accent-light)] hover:shadow-[0_4px_15px_var(--color-accent)] hover:-translate-y-0.5 transition-all duration-300 mr-1"
+                          className="flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full border border-transparent bg-[var(--color-accent)] text-xs text-[var(--color-text-inverse)] shadow-[0_2px_10px_var(--color-accent-light)] hover:shadow-[0_4px_15px_var(--color-accent)] hover:-translate-y-0.5 transition-all duration-300 mr-1"
                           title="Home"
                       >
                         <Home size={16} />
