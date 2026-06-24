@@ -1,30 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import imgChild from "../../assets/beyond-child.webp";
 import imgPink from "../../assets/beyond-pink.webp";
 import imgCode from "../../assets/beyond-code.webp";
+import { useBreakpoints } from "../../app/components/hooks/use-breakpoints";
 
 export default function BeyondScoreClone() {
-  const [viewportWidth, setViewportWidth] = useState(
-    typeof window !== "undefined" ? window.innerWidth : 1200,
-  );
-
-  useEffect(() => {
-    let ticking = false;
-    const handleResize = () => {
-      if (ticking) return;
-      requestAnimationFrame(() => {
-        setViewportWidth(window.innerWidth);
-        ticking = false;
-      });
-      ticking = true;
-    };
-    window.addEventListener("resize", handleResize, { passive: true });
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  const isTablet = viewportWidth <= 1024;
-  const isMobile = viewportWidth <= 768;
-  const isSmallMobile = viewportWidth <= 480;
+  const { isTablet, isMobile, isSmallMobile } = useBreakpoints();
 
   const reportItems = [
     "Cognitive strengths mapping",

@@ -94,7 +94,7 @@ const Item = memo(function Item({ src, alt, width }: { src: string; alt: string;
       <img
         alt={alt}
         src={src}
-        className="w-full h-full object-cover"
+        className="w-full h-full object-cover object-top"
         loading="lazy"
         decoding="async"
         role="presentation"

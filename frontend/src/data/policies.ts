@@ -1,7 +1,6 @@
 // ─── Policy Data ────────────────────────────────────────────────────────────
-// 12 countries / organisations aligned with Ateion.
-// Only India, Singapore, Finland, United States have 2 frameworks.
-// All others have 1 framework.
+// All 15 countries / organisations aligned with Ateion.
+// Each has exactly 2 frameworks with softened, modernised flag-themed accent colors.
 
 export interface PolicyFramework {
   name: string;
@@ -27,7 +26,7 @@ export interface PolicyEntry {
 // ─────────────────────────────────────────────────────────────────────────────
 export const policies: PolicyEntry[] = [
   // ═══════════════════════════════════════════════════════
-  // FEATURED 5 — shown on Ateion homepage
+  // FEATURED 4 — shown on Ateion homepage
   // ═══════════════════════════════════════════════════════
 
   {
@@ -36,7 +35,7 @@ export const policies: PolicyEntry[] = [
     code: "SGP",
     flag: "🇸🇬",
     region: "Asia",
-    accentColor: "#E8192C",
+    accentColor: "#D63E4B",
     featured: true,
     frameworks: [
       {
@@ -74,7 +73,7 @@ export const policies: PolicyEntry[] = [
     code: "FIN",
     flag: "🇫🇮",
     region: "Europe",
-    accentColor: "#003580",
+    accentColor: "#305D91",
     featured: true,
     frameworks: [
       {
@@ -112,7 +111,7 @@ export const policies: PolicyEntry[] = [
     code: "JPN",
     flag: "🇯🇵",
     region: "Asia",
-    accentColor: "#BC002D",
+    accentColor: "#C44056",
     featured: true,
     frameworks: [
       {
@@ -127,6 +126,19 @@ export const policies: PolicyEntry[] = [
         tags: ["Innovation", "AI", "Future Skills"],
         policyLink: "https://www8.cao.go.jp/cstp/english/society5_0/index.html",
       },
+      {
+        name: "GIGA School Program",
+        shortDescription:
+          "MEXT's flagship program providing ICT devices and high-speed networks to schools.",
+        description:
+          "The GIGA School Program integrates technology into all levels of learning, providing one device per student and high-speed internet to foster individually optimized and collaborative learning.",
+        alignmentText:
+          "Ateion's assessment platform seamlessly operates on GIGA devices, allowing scalable, digital-first capability evaluations directly in the classroom.",
+        hoverMessage:
+          "Ateion aligns with MEXT's GIGA initiative by optimizing capability-first assessment for digital classrooms.",
+        tags: ["ICT Infrastructure", "Digital Learning", "Accessibility"],
+        policyLink: "https://www.mext.go.jp/en/policy/education/else/mext_00001.html",
+      },
     ],
   },
 
@@ -136,7 +148,7 @@ export const policies: PolicyEntry[] = [
     code: "IND",
     flag: "🇮🇳",
     region: "Asia",
-    accentColor: "var(--color-primary)",
+    accentColor: "#E67333",
     featured: true,
     frameworks: [
       {
@@ -168,13 +180,17 @@ export const policies: PolicyEntry[] = [
     ],
   },
 
+  // ═══════════════════════════════════════════════════════
+  // ADDITIONAL — shown on /policies page
+  // ═══════════════════════════════════════════════════════
+
   {
     id: "uae",
     country: "UAE",
     code: "UAE",
     flag: "🇦🇪",
     region: "Middle East",
-    accentColor: "#009B3A",
+    accentColor: "#2C8550",
     featured: false,
     frameworks: [
       {
@@ -190,12 +206,21 @@ export const policies: PolicyEntry[] = [
         tags: ["Innovation", "21st Century Skills", "Digital"],
         policyLink: "https://www.moe.gov.ae",
       },
+      {
+        name: "UAE Centennial 2071 - Future Education",
+        shortDescription:
+          "Cabinet strategy preparing future generations for the best nation vision.",
+        description:
+          "The education pillar of UAE Centennial 2071 focuses on advanced science, engineering, space science, and talent discovery, instilling Emirati moral values and lifelong learning.",
+        alignmentText:
+          "Ateion prepares graduates for the UAE Centennial goals by measuring advanced scientific and innovative problem-solving capabilities.",
+        hoverMessage:
+          "Ateion supports UAE's centenary vision by measuring future-focused scientific and cognitive skills.",
+        tags: ["Centennial 2071", "Space & Science", "Values"],
+        policyLink: "https://uaecabinet.ae/en/details/prime-ministers-initiatives/uae-centennial-2071",
+      },
     ],
   },
-
-  // ═══════════════════════════════════════════════════════
-  // ADDITIONAL — shown on /policies page
-  // ═══════════════════════════════════════════════════════
 
   {
     id: "usa",
@@ -203,7 +228,7 @@ export const policies: PolicyEntry[] = [
     code: "USA",
     flag: "🇺🇸",
     region: "Americas",
-    accentColor: "#3C3B6E",
+    accentColor: "#4F5582",
     featured: false,
     frameworks: [
       {
@@ -241,7 +266,7 @@ export const policies: PolicyEntry[] = [
     code: "DEU",
     flag: "🇩🇪",
     region: "Europe",
-    accentColor: "#DDAA00",
+    accentColor: "#C29525",
     featured: false,
     frameworks: [
       {
@@ -257,6 +282,19 @@ export const policies: PolicyEntry[] = [
         tags: ["EdTech", "Digital Infrastructure", "STEM"],
         policyLink: "https://www.digitalpakt-schule.de",
       },
+      {
+        name: "KMK Education in the Digital World",
+        shortDescription:
+          "Unified federal standing conference strategy for digital education competencies.",
+        description:
+          "Adopted by the KMK, this strategy ensures students nationwide develop core digital competencies, modernizing curricula, teacher training, and learning media.",
+        alignmentText:
+          "Ateion directly assesses the digital-age reasoning and literacy skills prioritized by the KMK's nationwide education standards.",
+        hoverMessage:
+          "Ateion's capability framework maps cleanly to the six digital action areas set by the KMK.",
+        tags: ["Digital Competencies", "Curriculum Reform", "Teacher Training"],
+        policyLink: "https://www.kmk.org/themen/bildung-in-der-digitalen-welt.html",
+      },
     ],
   },
 
@@ -266,7 +304,7 @@ export const policies: PolicyEntry[] = [
     code: "KOR",
     flag: "🇰🇷",
     region: "Asia",
-    accentColor: "#003478",
+    accentColor: "#335E94",
     featured: false,
     frameworks: [
       {
@@ -282,6 +320,19 @@ export const policies: PolicyEntry[] = [
         tags: ["Competency", "Digital Literacy", "Personalised Learning"],
         policyLink: "https://www.moe.go.kr/english",
       },
+      {
+        name: "AI Digital Textbook Initiative",
+        shortDescription:
+          "Integrating AI-driven digital aids in classrooms to personalize learning.",
+        description:
+          "This initiative integrates adaptive, algorithmic software and digital textbooks into core subjects, facilitating personalized student progress and supporting teacher-led digital transitions.",
+        alignmentText:
+          "Ateion's adaptive, AI-enhanced evaluation engines match South Korea's goals of personalized pacing and digital classroom equity.",
+        hoverMessage:
+          "Ateion's adaptive assessments support South Korea's transition to personalized AI classrooms.",
+        tags: ["AI Textbooks", "Equity", "Adaptive Pacing"],
+        policyLink: "https://english.moe.go.kr",
+      },
     ],
   },
 
@@ -291,7 +342,7 @@ export const policies: PolicyEntry[] = [
     code: "EUR",
     flag: "🇪🇺",
     region: "Europe",
-    accentColor: "#003399",
+    accentColor: "#3B63B3",
     featured: false,
     frameworks: [
       {
@@ -308,6 +359,19 @@ export const policies: PolicyEntry[] = [
         policyLink:
           "https://education.ec.europa.eu/education-levels/european-education-area",
       },
+      {
+        name: "Digital Education Action Plan (2021-2027)",
+        shortDescription:
+          "EU initiative supporting the sustainable adaptation of education systems to the digital age.",
+        description:
+          "The Action Plan outlines a vision for high-quality, inclusive, and accessible digital education in Europe, focusing on infrastructure, digital skills, and teacher capabilities.",
+        alignmentText:
+          "Ateion provides the necessary scalable, digital-first evaluation tools to validate digital literacy and advanced skills across member states.",
+        hoverMessage:
+          "Ateion supports the EU's digital transformation by verifying core digital capabilities.",
+        tags: ["Digital Transformation", "Inclusive Education", "Digital Skills"],
+        policyLink: "https://education.ec.europa.eu/focus-areas/digital-education/action-plan",
+      },
     ],
   },
 
@@ -317,7 +381,7 @@ export const policies: PolicyEntry[] = [
     code: "UNS",
     flag: "🌍",
     region: "International",
-    accentColor: "#009EDB",
+    accentColor: "#3CA1CC",
     featured: false,
     frameworks: [
       {
@@ -334,6 +398,19 @@ export const policies: PolicyEntry[] = [
         policyLink:
           "https://www.unesco.org/en/education-sustainable-development",
       },
+      {
+        name: "Beijing Consensus on AI and Education",
+        shortDescription:
+          "The first global recommendations on leveraging AI for the Education 2030 Agenda.",
+        description:
+          "Adopted in 2019, the Beijing Consensus guides governments in responding to AI opportunities and challenges, promoting human-in-the-loop, ethical AI deployment in learning environments.",
+        alignmentText:
+          "Ateion implements the Consensus's human-centric principles by using AI as an ethical tool to support and measure authentic thinking rather than replace it.",
+        hoverMessage:
+          "Ateion's ethical AI design reflects the principles of UNESCO's Beijing Consensus.",
+        tags: ["AI Ethics", "Education 2030", "Global Policy"],
+        policyLink: "https://unesdoc.unesco.org/ark:/48223/pf0000368303",
+      },
     ],
   },
 
@@ -343,7 +420,7 @@ export const policies: PolicyEntry[] = [
     code: "WEF",
     flag: "🌐",
     region: "International",
-    accentColor: "#0A3955",
+    accentColor: "#3C6D8A",
     featured: false,
     frameworks: [
       {
@@ -360,6 +437,19 @@ export const policies: PolicyEntry[] = [
         policyLink:
           "https://www.weforum.org/publications/the-future-of-jobs-report-2023",
       },
+      {
+        name: "Defining Education 4.0",
+        shortDescription:
+          "A taxonomy outlining essential cognitive, social, and personal skills for the future.",
+        description:
+          "Education 4.0 reorganizes learning around active future skills, including cognitive capabilities, digital fluency, ethical values, and collaborative problem-solving tailored for the 4th Industrial Revolution.",
+        alignmentText:
+          "Ateion's assessment framework directly targets the core skills and values highlighted in the WEF Education 4.0 taxonomy.",
+        hoverMessage:
+          "Ateion's skills mapping is built on the foundation of the WEF Education 4.0 taxonomy.",
+        tags: ["Education 4.0", "Skills Taxonomy", "Future Ready"],
+        policyLink: "https://www.weforum.org/reports/defining-education-4-0-a-taxonomy-for-the-future-of-learning/",
+      },
     ],
   },
 
@@ -369,7 +459,7 @@ export const policies: PolicyEntry[] = [
     code: "GBR",
     flag: "🇬🇧",
     region: "Europe",
-    accentColor: "#012169",
+    accentColor: "#355594",
     featured: false,
     frameworks: [
       {
@@ -385,6 +475,134 @@ export const policies: PolicyEntry[] = [
         tags: ["Equity", "Inclusion", "Access"],
         policyLink:
           "https://www.gov.uk/government/publications/levelling-up-the-united-kingdom",
+      },
+      {
+        name: "Skills for Jobs",
+        shortDescription:
+          "Further education white paper transforming technical education and post-16 training.",
+        description:
+          "This policy transforms post-16 education by aligning technical courses with employer needs, funding technical qualifications, and supporting lifetime learning opportunities.",
+        alignmentText:
+          "Ateion supports technical mastery by offering objective, competency-based assessments that reflect real-world employer standards.",
+        hoverMessage:
+          "Ateion aligns with the UK's Skills for Jobs strategy by validating employer-relevant technical capabilities.",
+        tags: ["Technical Education", "Qualifications", "Lifelong Learning"],
+        policyLink: "https://www.gov.uk/government/publications/skills-for-jobs-lifelong-learning-for-opportunity-and-growth",
+      },
+    ],
+  },
+
+  {
+    id: "australia",
+    country: "Australia",
+    code: "AUS",
+    flag: "🇦🇺",
+    region: "International",
+    accentColor: "#38439E",
+    featured: false,
+    frameworks: [
+      {
+        name: "Mparntwe Education Declaration",
+        shortDescription:
+          "Australia's national education commitment to excellence and equity.",
+        description:
+          "The Alice Springs (Mparntwe) Education Declaration sets the national vision for Australian education, promoting excellence, equity, and fostering confident, creative, lifelong learners.",
+        alignmentText:
+          "Ateion aligns with the Mparntwe Declaration by providing creative, capability-first assessment that measures true critical thinking and lifelong learning competence.",
+        hoverMessage:
+          "Ateion develops the confident, creative, and active lifelong learners Australia's Mparntwe Declaration champions.",
+        tags: ["Excellence", "Equity", "Lifelong Learning", "Creativity"],
+        policyLink:
+          "https://www.education.gov.au/alice-springs-mparntwe-education-declaration",
+      },
+      {
+        name: "Australian Qualifications Framework (AQF)",
+        shortDescription:
+          "Standardising national qualifications and flexible education pathways.",
+        description:
+          "The AQF is Australia's national policy regulating qualifications, enabling seamless pathways, recognition of prior learning, and flexible student transitions between education stages.",
+        alignmentText:
+          "Ateion's skills-focused approach aligns with the AQF by measuring modular, transparent capability standards that map directly to advanced pathways and workforce readiness.",
+        hoverMessage:
+          "Ateion supports AQF's pathways by validating real cognitive and technical competence beyond rote exams.",
+        tags: ["Qualifications", "Pathways", "Skills"],
+        policyLink: "https://www.aqf.edu.au",
+      },
+    ],
+  },
+
+  {
+    id: "canada",
+    country: "Canada",
+    code: "CAN",
+    flag: "🇨🇦",
+    region: "Americas",
+    accentColor: "#D94E4E",
+    featured: false,
+    frameworks: [
+      {
+        name: "Learn Canada 2020",
+        shortDescription:
+          "CMEC's pan-Canadian framework for lifelong learning and student success.",
+        description:
+          "Learn Canada 2020 is a national educational policy framework prioritizing quality lifelong learning opportunities, foundational literacy and numeracy, and education for sustainable development.",
+        alignmentText:
+          "Ateion's competency-based assessments support Canada's goals by measuring real-world literacy and critical thinking essential for a resilient knowledge economy.",
+        hoverMessage:
+          "Ateion aligns with Learn Canada 2020 by focusing on foundational skill mastery and lifelong competency.",
+        tags: ["Lifelong Learning", "Literacy", "Numeracy", "Inclusion"],
+        policyLink: "https://www.cmec.ca/228/Learn_Canada_2020.html",
+      },
+      {
+        name: "Innovation and Skills Plan",
+        shortDescription:
+          "Federal strategy building a world-class workforce through K-12 STEM and coding.",
+        description:
+          "This plan funds youth digital literacy (CanCode), expands work-integrated learning, and supports the training of Canadians for next-generation technology industries.",
+        alignmentText:
+          "Ateion's analytical and logical evaluation modules map directly to the STEM and coding-adjacent competencies championed by Canada's Innovation Plan.",
+        hoverMessage:
+          "Ateion supports Canada's Innovation and Skills Plan by validating K-12 STEM and digital proficiency.",
+        tags: ["STEM", "Coding Skills", "Digital Literacy", "Workforce"],
+        policyLink: "https://www.canada.ca",
+      },
+    ],
+  },
+
+  {
+    id: "saudiarabia",
+    country: "Saudi Arabia",
+    code: "SAU",
+    flag: "🇸🇦",
+    region: "Middle East",
+    accentColor: "#318559",
+    featured: false,
+    frameworks: [
+      {
+        name: "Human Capability Development Program (HCDP)",
+        shortDescription:
+          "Saudi Vision 2030 program preparing citizens for global competitiveness.",
+        description:
+          "The HCDP transforms education in Saudi Arabia to instill values, build a strong foundation, and develop future-proof skills like critical thinking, innovation, and digital literacy.",
+        alignmentText:
+          "Ateion's advanced assessment platform prepares Saudi students for a globalized market by assessing problem-solving, analytical thinking, and future-ready capabilities.",
+        hoverMessage:
+          "Ateion helps realize Saudi Vision 2030's HCDP by nurturing future-proof skills and global competitiveness.",
+        tags: ["Vision 2030", "Critical Thinking", "Innovation", "Competitiveness"],
+        policyLink: "https://www.vision2030.gov.sa/v2030/vrps/hcdp/",
+      },
+      {
+        name: "Vision 2030 Digital Education Strategy",
+        shortDescription:
+          "Enabling smart learning solutions and interactive virtual platforms.",
+        description:
+          "Under Vision 2030, this policy implements virtual learning systems (Madrasati), integrates interactive e-learning resources, and enhances digital literacy for teachers and students.",
+        alignmentText:
+          "Ateion's digital capability assessments integrate seamlessly with e-learning systems to measure cognitive reasoning rather than rote memory.",
+        hoverMessage:
+          "Ateion supports Saudi Arabia's digital education push with secure, online capability assessments.",
+        tags: ["Digital Strategy", "E-Learning", "Smart Schools"],
+        policyLink: "https://www.moe.gov.sa",
       },
     ],
   },

@@ -39,10 +39,10 @@ import SkeletonCourseCard from "../components/SkeletonCourseCard";
 import { ApiRequestError, fetchJsonWithRetry } from "../../../lib/apiClient";
 import playgroundBg from "../../../assets/hero/playground_bg.png";
 
-const CoursePlayerPage = lazy(() => import("../pages/CoursePlayerPage"));
 const FallbackPage = lazy(() => import("../pages/FallbackPage"));
 const AudiobooksLibraryPage = lazy(() => import("../pages/AudiobooksLibraryPage"));
 const AudiobookPlayerPage = lazy(() => import("../pages/AudiobookPlayerPage"));
+const CoursePlayerPage = lazy(() => import("../pages/CoursePlayerPage"));
 
 const viewMap: Record<string, LazyExoticComponent<ComponentType<any>>> = {
   "Dashboard": lazy(() => import("../pages/DashboardPage")),
@@ -245,133 +245,135 @@ function PlaygroundInner() {
                 backgroundAttachment: "fixed",
               }}
           >
-            <Sidebar
-                variant="sidebar"
-                collapsible="icon"
-                className="border-r border-r-[var(--color-border-medium)]"
-                style={{
-                  top: navbarHeight,
-                  height: `calc(100svh - ${navbarHeight}px)`,
-                }}
-            >
-              <div className="flex h-full flex-col bg-[var(--color-background-secondary)] text-[var(--color-text-primary)] shadow-[inset_-2px_0_6px_-2px_rgba(0,0,0,0.08)]">
-                <SidebarHeader
-                    className="px-4 py-6 cursor-pointer hover:opacity-80 transition-opacity"
-                    onClick={() => navigate("/playground/dashboard")}
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-accent)] text-white">
-                      <Rocket size={24} />
-                    </div>
-                    <div className="flex flex-col">
-                    <span className="text-xl font-bold text-[var(--color-text-primary)] tracking-wide" style={{ fontFamily: "var(--font-display)" }}>
-                      Ateion
-                    </span>
-                      <span className="text-[10px] text-[var(--color-accent)]/80 tracking-widest font-bold uppercase">
-                      Playground
-                    </span>
-                    </div>
-                  </div>
-                </SidebarHeader>
-
-                <SidebarContent className="px-2">
-                  {navigationSections.map((section, si) => (
-                      <div key={section.title}>
-                        <SidebarGroup className="mb-2">
-                          <SidebarGroupLabel className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-tertiary)] flex items-center mb-1">
-                            <section.icon className="mr-2 h-3.5 w-3.5" />
-                            {section.title}
-                          </SidebarGroupLabel>
-                          <SidebarGroupContent>
-                            <SidebarMenu>
-                              {section.items.map((item, ii) => (
-                                  <motion.div
-                                      key={item.title}
-                                      variants={slideInItem}
-                                      initial="hidden"
-                                      animate="show"
-                                      transition={{ delay: si * 0.04 + ii * 0.04, type: "spring", stiffness: 300, damping: 26 }}
-                                  >
-                                    <SidebarMenuItem>
-                                      <SidebarMenuButton
-                                          className={`group/btn relative overflow-hidden text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-background-tertiary)] transition-all duration-300 py-2.5 ${location.pathname === item.path ? "bg-[var(--color-accent_light)] text-[var(--color-accent)] font-bold shadow-sm border-l-[3px] border-[var(--color-accent)] rounded-r-xl rounded-l-none pl-3" : "rounded-xl pl-3 hover:translate-x-1"}`}
-                                          onClick={() => navigate(item.path)}
-                                          data-tour={item.path === "/playground/discover" ? "sidebar-discover-courses" : undefined}
-                                          aria-current={location.pathname === item.path ? "page" : undefined}
-                                      >
-                                        <item.icon className="h-4 w-4 mr-2 group-hover/btn:scale-110 group-hover/btn:-rotate-6 transition-transform duration-300" />
-                                        <span>{item.title}</span>
-                                      </SidebarMenuButton>
-                                    </SidebarMenuItem>
-                                  </motion.div>
-                              ))}
-                            </SidebarMenu>
-                          </SidebarGroupContent>
-                        </SidebarGroup>
+            {!location.pathname.startsWith("/playground/course/") && (
+              <Sidebar
+                  variant="sidebar"
+                  collapsible="icon"
+                  className="border-r border-r-[var(--color-border-medium)]"
+                  style={{
+                    top: navbarHeight,
+                    height: `calc(100svh - ${navbarHeight}px)`,
+                  }}
+              >
+                <div className="flex h-full flex-col bg-[var(--color-background-secondary)] text-[var(--color-text-primary)] shadow-[inset_-2px_0_6px_-2px_rgba(0,0,0,0.08)]">
+                  <SidebarHeader
+                      className="px-4 py-6 cursor-pointer hover:opacity-80 transition-opacity"
+                      onClick={() => navigate("/playground/dashboard")}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[var(--color-accent)] text-white">
+                        <Rocket size={24} />
                       </div>
-                  ))}
-                </SidebarContent>
+                      <div className="flex flex-col">
+                      <span className="text-xl font-bold text-[var(--color-text-primary)] tracking-wide" style={{ fontFamily: "var(--font-display)" }}>
+                        Ateion
+                      </span>
+                      <span className="text-[10px] text-[var(--color-accent)]/80 tracking-widest font-bold uppercase">
+                        Playground
+                      </span>
+                      </div>
+                    </div>
+                  </SidebarHeader>
 
-                <SidebarFooter>
-                  <SidebarMenu>
-                    <SidebarMenuItem>
-                      <SidebarMenuButton
-                          size="lg"
-                          asChild
-                          className="group/avatar hover:bg-[var(--color-background-tertiary)]/30 text-[var(--color-text-primary)] cursor-pointer p-1 h-auto mt-2 transition-all duration-300 hover:scale-[1.02]"
-                      >
-                        <a href="/dashboard" className="flex items-center gap-3 w-full rounded-lg">
-                          <UserAvatar name={userProfile.fullName} />
-                          <div className="flex flex-col text-left">
-                            <span className="text-sm font-semibold text-[var(--color-text-primary)]">{userProfile.fullName}</span>
-                            <span className="text-xs text-[var(--color-text-secondary)]">{userProfile.segmentText}</span>
-                          </div>
-                        </a>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  </SidebarMenu>
+                  <SidebarContent className="px-2">
+                    {navigationSections.map((section, si) => (
+                        <div key={section.title}>
+                          <SidebarGroup className="mb-2">
+                            <SidebarGroupLabel className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-text-tertiary)] flex items-center mb-1">
+                              <section.icon className="mr-2 h-3.5 w-3.5" />
+                              {section.title}
+                            </SidebarGroupLabel>
+                            <SidebarGroupContent>
+                              <SidebarMenu>
+                                {section.items.map((item, ii) => (
+                                    <motion.div
+                                        key={item.title}
+                                        variants={slideInItem}
+                                        initial="hidden"
+                                        animate="show"
+                                        transition={{ delay: si * 0.04 + ii * 0.04, type: "spring", stiffness: 300, damping: 26 }}
+                                    >
+                                      <SidebarMenuItem>
+                                        <SidebarMenuButton
+                                            className={`group/btn relative overflow-hidden text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:bg-[var(--color-background-tertiary)] transition-all duration-300 py-2.5 ${location.pathname === item.path ? "bg-[var(--color-accent_light)] text-[var(--color-accent)] font-bold shadow-sm border-l-[3px] border-[var(--color-accent)] rounded-r-xl rounded-l-none pl-3" : "rounded-xl pl-3 hover:translate-x-1"}`}
+                                            onClick={() => navigate(item.path)}
+                                            data-tour={item.path === "/playground/discover" ? "sidebar-discover-courses" : undefined}
+                                            aria-current={location.pathname === item.path ? "page" : undefined}
+                                        >
+                                          <item.icon className="h-4 w-4 mr-2 group-hover/btn:scale-110 group-hover/btn:-rotate-6 transition-transform duration-300" />
+                                          <span>{item.title}</span>
+                                        </SidebarMenuButton>
+                                      </SidebarMenuItem>
+                                    </motion.div>
+                                ))}
+                              </SidebarMenu>
+                            </SidebarGroupContent>
+                          </SidebarGroup>
+                        </div>
+                    ))}
+                  </SidebarContent>
 
-                  <SidebarSeparator className="bg-[var(--color-border-light)] mx-4 my-2" />
+                  <SidebarFooter>
+                    <SidebarMenu>
+                      <SidebarMenuItem>
+                        <SidebarMenuButton
+                            size="lg"
+                            asChild
+                            className="group/avatar hover:bg-[var(--color-background-tertiary)]/30 text-[var(--color-text-primary)] cursor-pointer p-1 h-auto mt-2 transition-all duration-300 hover:scale-[1.02]"
+                        >
+                          <a href="/dashboard" className="flex items-center gap-3 w-full rounded-lg">
+                            <UserAvatar name={userProfile.fullName} />
+                            <div className="flex flex-col text-left">
+                              <span className="text-sm font-semibold text-[var(--color-text-primary)]">{userProfile.fullName}</span>
+                              <span className="text-xs text-[var(--color-text-secondary)]">{userProfile.segmentText}</span>
+                            </div>
+                          </a>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    </SidebarMenu>
 
-                  <SidebarMenu>
-                    <SidebarMenuItem>
-                      <SidebarMenuButton
-                          className="text-[var(--color-text-primary)] hover:bg-[var(--color-background-tertiary)]/30 cursor-pointer hover:translate-x-1 transition-all duration-300"
-                          onClick={() => setSettingsOpen(true)}
-                      >
-                        <Settings size={16} />
-                        <span>Settings</span>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
+                    <SidebarSeparator className="bg-[var(--color-border-light)] mx-4 my-2" />
 
-                    <SidebarMenuItem>
-                      {isAuthenticated ? (
-                          <SidebarMenuButton
-                              className="group/logout text-[var(--color-text-primary)] hover:text-red-500 hover:bg-red-500/10 cursor-pointer hover:translate-x-1 transition-all duration-300"
-                              onClick={() => {
-                                localStorage.removeItem("token");
-                                setIsAuthenticated(false);
-                                window.dispatchEvent(new CustomEvent("ateion:auth-changed"));
-                                navigate("/playground/discover");
-                              }}
-                          >
-                            <LogOut size={16} className="group-hover/logout:scale-110 group-hover/logout:-translate-x-1 transition-transform duration-300" />
-                            <span>Logout</span>
-                          </SidebarMenuButton>
-                      ) : (
-                          <SidebarMenuButton
-                              className="group/login text-[var(--color-text-primary)] hover:text-[var(--color-accent)] hover:bg-[var(--color-accent)]/10 cursor-pointer hover:translate-x-1 transition-all duration-300"
-                              onClick={() => window.dispatchEvent(new CustomEvent("open-login"))}
-                          >
-                            <LogIn size={16} className="group-hover/login:scale-110 transition-transform duration-300" />
-                            <span>Login</span>
-                          </SidebarMenuButton>
-                      )}
-                    </SidebarMenuItem>
-                  </SidebarMenu>
-                </SidebarFooter>
-              </div>
-            </Sidebar>
+                    <SidebarMenu>
+                      <SidebarMenuItem>
+                        <SidebarMenuButton
+                            className="text-[var(--color-text-primary)] hover:bg-[var(--color-background-tertiary)]/30 cursor-pointer hover:translate-x-1 transition-all duration-300"
+                            onClick={() => setSettingsOpen(true)}
+                        >
+                          <Settings size={16} />
+                          <span>Settings</span>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+
+                      <SidebarMenuItem>
+                        {isAuthenticated ? (
+                            <SidebarMenuButton
+                                className="group/logout text-[var(--color-text-primary)] hover:text-red-500 hover:bg-red-500/10 cursor-pointer hover:translate-x-1 transition-all duration-300"
+                                onClick={() => {
+                                  localStorage.removeItem("token");
+                                  setIsAuthenticated(false);
+                                  window.dispatchEvent(new CustomEvent("ateion:auth-changed"));
+                                  navigate("/playground/discover");
+                                }}
+                            >
+                              <LogOut size={16} className="group-hover/logout:scale-110 group-hover/logout:-translate-x-1 transition-transform duration-300" />
+                              <span>Logout</span>
+                            </SidebarMenuButton>
+                        ) : (
+                            <SidebarMenuButton
+                                className="group/login text-[var(--color-text-primary)] hover:text-[var(--color-accent)] hover:bg-[var(--color-accent)]/10 cursor-pointer hover:translate-x-1 transition-all duration-300"
+                                onClick={() => window.dispatchEvent(new CustomEvent("open-login"))}
+                            >
+                              <LogIn size={16} className="group-hover/login:scale-110 transition-transform duration-300" />
+                              <span>Login</span>
+                            </SidebarMenuButton>
+                        )}
+                      </SidebarMenuItem>
+                    </SidebarMenu>
+                  </SidebarFooter>
+                </div>
+              </Sidebar>
+            )}
 
             <SidebarInset className="flex min-w-0 flex-1 flex-col overflow-x-hidden bg-transparent w-full">
               {!location.pathname.startsWith("/playground/course/") && (
@@ -393,7 +395,7 @@ function PlaygroundInner() {
                         </h1>
                         <span className="text-[var(--color-text-tertiary)] text-sm hidden xl:inline">→</span>
                         <span
-                            className="text-[var(--color-accent)] font-semibold hidden xl:inline cursor-default"
+                            className="text-[#D4A0A0] font-semibold hidden xl:inline cursor-default"
                             style={{
                               fontFamily: "var(--font-display)",
                               fontSize: "clamp(1rem, 2vw, 1.4rem)",
@@ -423,7 +425,7 @@ function PlaygroundInner() {
                     <div className="flex shrink-0 items-center gap-2 sm:gap-5">
                       <button
                           onClick={() => navigate("/")}
-                          className="hidden xl:flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full border border-transparent bg-[var(--color-accent)] text-xs text-[var(--color-text-inverse)] shadow-[0_2px_10px_var(--color-accent-light)] hover:shadow-[0_4px_15px_var(--color-accent)] hover:-translate-y-0.5 transition-all duration-300 mr-1"
+                          className="flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-full border border-transparent bg-[var(--color-accent)] text-xs text-[var(--color-text-inverse)] shadow-[0_2px_10px_var(--color-accent-light)] hover:shadow-[0_4px_15px_var(--color-accent)] hover:-translate-y-0.5 transition-all duration-300 mr-1"
                           title="Home"
                       >
                         <Home size={16} />

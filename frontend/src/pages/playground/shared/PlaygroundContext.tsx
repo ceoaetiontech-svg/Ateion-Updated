@@ -30,6 +30,7 @@ interface PlaygroundContextValue {
   notes: Note[];
   addNote: (note: Omit<Note, "id" | "createdAt">) => void;
   deleteNote: (id: number) => void;
+  updateNote: (id: number, text: string) => void;
   events: CalendarEvent[];
   addEvent: (e: CalendarEvent) => void;
   removeEvent: (id: number) => void;
@@ -188,6 +189,10 @@ export function PlaygroundProvider({ children }: { children: ReactNode }) {
     setNotes(prev => prev.filter(n => n.id !== id));
   }, []);
 
+  const updateNote = useCallback((id: number, text: string) => {
+    setNotes(prev => prev.map(n => n.id === id ? { ...n, text } : n));
+  }, []);
+
   const addEvent = useCallback((e: CalendarEvent) => {
     setEvents(prev => [...prev, e]);
   }, []);
@@ -250,7 +255,7 @@ export function PlaygroundProvider({ children }: { children: ReactNode }) {
             enrolledIds, enrollCourse,
             toastMessage, setToastMessage,
             streak, incrementStreak, xp, addXp,
-            notes, addNote, deleteNote,
+            notes, addNote, deleteNote, updateNote,
             events, addEvent, removeEvent,
             selectedDate, setSelectedDate,
             courseAccess, touchCourse,

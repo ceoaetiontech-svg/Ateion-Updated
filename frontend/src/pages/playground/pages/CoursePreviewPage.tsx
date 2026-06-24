@@ -1,9 +1,9 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useNavigate, useParams } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { RefreshCw, ChevronLeft, Play, ListVideo, Lock, Sparkles, Monitor, BookOpen } from "lucide-react";
-import VideoPlayer from "./playground/components/VideoPlayer";
-import { fetchPublicVideosByModule, type BackendVideo } from "../lib/videoApi";
+import VideoPlayer from "../components/VideoPlayer";
+import { fetchPublicVideosByModule, type BackendVideo } from "../../../lib/videoApi";
 
 export default function CoursePreviewPage() {
     const { moduleId } = useParams<{ moduleId: string }>();
@@ -17,6 +17,35 @@ export default function CoursePreviewPage() {
     const [retryKey, setRetryKey] = useState(0);
     const [transitioning, setTransitioning] = useState(false);
     const [videoKey, setVideoKey] = useState(0);
+    const transitionTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    const clearTransition = useCallback(() => {
+        if (transitionTimeoutRef.current) {
+            clearTimeout(transitionTimeoutRef.current);
+            transitionTimeoutRef.current = null;
+        }
+        setTransitioning(false);
+    }, []);
+
+    const startTransition = useCallback((fn: () => void, delay: number = 300) => {
+        if (transitionTimeoutRef.current) {
+            clearTimeout(transitionTimeoutRef.current);
+        }
+        setTransitioning(true);
+        transitionTimeoutRef.current = setTimeout(() => {
+            fn();
+            transitionTimeoutRef.current = null;
+            setTransitioning(false);
+        }, delay);
+    }, []);
+
+    useEffect(() => {
+        return () => {
+            if (transitionTimeoutRef.current) {
+                clearTimeout(transitionTimeoutRef.current);
+            }
+        };
+    }, []);
 
     useEffect(() => {
         const parsedModuleId = Number(moduleId);
@@ -82,12 +111,10 @@ export default function CoursePreviewPage() {
         if (!currentVideo || videos.length < 2) return;
         const currentIndex = videos.findIndex(v => v.id === currentVideo.id);
         if (currentIndex < videos.length - 1) {
-            setTransitioning(true);
-            setTimeout(() => {
+            startTransition(() => {
                 setCurrentVideo(videos[currentIndex + 1]);
                 setVideoKey(k => k + 1);
-                setTransitioning(false);
-            }, 300);
+            });
         }
     }, [currentVideo, videos]);
 
@@ -95,12 +122,10 @@ export default function CoursePreviewPage() {
         if (!currentVideo || videos.length < 2) return;
         const currentIndex = videos.findIndex(v => v.id === currentVideo.id);
         if (currentIndex > 0) {
-            setTransitioning(true);
-            setTimeout(() => {
+            startTransition(() => {
                 setCurrentVideo(videos[currentIndex - 1]);
                 setVideoKey(k => k + 1);
-                setTransitioning(false);
-            }, 300);
+            });
         }
     }, [currentVideo, videos]);
 
@@ -267,19 +292,24 @@ export default function CoursePreviewPage() {
                                         </div>
                                     )}
                                 </div>
-                                <div 
-                                    className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[var(--color-border-medium)]/60 text-xs font-bold bg-[var(--color-background-secondary)]/80 backdrop-blur-md shadow-sm"
+                                <motion.a 
+                                    whileHover={{ scale: 1.03, y: -0.5 }}
+                                    whileTap={{ scale: 0.97 }}
+                                    href={`https://www.youtube.com/watch?v=${currentVideo.videoId}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="group inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[var(--color-border-medium)]/60 text-xs font-bold transition-all duration-300 bg-[var(--color-background-secondary)]/80 backdrop-blur-md shadow-sm cursor-pointer hover:shadow-md"
                                 >
-                                    <span className="text-[var(--color-text-tertiary)]">
+                                    <span className="transition-colors duration-300 text-[var(--color-text-tertiary)]">
                                         Powered by
                                     </span>
-                                    <span className="flex items-center gap-1 font-extrabold text-[var(--color-text-secondary)]">
+                                    <span className="flex items-center gap-1 font-extrabold transition-colors duration-300 text-[var(--color-text-secondary)] group-hover:text-[#FF0000]">
                                         <svg viewBox="0 0 24 24" className="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M23.498 6.163c-.272-.98-1.04-1.748-2.02-2.02C19.716 3.745 12 3.745 12 3.745s-7.715 0-9.478.398c-.98.272-1.748 1.04-2.02 2.02C.104 7.928.104 12 .104 12s0 4.072.398 5.837c.272.98 1.04 1.748 2.02 2.02 1.763.398 9.478.398 9.478.398s7.715 0 9.478-.398c.98-.272 1.748-1.04 2.02-2.02.398-1.765.398-5.837.398-5.837s0-4.07-.398-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                                         </svg>
                                         YouTube
                                     </span>
-                                </div>
+                                </motion.a>
                             </div>
 
                             <div className="mt-6">
@@ -332,19 +362,17 @@ export default function CoursePreviewPage() {
                                                                 return;
                                                             }
                                                             if (video.id !== currentVideo.id) {
-                                                                setTransitioning(true);
-                                                                setTimeout(() => {
+                                                                startTransition(() => {
                                                                     setCurrentVideo(video);
                                                                     setVideoKey(k => k + 1);
-                                                                    setTransitioning(false);
                                                                 }, 200);
                                                             }
                                                         }}
                                                         className={`w-full text-left flex items-start gap-3.5 p-3 rounded-2xl transition-all cursor-pointer ${
-                                                             isActive 
-                                                                 ? "bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/35 text-[var(--color-accent)] shadow-[0_4px_20px_rgba(232,133,106,0.12)]" 
-                                                                 : "border border-transparent hover:bg-[var(--color-background-tertiary)]/20 hover:border-[var(--color-border-light)]/40 text-[var(--color-text-primary)]"
-                                                         } ${isLocked ? "opacity-70 hover:opacity-90" : ""}`}
+                                                              isActive 
+                                                                  ? "bg-[var(--color-accent)]/10 border border-[var(--color-accent)]/35 text-[var(--color-accent)] shadow-[0_4px_20px_rgba(232,133,106,0.12)]" 
+                                                                  : "border border-transparent hover:bg-[var(--color-background-tertiary)]/20 hover:border-[var(--color-border-light)]/40 text-[var(--color-text-primary)]"
+                                                          } ${isLocked ? "opacity-70 hover:opacity-90" : ""}`}
                                                     >
                                                         <div
                                                             className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 mt-0.5 text-sm font-extrabold transition-all ${
@@ -490,11 +518,9 @@ export default function CoursePreviewPage() {
                                                             return;
                                                         }
                                                         if (video.id !== currentVideo.id) {
-                                                            setTransitioning(true);
-                                                            setTimeout(() => {
+                                                            startTransition(() => {
                                                                 setCurrentVideo(video);
                                                                 setVideoKey(k => k + 1);
-                                                                setTransitioning(false);
                                                             }, 200);
                                                         }
                                                     }}

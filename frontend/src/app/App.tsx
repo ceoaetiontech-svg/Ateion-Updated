@@ -100,7 +100,7 @@ export default function App() {
     function ChatBotWrapper() {
         const location = useLocation();
         const hiddenPaths = ["/admin", "/teacher", "/reset-password"];
-        const shouldHide = hiddenPaths.some((p) => location.pathname.startsWith(p));
+        const shouldHide = hiddenPaths.some((p) => location.pathname.startsWith(p)) || showLogin;
         if (shouldHide) return null;
 
         const handleSendMessage = async (message: string, history: { role: string; content: string }[]) => {

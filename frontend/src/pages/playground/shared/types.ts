@@ -65,7 +65,9 @@ export interface Note {
   lessonId: number;
   text: string;
   createdAt: string;
+  timestamp?: number;
 }
+
 
 export interface CalendarEvent {
   id: number;
