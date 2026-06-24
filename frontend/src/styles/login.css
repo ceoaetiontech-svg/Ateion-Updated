@@ -103,6 +103,10 @@
   justify-content: center;
 }
 
+.right-side > * {
+  flex-shrink: 0;
+}
+
 .right-side h2 {
   font-family: var(--font-display, "Source Sans 3", sans-serif);
   font-size: var(--font-size-4xl, 36px);
@@ -111,7 +115,8 @@
   letter-spacing: var(--letter-spacing-tight, -0.025em);
 }
 
-.right-side input {
+.right-side input,
+.right-side select {
   width: 100%;
   padding: 16px 18px;
   margin: 8px 0;
@@ -124,15 +129,32 @@
   box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.04), inset -1px -1px 3px rgba(255, 255, 255, 0.8);
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
   box-sizing: border-box;
+  font-family: var(--font-family-body, Arial, sans-serif);
 }
 
 .right-side input::placeholder {
   color: var(--color-text-muted);
 }
 
-.right-side input:focus {
+.right-side input:focus,
+.right-side select:focus {
   border-color: var(--color-primary);
   box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.04), inset -1px -1px 3px rgba(255, 255, 255, 0.8), 0 0 0 3px var(--color-primary_lighter, rgba(26, 24, 51, 0.08));
+}
+
+.right-side select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%239894B0' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 44px;
+}
+
+.right-side select option {
+  background: var(--color-background-secondary);
+  color: var(--color-text-primary);
 }
 
 .login-btn {
@@ -298,20 +320,34 @@
   color: var(--color-text-primary);
 }
 
-[data-theme="dark"] .login-card .right-side input {
+[data-theme="dark"] .login-card .right-side input,
+[data-theme="dark"] .login-card .right-side select {
   background: var(--color-background-tertiary);
   border-color: var(--color-border-light);
   color: var(--color-text-primary);
   box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.2), inset -1px -1px 3px rgba(255, 255, 255, 0.02);
 }
 
-[data-theme="dark"] .login-card .right-side input:focus {
+[data-theme="dark"] .login-card .right-side input:focus,
+[data-theme="dark"] .login-card .right-side select:focus {
   border-color: var(--color-accent);
   box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.2), inset -1px -1px 3px rgba(255, 255, 255, 0.02), 0 0 0 3px rgba(232, 133, 106, 0.15);
 }
 
 [data-theme="dark"] .login-card .right-side input::placeholder {
   color: var(--color-text-muted);
+}
+
+[data-theme="dark"] .login-card .right-side select {
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%2364748B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  padding-right: 44px;
+}
+
+[data-theme="dark"] .login-card .right-side select option {
+  background: var(--color-background-tertiary);
+  color: var(--color-text-primary);
 }
 
 [data-theme="dark"] .login-card .login-btn {
@@ -378,11 +414,13 @@
     min-height: auto;
     flex-direction: column;
     border-radius: 22px;
+    flex-shrink: 0;
   }
   .left-side {
     width: 100%;
     padding: 28px 24px 16px;
     text-align: center;
+    flex-shrink: 0;
   }
   .left-side h1 {
     font-size: 36px;
@@ -395,13 +433,15 @@
   .right-side {
     width: 100%;
     padding: 20px 24px 28px;
+    flex-shrink: 0;
   }
   .right-side h2 {
     font-size: 28px;
     margin-bottom: 18px;
     text-align: center;
   }
-  .right-side input {
+  .right-side input,
+  .right-side select {
     padding: 14px 16px;
     font-size: 14px;
   }
