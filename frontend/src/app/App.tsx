@@ -103,18 +103,7 @@ export default function App() {
         const shouldHide = hiddenPaths.some((p) => location.pathname.startsWith(p)) || showLogin;
         if (shouldHide) return null;
 
-        const handleSendMessage = async (message: string, history: { role: string; content: string }[]) => {
-            const res = await fetch("/api/chat", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message, history }),
-            });
-            if (!res.ok) throw new Error(`Chat API error: ${res.status}`);
-            const data = await res.json();
-            return data.reply;
-        };
-
-        return <AIChatBot greeting="Hello! 👋" onSendMessage={handleSendMessage} />;
+        return <AIChatBot greeting="Hello! 👋" />;
     }
 
     return (

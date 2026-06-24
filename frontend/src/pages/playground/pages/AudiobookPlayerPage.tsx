@@ -402,12 +402,12 @@ export default function AudiobookPlayerPage() {
             className="w-44 h-44 rounded-2xl shadow-xl relative z-10 overflow-hidden flex items-center justify-center"
             style={coverStyle(ab.coverUrl)}
           >
-            {ab.id === "ab-system-design" ? (
+            {!ab.coverUrl.startsWith("http") && !ab.coverUrl.startsWith("data:") ? (
               <motion.img
                 src={bunnyListeningMusic}
                 alt="Listening Bunny"
                 className="w-full h-full object-contain p-2.5 relative z-20"
-                animate={isPlaying && !isBuffering ? {
+                animate={isPlaying ? {
                   y: [0, -8, 0],
                   scale: [1, 1.03, 1],
                   rotate: [0, -1.5, 1.5, 0],
@@ -419,12 +419,12 @@ export default function AudiobookPlayerPage() {
                 }}
               />
             ) : (
-              !ab.coverUrl.startsWith("http") && !ab.coverUrl.startsWith("data:") && <Headphones size={64} className="text-white/25" />
+              <Headphones size={64} className="text-white/25" />
             )}
             
             {/* Play overlay */}
             <div className="absolute inset-0 rounded-2xl border-4 border-white/20 flex items-center justify-center bg-black/10">
-              <div className={`w-8 h-8 rounded-full border border-dashed border-white/30 ${isPlaying && !isBuffering ? "animate-spin" : ""}`} style={{ animationDuration: "12s" }} />
+              <div className={`w-8 h-8 rounded-full border border-dashed border-white/30 ${isPlaying ? "animate-spin" : ""}`} style={{ animationDuration: "12s" }} />
             </div>
           </div>
 
