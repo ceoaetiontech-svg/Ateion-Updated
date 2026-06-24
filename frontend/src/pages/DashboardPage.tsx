@@ -339,7 +339,7 @@ const DashboardPage = () => {
         <aside className="hidden md:flex w-[260px] flex-shrink-0 flex-col border-r border-[var(--color-border-light)] bg-[var(--color-background-secondary)]/50 backdrop-blur-md p-6 sticky top-0 h-screen z-20">
           {/* Student profile snippet */}
           <div className="flex items-center gap-3 pb-5 border-b border-[var(--color-border-light)] mb-5">
-            <div className="w-10.5 h-10.5 rounded-full bg-[var(--color-accent_light)] text-[var(--color-accent)] flex items-center justify-center font-bold text-base overflow-hidden">
+            <div className="w-10.5 h-10.5 rounded-full bg-[#D4A0A0]/15 text-[#D4A0A0] flex items-center justify-center font-bold text-base overflow-hidden">
               {profilePic ? (
                 <img src={profilePic} alt="Profile" className="w-full h-full object-cover" />
               ) : (
@@ -374,13 +374,13 @@ const DashboardPage = () => {
                 <button
                   key={link.label}
                   onClick={() => navigate(link.path)}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-[15px] font-semibold transition-all duration-200 text-left w-full group ${
+                  className={`flex items-center gap-[10px] px-[14px] py-[10px] rounded-full text-[15px] font-semibold transition-all duration-200 ease-in-out text-left w-full group ${
                     link.active
-                      ? "bg-[var(--color-accent_light)] text-[var(--color-accent)] shadow-[inset_0_1px_1px_rgba(255,255,255,0.4)]"
-                      : "text-[var(--color-text-secondary)] hover:bg-[var(--color-nav-button-hover)] hover:text-[var(--color-text-primary)]"
+                      ? "bg-gradient-to-r from-[#C49AA5] via-[#B78D9A] to-[#A97F8C] text-white shadow-[0_4px_10px_rgba(183,141,154,0.35)]"
+                      : "text-[#4B5563] hover:bg-[rgba(183,141,154,0.15)]"
                   }`}
                 >
-                  <Icon size={16} className={`transition-transform duration-200 group-hover:scale-110 ${link.active ? "text-[var(--color-accent)]" : ""}`} />
+                  <Icon size={16} className={`transition-all duration-200 ease-in-out group-hover:scale-110 ${link.active ? "text-white scale-110" : ""}`} />
                   <span>{link.label}</span>
                 </button>
               );
@@ -389,10 +389,10 @@ const DashboardPage = () => {
 
           {/* Capability score card footer */}
           <div className="pt-4 border-t border-[var(--color-border-light)]">
-            <div className="flex items-center gap-3 px-3.5 py-3 rounded-xl bg-gradient-to-r from-[var(--color-accent_light)] to-coral-50/10 border border-[var(--color-accent)]/20 text-sm text-[var(--color-text-secondary)]">
-              <Zap size={15} className="text-[var(--color-accent)] animate-pulse" />
+            <div className="flex items-center gap-3 px-3.5 py-3 rounded-xl bg-[#D4A0A0]/15 border border-[#D4A0A0]/20 text-sm text-[var(--color-text-secondary)]">
+              <Zap size={15} className="text-[#D4A0A0] animate-pulse" />
               <span className="font-bold">Total Capability</span>
-              <strong className="ml-auto text-base font-extrabold text-[var(--color-accent)]">87</strong>
+              <strong className="ml-auto text-base font-extrabold text-[#D4A0A0]">87</strong>
             </div>
           </div>
         </aside>
@@ -637,7 +637,7 @@ const DashboardPage = () => {
                 className="clay-card bg-[var(--color-background-secondary)]/50 backdrop-blur-md border border-[var(--color-border-light)] dark:border-white/10 p-6 rounded-3xl flex flex-col gap-5 text-center relative overflow-hidden"
               >
                 <div className="absolute top-0 right-0 p-3">
-                  <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-[var(--color-accent_light)] text-[var(--color-accent)]">
+                  <div className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#D4A0A0]/15 text-[#D4A0A0]">
                     <Flame size={12} className="animate-bounce" />
                     <strong className="text-xs font-bold">{streak} Day Streak</strong>
                   </div>

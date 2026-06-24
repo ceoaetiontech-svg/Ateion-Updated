@@ -395,7 +395,7 @@ function PlaygroundInner() {
                         </h1>
                         <span className="text-[var(--color-text-tertiary)] text-sm hidden xl:inline">→</span>
                         <span
-                            className="text-[var(--color-accent)] font-semibold hidden xl:inline cursor-default"
+                            className="text-[#D4A0A0] font-semibold hidden xl:inline cursor-default"
                             style={{
                               fontFamily: "var(--font-display)",
                               fontSize: "clamp(1rem, 2vw, 1.4rem)",
