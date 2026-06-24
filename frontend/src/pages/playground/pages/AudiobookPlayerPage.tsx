@@ -567,6 +567,10 @@ export default function AudiobookPlayerPage() {
 
           <style>{`
             @keyframes waveScroll { from { transform: translateX(0); } to { transform: translateX(-40%); } }
+            .scrollbar-thin::-webkit-scrollbar { width: 4px; }
+            .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+            .scrollbar-thin::-webkit-scrollbar-thumb { background: var(--color-border-light); border-radius: 4px; }
+            .scrollbar-thin::-webkit-scrollbar-thumb:hover { background: var(--color-text-tertiary); }
           `}</style>
         </motion.div>
 
@@ -620,7 +624,8 @@ export default function AudiobookPlayerPage() {
                 initial="hidden"
                 animate="show"
                 exit={{ opacity: 0 }}
-                className="space-y-3"
+                className="space-y-3 overflow-y-auto pr-1 scrollbar-thin"
+                style={{ maxHeight: "calc(100vh - 300px)" }}
               >
                 {ab.chapters.map((chap, idx) => {
                   const isCurrent = currentChapterIdx === idx;
