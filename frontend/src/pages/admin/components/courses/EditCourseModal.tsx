@@ -42,6 +42,7 @@ interface AdminCourse {
   discountPercentage?: number | null;
   currency?: string | null;
   buttonText?: string | null;
+  highlights?: string | null;
 }
 
 interface EditCourseModalProps {
