@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { fadeUpItem, staggerContainer } from "../shared/types";
 import { useToast } from "../../admin/utils/toast";
+import bunnyListeningMusic from "../../../assets/bunny_listening_music.png";
 
 interface ApiChapter {
   id: number;
@@ -401,15 +402,29 @@ export default function AudiobookPlayerPage() {
             className="w-44 h-44 rounded-2xl shadow-xl relative z-10 overflow-hidden flex items-center justify-center"
             style={coverStyle(ab.coverUrl)}
           >
-            {!ab.coverUrl.startsWith("http") && (
-              <Headphones size={56} className="text-white/20" />
-            )}
-            {/* Spinning vinyl ring */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div
-                className={`w-10 h-10 rounded-full border-2 border-dashed border-white/30 ${isPlaying ? "animate-spin" : ""}`}
-                style={{ animationDuration: "10s" }}
+            {ab.id === "ab-system-design" ? (
+              <motion.img
+                src={bunnyListeningMusic}
+                alt="Listening Bunny"
+                className="w-full h-full object-contain p-2.5 relative z-20"
+                animate={isPlaying && !isBuffering ? {
+                  y: [0, -8, 0],
+                  scale: [1, 1.03, 1],
+                  rotate: [0, -1.5, 1.5, 0],
+                } : {}}
+                transition={{
+                  repeat: Infinity,
+                  duration: 0.9,
+                  ease: "easeInOut"
+                }}
               />
+            ) : (
+              !ab.coverUrl.startsWith("http") && !ab.coverUrl.startsWith("data:") && <Headphones size={64} className="text-white/25" />
+            )}
+            
+            {/* Play overlay */}
+            <div className="absolute inset-0 rounded-2xl border-4 border-white/20 flex items-center justify-center bg-black/10">
+              <div className={`w-8 h-8 rounded-full border border-dashed border-white/30 ${isPlaying && !isBuffering ? "animate-spin" : ""}`} style={{ animationDuration: "12s" }} />
             </div>
           </div>
 

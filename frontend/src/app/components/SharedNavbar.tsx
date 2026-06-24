@@ -29,6 +29,7 @@ import {
 import { useTheme } from "./ThemeProvider";
 
 import logo from "../../assets/logo.webp";
+import logoBunny from "../../assets/logo_bunny.png";
 import "../../styles/shared-nav.css";
 
 const navTextClass = "font-bold text-[13px] whitespace-nowrap font-manrope m-0 leading-none";
@@ -204,13 +205,18 @@ const LogoContainer = memo(function LogoContainer() {
 
   return (
     <div className="flex items-center relative shrink-0">
-      <Link to="/">
+      <Link to="/" className="flex items-center gap-2.5 sm:gap-3">
         <img
           src={logo}
           alt="Ateion Logo"
           className={`h-[52px] sm:h-[76px] object-contain w-auto transition-all duration-300 ${
             shouldInvert ? "brightness-0 invert" : ""
           }`}
+        />
+        <img
+          src={logoBunny}
+          alt="Ateion Mascot"
+          className="h-[38px] w-auto sm:h-[54px] object-contain transition-all duration-300"
         />
       </Link>
     </div>
