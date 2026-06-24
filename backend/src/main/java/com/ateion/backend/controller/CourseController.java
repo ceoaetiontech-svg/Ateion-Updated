@@ -70,6 +70,10 @@ public class CourseController {
                     map.put("discountPercentage", course.getDiscountPercentage());
                     map.put("currency", course.getCurrency() != null ? course.getCurrency() : "INR");
                     map.put("buttonText", course.getButtonText() != null ? course.getButtonText() : "Unlock Course");
+                    // ── Age Group v2 ────────────────────────────────────────────────────
+                    map.put("ageGroup", course.getAgeGroup() != null ? course.getAgeGroup() : "");
+                    // ── Course Highlights ────────────────────────────────────────────────
+                    map.put("highlights", course.getHighlights() != null ? course.getHighlights() : "");
                     return map;
                 })
                 .toList();

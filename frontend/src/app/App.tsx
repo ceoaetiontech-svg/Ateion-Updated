@@ -28,6 +28,7 @@ const AdminUploadPage = lazy(() => import("../pages/admin/pages/AdminUploadPage"
 const CourseUploadView = lazy(() => import("../pages/admin/components/CourseUploadView"));
 const UsersPage = lazy(() => import("../pages/admin/pages/UsersPage"));
 const SettingsPage = lazy(() => import("../pages/admin/pages/SettingsPage"));
+const AudiobookManageView = lazy(() => import("../pages/admin/components/AudiobookManageView"));
 const CoursePreviewPage = lazy(() => import("../pages/CoursePreviewPage"));
 import ThemeProvider from "./components/ThemeProvider";
 import PageTransition from "./components/PageTransition";
@@ -65,6 +66,7 @@ function AnimatedRoutes() {
                     <Route path="/admin/dashboard" element={<PageTransition><AdminDashboardPage /></PageTransition>} />
                     <Route path="/admin/courses" element={<PageTransition><CourseListView /></PageTransition>} />
                     <Route path="/admin/upload" element={<PageTransition><AdminUploadPage /></PageTransition>} />
+                    <Route path="/admin/audiobooks" element={<PageTransition><AudiobookManageView /></PageTransition>} />
                     <Route path="/admin/users" element={<PageTransition><UsersPage /></PageTransition>} />
                     <Route path="/admin/settings" element={<PageTransition><SettingsPage /></PageTransition>} />
                 </Route>

@@ -22,6 +22,10 @@ interface BackendCourse {
   discountPercentage?: number | string | null;
   currency?: string | null;
   buttonText?: string | null;
+  // ── Age Group v2 ────────────────────────────────────────────────────
+  ageGroup?: string | null;
+  // ── Course Highlights ───────────────────────────────────────────────────
+  highlights?: string | null;
 }
 
 const COURSE_REQUEST_ATTEMPTS = 8;
@@ -47,9 +51,34 @@ function toAgeGroups(value: unknown): AgeGroupId[] | undefined {
     return undefined;
   }
 
-  const normalized = value.trim().replace(/[–—]/g, "-") as AgeGroupId;
-  return VALID_AGE_GROUPS.has(normalized) ? [normalized] : undefined;
+  // Support comma-separated multiple age groups (e.g. "Sproutlings (5-7 age), Saplings (7-14 age)")
+  const parts = value.split(",").map((s) => s.trim().replace(/[–—]/g, "-") as AgeGroupId).filter(Boolean);
+  const valid = parts.filter((p) => VALID_AGE_GROUPS.has(p));
+  return valid.length > 0 ? valid : undefined;
 }
+
+// ── Category normalizer ─────────────────────────────────────────────────────
+// Maps legacy DB values (old CourseUploadView IDs) to the pill names
+// used on DiscoverCoursesPage. Case-insensitive.
+const CATEGORY_ALIASES: Record<string, string> = {
+  "technology":              "AI",
+  "technology & engineering":"AI",
+  "business":                "Finance",
+  "business & management":   "Finance",
+  "design":                  "Art",
+  "design & arts":           "Art",
+  "science":                 "Advanced Skills",
+  "applied sciences":        "Advanced Skills",
+  "university":              "Advanced Skills",
+  "university students":     "Advanced Skills",
+  "advance skills":          "Advanced Skills",
+  "general":                 "",
+};
+
+function normalizeCategoryName(raw: string): string {
+  return CATEGORY_ALIASES[raw.toLowerCase()] ?? raw;
+}
+
 
 function mapBackendCourse(course: BackendCourse): Course {
   const createdAt = course.createdAt
@@ -87,10 +116,20 @@ function mapBackendCourse(course: BackendCourse): Course {
     currency: course.currency?.trim() || "INR",
     buttonText: course.buttonText?.trim() || "Unlock Course",
     // ────────────────────────────────────────────────────────────────────────
-    ageGroups: toAgeGroups(course.ageSegment),
+    // Use ONLY the dedicated ageGroup column for age group filtering.
+    // ageSegment is now for skill levels (Beginner/Intermediate/etc.)
+    // If ageGroup is empty → course shows under "All" only.
+    ageGroups: toAgeGroups(course.ageGroup),
     topics: course.category?.trim()
-        ? [course.category.trim()]
-        : ["General"],
+        ? course.category
+            .split(",")
+            .map((c) => normalizeCategoryName(c.trim()))
+            .filter(Boolean)
+        : [],
+    // Parse pipe-separated highlights into an array (max 3)
+    highlights: course.highlights?.trim()
+        ? course.highlights.split("|").map((h) => h.trim()).filter(Boolean).slice(0, 3)
+        : undefined,
     createdAt: Number.isFinite(createdAt) ? createdAt : 0,
     previewModuleId: toNullablePositiveInteger(course.previewModuleId),
     isEnrolled: false,

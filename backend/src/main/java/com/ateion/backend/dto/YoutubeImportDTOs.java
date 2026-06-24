@@ -36,4 +36,15 @@ public class YoutubeImportDTOs {
         private String price;
         private PreviewResponse previewData;
     }
+
+    // ── Audiobook publish request ──────────────────────────────────────────────
+    @Data
+    public static class PublishAsAudiobookRequest {
+        private String title;
+        private String author;
+        private String description;
+        private String category;
+        private String coverUrl;        // optional image URL pasted by admin
+        private PreviewResponse previewData;
+    }
 }

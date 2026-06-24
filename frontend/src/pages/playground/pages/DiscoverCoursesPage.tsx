@@ -130,10 +130,12 @@ export default function DiscoverCoursesPage() {
   const allTopics = useMemo(() => [...new Set(allCourses.flatMap(c => c.topics))], [allCourses]);
 
   const getCategoryCount = useCallback((catName: string) => {
-    return allCourses.filter(c => 
-      c.topics.some(t => t.toLowerCase() === catName.toLowerCase())
+    const lc = catName.toLowerCase();
+    return allCourses.filter(c =>
+      courseMatchesAgeGroup(c, activeAgeGroup) &&
+      c.topics.some(t => t.toLowerCase() === lc)
     ).length;
-  }, [allCourses]);
+  }, [allCourses, activeAgeGroup]);
 
   const displayCourses = useMemo(() => {
     return discoverCourses.filter(c => {
@@ -152,7 +154,9 @@ export default function DiscoverCoursesPage() {
       });
 
       const ratingMatch = !selectedRatings.length || selectedRatings.some(r => c.rating >= parseFloat(r));
-      const topicMatch = !selectedTopics.length || c.topics.some(t => selectedTopics.includes(t));
+      // Case-insensitive topic match so "Coding" matches "coding" etc.
+      const selectedLower = selectedTopics.map(t => t.toLowerCase());
+      const topicMatch = !selectedTopics.length || c.topics.some(t => selectedLower.includes(t.toLowerCase()));
       const freeMatch = priceFilter === "all" || (priceFilter === "free" ? c.isFree : !c.isFree);
 
       return queryMatch && ageMatch && levelMatch && durationMatch && ratingMatch && topicMatch && freeMatch;
