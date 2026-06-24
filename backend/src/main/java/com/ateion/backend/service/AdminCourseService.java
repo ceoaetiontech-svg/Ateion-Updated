@@ -49,6 +49,10 @@ public class AdminCourseService {
         if (request.getDiscountPercentage() != null) course.setDiscountPercentage(request.getDiscountPercentage());
         if (request.getCurrency() != null)           course.setCurrency(request.getCurrency());
         if (request.getButtonText() != null)         course.setButtonText(request.getButtonText());
+        // ── Age Group v2 ────────────────────────────────────────────────────
+        if (request.getAgeGroup() != null)           course.setAgeGroup(request.getAgeGroup());
+        // ── Course Highlights ───────────────────────────────────────────────
+        if (request.getHighlights() != null)         course.setHighlights(request.getHighlights());
 
         courseRepository.save(course);
         return toSummaryDTO(course);
@@ -75,7 +79,7 @@ public class AdminCourseService {
                 course.getId(),
                 course.getTitle(),
                 course.getDescription()    != null ? course.getDescription()    : "",
-                course.getCategory()       != null ? course.getCategory()       : "technology",
+                course.getCategory()       != null ? course.getCategory()       : "",
                 course.getPrice()          != null ? course.getPrice()          : "0",
                 course.getIsFree()         != null ? course.getIsFree()         : true,
                 course.getAgeSegment()     != null ? course.getAgeSegment()     : "All Levels",
@@ -89,7 +93,11 @@ public class AdminCourseService {
                 course.getSellingPrice(),
                 course.getDiscountPercentage(),
                 course.getCurrency()   != null ? course.getCurrency()   : "INR",
-                course.getButtonText() != null ? course.getButtonText() : "Unlock Course"
+                course.getButtonText() != null ? course.getButtonText() : "Unlock Course",
+                // ── Age Group v2 ─────────────────────────────────────────────
+                course.getAgeGroup()   != null ? course.getAgeGroup()   : "",
+                // ── Course Highlights ────────────────────────────────────────────
+                course.getHighlights() != null ? course.getHighlights() : ""
         );
     }
 }

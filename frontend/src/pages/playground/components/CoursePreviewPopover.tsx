@@ -140,7 +140,17 @@ export default function CoursePreviewPopover({
 
                 <div className="mb-6">
                   <ul className="space-y-2.5">
-                    {course.title.includes("French") ? (
+                    {/* ── Custom highlights set by admin — shown first ── */}
+                    {course.highlights && course.highlights.length > 0 ? (
+                      <>
+                        {course.highlights.map((h, i) => (
+                          <li key={i} className="flex items-start gap-2 text-[13px] text-[var(--color-text-secondary)]">
+                            <Check size={16} className="text-[var(--color-success)] shrink-0 mt-0.5" />
+                            <span>{h}</span>
+                          </li>
+                        ))}
+                      </>
+                    ) : course.title.includes("French") ? (
                       <>
                         <li className="flex items-start gap-2 text-[13px] text-[var(--color-text-secondary)]">
                           <Check size={16} className="text-[var(--color-success)] shrink-0 mt-0.5" />

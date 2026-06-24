@@ -13,6 +13,7 @@ import {
   Keyboard,
   PanelRightOpen,
   PanelRightClose,
+  Headphones,
 } from "lucide-react";
 import { useAdminAuth } from "../context/AdminAuthContext";
 
@@ -22,6 +23,7 @@ const menuItems = [
   { id: "overview", label: "Overview", icon: LayoutDashboard, path: "/admin/dashboard" },
   { id: "courses", label: "Manage Courses", icon: BookOpen, path: "/admin/courses" },
   { id: "upload", label: "Upload Course", icon: Upload, path: "/admin/upload" },
+  { id: "audiobooks", label: "Manage Audiobooks", icon: Headphones, path: "/admin/audiobooks" },
   { id: "users", label: "Users", icon: Users, path: "/admin/users" },
   { id: "settings", label: "Settings", icon: Settings, path: "/admin/settings" },
 ];

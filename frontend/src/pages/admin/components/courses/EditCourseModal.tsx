@@ -13,6 +13,7 @@ import {
   FileText,
   Loader2,
   CheckCircle2,
+  Check,
   Pencil,
   Upload,
   Trash2,
@@ -29,6 +30,7 @@ interface AdminCourse {
   price: string;
   isFree: boolean;
   ageSegment: string;
+  ageGroup?: string | null;
   image: string;
   status: "Published" | "Draft";
   moduleCount: number;
@@ -64,7 +66,7 @@ const CATEGORIES = [
   "Curious Kitty",
   "Finance",
   "Art",
-  "Advance Skills",
+  "Advanced Skills",
   "Mental Health",
   "Technology",
 ];
@@ -77,6 +79,13 @@ const AGE_SEGMENTS = [
   "Kids",
   "Teens",
   "Adults",
+];
+
+const AGE_GROUPS = [
+  "Sproutlings (5-7 age)",
+  "Saplings (7-14 age)",
+  "Pathfinders (14-18 age)",
+  "Dreamers (18+ age)",
 ];
 
 const CURRENCIES = [
@@ -95,6 +104,7 @@ export default function EditCourseModal({ course, onClose, onSaved }: EditCourse
   const [description, setDescription] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedAgeSegments, setSelectedAgeSegments] = useState<string[]>([]);
+  const [selectedAgeGroups, setSelectedAgeGroups] = useState<string[]>([]);
   const [categoriesList, setCategoriesList] = useState([...CATEGORIES]);
   const [editingCatIndex, setEditingCatIndex] = useState<number | null>(null);
   const [editingCatValue, setEditingCatValue] = useState("");
@@ -102,6 +112,8 @@ export default function EditCourseModal({ course, onClose, onSaved }: EditCourse
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // ── Course Highlights ─────────────────────────────────────────────────────
+  const [highlights, setHighlights] = useState<string[]>(["", "", ""]);
 
   // ── Pricing v2 fields ────────────────────────────────────────────────────
   const [isFree, setIsFree] = useState(true);
@@ -115,11 +127,13 @@ export default function EditCourseModal({ course, onClose, onSaved }: EditCourse
   // ── Dropdown state ───────────────────────────────────────────────────────
   const [catOpen, setCatOpen] = useState(false);
   const [ageOpen, setAgeOpen] = useState(false);
+  const [ageGroupOpen, setAgeGroupOpen] = useState(false);
   const [currencyOpen, setCurrencyOpen] = useState(false);
   const [dragActive, setDragActive] = useState(false);
 
   const catRef = useRef<HTMLDivElement>(null);
   const ageRef = useRef<HTMLDivElement>(null);
+  const ageGroupRef = useRef<HTMLDivElement>(null);
   const currencyRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const editInputRef = useRef<HTMLInputElement>(null);
@@ -131,11 +145,28 @@ export default function EditCourseModal({ course, onClose, onSaved }: EditCourse
       setTitle(course.title ?? "");
       setDescription(course.description ?? "");
       setSelectedCategories(course.category ? course.category.split(",").map((c) => c.trim()).filter(Boolean) : []);
-      setSelectedAgeSegments(course.ageSegment ? course.ageSegment.split(",").map((s) => s.trim()).filter(Boolean) : []);
+      // Only seed valid skill-level values — filter out any old age-group names
+      // that may have been stored in ageSegment before the ageGroup column existed
+      const VALID_SKILL_LEVELS = new Set([
+        "All Levels", "Beginner", "Intermediate", "Advanced", "Kids", "Teens", "Adults",
+      ]);
+      setSelectedAgeSegments(
+        course.ageSegment
+          ? course.ageSegment.split(",").map((s) => s.trim()).filter((s) => VALID_SKILL_LEVELS.has(s))
+          : []
+      );
+      setSelectedAgeGroups(course.ageGroup ? course.ageGroup.split(",").map((s) => s.trim()).filter(Boolean) : []);
       setImage(course.image ?? "");
       setError(null);
       setSuccess(false);
       setPricingError(null);
+      // Seed highlights — stored as pipe-separated string in DB
+      if (course.highlights) {
+        const parts = course.highlights.split("|").map((h: string) => h.trim());
+        setHighlights([parts[0] ?? "", parts[1] ?? "", parts[2] ?? ""]);
+      } else {
+        setHighlights(["", "", ""]);
+      }
 
       // Pricing v2 seed
       const free = course.isFree ?? (course.price === "0" || !course.price);
@@ -175,6 +206,7 @@ export default function EditCourseModal({ course, onClose, onSaved }: EditCourse
     const handler = (e: MouseEvent) => {
       if (catRef.current && !catRef.current.contains(e.target as Node)) setCatOpen(false);
       if (ageRef.current && !ageRef.current.contains(e.target as Node)) setAgeOpen(false);
+      if (ageGroupRef.current && !ageGroupRef.current.contains(e.target as Node)) setAgeGroupOpen(false);
       if (currencyRef.current && !currencyRef.current.contains(e.target as Node)) setCurrencyOpen(false);
     };
     document.addEventListener("mousedown", handler);
@@ -200,6 +232,12 @@ export default function EditCourseModal({ course, onClose, onSaved }: EditCourse
     );
   };
 
+  const toggleAgeGroup = (group: string) => {
+    setSelectedAgeGroups((prev) =>
+      prev.includes(group) ? prev.filter((g) => g !== group) : [...prev, group],
+    );
+  };
+
   const startEditingCategory = (index: number, name: string) => {
     setEditingCatIndex(index);
     setEditingCatValue(name);
@@ -214,6 +252,12 @@ export default function EditCourseModal({ course, onClose, onSaved }: EditCourse
       setTimeout(() => editInputRef.current?.focus(), 0);
       return [...prev, ""];
     });
+  };
+
+  const deleteCategory = (index: number, name: string) => {
+    setCategoriesList((prev) => prev.filter((_, i) => i !== index));
+    setSelectedCategories((prev) => prev.filter((c) => c !== name));
+    if (editingCatIndex === index) setEditingCatIndex(null);
   };
 
   const handleFileDrop = (e: React.DragEvent) => {
@@ -268,6 +312,9 @@ export default function EditCourseModal({ course, onClose, onSaved }: EditCourse
     try {
       const category = selectedCategories.join(", ");
       const ageSegment = selectedAgeSegments.join(", ");
+      const ageGroup = selectedAgeGroups.join(", ");
+      // Serialize highlights as pipe-separated, drop empty entries
+      const highlightsStr = highlights.map((h) => h.trim()).filter(Boolean).join("|");
 
       // Build pricing payload
       const origNum = isFree ? null : (originalPrice ? parseFloat(originalPrice) : null);
@@ -282,6 +329,8 @@ export default function EditCourseModal({ course, onClose, onSaved }: EditCourse
           description,
           category,
           ageSegment,
+          ageGroup,
+          highlights: highlightsStr,
           price: isFree ? "0" : (sellNum != null ? String(sellNum) : sellingPrice),
           isFree,
           image,
@@ -392,93 +441,130 @@ export default function EditCourseModal({ course, onClose, onSaved }: EditCourse
                 />
               </div>
 
-              {/* Category + Age Segment */}
-              <div className="grid grid-cols-2 gap-4">
-                {/* Category */}
-                <div>
-                  <label className="flex items-center gap-1.5 text-xs font-semibold text-[var(--color-text-secondary)] uppercase tracking-wider mb-2">
-                    <Tag size={13} /> Categories
-                  </label>
-                  <div className="relative" ref={catRef}>
-                    <button
-                      type="button"
-                      onClick={() => { setCatOpen(!catOpen); setAgeOpen(false); setCurrencyOpen(false); }}
-                      className="w-full flex items-center justify-between px-4 py-3 rounded-xl border border-[var(--color-border-light)] hover:border-[var(--color-border-medium)] bg-[var(--color-background-secondary)] text-[var(--color-text-primary)] text-sm outline-none transition-all cursor-pointer"
-                    >
-                      <span className={selectedCategories.length === 0 ? "text-[var(--color-text-tertiary)]" : ""}>
-                        {selectedCategories.length > 0 ? selectedCategories.join(", ") : "Select categories..."}
-                      </span>
-                      <ChevronDown size={15} className={`transition-transform text-[var(--color-text-tertiary)] ${catOpen ? "rotate-180" : ""}`} />
-                    </button>
-                    <AnimatePresence>
-                      {catOpen && (
-                        <motion.div
-                          initial={{ opacity: 0, y: -6, scale: 0.97 }}
-                          animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: -6, scale: 0.97 }}
-                          transition={{ duration: 0.14 }}
-                          className="absolute z-50 mt-1.5 w-full rounded-xl border border-[var(--color-border-light)] bg-[var(--color-background-primary)] shadow-xl overflow-hidden"
-                        >
-                          {categoriesList.map((cat, idx) => {
-                            const checked = selectedCategories.includes(cat);
-                            const isEditing = editingCatIndex === idx;
-                            return (
-                              <div
-                                key={`${cat}-${idx}`}
-                                className="flex items-center gap-2 px-4 py-2 text-sm transition-colors hover:bg-[var(--color-accent)]/10"
-                              >
-                                <input
-                                  type="checkbox"
-                                  checked={checked}
-                                  onChange={() => toggleCategory(cat)}
-                                  className="accent-[var(--color-accent)] w-4 h-4 shrink-0"
-                                />
-                                {isEditing ? (
-                                  <input
-                                    ref={editInputRef}
-                                    type="text"
-                                    value={editingCatValue}
-                                    onChange={(e) => setEditingCatValue(e.target.value)}
-                                    onBlur={saveCategoryEdit}
-                                    onKeyDown={(e) => {
-                                      if (e.key === "Enter") saveCategoryEdit();
-                                      if (e.key === "Escape") setEditingCatIndex(null);
-                                    }}
-                                    className="flex-1 px-2 py-1 rounded-md border border-[var(--color-accent)] bg-[var(--color-background-secondary)] text-[var(--color-text-primary)] text-sm outline-none"
-                                  />
-                                ) : (
-                                  <>
-                                    <span className={`flex-1 ${checked ? "text-[var(--color-accent)] font-semibold" : "text-[var(--color-text-primary)]"}`}>
-                                      {cat}
-                                    </span>
-                                    <button
-                                      type="button"
-                                      onClick={(e) => { e.stopPropagation(); startEditingCategory(idx, cat); }}
-                                      className="p-1 rounded-md text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] hover:bg-[var(--color-accent)]/10 transition-all cursor-pointer shrink-0"
-                                    >
-                                      <Pencil size={13} />
-                                    </button>
-                                  </>
-                                )}
-                              </div>
-                            );
-                          })}
-                          <div className="border-t border-[var(--color-border-light)]">
-                            <button
-                              type="button"
-                              onClick={addCategory}
-                              className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-[var(--color-accent)] hover:bg-[var(--color-accent)]/10 transition-all cursor-pointer font-medium"
-                            >
-                              <span className="text-lg leading-none">+</span> Add category
-                            </button>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
+              {/* Course Highlights */}
+              <div>
+                <label className="flex items-center gap-1.5 text-xs font-semibold text-[var(--color-text-secondary)] uppercase tracking-wider mb-2">
+                  <Check size={13} /> Course Highlights
+                </label>
+                <p className="text-xs text-[var(--color-text-tertiary)] mb-2.5">Up to 3 bullet points shown in the preview popover (leave blank to use auto-generated ones)</p>
+                <div className="space-y-2">
+                  {highlights.map((h, i) => (
+                    <div key={i} className="flex items-center gap-2">
+                      <Check size={14} className="text-[var(--color-success)] shrink-0" />
+                      <input
+                        type="text"
+                        value={h}
+                        onChange={(e) => {
+                          const next = [...highlights];
+                          next[i] = e.target.value;
+                          setHighlights(next);
+                        }}
+                        placeholder={`Bullet point ${i + 1}…`}
+                        className="flex-1 px-3 py-2 rounded-xl border border-[var(--color-border-light)] hover:border-[var(--color-border-medium)] focus:border-[var(--color-accent)] focus:shadow-[0_0_0_3px_rgba(232,133,106,0.12)] outline-none bg-[var(--color-background-secondary)] text-[var(--color-text-primary)] transition-all text-sm"
+                      />
+                    </div>
+                  ))}
                 </div>
+              </div>
 
-                {/* Age Segment */}
+              {/* Category */}
+              <div>
+                <label className="flex items-center gap-1.5 text-xs font-semibold text-[var(--color-text-secondary)] uppercase tracking-wider mb-2">
+                  <Tag size={13} /> Categories
+                </label>
+                <div className="relative" ref={catRef}>
+                  <button
+                    type="button"
+                    onClick={() => { setCatOpen(!catOpen); setAgeOpen(false); setCurrencyOpen(false); setAgeGroupOpen(false); }}
+                    className="w-full flex items-center justify-between px-4 py-3 rounded-xl border border-[var(--color-border-light)] hover:border-[var(--color-border-medium)] bg-[var(--color-background-secondary)] text-[var(--color-text-primary)] text-sm outline-none transition-all cursor-pointer"
+                  >
+                    <span className={selectedCategories.length === 0 ? "text-[var(--color-text-tertiary)]" : ""}>
+                      {selectedCategories.length > 0 ? selectedCategories.join(", ") : "Select categories..."}
+                    </span>
+                    <ChevronDown size={15} className={`transition-transform text-[var(--color-text-tertiary)] ${catOpen ? "rotate-180" : ""}`} />
+                  </button>
+                  <AnimatePresence>
+                    {catOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -6, scale: 0.97 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -6, scale: 0.97 }}
+                        transition={{ duration: 0.14 }}
+                        className="absolute z-50 mt-1.5 w-full rounded-xl border border-[var(--color-border-light)] bg-[var(--color-background-primary)] shadow-xl overflow-hidden"
+                      >
+                        {categoriesList.map((cat, idx) => {
+                          const checked = selectedCategories.includes(cat);
+                          const isEditing = editingCatIndex === idx;
+                          return (
+                            <div
+                              key={`${cat}-${idx}`}
+                              className="flex items-center gap-2 px-4 py-2 text-sm transition-colors hover:bg-[var(--color-accent)]/10"
+                            >
+                              <input
+                                type="checkbox"
+                                checked={checked}
+                                onChange={() => toggleCategory(cat)}
+                                className="accent-[var(--color-accent)] w-4 h-4 shrink-0"
+                              />
+                              {isEditing ? (
+                                <input
+                                  ref={editInputRef}
+                                  type="text"
+                                  value={editingCatValue}
+                                  onChange={(e) => setEditingCatValue(e.target.value)}
+                                  onBlur={saveCategoryEdit}
+                                  onKeyDown={(e) => {
+                                    if (e.key === "Enter") saveCategoryEdit();
+                                    if (e.key === "Escape") setEditingCatIndex(null);
+                                  }}
+                                  className="flex-1 px-2 py-1 rounded-md border border-[var(--color-accent)] bg-[var(--color-background-secondary)] text-[var(--color-text-primary)] text-sm outline-none"
+                                />
+                              ) : (
+                                <>
+                                  <span className={`flex-1 ${checked ? "text-[var(--color-accent)] font-semibold" : "text-[var(--color-text-primary)]"}`}>
+                                    {cat}
+                                  </span>
+                                  {/* Edit button */}
+                                  <button
+                                    type="button"
+                                    onClick={(e) => { e.stopPropagation(); startEditingCategory(idx, cat); }}
+                                    className="p-1 rounded-md text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] hover:bg-[var(--color-accent)]/10 transition-all cursor-pointer shrink-0"
+                                    title="Rename category"
+                                  >
+                                    <Pencil size={13} />
+                                  </button>
+                                  {/* Delete button */}
+                                  <button
+                                    type="button"
+                                    onClick={(e) => { e.stopPropagation(); deleteCategory(idx, cat); }}
+                                    className="p-1 rounded-md text-[var(--color-text-tertiary)] hover:text-red-500 hover:bg-red-500/10 transition-all cursor-pointer shrink-0"
+                                    title="Delete category"
+                                  >
+                                    <Trash2 size={13} />
+                                  </button>
+                                </>
+                              )}
+                            </div>
+                          );
+                        })}
+                        <div className="border-t border-[var(--color-border-light)]">
+                          <button
+                            type="button"
+                            onClick={addCategory}
+                            className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-[var(--color-accent)] hover:bg-[var(--color-accent)]/10 transition-all cursor-pointer font-medium"
+                          >
+                            <span className="text-lg leading-none">+</span> Add category
+                          </button>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              </div>
+
+              {/* Levels + Age Group */}
+              <div className="grid grid-cols-2 gap-4">
+                {/* Level / Skill Level */}
                 <div>
                   <label className="flex items-center gap-1.5 text-xs font-semibold text-[var(--color-text-secondary)] uppercase tracking-wider mb-2">
                     <Users size={13} /> Levels
@@ -486,7 +572,7 @@ export default function EditCourseModal({ course, onClose, onSaved }: EditCourse
                   <div className="relative" ref={ageRef}>
                     <button
                       type="button"
-                      onClick={() => { setAgeOpen(!ageOpen); setCatOpen(false); setCurrencyOpen(false); }}
+                      onClick={() => { setAgeOpen(!ageOpen); setCatOpen(false); setCurrencyOpen(false); setAgeGroupOpen(false); }}
                       className="w-full flex items-center justify-between px-4 py-3 rounded-xl border border-[var(--color-border-light)] hover:border-[var(--color-border-medium)] bg-[var(--color-background-secondary)] text-[var(--color-text-primary)] text-sm outline-none transition-all cursor-pointer"
                     >
                       <span className={selectedAgeSegments.length === 0 ? "text-[var(--color-text-tertiary)]" : ""}>
@@ -518,6 +604,56 @@ export default function EditCourseModal({ course, onClose, onSaved }: EditCourse
                                 />
                                 <span className={checked ? "text-[var(--color-accent)] font-semibold" : "text-[var(--color-text-primary)]"}>
                                   {seg}
+                                </span>
+                              </label>
+                            );
+                          })}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </div>
+
+                {/* Age Group */}
+                <div>
+                  <label className="flex items-center gap-1.5 text-xs font-semibold text-[var(--color-text-secondary)] uppercase tracking-wider mb-2">
+                    <Users size={13} /> Age Group
+                  </label>
+                  <div className="relative" ref={ageGroupRef}>
+                    <button
+                      type="button"
+                      onClick={() => { setAgeGroupOpen(!ageGroupOpen); setCatOpen(false); setAgeOpen(false); setCurrencyOpen(false); }}
+                      className="w-full flex items-center justify-between px-4 py-3 rounded-xl border border-[var(--color-border-light)] hover:border-[var(--color-border-medium)] bg-[var(--color-background-secondary)] text-[var(--color-text-primary)] text-sm outline-none transition-all cursor-pointer"
+                    >
+                      <span className={selectedAgeGroups.length === 0 ? "text-[var(--color-text-tertiary)]" : ""}>
+                        {selectedAgeGroups.length > 0 ? selectedAgeGroups.join(", ") : "Select age groups..."}
+                      </span>
+                      <ChevronDown size={15} className={`transition-transform text-[var(--color-text-tertiary)] ${ageGroupOpen ? "rotate-180" : ""}`} />
+                    </button>
+                    <AnimatePresence>
+                      {ageGroupOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -6, scale: 0.97 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: -6, scale: 0.97 }}
+                          transition={{ duration: 0.14 }}
+                          className="absolute z-50 mt-1.5 w-full rounded-xl border border-[var(--color-border-light)] bg-[var(--color-background-primary)] shadow-xl overflow-hidden"
+                        >
+                          {AGE_GROUPS.map((group) => {
+                            const checked = selectedAgeGroups.includes(group);
+                            return (
+                              <label
+                                key={group}
+                                className="flex items-center gap-2.5 px-4 py-2.5 text-sm transition-colors hover:bg-[var(--color-accent)]/10 cursor-pointer"
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={checked}
+                                  onChange={() => toggleAgeGroup(group)}
+                                  className="accent-[var(--color-accent)] w-4 h-4"
+                                />
+                                <span className={checked ? "text-[var(--color-accent)] font-semibold" : "text-[var(--color-text-primary)]"}>
+                                  {group}
                                 </span>
                               </label>
                             );

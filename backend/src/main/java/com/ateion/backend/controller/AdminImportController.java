@@ -22,14 +22,21 @@ public class AdminImportController {
         return ResponseEntity.ok(youtubeImportService.previewPlaylist(playlistUrl));
     }
 
+    // ── Publish as COURSE (unchanged) ─────────────────────────────────────────
     @PostMapping("/publish")
     public ResponseEntity<Map<String, String>> publishImport(@RequestBody PublishRequest request) {
         youtubeImportService.publishCourse(request);
-
-        // Replaced Map.of to prevent any wildcard/inference build failures
         Map<String, String> response = new LinkedHashMap<>();
         response.put("message", "Course published successfully");
+        return ResponseEntity.ok(response);
+    }
 
+    // ── Publish as AUDIOBOOK (new) ────────────────────────────────────────────
+    @PostMapping("/publish-audiobook")
+    public ResponseEntity<Map<String, String>> publishAsAudiobook(@RequestBody PublishAsAudiobookRequest request) {
+        youtubeImportService.publishAsAudiobook(request);
+        Map<String, String> response = new LinkedHashMap<>();
+        response.put("message", "Audiobook published successfully");
         return ResponseEntity.ok(response);
     }
 }

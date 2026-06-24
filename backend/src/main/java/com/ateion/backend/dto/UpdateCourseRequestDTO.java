@@ -21,4 +21,8 @@ public class UpdateCourseRequestDTO {
     private Double discountPercentage;
     private String currency;
     private String buttonText;
+    // ── Age Group v2 ──────────────────────────────────────────────────────────
+    private String ageGroup;
+    // ── Course Highlights ────────────────────────────────────────────────
+    private String highlights;
 }

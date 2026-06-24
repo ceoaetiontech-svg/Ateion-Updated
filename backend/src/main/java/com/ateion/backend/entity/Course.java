@@ -63,4 +63,14 @@ public class Course {
 
     @Column(name = "button_text")
     private String buttonText;
+
+    // ── Age Group v2 ──────────────────────────────────────────────────────────
+    @Column(name = "age_group")
+    private String ageGroup;
+
+    // ── Course Highlights ─────────────────────────────────────────────────────
+    // Up to 3 bullet points shown in the preview popover.
+    // Stored as pipe-separated: "Build real apps|Master concepts|Hands-on labs"
+    @Column(name = "highlights", columnDefinition = "TEXT")
+    private String highlights;
 }
