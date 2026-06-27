@@ -26,6 +26,7 @@ import {
   Trophy,
   Gamepad2,
 } from "lucide-react";
+import { useTheme } from "./ThemeProvider";
 import logo from "../../assets/logo.webp";
 
 const navTextClass = "font-semibold text-[13px] whitespace-nowrap font-manrope m-0 leading-none";
@@ -37,6 +38,7 @@ function LogoDropdown() {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const { theme } = useTheme();
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -61,12 +63,13 @@ function LogoDropdown() {
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onHoverStart={() => setIsOpen(true)}
+        onClick={() => setIsOpen((prev) => !prev)}
         className="gco-pill-logo shrink-0 cursor-pointer"
       >
         <img
           src={logo}
           alt="Ateion"
-          className="h-[36px] w-auto object-contain"
+          className={`h-[36px] w-auto object-contain transition-all duration-300 ${theme === "dark" ? "brightness-0 invert" : ""}`}
         />
       </motion.div>
 
