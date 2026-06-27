@@ -2,8 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
-import SharedNavbar from "../app/components/SharedNavbar";
-import NavbarSpacer from "../app/components/NavbarSpacer";
+import GCONavbar from "../app/components/GCONavbar";
 import SharedFooter from "../app/components/SharedFooter";
 
 import Slide from "../features/gco/Slide";
@@ -16,6 +15,7 @@ import PolicyAlignmentSection from "../features/gco/PolicyAlignmentSection";
 import "../styles/gco/index.css";
 import "../styles/gco/fonts.css";
 import "../styles/gco/theme.css";
+import "../styles/gco/pill-navbar.css";
 
 const GCOPage = () => {
   const navigate = useNavigate();
@@ -29,8 +29,7 @@ const GCOPage = () => {
         <title>Global Capability Olympiad | Ateion</title>
         <meta name="description" content="The world's first preparation-free, syllabus-free, AI-integrated Master Olympiad designed to measure thinking, not memory." />
       </Helmet>
-      <SharedNavbar />
-      <NavbarSpacer />
+      <GCONavbar />
       <div
         id="gco-root"
         className="ateion-metallic-bg min-h-screen w-full relative"
