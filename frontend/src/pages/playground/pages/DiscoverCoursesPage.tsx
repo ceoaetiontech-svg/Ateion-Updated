@@ -342,11 +342,11 @@ export default function DiscoverCoursesPage() {
             <motion.div variants={fadeUpItem} className="rounded-3xl border border-[var(--color-border-light)] bg-[var(--color-background-secondary)] px-6 py-16 text-center shadow-sm">
               <div className="mx-auto mb-4 h-10 w-10 animate-spin rounded-full border-4 border-[var(--color-accent)] border-t-transparent" />
               <p className="font-bold text-[var(--color-text-primary)] text-lg">
-                {isWaking ? "The course server is waking up…" : "Loading courses…"}
+                {isWaking ? "Connecting to an encrypted server..." : "Loading courses…"}
               </p>
               <p className="mt-1 text-sm text-[var(--color-text-secondary)]">
                 {isWaking
-                    ? "The first request can take longer on Render's free tier."
+                    ? "This might take a moment on the first connection."
                     : "Fetching the latest courses from the database."}
               </p>
             </motion.div>
