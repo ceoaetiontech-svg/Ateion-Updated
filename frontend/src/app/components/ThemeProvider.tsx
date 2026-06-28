@@ -1,75 +1,23 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useCallback,
-} from "react";
+import { ThemeProvider as NextThemeProvider, useTheme as useNextTheme } from "next-themes";
+import React, { useCallback } from "react";
 
-type Theme = "light" | "dark";
-
-interface ThemeContextValue {
-  theme: Theme;
-  toggleTheme: () => void;
-  setTheme: (t: Theme) => void;
-}
-
-const ThemeContext = createContext<ThemeContextValue>({
-  theme: "light",
-  toggleTheme: () => {},
-  setTheme: () => {},
-});
-
-export const useTheme = () => useContext(ThemeContext);
-
-const STORAGE_KEY = "ateion-theme";
-
-function getInitialTheme(): Theme {
-  // 1. Check localStorage
-  const stored = localStorage.getItem(STORAGE_KEY);
-  if (stored === "dark" || stored === "light") return stored;
-
-  // 2. Default to light mode for first-time visitors
-  return "light";
-}
-
-export default function ThemeProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const [theme, setThemeState] = useState<Theme>(getInitialTheme);
-
-  // Apply theme to <html>
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem(STORAGE_KEY, theme);
-
-    // Update meta theme-color dynamically from CSS variables
-    const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) {
-      // Need a small timeout to ensure the CSS variables are applied after the data-theme attribute change
-      setTimeout(() => {
-        const rootStyles = getComputedStyle(document.documentElement);
-        const bgColor = rootStyles.getPropertyValue('--color-background-primary').trim();
-        if (bgColor) {
-          meta.setAttribute("content", bgColor);
-        }
-      }, 0);
-    }
-  }, [theme]);
-
-  const toggleTheme = useCallback(() => {
-    setThemeState((prev) => (prev === "light" ? "dark" : "light"));
-  }, []);
-
-  const setTheme = useCallback((t: Theme) => {
-    setThemeState(t);
-  }, []);
-
+export default function ThemeProvider({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
+    <NextThemeProvider attribute="data-theme" defaultTheme="light" enableSystem={false}>
       {children}
-    </ThemeContext.Provider>
+    </NextThemeProvider>
   );
+}
+
+export function useTheme() {
+  const { theme, setTheme } = useNextTheme();
+  const toggleTheme = useCallback(() => {
+    setTheme(theme === "light" ? "dark" : "light");
+  }, [theme, setTheme]);
+
+  return {
+    theme: (theme || "light") as "light" | "dark",
+    setTheme: (t: "light" | "dark") => setTheme(t),
+    toggleTheme,
+  };
 }

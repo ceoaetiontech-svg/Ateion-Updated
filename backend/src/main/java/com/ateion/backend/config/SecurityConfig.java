@@ -74,8 +74,7 @@ public class SecurityConfig {
                         // Public audiobook reading
                         .requestMatchers(HttpMethod.GET, "/api/content/audiobooks").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/content/audiobooks/**").permitAll()
-                        // Gamification leaderboard (public read)
-                        .requestMatchers(HttpMethod.GET, "/api/gamification/leaderboard").permitAll()
+
                         // Contact form submission (open, anyone can send a message)
                         .requestMatchers(HttpMethod.POST, "/api/contact").permitAll()
                         // Reading contact messages requires admin role

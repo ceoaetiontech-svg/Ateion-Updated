@@ -7,7 +7,6 @@ import { Helmet } from "react-helmet-async";
 import SharedNavbar from "../app/components/SharedNavbar";
 import NavbarSpacer from "../app/components/NavbarSpacer";
 import SharedFooter from "../app/components/SharedFooter";
-import Skeleton from "../app/components/Skeleton";
 import { allPolicies, regions, PolicyEntry } from "../data/policies";
 
 // ─── All 12 policy images ─────────────────────────────────────────────────
@@ -464,7 +463,7 @@ export default function PoliciesPage() {
                           animate={{ opacity: 1 }}
                           exit={{ opacity: 0 }}
                         >
-                          <Skeleton className="w-full aspect-[4/5] rounded-[var(--radius-lg)]" />
+                          <div className="animate-pulse w-full aspect-[4/5] rounded-[var(--radius-lg)] bg-[var(--color-border-light)]" />
                         </motion.div>
                       ))
                     : filtered.map((policy) => (

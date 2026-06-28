@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from "react";
+import { toast } from "sonner";
 import { UserProfile, Task, NewTask, CalendarEvent, Note } from "./types";
 
 interface PlaygroundContextValue {
@@ -115,7 +116,10 @@ export function PlaygroundProvider({ children }: { children: ReactNode }) {
   const [xp, setXp] = useState(() => {
     try { return JSON.parse(localStorage.getItem("ateion_xp") || "2840"); } catch { return 2840; }
   });
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const setToastMessage = useCallback((val: string | null) => {
+    if (val) toast(val);
+  }, []);
+  const toastMessage = null;
   const [events, setEvents] = useState<CalendarEvent[]>(() => {
     const saved = localStorage.getItem("ateion_events");
     if (saved) try { return JSON.parse(saved); } catch {}
