@@ -5,7 +5,6 @@ import { useAdminAuth } from "../context/AdminAuthContext";
 import AdminSidebar from "./AdminSidebar";
 import AdminHeader from "./AdminHeader";
 import CommandPalette from "../components/CommandPalette";
-import ToastContainer from "../components/ui/Toast";
 import "../styles/adminstyle.css";
 
 const ADMIN_THEME_KEY = "ateion-admin-theme";
@@ -99,7 +98,6 @@ export default function AdminLayout() {
         </div>
       </main>
       <CommandPalette />
-      <ToastContainer />
     </div>
   );
 }

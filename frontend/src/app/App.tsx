@@ -2,8 +2,8 @@ import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-ro
 import { useState, useEffect, Suspense, lazy } from "react";
 import LoadingSpinner from "./components/LoadingSpinner";
 import { AnimatePresence } from "framer-motion";
+import { Toaster } from "sonner";
 import { ToastProvider } from "../pages/admin/utils/toast";
-import ToastContainer from "../pages/admin/components/ui/Toast";
 import { AdminAuthProvider } from "../pages/admin/context/AdminAuthContext";
 
 const AIChatBot = lazy(() => import("./components/AIChatbot"));
@@ -115,7 +115,7 @@ export default function App() {
                     <AdminAuthProvider>
                         <ToastProvider>
                             <AnimatedRoutes />
-                            <ToastContainer />
+                            <Toaster richColors closeButton position="bottom-right" />
                             <GuidedTutorial />
                         </ToastProvider>
                     </AdminAuthProvider>

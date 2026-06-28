@@ -33,7 +33,6 @@ import UserAvatar from "../shared/UserAvatar";
 import { PlaygroundProvider, usePlayground } from "../shared/PlaygroundContext";
 import GlobalSearch from "../components/GlobalSearch";
 import NotificationDropdown from "../components/NotificationDropdown";
-import Toast from "../components/Toast";
 import { slideInItem } from "../shared/types";
 import SkeletonCourseCard from "../components/SkeletonCourseCard";
 import { ApiRequestError, fetchJsonWithRetry } from "../../../lib/apiClient";
@@ -456,7 +455,6 @@ function PlaygroundInner() {
               )}
 
               <GlobalSearch open={searchOpen} onOpenChange={setSearchOpen} />
-              <Toast message={toastMessage} onDismiss={() => setToastMessage(null)} />
 
               <Sheet open={settingsOpen} onOpenChange={setSettingsOpen}>
                 <SheetContent

@@ -156,13 +156,13 @@ export default function CoursePreviewPage() {
                         />
                         <p className="mt-5 text-sm font-semibold" style={{ color: "var(--color-text-secondary)" }}>
                             {isWaking
-                                ? "The learning server is waking up. This can take a little longer on the free tier…"
+                                ? "Connecting to an encrypted server..."
                                 : "Loading preview…"}
                         </p>
                         {isWaking && (
                             <div className="mt-4 flex items-center gap-2 px-4 py-2 rounded-xl border" style={{ borderColor: "var(--color-border-light)", background: "var(--color-background-secondary)" }}>
                                 <Sparkles size={14} className="text-amber-500" />
-                                <span className="text-xs font-medium text-amber-600">Waking server</span>
+                                <span className="text-xs font-medium text-amber-600">Connecting...</span>
                             </div>
                         )}
                     </div>
