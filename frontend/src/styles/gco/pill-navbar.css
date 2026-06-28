@@ -100,15 +100,15 @@
   color: #ffffff;
 }
 
-/* ── Highlighted Link — Purple accent ── */
+/* ── Highlighted Link — Lavender accent ── */
 .gco-pill-nav-link--highlight {
-  background: #6B46C1;
-  color: #ffffff;
+  background: #CFD0FF;
+  color: #2D3361;
 }
 
 .gco-pill-nav-link--highlight:hover {
-  background: #7C5CFC;
-  color: #ffffff;
+  background: #B8B9FF;
+  color: #2D3361;
 }
 
 /* ── CTA Button ── */
@@ -238,13 +238,13 @@
 }
 
 [data-theme="dark"] .gco-pill-nav-link--highlight {
-  background: #6B46C1;
-  color: #ffffff;
+  background: #CFD0FF;
+  color: #2D3361;
 }
 
 [data-theme="dark"] .gco-pill-nav-link--highlight:hover {
-  background: #7C5CFC;
-  color: #ffffff;
+  background: #B8B9FF;
+  color: #2D3361;
 }
 
 [data-theme="dark"] .gco-pill-user-pill {
