@@ -15,11 +15,12 @@
   width: 100%;
   position: relative;
   z-index: 10;
-  padding-top: 200px;
+  padding-top: 160px;
+  padding-bottom: 20px;
 }
 
 .volunteer-title {
-  font-family: var(--font-family-heading);
+  font-family: var(--font-display);
   font-size: clamp(2rem, 5vw, 4.5rem);
   font-weight: 700;
   margin-bottom: 20px;
@@ -29,19 +30,55 @@
 
 .volunteer-subtitle {
   font-family: "SF Pro Display", sans-serif;
-  font-size: clamp(1rem, 2vw, 1.4rem);
-  line-height: 2;
-  margin: 0 auto 48px auto;
+  font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+  line-height: 1.8;
+  margin: 0 auto 32px auto;
   color: var(--color-text-secondary);
   text-align: center;
-  max-width: 90%;
+  max-width: 75%;
 }
 
 /* ─── Roles Section ──────────────────────────── */
 .volunteer-roles-section {
-  padding: 0 5% 80px;
+  padding: 20px 5% 100px;
   position: relative;
   z-index: 10;
+}
+
+.volunteer-roles-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.volunteer-roles-header-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0 0 20px;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+}
+
+.volunteer-roles-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.volunteer-roles-header-bar-line {
+  width: 40px;
+  height: 3px;
+  border-radius: 4px;
+  background: var(--color-accent);
+}
+
+.volunteer-roles-header-bar-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-primary_light);
 }
 
 .volunteer-roles-list {
@@ -50,84 +87,157 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
 }
 
+/* ─── Card Styling ───────────────────────────── */
 .volunteer-role-card {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 24px 32px;
-  background-color: var(--color-background-primary);
-  border-radius: 24px;
-  box-shadow: var(--shadow-clay);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  cursor: pointer;
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-  position: relative;
+  background: var(--color-background-secondary) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 24px !important;
+  box-shadow: var(--shadow-clay) !important;
   overflow: hidden;
-  text-align: left;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .volunteer-role-card:hover {
-  box-shadow: var(--shadow-clay-hover);
+  box-shadow: var(--shadow-clay-hover) !important;
+}
+
+.volunteer-role-card-open {
+  box-shadow: 0 12px 28px -4px rgba(26,24,51,0.08) !important;
 }
 
 .volunteer-role-accent {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
   width: 4px;
-  min-height: 48px;
-  border-radius: 4px;
-  background: var(--color-border-light);
-  flex-shrink: 0;
-  transition: background 0.3s ease;
+  border-radius: 0 4px 4px 0;
 }
 
-.volunteer-role-card:hover .volunteer-role-accent {
-  background: var(--color-accent);
-}
-
-.volunteer-role-content {
-  flex: 1;
+.volunteer-role-btn {
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 28px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  gap: 16px;
+  position: relative;
 }
 
 .volunteer-role-title {
-  font-size: 20px;
+  flex: 1 0 0;
   font-weight: 600;
-  color: var(--color-text-primary);
-  font-family: "SF Pro Display", sans-serif;
   line-height: 1.35;
+  max-width: 700px;
+  color: var(--color-text-primary);
+  font-size: 18px;
+  transition: color 0.2s;
 }
 
-.volunteer-role-desc {
-  font-size: 15px;
-  line-height: 1.5;
-  color: var(--color-text-muted);
-  font-family: "SF Pro Display", sans-serif;
+.volunteer-role-btn:hover .volunteer-role-title {
+  color: var(--color-accent);
 }
 
 .volunteer-role-arrow {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
-  background-color: #e7e3dd;
+  padding: 8px;
   border-radius: 100px;
+  flex-shrink: 0;
+  background: var(--color-background-tertiary);
   box-shadow: var(--shadow-clay-button);
   border: 1px solid rgba(255, 255, 255, 0.25);
-  font-size: 18px;
-  color: #1c1b1b;
-  flex-shrink: 0;
-  transition: transform 0.4s ease, background 0.3s ease;
+  transition: background 0.3s, transform 0.4s;
 }
 
-.volunteer-role-card:hover .volunteer-role-arrow {
-  transform: translateX(4px);
+.volunteer-role-arrow-open {
+  background: var(--color-accent) !important;
+}
+
+.volunteer-role-desc {
+  padding: 8px 28px 28px;
+}
+
+.volunteer-role-desc p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--color-text-muted);
+  font-family: var(--font-alt);
+  margin: 0 0 16px;
+}
+
+.volunteer-role-desc h4 {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 24px 0 12px;
+  line-height: 1.3;
+}
+
+.volunteer-role-desc h4:first-child {
+  margin-top: 0;
+}
+
+.volunteer-role-desc ul {
+  margin: 0 0 16px;
+  padding: 0 0 0 20px;
+  list-style: none;
+}
+
+.volunteer-role-desc ul li {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--color-text-muted);
+  font-family: var(--font-alt);
+  margin-bottom: 6px;
+  position: relative;
+  padding-left: 16px;
+}
+
+.volunteer-role-desc ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
   background: var(--color-accent);
-  color: white;
+}
+
+.volunteer-role-desc .role-highlight {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--color-text-primary);
+  font-family: var(--font-alt);
+  font-weight: 600;
+  margin: 20px 0 10px;
+}
+
+.volunteer-role-desc .role-apply {
+  margin-top: 20px;
+  padding: 20px 24px;
+  border-radius: 16px;
+  background: var(--color-background-tertiary);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.volunteer-role-desc .role-apply h4 {
+  margin-top: 0;
+}
+
+.volunteer-role-desc .role-apply p {
+  margin-bottom: 0;
+  font-size: 14px;
 }
 
 /* ─── Dark Mode ──────────────────────────────── */
@@ -139,41 +249,93 @@
   color: var(--color-text-tertiary);
 }
 
+[data-theme="dark"] .volunteer-roles-header-title {
+  color: var(--color-text-primary);
+}
+
 [data-theme="dark"] .volunteer-role-card {
-  background-color: var(--color-background-secondary);
-  border-color: rgba(255, 255, 255, 0.08);
+  background: var(--color-background-secondary) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
   box-shadow:
     inset 2px 2px 4px rgba(255, 255, 255, 0.05),
     inset -1px -1px 3px rgba(0, 0, 0, 0.3),
-    6px 6px 16px rgba(0, 0, 0, 0.4);
+    6px 6px 16px rgba(0, 0, 0, 0.4) !important;
 }
 
 [data-theme="dark"] .volunteer-role-card:hover {
   box-shadow:
     inset 2px 2px 5px rgba(255, 255, 255, 0.07),
     inset -1px -1px 3px rgba(0, 0, 0, 0.35),
-    8px 8px 20px rgba(0, 0, 0, 0.5);
+    8px 8px 20px rgba(0, 0, 0, 0.5) !important;
 }
 
 [data-theme="dark"] .volunteer-role-title {
   color: var(--color-text-primary);
 }
 
-[data-theme="dark"] .volunteer-role-desc {
+[data-theme="dark"] .volunteer-role-btn:hover .volunteer-role-title {
+  color: var(--color-accent);
+}
+
+[data-theme="dark"] .volunteer-role-desc h4 {
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .volunteer-role-desc p {
   color: rgba(255, 255, 255, 0.7);
 }
 
-[data-theme="dark"] .volunteer-role-accent {
-  background: var(--color-border-medium);
+[data-theme="dark"] .volunteer-role-desc ul li {
+  color: rgba(255, 255, 255, 0.7);
 }
 
-[data-theme="dark"] .volunteer-role-card:hover .volunteer-role-accent {
+[data-theme="dark"] .volunteer-role-desc .role-highlight {
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .volunteer-role-desc .role-apply {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="dark"] .role-apply-btn {
+  background: var(--color-text-primary);
+  border-color: var(--color-text-primary);
+  color: var(--color-background-primary);
+}
+
+[data-theme="dark"] .role-apply-btn:hover {
   background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: white;
+}
+
+.role-apply-btn {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 28px;
+  border-radius: 100px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-background-primary);
+  background: var(--color-text-primary);
+  border: 1.5px solid var(--color-text-primary);
+  cursor: pointer;
+  text-decoration: none;
+  transition: box-shadow 0.4s ease, transform 0.3s ease, background 0.3s ease, color 0.3s ease;
+}
+
+.role-apply-btn:hover {
+  box-shadow: 0 8px 30px rgba(232, 133, 106, 0.25);
+  transform: translateY(-2px);
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: white;
 }
 
 [data-theme="dark"] .volunteer-role-arrow {
-  background-color: var(--color-background-tertiary);
-  color: var(--color-text-primary);
+  background: var(--color-background-tertiary);
   box-shadow:
     inset 2px 2px 4px rgba(255, 255, 255, 0.04),
     inset -1px -1px 2px rgba(0, 0, 0, 0.25),
@@ -181,15 +343,10 @@
   border-color: rgba(255, 255, 255, 0.1);
 }
 
-[data-theme="dark"] .volunteer-role-card:hover .volunteer-role-arrow {
-  background: var(--color-accent);
-  color: white;
-}
-
 /* ─── Mobile ≤600px ──────────────────────────── */
 @media (max-width: 600px) {
   .volunteer-hero-overlay {
-    padding-top: 120px;
+    padding-top: 100px;
   }
   .volunteer-title {
     font-size: clamp(1.75rem, 8vw, 2.5rem);
@@ -197,25 +354,31 @@
     line-height: 1.15;
   }
   .volunteer-subtitle {
-    font-size: clamp(0.9rem, 4vw, 1rem);
+    font-size: clamp(0.85rem, 3.5vw, 0.95rem);
     line-height: 1.6;
+    margin-bottom: 24px;
+    max-width: 90%;
+  }
+  .volunteer-roles-header {
     margin-bottom: 32px;
+  }
+  .volunteer-roles-header-title {
+    font-size: clamp(1.3rem, 5vw, 1.6rem);
   }
   .volunteer-roles-list {
     width: 100%;
+    gap: 12px;
   }
-  .volunteer-role-card {
-    padding: 20px 16px;
+  .volunteer-role-btn {
+    padding: 18px 20px;
   }
   .volunteer-role-title {
-    font-size: 18px;
+    font-size: 16px;
   }
   .volunteer-role-desc {
-    font-size: 14px;
+    padding: 2px 20px 20px;
   }
-  .volunteer-role-arrow {
-    width: 28px;
-    height: 28px;
-    font-size: 16px;
+  .volunteer-role-desc p {
+    font-size: 14px;
   }
 }
