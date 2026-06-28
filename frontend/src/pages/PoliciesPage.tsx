@@ -245,6 +245,7 @@ function PolicyGridCard({
 
 // ─── PoliciesPage ──────────────────────────────────────────────────────────────
 export default function PoliciesPage() {
+  const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [activeRegion, setActiveRegion] = useState("All");
   const [isLoading, setIsLoading] = useState(true);
