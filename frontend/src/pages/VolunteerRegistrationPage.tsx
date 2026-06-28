@@ -56,7 +56,7 @@ const roles = [
         <h4>Don't Meet Every Qualification? Apply Anyway.</h4>
         <p>At Ateion, we believe capability extends beyond resumes. If you're passionate, eager to learn and believe you can contribute meaningfully, we encourage you to apply.</p>
         <p>Selection is based on your skills, initiative, mindset and potential, not solely on previous experience.</p>
-        <a class="role-apply-btn" href="mailto:volunteer@ateion.com?subject=Volunteer Application: Outreach &amp; Institutional Relations">Apply Now</a>
+         <a class="role-apply-btn" href="https://docs.google.com/forms/d/e/1FAIpQLScz1rB6V7y_IA9S72189TrDzV-h8oXIxWyI-yW7FBt4k_2Yig/viewform" target="_blank" rel="noopener noreferrer">Apply Now</a>
       </div>
     `,
   },
@@ -103,7 +103,7 @@ const roles = [
         <h4>Don't Meet Every Qualification? Apply Anyway.</h4>
         <p>Many successful partnerships begin with determination rather than experience. If you enjoy communicating, negotiating and building relationships, we'd love to hear from you.</p>
         <p>We recruit based on capability, professionalism and potential.</p>
-        <a class="role-apply-btn" href="mailto:volunteer@ateion.com?subject=Volunteer Application: Sponsorship Squad">Apply Now</a>
+         <a class="role-apply-btn" href="https://docs.google.com/forms/d/e/1FAIpQLScz1rB6V7y_IA9S72189TrDzV-h8oXIxWyI-yW7FBt4k_2Yig/viewform" target="_blank" rel="noopener noreferrer">Apply Now</a>
       </div>
     `,
   },
@@ -153,7 +153,7 @@ const roles = [
         <h4>Don't Meet Every Qualification? Apply Anyway.</h4>
         <p>Great marketers are built through experimentation and creativity. If you've created, designed or built something you're proud of, we'd like to see it.</p>
         <p>Your portfolio matters more than your job title.</p>
-        <a class="role-apply-btn" href="mailto:volunteer@ateion.com?subject=Volunteer Application: Marketing Team">Apply Now</a>
+         <a class="role-apply-btn" href="https://docs.google.com/forms/d/e/1FAIpQLScz1rB6V7y_IA9S72189TrDzV-h8oXIxWyI-yW7FBt4k_2Yig/viewform" target="_blank" rel="noopener noreferrer">Apply Now</a>
       </div>
     `,
   },
@@ -203,7 +203,7 @@ const roles = [
         <h4>Don't Meet Every Qualification? Apply Anyway.</h4>
         <p>You don't need to be an expert to think analytically. If you enjoy solving problems, asking questions and making decisions using evidence, we encourage you to apply.</p>
         <p>Potential is just as important as experience.</p>
-        <a class="role-apply-btn" href="mailto:volunteer@ateion.com?subject=Volunteer Application: Business Analysts">Apply Now</a>
+         <a class="role-apply-btn" href="https://docs.google.com/forms/d/e/1FAIpQLScz1rB6V7y_IA9S72189TrDzV-h8oXIxWyI-yW7FBt4k_2Yig/viewform" target="_blank" rel="noopener noreferrer">Apply Now</a>
       </div>
     `,
   },
@@ -252,7 +252,7 @@ const roles = [
         <h4>Don't Meet Every Qualification? Apply Anyway.</h4>
         <p>Leadership is demonstrated through ownership—not titles. If you're organised, dependable and enjoy helping teams succeed, we'd like to hear from you.</p>
         <p>We look for leaders with the willingness to learn and grow.</p>
-        <a class="role-apply-btn" href="mailto:volunteer@ateion.com?subject=Volunteer Application: Project Managers">Apply Now</a>
+         <a class="role-apply-btn" href="https://docs.google.com/forms/d/e/1FAIpQLScz1rB6V7y_IA9S72189TrDzV-h8oXIxWyI-yW7FBt4k_2Yig/viewform" target="_blank" rel="noopener noreferrer">Apply Now</a>
       </div>
     `,
   },
@@ -301,7 +301,7 @@ const roles = [
         <h4>Don't Meet Every Qualification? Apply Anyway.</h4>
         <p>Some of the best assessment designers are simply curious people who love asking better questions. If improving education excites you, we encourage you to apply.</p>
         <p>Capability begins with curiosity.</p>
-        <a class="role-apply-btn" href="mailto:volunteer@ateion.com?subject=Volunteer Application: Assessment Design Team">Apply Now</a>
+         <a class="role-apply-btn" href="https://docs.google.com/forms/d/e/1FAIpQLScz1rB6V7y_IA9S72189TrDzV-h8oXIxWyI-yW7FBt4k_2Yig/viewform" target="_blank" rel="noopener noreferrer">Apply Now</a>
       </div>
     `,
   },
@@ -352,7 +352,7 @@ const roles = [
         <h4>Don't Meet Every Qualification? Apply Anyway.</h4>
         <p>Some of the world's best developers are self-taught. If you enjoy building products, solving problems and continuously learning, don't hesitate to apply.</p>
         <p>We're looking for builders—not perfect resumes.</p>
-        <a class="role-apply-btn" href="mailto:volunteer@ateion.com?subject=Volunteer Application: Web Developers">Apply Now</a>
+         <a class="role-apply-btn" href="https://docs.google.com/forms/d/e/1FAIpQLScz1rB6V7y_IA9S72189TrDzV-h8oXIxWyI-yW7FBt4k_2Yig/viewform" target="_blank" rel="noopener noreferrer">Apply Now</a>
       </div>
     `,
   },
@@ -485,6 +485,58 @@ const VolunteerRegistrationPage = () => {
             >
               The Global Capability Olympiad (GCO) is assembling a multidisciplinary Founding Team to help build one of India's most ambitious education initiatives. Whether your strengths lie in strategy, technology, marketing, partnerships or operations, every department plays a vital role in bringing GCO to life.
             </motion.p>
+
+            <motion.div
+              className="volunteer-benefits"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.35, ease: [0.23, 1, 0.32, 1] }}
+            >
+              <div className="volunteer-benefits-header">
+                <div className="volunteer-benefits-title" style={{
+                  background: "linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-accent) 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}>What You'll Gain</div>
+                <div className="volunteer-benefits-bar">
+                  <div className="volunteer-benefits-bar-line" />
+                  <div className="volunteer-benefits-bar-dot" />
+                  <div className="volunteer-benefits-bar-line" />
+                </div>
+              </div>
+              <div className="volunteer-benefits-grid">
+                <div className="volunteer-benefit-card">
+                  <span className="volunteer-benefit-emoji">⭐</span>
+                  <span className="volunteer-benefit-name">Premium Playground</span>
+                  <span className="volunteer-benefit-value">Worth ₹35k</span>
+                </div>
+                <div className="volunteer-benefit-card">
+                  <span className="volunteer-benefit-emoji">🎓</span>
+                  <span className="volunteer-benefit-name">Internship Certificate</span>
+                </div>
+                <div className="volunteer-benefit-card">
+                  <span className="volunteer-benefit-emoji">💌</span>
+                  <span className="volunteer-benefit-name">Founder Recommendation</span>
+                </div>
+                <div className="volunteer-benefit-card">
+                  <span className="volunteer-benefit-emoji">🏆</span>
+                  <span className="volunteer-benefit-name">Awards</span>
+                </div>
+                <div className="volunteer-benefit-card">
+                  <span className="volunteer-benefit-emoji">👨‍🏫</span>
+                  <span className="volunteer-benefit-name">Mentorship</span>
+                </div>
+                <div className="volunteer-benefit-card">
+                  <span className="volunteer-benefit-emoji">🥇</span>
+                  <span className="volunteer-benefit-name">Achievement Badge</span>
+                </div>
+                <div className="volunteer-benefit-card">
+                  <span className="volunteer-benefit-emoji">🚀</span>
+                  <span className="volunteer-benefit-name">Future Opportunities</span>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </section>
 
@@ -496,6 +548,12 @@ const VolunteerRegistrationPage = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, ease: "easeOut" }}
+              style={{
+                background: "linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-accent) 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
             >
               Categories
             </motion.h2>
