@@ -5,3 +5,34 @@
 @import "./Slide.css";
 @import "./GCOComparison.css";
 @import "./TimelineSection.css";
+
+#gco-background-pattern {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: linear-gradient(rgba(248, 248, 244, 0.65), rgba(248, 248, 244, 0.65)), url("/whatsapp-image-gco.jpeg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+html[data-theme="dark"] #gco-background-pattern {
+  background-image: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), url("/whatsapp-image-gco.jpeg");
+  filter: invert(1);
+}
+
+#gco-root section,
+#gco-root .timeline-section,
+#gco-root .policy-alignment-section,
+#gco-root .gco-comparison-section,
+#gco-root .slide {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+
+

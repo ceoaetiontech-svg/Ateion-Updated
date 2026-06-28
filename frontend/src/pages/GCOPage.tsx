@@ -34,6 +34,7 @@ const GCOPage = () => {
         id="gco-root"
         className="ateion-metallic-bg min-h-screen w-full relative"
       >
+        <div id="gco-background-pattern" />
         <main>
 
           <section className="hero">
