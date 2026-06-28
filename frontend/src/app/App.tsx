@@ -18,6 +18,7 @@ const DashboardPage = lazy(() => import("../pages/DashboardPage"));
 const PsychometricAssessmentPage = lazy(() => import("../pages/PsychometricAssessmentPage"));
 const NotFoundPage = lazy(() => import("../pages/NotFoundPage"));
 const RegisterPage = lazy(() => import("../pages/RegisterPage"));
+const VolunteerRegistrationPage = lazy(() => import("../pages/VolunteerRegistrationPage"));
 const LoginPage = lazy(() => import("../pages/LoginPage"));
 const PoliciesPage = lazy(() => import("../pages/PoliciesPage"));
 const PolicyDetailPage = lazy(() => import("../pages/PolicyDetailPage"));
@@ -53,6 +54,7 @@ function AnimatedRoutes() {
                 <Route path="/" element={<PageTransition><Homepage /></PageTransition>} />
                 <Route path="/gco" element={<PageTransition><GCOPage /></PageTransition>} />
                 <Route path="/contact" element={<PageTransition><ContactPage /></PageTransition>} />
+                <Route path="/register-volunteer" element={<PageTransition><VolunteerRegistrationPage /></PageTransition>} />
                 <Route path="/course-preview/:moduleId" element={<PageTransition><CoursePreviewPage /></PageTransition>} />
                 <Route path="/playground/*" element={<PageTransition><ResourcesPage /></PageTransition>} />
                 <Route path="/certificate" element={<PageTransition><CertificatePage /></PageTransition>} />

@@ -324,8 +324,10 @@ export default function GCONavbar() {
   const handleNavClick = (path: string) => {
     if (path === "register-student") {
       window.dispatchEvent(new CustomEvent("open-register"));
-    } else if (path === "register-school" || path === "register-volunteer") {
+    } else if (path === "register-school") {
       navigate("/contact");
+    } else if (path === "register-volunteer") {
+      navigate("/register-volunteer");
     } else {
       navigate(path);
     }
