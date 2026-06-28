@@ -7,7 +7,7 @@
  * ============================================================================
  */
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate, useLocation } from "react-router";
 import {
@@ -25,6 +25,8 @@ import {
   LayoutDashboard,
   Trophy,
   Gamepad2,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { useTheme } from "./ThemeProvider";
 import logo from "../../assets/logo.webp";
@@ -223,6 +225,49 @@ function NavLinkItem({
   );
 }
 
+/**
+ * THEME TOGGLE BUTTON (Sun/Moon)
+ */
+const ThemeToggleBtn = memo(function ThemeToggleBtn() {
+  const { theme, toggleTheme } = useTheme();
+
+  return (
+    <motion.button
+      type="button"
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.9 }}
+      onClick={toggleTheme}
+      className="clay-button flex h-[36px] w-[36px] items-center justify-center rounded-full bg-[var(--color-background-secondary)] border border-[var(--color-border-medium)] text-[var(--color-text-primary)] cursor-pointer transition-colors shrink-0"
+      aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+      title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+    >
+      <AnimatePresence mode="wait" initial={false}>
+        {theme === "dark" ? (
+          <motion.div
+            key="sun"
+            initial={{ rotate: -90, opacity: 0 }}
+            animate={{ rotate: 0, opacity: 1 }}
+            exit={{ rotate: 90, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Sun size={18} className="text-[var(--color-text-secondary)]" />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="moon"
+            initial={{ rotate: 90, opacity: 0 }}
+            animate={{ rotate: 0, opacity: 1 }}
+            exit={{ rotate: -90, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Moon size={18} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.button>
+  );
+});
+
 export default function GCONavbar() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<any>(null);
@@ -321,6 +366,9 @@ export default function GCONavbar() {
 
         {/* Divider */}
         <div className="gco-pill-divider" />
+
+        {/* Theme Toggle */}
+        <ThemeToggleBtn />
 
         {/* User Area */}
         <div className="flex items-center shrink-0">
