@@ -54,6 +54,19 @@ public class AuthController {
     public ResponseEntity<?> login(@RequestBody LoginRequestDTO loginRequest) {
         Optional<User> optionalUser = userRepository.findByEmail(loginRequest.getEmail());
 
+         Optional<User> userOptional = userRepository.findByEmail(loginRequest.getEmail());
+    
+    if (userOptional.isPresent()) {
+        User user = userOptional.get();
+        // If the password is empty, they registered via Google!
+        if (user.getPassword() == null || user.getPassword().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+                "error", "OAuth User",
+                "message", "This account was created using Google. Please click 'Sign in with Google' to continue."
+            ));
+        }
+    }
+
         if (optionalUser.isEmpty()
                 || !passwordEncoder.matches(loginRequest.getPassword(), optionalUser.get().getPassword())) {
             return ResponseEntity

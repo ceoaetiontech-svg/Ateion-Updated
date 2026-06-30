@@ -7,7 +7,7 @@ import { ToastProvider } from "../pages/admin/utils/toast";
 import { AdminAuthProvider } from "../pages/admin/context/AdminAuthContext";
 
 const AIChatBot = lazy(() => import("./components/AIChatbot"));
-
+const OAuth2RedirectHandler = lazy(() => import("../pages/OAuth2RedirectHandler"));
 const Homepage = lazy(() => import("../pages/Homepage"));
 const GCOPage = lazy(() => import("../pages/GCOPage"));
 const ContactPage = lazy(() => import("../pages/ContactPage"));
@@ -83,6 +83,7 @@ function AnimatedRoutes() {
                 <Route path="/profile" element={<PageTransition><ProfilePage /></PageTransition>} />
                 <Route path="/reset-password" element={<PageTransition><ResetPasswordPage /></PageTransition>} />
                 <Route path="*" element={<PageTransition><NotFoundPage /></PageTransition>} />
+                <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
             </Routes>
         </AnimatePresence>
     );
