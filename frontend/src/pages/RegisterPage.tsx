@@ -70,17 +70,23 @@ export default function RegisterPage({ closeRegister }: any) {
   const backendUrl =
     import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
 
-  const handleGoogleLogin = () => {
-    window.location.href = `${backendUrl}/oauth2/authorization/google`;
-  };
+  const handleSocialLogin = (provider: string) => {
+  // 1. Block the click if they haven't selected an age segment
+  if (!formData.ageSegment) {
+    alert("Please select your Age Segment before continuing!");
+    return;
+  }
 
-  const handleLinkedinLogin = () => {
-    window.location.href = `${backendUrl}/oauth2/authorization/linkedin`;
-  };
+  // 2. Save the segment in a cookie so Spring Boot can read it
+  document.cookie = `pending_age_segment=${encodeURIComponent(formData.ageSegment)}; path=/; max-age=300`;
 
-  const handleGithubLogin = () => {
-    window.location.href = `${backendUrl}/oauth2/authorization/github`;
-  };
+  // 3. Redirect to your backend
+  window.location.href = `${backendUrl}/oauth2/authorization/${provider}`;
+};
+
+const handleGoogleLogin = () => handleSocialLogin("google");
+const handleLinkedinLogin = () => handleSocialLogin("linkedin");
+const handleGithubLogin = () => handleSocialLogin("github");
 
   return (
     <div className="register-container">
@@ -158,7 +164,7 @@ export default function RegisterPage({ closeRegister }: any) {
             required
           >
             <option value="" disabled>
-              Select your Age Segment...
+              Select your Age Segment
             </option>
             <option value="Segment 1 (Age 8-11)">Segment 1 (Ages 8-11)</option>
             <option value="Segment 2 (Age 12-14)">
