@@ -28,6 +28,51 @@
   letter-spacing: -0.05em;
 }
 
+/* "Register as" plain text — must be visible in both light & dark */
+.volunteer-title-label {
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .volunteer-title-label {
+  color: #f1f0fa;
+}
+
+/* ─── Dark mode card / section overrides ─────────── */
+[data-theme="dark"] .volunteer-benefit-card {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.1);
+}
+
+[data-theme="dark"] .volunteer-benefit-name {
+  color: #f1f0fa;
+}
+
+[data-theme="dark"] .volunteer-role-card {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.1);
+}
+
+[data-theme="dark"] .volunteer-role-title {
+  color: #f1f0fa;
+}
+
+[data-theme="dark"] .volunteer-role-desc p {
+  color: rgba(241,240,250,0.75);
+}
+
+[data-theme="dark"] .volunteer-benefits-title {
+  color: #f1f0fa;
+}
+
+[data-theme="dark"] .volunteer-roles-header-title {
+  color: #f1f0fa;
+}
+
+[data-theme="dark"] .volunteer-subtitle {
+  color: rgba(241,240,250,0.7);
+}
+
+
 .volunteer-subtitle {
   font-family: "SF Pro Display", sans-serif;
   font-size: clamp(0.85rem, 1.5vw, 1.1rem);
