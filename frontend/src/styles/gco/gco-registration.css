@@ -1,0 +1,1489 @@
+/* ============================================================================
+ * GCO REGISTRATION & LOGIN PAGES — FULL LIGHT / DARK THEME SUPPORT
+ * ============================================================================
+ * Default = Light Mode  |  [data-theme="dark"] = Dark Mode
+ * ============================================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ─── Light-mode tokens ──────────────────────────────────────────────────── */
+:root {
+  --gco-reg-accent:         #e8856a;
+  --gco-reg-accent2:        #7c6ef0;
+
+  /* backgrounds */
+  --gco-reg-page-bg:        #f4f4ee;
+  --gco-reg-card-bg:        rgba(255, 255, 255, 0.9);
+  --gco-reg-card-border:    rgba(26, 24, 51, 0.08);
+  --gco-reg-card-shadow:    0 24px 64px rgba(26, 24, 51, 0.10), 0 0 0 1px rgba(26, 24, 51, 0.04) inset;
+  --gco-reg-card-top-line:  linear-gradient(90deg, transparent, rgba(232, 133, 106, 0.5), rgba(124, 110, 240, 0.4), transparent);
+
+  /* inputs */
+  --gco-reg-input-bg:       rgba(26, 24, 51, 0.04);
+  --gco-reg-input-bg-hover: rgba(26, 24, 51, 0.06);
+  --gco-reg-input-bg-focus: rgba(232, 133, 106, 0.05);
+  --gco-reg-input-border:   rgba(26, 24, 51, 0.12);
+  --gco-reg-input-border-hover: rgba(232, 133, 106, 0.3);
+  --gco-reg-input-border-focus: rgba(232, 133, 106, 0.55);
+  --gco-reg-input-shadow-focus: 0 0 0 3px rgba(232, 133, 106, 0.10), 0 2px 8px rgba(26, 24, 51, 0.06);
+  --gco-reg-select-arrow:   rgba(26, 24, 51, 0.45);
+  --gco-reg-select-opt-bg:  #ffffff;
+
+  /* text */
+  --gco-reg-text:           #1a1833;
+  --gco-reg-text-secondary: rgba(26, 24, 51, 0.65);
+  --gco-reg-text-muted:     rgba(26, 24, 51, 0.40);
+  --gco-reg-text-placeholder: rgba(26, 24, 51, 0.30);
+  --gco-reg-text-label:     rgba(26, 24, 51, 0.60);
+
+  /* check / radio items */
+  --gco-reg-check-bg:       rgba(26, 24, 51, 0.03);
+  --gco-reg-check-border:   rgba(26, 24, 51, 0.10);
+  --gco-reg-check-hover-bg: rgba(232, 133, 106, 0.06);
+  --gco-reg-check-hover-border: rgba(232, 133, 106, 0.25);
+  --gco-reg-check-sel-bg:   rgba(232, 133, 106, 0.10);
+  --gco-reg-check-sel-border: rgba(232, 133, 106, 0.45);
+  --gco-reg-check-box-border: rgba(26, 24, 51, 0.18);
+  --gco-reg-check-label:    rgba(26, 24, 51, 0.60);
+  --gco-reg-check-sel-label: #c86040;
+
+  /* pill */
+  --gco-reg-pill-bg:        rgba(26, 24, 51, 0.04);
+  --gco-reg-pill-border:    rgba(26, 24, 51, 0.10);
+  --gco-reg-pill-hover-border: rgba(232, 133, 106, 0.35);
+  --gco-reg-pill-text:      rgba(26, 24, 51, 0.55);
+  --gco-reg-pill-sel-bg:    rgba(232, 133, 106, 0.12);
+  --gco-reg-pill-sel-border: #e8856a;
+  --gco-reg-pill-sel-text:  #c86040;
+
+  /* terms */
+  --gco-reg-terms-bg:       rgba(124, 110, 240, 0.05);
+  --gco-reg-terms-border:   rgba(124, 110, 240, 0.15);
+  --gco-reg-terms-hover-bg: rgba(124, 110, 240, 0.09);
+  --gco-reg-terms-hover-border: rgba(124, 110, 240, 0.25);
+  --gco-reg-terms-check-border: rgba(124, 110, 240, 0.4);
+  --gco-reg-terms-text:     rgba(26, 24, 51, 0.60);
+  --gco-reg-terms-link:     #7c6ef0;
+
+  /* upload */
+  --gco-reg-upload-bg:      rgba(26, 24, 51, 0.02);
+  --gco-reg-upload-border:  rgba(26, 24, 51, 0.10);
+  --gco-reg-upload-hover-border: rgba(232, 133, 106, 0.35);
+  --gco-reg-upload-hover-bg: rgba(232, 133, 106, 0.04);
+  --gco-reg-upload-text:    rgba(26, 24, 51, 0.45);
+  --gco-reg-upload-icon:    rgba(26, 24, 51, 0.30);
+
+  /* section divider */
+  --gco-reg-divider-color:  rgba(26, 24, 51, 0.08);
+
+  /* step */
+  --gco-reg-step-num-bg:    rgba(26, 24, 51, 0.04);
+  --gco-reg-step-num-border: rgba(26, 24, 51, 0.12);
+  --gco-reg-step-num-text:  rgba(26, 24, 51, 0.35);
+  --gco-reg-step-line-color: rgba(26, 24, 51, 0.10);
+
+  /* section header icon */
+  --gco-reg-icon-bg:        linear-gradient(135deg, rgba(232, 133, 106, 0.10), rgba(124, 110, 240, 0.10));
+  --gco-reg-icon-border:    rgba(232, 133, 106, 0.18);
+
+  /* summary rows */
+  --gco-reg-summary-bg:     rgba(26, 24, 51, 0.03);
+  --gco-reg-summary-border: rgba(26, 24, 51, 0.07);
+  --gco-reg-summary-label:  rgba(26, 24, 51, 0.40);
+
+  /* back btn */
+  --gco-reg-back-bg:        rgba(26, 24, 51, 0.05);
+  --gco-reg-back-border:    rgba(26, 24, 51, 0.10);
+  --gco-reg-back-text:      rgba(26, 24, 51, 0.65);
+  --gco-reg-back-hover-bg:  rgba(26, 24, 51, 0.09);
+  --gco-reg-back-hover-text: #1a1833;
+
+  /* social btns */
+  --gco-reg-social-bg:      rgba(26, 24, 51, 0.04);
+  --gco-reg-social-border:  rgba(26, 24, 51, 0.09);
+  --gco-reg-social-text:    rgba(26, 24, 51, 0.65);
+  --gco-reg-social-hover-bg: rgba(26, 24, 51, 0.08);
+  --gco-reg-social-hover-border: rgba(26, 24, 51, 0.15);
+  --gco-reg-social-hover-text: #1a1833;
+
+  /* login tab */
+  --gco-reg-tab-bg:         rgba(26, 24, 51, 0.04);
+  --gco-reg-tab-border:     rgba(26, 24, 51, 0.07);
+  --gco-reg-tab-text:       rgba(26, 24, 51, 0.40);
+  --gco-reg-tab-sel-bg:     rgba(232, 133, 106, 0.12);
+  --gco-reg-tab-sel-text:   #e8856a;
+
+  /* badge */
+  --gco-reg-badge-bg:       rgba(124, 110, 240, 0.08);
+  --gco-reg-badge-border:   rgba(124, 110, 240, 0.20);
+  --gco-reg-badge-text:     #5a4fd6;
+
+  /* page gradient orbs */
+  --gco-reg-orb1: rgba(124, 110, 240, 0.07);
+  --gco-reg-orb2: rgba(232, 133, 106, 0.06);
+  --gco-reg-orb3: rgba(56, 189, 248, 0.04);
+}
+
+/* ─── Dark-mode overrides ────────────────────────────────────────────────── */
+[data-theme="dark"] {
+  --gco-reg-page-bg:        #0f0e1a;
+  --gco-reg-card-bg:        rgba(16, 14, 32, 0.80);
+  --gco-reg-card-border:    rgba(255, 255, 255, 0.08);
+  --gco-reg-card-shadow:    0 40px 80px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+  --gco-reg-card-top-line:  linear-gradient(90deg, transparent, rgba(232, 133, 106, 0.45), rgba(124, 110, 240, 0.35), transparent);
+
+  --gco-reg-input-bg:       rgba(255, 255, 255, 0.05);
+  --gco-reg-input-bg-hover: rgba(255, 255, 255, 0.08);
+  --gco-reg-input-bg-focus: rgba(232, 133, 106, 0.05);
+  --gco-reg-input-border:   rgba(255, 255, 255, 0.08);
+  --gco-reg-input-border-hover: rgba(232, 133, 106, 0.22);
+  --gco-reg-input-border-focus: rgba(232, 133, 106, 0.50);
+  --gco-reg-input-shadow-focus: 0 0 0 3px rgba(232, 133, 106, 0.08), 0 2px 8px rgba(0, 0, 0, 0.2);
+  --gco-reg-select-arrow:   rgba(241, 240, 250, 0.40);
+  --gco-reg-select-opt-bg:  #1a1830;
+
+  --gco-reg-text:           #f1f0fa;
+  --gco-reg-text-secondary: rgba(241, 240, 250, 0.60);
+  --gco-reg-text-muted:     rgba(241, 240, 250, 0.35);
+  --gco-reg-text-placeholder: rgba(241, 240, 250, 0.25);
+  --gco-reg-text-label:     rgba(241, 240, 250, 0.60);
+
+  --gco-reg-check-bg:       rgba(255, 255, 255, 0.04);
+  --gco-reg-check-border:   rgba(255, 255, 255, 0.07);
+  --gco-reg-check-hover-bg: rgba(232, 133, 106, 0.07);
+  --gco-reg-check-hover-border: rgba(232, 133, 106, 0.20);
+  --gco-reg-check-sel-bg:   rgba(232, 133, 106, 0.12);
+  --gco-reg-check-sel-border: rgba(232, 133, 106, 0.40);
+  --gco-reg-check-box-border: rgba(255, 255, 255, 0.15);
+  --gco-reg-check-label:    rgba(241, 240, 250, 0.65);
+  --gco-reg-check-sel-label: #f5c3a8;
+
+  --gco-reg-pill-bg:        rgba(255, 255, 255, 0.04);
+  --gco-reg-pill-border:    rgba(255, 255, 255, 0.10);
+  --gco-reg-pill-hover-border: rgba(232, 133, 106, 0.30);
+  --gco-reg-pill-text:      rgba(241, 240, 250, 0.50);
+  --gco-reg-pill-sel-bg:    rgba(232, 133, 106, 0.15);
+  --gco-reg-pill-sel-border: #e8856a;
+  --gco-reg-pill-sel-text:  #f5c3a8;
+
+  --gco-reg-terms-bg:       rgba(124, 110, 240, 0.06);
+  --gco-reg-terms-border:   rgba(124, 110, 240, 0.15);
+  --gco-reg-terms-hover-bg: rgba(124, 110, 240, 0.10);
+  --gco-reg-terms-hover-border: rgba(124, 110, 240, 0.25);
+  --gco-reg-terms-check-border: rgba(124, 110, 240, 0.40);
+  --gco-reg-terms-text:     rgba(241, 240, 250, 0.55);
+  --gco-reg-terms-link:     #a09af0;
+
+  --gco-reg-upload-bg:      rgba(255, 255, 255, 0.02);
+  --gco-reg-upload-border:  rgba(255, 255, 255, 0.10);
+  --gco-reg-upload-hover-border: rgba(232, 133, 106, 0.35);
+  --gco-reg-upload-hover-bg: rgba(232, 133, 106, 0.04);
+  --gco-reg-upload-text:    rgba(241, 240, 250, 0.45);
+  --gco-reg-upload-icon:    rgba(241, 240, 250, 0.30);
+
+  --gco-reg-divider-color:  rgba(255, 255, 255, 0.07);
+
+  --gco-reg-step-num-bg:    rgba(255, 255, 255, 0.05);
+  --gco-reg-step-num-border: rgba(255, 255, 255, 0.10);
+  --gco-reg-step-num-text:  rgba(241, 240, 250, 0.40);
+  --gco-reg-step-line-color: rgba(255, 255, 255, 0.08);
+
+  --gco-reg-icon-bg:        linear-gradient(135deg, rgba(232, 133, 106, 0.15), rgba(124, 110, 240, 0.15));
+  --gco-reg-icon-border:    rgba(232, 133, 106, 0.20);
+
+  --gco-reg-summary-bg:     rgba(255, 255, 255, 0.03);
+  --gco-reg-summary-border: rgba(255, 255, 255, 0.07);
+  --gco-reg-summary-label:  rgba(241, 240, 250, 0.45);
+
+  --gco-reg-back-bg:        rgba(255, 255, 255, 0.06);
+  --gco-reg-back-border:    rgba(255, 255, 255, 0.10);
+  --gco-reg-back-text:      rgba(241, 240, 250, 0.70);
+  --gco-reg-back-hover-bg:  rgba(255, 255, 255, 0.10);
+  --gco-reg-back-hover-text: #f1f0fa;
+
+  --gco-reg-social-bg:      rgba(255, 255, 255, 0.05);
+  --gco-reg-social-border:  rgba(255, 255, 255, 0.08);
+  --gco-reg-social-text:    rgba(241, 240, 250, 0.70);
+  --gco-reg-social-hover-bg: rgba(255, 255, 255, 0.09);
+  --gco-reg-social-hover-border: rgba(255, 255, 255, 0.15);
+  --gco-reg-social-hover-text: #f1f0fa;
+
+  --gco-reg-tab-bg:         rgba(255, 255, 255, 0.04);
+  --gco-reg-tab-border:     rgba(255, 255, 255, 0.06);
+  --gco-reg-tab-text:       rgba(241, 240, 250, 0.40);
+  --gco-reg-tab-sel-bg:     rgba(232, 133, 106, 0.15);
+  --gco-reg-tab-sel-text:   #e8856a;
+
+  --gco-reg-badge-bg:       rgba(124, 110, 240, 0.12);
+  --gco-reg-badge-border:   rgba(124, 110, 240, 0.25);
+  --gco-reg-badge-text:     #a5a0f8;
+
+  --gco-reg-orb1: rgba(124, 110, 240, 0.12);
+  --gco-reg-orb2: rgba(232, 133, 106, 0.10);
+  --gco-reg-orb3: rgba(56, 189, 248, 0.06);
+}
+
+/* ─── Page Wrapper ───────────────────────────────────────────────────────── */
+.gco-reg-page {
+  min-height: 100vh;
+  width: 100%;
+  background: var(--gco-reg-page-bg);
+  position: relative;
+  overflow-x: hidden;
+  font-family: 'Inter', 'Outfit', sans-serif;
+  padding-top: 100px;
+  padding-bottom: 80px;
+  transition: background 0.3s ease;
+}
+
+.gco-reg-page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 900px 600px at 15% 20%, var(--gco-reg-orb1) 0%, transparent 70%),
+    radial-gradient(ellipse 700px 500px at 85% 80%, var(--gco-reg-orb2) 0%, transparent 65%),
+    radial-gradient(ellipse 500px 400px at 50% 50%, var(--gco-reg-orb3) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+  transition: background 0.3s ease;
+}
+
+.gco-reg-page::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle 200px at 10% 70%, var(--gco-reg-orb2) 0%, transparent 70%),
+    radial-gradient(circle 300px at 90% 20%, var(--gco-reg-orb1) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  animation: gco-float-orbs 8s ease-in-out infinite alternate;
+}
+
+@keyframes gco-float-orbs {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.08) translate(10px, -10px); }
+}
+
+/* ─── Main Content ───────────────────────────────────────────────────────── */
+.gco-reg-content {
+  position: relative;
+  z-index: 1;
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* ─── Page Header ────────────────────────────────────────────────────────── */
+.gco-reg-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.gco-reg-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gco-reg-badge-bg);
+  border: 1px solid var(--gco-reg-badge-border);
+  border-radius: 100px;
+  padding: 6px 16px;
+  margin-bottom: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gco-reg-badge-text);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.gco-reg-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #7c6ef0;
+  animation: gco-pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes gco-pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.7); }
+}
+
+.gco-reg-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  color: var(--gco-reg-text);
+  margin: 0 0 12px;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  transition: color 0.3s ease;
+}
+
+.gco-reg-title span {
+  background: linear-gradient(135deg, #e8856a 0%, #f5a87a 50%, #7c6ef0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gco-reg-subtitle {
+  color: var(--gco-reg-text-muted);
+  font-size: 1rem;
+  max-width: 480px;
+  margin: 0 auto;
+  line-height: 1.6;
+  transition: color 0.3s ease;
+}
+
+/* ─── Progress Steps ─────────────────────────────────────────────────────── */
+.gco-reg-steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 40px;
+}
+
+.gco-reg-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.gco-reg-step-num {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  border: 2px solid var(--gco-reg-step-num-border);
+  background: var(--gco-reg-step-num-bg);
+  color: var(--gco-reg-step-num-text);
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.gco-reg-step.active .gco-reg-step-num {
+  background: linear-gradient(135deg, #e8856a, #d97459);
+  border-color: #e8856a;
+  color: #fff;
+  box-shadow: 0 0 20px rgba(232, 133, 106, 0.35);
+}
+
+.gco-reg-step.done .gco-reg-step-num {
+  background: linear-gradient(135deg, #7c6ef0, #6055d6);
+  border-color: #7c6ef0;
+  color: #fff;
+}
+
+.gco-reg-step-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gco-reg-text-muted);
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
+
+.gco-reg-step.active .gco-reg-step-label { color: #e8856a; }
+.gco-reg-step.done .gco-reg-step-label { color: #7c6ef0; }
+
+.gco-reg-step-line {
+  width: 40px;
+  height: 2px;
+  background: var(--gco-reg-step-line-color);
+  margin: 0 6px;
+  flex-shrink: 0;
+  transition: background 0.3s ease;
+}
+
+.gco-reg-step-line.done {
+  background: linear-gradient(90deg, #7c6ef0, #e8856a);
+}
+
+/* ─── Card ───────────────────────────────────────────────────────────────── */
+.gco-reg-card {
+  background: var(--gco-reg-card-bg);
+  border: 1px solid var(--gco-reg-card-border);
+  border-radius: 24px;
+  padding: 40px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: var(--gco-reg-card-shadow);
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gco-reg-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: var(--gco-reg-card-top-line);
+  transition: background 0.3s ease;
+}
+
+/* ─── Section Header ─────────────────────────────────────────────────────── */
+.gco-reg-section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--gco-reg-divider-color);
+  transition: border-color 0.3s ease;
+}
+
+.gco-reg-section-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+  background: var(--gco-reg-icon-bg);
+  border: 1px solid var(--gco-reg-icon-border);
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.gco-reg-section-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--gco-reg-text);
+  margin: 0 0 2px;
+  transition: color 0.3s ease;
+}
+
+.gco-reg-section-desc {
+  font-size: 13px;
+  color: var(--gco-reg-text-muted);
+  margin: 0;
+  transition: color 0.3s ease;
+}
+
+/* ─── Form Groups ────────────────────────────────────────────────────────── */
+.gco-reg-form-section {
+  margin-bottom: 36px;
+}
+
+.gco-reg-form-section-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--gco-reg-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.3s ease;
+}
+
+.gco-reg-form-section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--gco-reg-divider-color);
+  transition: background 0.3s ease;
+}
+
+.gco-reg-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.gco-reg-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+}
+
+.gco-reg-full { grid-column: 1 / -1; }
+
+/* ─── Input Fields ───────────────────────────────────────────────────────── */
+.gco-reg-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.gco-reg-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gco-reg-text-label);
+  letter-spacing: 0.02em;
+  transition: color 0.3s ease;
+}
+
+.gco-reg-label .required { color: #e8856a; margin-left: 2px; }
+
+.gco-reg-input,
+.gco-reg-select,
+.gco-reg-textarea {
+  width: 100%;
+  background: var(--gco-reg-input-bg);
+  border: 1.5px solid var(--gco-reg-input-border);
+  border-radius: 12px;
+  padding: 13px 16px;
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--gco-reg-text);
+  outline: none;
+  transition: all 0.25s ease;
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+}
+
+.gco-reg-input::placeholder,
+.gco-reg-textarea::placeholder {
+  color: var(--gco-reg-text-placeholder);
+}
+
+.gco-reg-input:hover,
+.gco-reg-select:hover,
+.gco-reg-textarea:hover {
+  border-color: var(--gco-reg-input-border-hover);
+  background: var(--gco-reg-input-bg-hover);
+}
+
+.gco-reg-input:focus,
+.gco-reg-select:focus,
+.gco-reg-textarea:focus {
+  border-color: var(--gco-reg-input-border-focus);
+  background: var(--gco-reg-input-bg-focus);
+  box-shadow: var(--gco-reg-input-shadow-focus);
+}
+
+.gco-reg-select {
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='rgba(100,97,120,0.6)' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 12px;
+  padding-right: 36px;
+}
+
+[data-theme="dark"] .gco-reg-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='rgba(200,198,220,0.5)' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+}
+
+.gco-reg-select option {
+  background: var(--gco-reg-select-opt-bg);
+  color: var(--gco-reg-text);
+}
+
+.gco-reg-textarea {
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.5;
+}
+
+/* Input with icon */
+.gco-reg-input-wrap { position: relative; }
+.gco-reg-input-wrap .gco-reg-input { padding-left: 44px; }
+
+.gco-reg-input-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gco-reg-text-muted);
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  transition: color 0.3s ease;
+}
+
+.gco-reg-input-wrap .gco-reg-pw-toggle {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--gco-reg-text-muted);
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+}
+
+.gco-reg-input-wrap .gco-reg-pw-toggle:hover { color: #e8856a; }
+
+/* ─── Checkbox Items ─────────────────────────────────────────────────────── */
+.gco-reg-check-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.gco-reg-check-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--gco-reg-check-bg);
+  border: 1.5px solid var(--gco-reg-check-border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.gco-reg-check-item:hover {
+  background: var(--gco-reg-check-hover-bg);
+  border-color: var(--gco-reg-check-hover-border);
+}
+
+.gco-reg-check-item.selected {
+  background: var(--gco-reg-check-sel-bg);
+  border-color: var(--gco-reg-check-sel-border);
+}
+
+.gco-reg-check-box {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  border: 1.5px solid var(--gco-reg-check-box-border);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.gco-reg-check-item.selected .gco-reg-check-box {
+  background: #e8856a;
+  border-color: #e8856a;
+  box-shadow: 0 0 10px rgba(232, 133, 106, 0.35);
+}
+
+.gco-reg-check-box svg { opacity: 0; transition: opacity 0.15s; }
+.gco-reg-check-item.selected .gco-reg-check-box svg { opacity: 1; }
+
+.gco-reg-check-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gco-reg-check-label);
+  transition: color 0.2s;
+}
+
+.gco-reg-check-item.selected .gco-reg-check-label {
+  color: var(--gco-reg-check-sel-label);
+}
+
+/* ─── Radio Pills ────────────────────────────────────────────────────────── */
+.gco-reg-radio-group { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.gco-reg-radio-pill {
+  padding: 8px 18px;
+  border-radius: 100px;
+  border: 1.5px solid var(--gco-reg-pill-border);
+  background: var(--gco-reg-pill-bg);
+  color: var(--gco-reg-pill-text);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.gco-reg-radio-pill:hover {
+  border-color: var(--gco-reg-pill-hover-border);
+  color: var(--gco-reg-text-secondary);
+}
+
+.gco-reg-radio-pill.selected {
+  background: var(--gco-reg-pill-sel-bg);
+  border-color: var(--gco-reg-pill-sel-border);
+  color: var(--gco-reg-pill-sel-text);
+  box-shadow: 0 0 14px rgba(232, 133, 106, 0.18);
+}
+
+/* ─── File Upload ────────────────────────────────────────────────────────── */
+.gco-reg-upload {
+  border: 2px dashed var(--gco-reg-upload-border);
+  border-radius: 14px;
+  padding: 28px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: var(--gco-reg-upload-bg);
+}
+
+.gco-reg-upload:hover {
+  border-color: var(--gco-reg-upload-hover-border);
+  background: var(--gco-reg-upload-hover-bg);
+}
+
+.gco-reg-upload-icon { font-size: 28px; margin-bottom: 8px; }
+
+.gco-reg-upload p {
+  color: var(--gco-reg-upload-text);
+  font-size: 13px;
+  margin: 0;
+  transition: color 0.3s ease;
+}
+
+.gco-reg-upload span { color: #e8856a; font-weight: 600; }
+
+/* ─── Terms Checkbox ─────────────────────────────────────────────────────── */
+.gco-reg-terms {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  background: var(--gco-reg-terms-bg);
+  border: 1px solid var(--gco-reg-terms-border);
+  border-radius: 12px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+}
+
+.gco-reg-terms:hover {
+  background: var(--gco-reg-terms-hover-bg);
+  border-color: var(--gco-reg-terms-hover-border);
+}
+
+.gco-reg-terms-checkbox {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 2px solid var(--gco-reg-terms-check-border);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+  transition: all 0.2s ease;
+}
+
+.gco-reg-terms.checked .gco-reg-terms-checkbox {
+  background: #7c6ef0;
+  border-color: #7c6ef0;
+  box-shadow: 0 0 14px rgba(124, 110, 240, 0.35);
+}
+
+.gco-reg-terms-text {
+  font-size: 13px;
+  color: var(--gco-reg-terms-text);
+  line-height: 1.5;
+  transition: color 0.3s ease;
+}
+
+.gco-reg-terms-text a {
+  color: var(--gco-reg-terms-link);
+  font-weight: 600;
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+/* ─── Submit Button ──────────────────────────────────────────────────────── */
+.gco-reg-submit {
+  width: 100%;
+  padding: 16px 32px;
+  background: linear-gradient(135deg, #e8856a 0%, #d97459 50%, #c86040 100%);
+  border: none;
+  border-radius: 14px;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: 'Outfit', sans-serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  letter-spacing: 0.02em;
+  margin-top: 8px;
+  box-shadow: 0 8px 32px rgba(232, 133, 106, 0.28);
+}
+
+.gco-reg-submit::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gco-reg-submit:hover { transform: translateY(-2px); box-shadow: 0 16px 48px rgba(232, 133, 106, 0.40); }
+.gco-reg-submit:hover::before { opacity: 1; }
+.gco-reg-submit:active { transform: translateY(0); }
+.gco-reg-submit:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+/* Back / secondary button */
+.gco-reg-back-btn {
+  padding: 14px 24px;
+  background: var(--gco-reg-back-bg);
+  border: 1.5px solid var(--gco-reg-back-border);
+  border-radius: 14px;
+  color: var(--gco-reg-back-text);
+  font-size: 15px;
+  font-weight: 600;
+  font-family: 'Outfit', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.gco-reg-back-btn:hover {
+  background: var(--gco-reg-back-hover-bg);
+  color: var(--gco-reg-back-hover-text);
+}
+
+.gco-reg-btn-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.gco-reg-btn-row .gco-reg-submit { flex: 1; margin-top: 0; }
+
+/* ─── Login Redirect ─────────────────────────────────────────────────────── */
+.gco-reg-login-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: var(--gco-reg-text-muted);
+  transition: color 0.3s ease;
+}
+
+.gco-reg-login-link a,
+.gco-reg-login-link button {
+  background: none;
+  border: none;
+  color: #e8856a;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 14px;
+  text-decoration: none;
+  transition: color 0.2s;
+  padding: 0;
+}
+
+.gco-reg-login-link a:hover,
+.gco-reg-login-link button:hover { color: #d97459; text-decoration: underline; }
+
+/* ─── Divider ────────────────────────────────────────────────────────────── */
+.gco-reg-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.gco-reg-divider span {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gco-reg-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  flex-shrink: 0;
+  transition: color 0.3s ease;
+}
+
+.gco-reg-divider::before,
+.gco-reg-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--gco-reg-divider-color);
+  transition: background 0.3s ease;
+}
+
+/* ─── Social Buttons ─────────────────────────────────────────────────────── */
+.gco-reg-social-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.gco-reg-social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 16px;
+  background: var(--gco-reg-social-bg);
+  border: 1.5px solid var(--gco-reg-social-border);
+  border-radius: 12px;
+  color: var(--gco-reg-social-text);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Inter', sans-serif;
+}
+
+.gco-reg-social-btn:hover {
+  background: var(--gco-reg-social-hover-bg);
+  border-color: var(--gco-reg-social-hover-border);
+  color: var(--gco-reg-social-hover-text);
+}
+
+/* ─── Login Page Specific ────────────────────────────────────────────────── */
+.gco-login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--gco-reg-page-bg);
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+  transition: background 0.3s ease;
+}
+
+.gco-login-page::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 900px 600px at 20% 30%, var(--gco-reg-orb1) 0%, transparent 65%),
+    radial-gradient(ellipse 700px 500px at 80% 70%, var(--gco-reg-orb2) 0%, transparent 60%),
+    radial-gradient(ellipse 400px 400px at 50% 50%, var(--gco-reg-orb3) 0%, transparent 60%);
+  pointer-events: none;
+  transition: background 0.3s ease;
+}
+
+.gco-login-container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 440px;
+}
+
+.gco-login-logo-area {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.gco-login-logo-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
+  background: var(--gco-reg-icon-bg);
+  border: 1px solid var(--gco-reg-icon-border);
+  margin-bottom: 16px;
+  font-size: 28px;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.gco-login-logo-title {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--gco-reg-text);
+  margin: 0 0 6px;
+  transition: color 0.3s ease;
+}
+
+.gco-login-logo-sub {
+  font-size: 13px;
+  color: var(--gco-reg-text-muted);
+  transition: color 0.3s ease;
+}
+
+.gco-login-card {
+  background: var(--gco-reg-card-bg);
+  border: 1px solid var(--gco-reg-card-border);
+  border-radius: 24px;
+  padding: 36px;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: var(--gco-reg-card-shadow);
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gco-login-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: var(--gco-reg-card-top-line);
+  transition: background 0.3s ease;
+}
+
+.gco-login-tab-row {
+  display: flex;
+  gap: 4px;
+  background: var(--gco-reg-tab-bg);
+  border: 1px solid var(--gco-reg-tab-border);
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 28px;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.gco-login-tab {
+  flex: 1;
+  padding: 10px 0;
+  background: none;
+  border: none;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  color: var(--gco-reg-tab-text);
+  transition: all 0.25s ease;
+}
+
+.gco-login-tab.active {
+  background: var(--gco-reg-tab-sel-bg);
+  color: var(--gco-reg-tab-sel-text);
+  box-shadow: 0 0 20px rgba(232, 133, 106, 0.12);
+}
+
+.gco-login-heading {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--gco-reg-text);
+  margin: 0 0 6px;
+  transition: color 0.3s ease;
+}
+
+.gco-login-desc {
+  font-size: 13px;
+  color: var(--gco-reg-text-muted);
+  margin: 0 0 24px;
+  line-height: 1.5;
+  transition: color 0.3s ease;
+}
+
+.gco-login-forgot-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: -4px;
+  margin-bottom: 20px;
+}
+
+.gco-login-remember {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.gco-login-remember input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #e8856a;
+  cursor: pointer;
+}
+
+.gco-login-remember span {
+  font-size: 13px;
+  color: var(--gco-reg-text-secondary);
+  transition: color 0.3s ease;
+}
+
+.gco-login-forgot {
+  background: none;
+  border: none;
+  color: #e8856a;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s;
+  padding: 0;
+}
+
+.gco-login-forgot:hover { color: #d97459; }
+
+/* ─── Floating Decorations ───────────────────────────────────────────────── */
+.gco-reg-floater {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.gco-reg-floater-1 {
+  width: 300px; height: 300px;
+  top: -100px; right: -100px;
+  background: radial-gradient(circle, var(--gco-reg-orb1) 0%, transparent 70%);
+  animation: gco-float1 12s ease-in-out infinite;
+}
+
+.gco-reg-floater-2 {
+  width: 200px; height: 200px;
+  bottom: 100px; left: -50px;
+  background: radial-gradient(circle, var(--gco-reg-orb2) 0%, transparent 70%);
+  animation: gco-float1 15s ease-in-out infinite reverse;
+}
+
+@keyframes gco-float1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33% { transform: translate(20px, -15px) scale(1.05); }
+  66% { transform: translate(-10px, 10px) scale(0.98); }
+}
+
+/* ─── Success State ──────────────────────────────────────────────────────── */
+.gco-reg-success {
+  text-align: center;
+  padding: 60px 40px;
+}
+
+.gco-reg-success-icon {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: var(--gco-reg-icon-bg);
+  border: 2px solid var(--gco-reg-icon-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  margin: 0 auto 24px;
+  box-shadow: 0 0 40px rgba(232, 133, 106, 0.18);
+  transition: background 0.3s ease;
+}
+
+.gco-reg-success h2 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--gco-reg-text);
+  margin: 0 0 10px;
+  transition: color 0.3s ease;
+}
+
+.gco-reg-success p {
+  color: var(--gco-reg-text-muted);
+  font-size: 14px;
+  line-height: 1.6;
+  max-width: 340px;
+  margin: 0 auto 28px;
+  transition: color 0.3s ease;
+}
+
+/* ─── Responsive ─────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .gco-reg-content { padding: 0 16px; }
+  .gco-reg-card { padding: 24px 20px; border-radius: 20px; }
+  .gco-reg-grid { grid-template-columns: 1fr; }
+  .gco-reg-grid-3 { grid-template-columns: 1fr; }
+  .gco-reg-social-row { grid-template-columns: 1fr; }
+  .gco-reg-step-label { display: none; }
+  .gco-reg-step-line { width: 24px; }
+}
+
+@media (max-width: 480px) {
+  .gco-reg-title { font-size: 1.7rem; }
+  .gco-login-card { padding: 24px 20px; border-radius: 20px; }
+}
+
+/* ============================================================================
+ * GCO INFO / LANDING PAGES  (Volunteer · Student · School)
+ * ============================================================================ */
+
+/* ─── Page wrapper ─────────────────────────────────────────────────────────── */
+.gco-info-page {
+  min-height: 100vh;
+  background: var(--gco-reg-page-bg);
+  font-family: 'Outfit', 'Inter', sans-serif;
+  color: var(--gco-reg-text);
+  position: relative;
+  overflow: hidden;
+  padding-top: 90px;
+}
+
+/* ─── Decorative blobs ─────────────────────────────────────────────────────── */
+.gco-info-blob {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+.gco-info-blob-1 {
+  width: 520px; height: 520px;
+  top: -140px; right: -140px;
+  background: radial-gradient(circle, rgba(232,133,106,0.13) 0%, transparent 70%);
+}
+.gco-info-blob-2 {
+  width: 420px; height: 420px;
+  bottom: 80px; left: -120px;
+  background: radial-gradient(circle, rgba(124,110,240,0.11) 0%, transparent 70%);
+}
+
+/* ─── Hero ─────────────────────────────────────────────────────────────────── */
+.gco-info-hero {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 64px 24px 48px;
+}
+.gco-info-hero-inner {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* ─── Title ────────────────────────────────────────────────────────────────── */
+.gco-info-title {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 800;
+  color: var(--gco-reg-text);
+  margin: 0 0 12px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+.gco-info-title-accent { color: #e8856a; }
+
+/* ─── Accent bar ───────────────────────────────────────────────────────────── */
+.gco-info-accent-bar {
+  width: 56px;
+  height: 4px;
+  border-radius: 4px;
+  background: #e8856a;
+  margin: 0 auto 24px;
+}
+
+/* ─── Subtitle ─────────────────────────────────────────────────────────────── */
+.gco-info-subtitle {
+  font-size: clamp(0.92rem, 2vw, 1.08rem);
+  color: var(--gco-reg-text-secondary);
+  line-height: 1.75;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+/* ─── Section wrapper ──────────────────────────────────────────────────────── */
+.gco-info-section {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+}
+.gco-info-section--categories {
+  max-width: 780px;
+}
+
+/* ─── Section title ────────────────────────────────────────────────────────── */
+.gco-info-section-title {
+  font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+  font-weight: 800;
+  color: var(--gco-reg-text);
+  text-align: center;
+  margin: 0 0 8px;
+  letter-spacing: -0.015em;
+}
+
+/* ─── Section divider ──────────────────────────────────────────────────────── */
+.gco-info-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+.gco-info-divider-line {
+  display: block;
+  width: 48px;
+  height: 2px;
+  background: var(--gco-reg-text-muted);
+  border-radius: 2px;
+  opacity: 0.45;
+}
+.gco-info-divider-dot {
+  display: block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #e8856a;
+}
+
+/* ─── CTA button ───────────────────────────────────────────────────────────── */
+.gco-info-cta-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+.gco-info-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  border-radius: 100px;
+  border: none;
+  background: #e8856a;
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 24px rgba(232,133,106,0.35);
+  transition: box-shadow 0.3s ease, background 0.2s ease;
+  letter-spacing: 0.01em;
+}
+.gco-info-cta-btn:hover {
+  background: #d4734e;
+  box-shadow: 0 8px 32px rgba(232,133,106,0.45);
+}
+
+/* ─── Gains grid ───────────────────────────────────────────────────────────── */
+.gco-info-gains-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.gco-info-gains-grid--wide {
+  grid-template-columns: repeat(4, 1fr);
+}
+@media (max-width: 900px) {
+  .gco-info-gains-grid,
+  .gco-info-gains-grid--wide { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 520px) {
+  .gco-info-gains-grid,
+  .gco-info-gains-grid--wide { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+}
+
+/* ─── Gain card ────────────────────────────────────────────────────────────── */
+.gco-info-gain-card {
+  background: var(--gco-reg-card-bg);
+  border: 1px solid var(--gco-reg-card-border);
+  border-radius: 16px;
+  padding: 28px 20px 22px;
+  text-align: center;
+  cursor: default;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.gco-info-gain-card--desc {
+  padding: 28px 20px 24px;
+}
+
+/* ─── Gain icon ────────────────────────────────────────────────────────────── */
+.gco-info-gain-icon {
+  font-size: 2rem;
+  line-height: 1;
+  margin-bottom: 12px;
+  display: block;
+}
+.gco-info-gain-icon--lg { font-size: 2.3rem; }
+
+/* ─── Gain label ───────────────────────────────────────────────────────────── */
+.gco-info-gain-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--gco-reg-text);
+  margin: 0 0 6px;
+  line-height: 1.35;
+}
+
+/* ─── Gain desc ────────────────────────────────────────────────────────────── */
+.gco-info-gain-desc {
+  font-size: 0.77rem;
+  color: var(--gco-reg-text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ─── Gain badge ───────────────────────────────────────────────────────────── */
+.gco-info-gain-badge {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: rgba(232,133,106,0.18);
+  color: #c86040;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+/* ─── Category rows ────────────────────────────────────────────────────────── */
+.gco-info-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.gco-info-cat-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--gco-reg-card-bg);
+  border: 1px solid var(--gco-reg-card-border);
+  border-radius: 14px;
+  padding: 20px 24px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  user-select: none;
+}
+.gco-info-cat-row:hover,
+.gco-info-cat-row--open {
+  border-color: rgba(232,133,106,0.4);
+  box-shadow: 0 4px 20px rgba(232,133,106,0.12);
+}
+.gco-info-cat-row--open .gco-info-cat-label {
+  color: #e8856a;
+}
+.gco-info-cat-num {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--gco-reg-text-secondary);
+  min-width: 24px;
+}
+.gco-info-cat-label {
+  flex: 1;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--gco-reg-text);
+  transition: color 0.2s ease;
+}
+.gco-info-cat-chevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--gco-reg-input-bg);
+  color: var(--gco-reg-text-secondary);
+  flex-shrink: 0;
+}
+
+/* ─── Dark mode overrides ──────────────────────────────────────────────────── */
+[data-theme="dark"] .gco-info-page {
+  background: var(--gco-reg-page-bg);
+}
+[data-theme="dark"] .gco-info-gain-card,
+[data-theme="dark"] .gco-info-cat-row {
+  background: var(--gco-reg-card-bg);
+  border-color: var(--gco-reg-card-border);
+}
+
+/* ─── Responsive tweaks ────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .gco-info-hero { padding: 48px 20px 32px; }
+  .gco-info-section { padding: 0 16px 60px; }
+  .gco-info-cat-label { font-size: 0.9rem; }
+}
+@media (max-width: 480px) {
+  .gco-info-title { font-size: 1.8rem; }
+  .gco-info-cta-btn { padding: 12px 24px; font-size: 0.95rem; }
+}

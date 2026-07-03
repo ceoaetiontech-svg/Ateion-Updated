@@ -19,6 +19,13 @@ const PsychometricAssessmentPage = lazy(() => import("../pages/PsychometricAsses
 const NotFoundPage = lazy(() => import("../pages/NotFoundPage"));
 const RegisterPage = lazy(() => import("../pages/RegisterPage"));
 const VolunteerRegistrationPage = lazy(() => import("../pages/VolunteerRegistrationPage"));
+const GCOLoginPage = lazy(() => import("../pages/GCOLoginPage"));
+const GCORegisterStudentPage = lazy(() => import("../pages/GCORegisterStudentPage"));
+const GCORegisterSchoolPage = lazy(() => import("../pages/GCORegisterSchoolPage"));
+const GCORegisterVolunteerPage = lazy(() => import("../pages/GCORegisterVolunteerPage"));
+const GCOVolunteerInfoPage = lazy(() => import("../pages/GCOVolunteerInfoPage"));
+const GCOStudentInfoPage = lazy(() => import("../pages/GCOStudentInfoPage"));
+const GCOSchoolInfoPage = lazy(() => import("../pages/GCOSchoolInfoPage"));
 const LoginPage = lazy(() => import("../pages/LoginPage"));
 const PoliciesPage = lazy(() => import("../pages/PoliciesPage"));
 const PolicyDetailPage = lazy(() => import("../pages/PolicyDetailPage"));
@@ -55,6 +62,13 @@ function AnimatedRoutes() {
                 <Route path="/gco" element={<PageTransition><GCOPage /></PageTransition>} />
                 <Route path="/contact" element={<PageTransition><ContactPage /></PageTransition>} />
                 <Route path="/register-volunteer" element={<PageTransition><VolunteerRegistrationPage /></PageTransition>} />
+                <Route path="/gco/login" element={<PageTransition><GCOLoginPage /></PageTransition>} />
+                <Route path="/gco/register-student" element={<PageTransition><GCORegisterStudentPage /></PageTransition>} />
+                <Route path="/gco/register-school" element={<PageTransition><GCORegisterSchoolPage /></PageTransition>} />
+                <Route path="/gco/register-volunteer" element={<PageTransition><GCORegisterVolunteerPage /></PageTransition>} />
+                <Route path="/gco/volunteer" element={<PageTransition><GCOVolunteerInfoPage /></PageTransition>} />
+                <Route path="/gco/student" element={<PageTransition><GCOStudentInfoPage /></PageTransition>} />
+                <Route path="/gco/school" element={<PageTransition><GCOSchoolInfoPage /></PageTransition>} />
                 <Route path="/course-preview/:moduleId" element={<PageTransition><CoursePreviewPage /></PageTransition>} />
                 <Route path="/playground/*" element={<PageTransition><ResourcesPage /></PageTransition>} />
                 <Route path="/certificate" element={<PageTransition><CertificatePage /></PageTransition>} />

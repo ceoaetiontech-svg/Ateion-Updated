@@ -314,29 +314,24 @@ export default function GCONavbar() {
   }, []);
 
   const navLinks = [
-    { label: "Register as Student", icon: GraduationCap, path: "register-student", highlight: false },
-    { label: "Register as School", icon: Building2, path: "register-school", highlight: false },
-    { label: "Register as Volunteer", icon: Heart, path: "register-volunteer", highlight: false },
+    { label: "Register as Student", icon: GraduationCap, path: "/gco/student", highlight: false },
+    { label: "Register as School", icon: Building2, path: "/gco/school", highlight: false },
+    { label: "Register as Volunteer", icon: Heart, path: "/gco/volunteer", highlight: false },
     { label: "Study Material", icon: BookOpen, path: "/playground", highlight: false },
     { label: "Upcoming Events", icon: Calendar, path: "/gco", highlight: true },
   ];
 
   const handleNavClick = (path: string) => {
-    if (path === "register-student") {
-      window.dispatchEvent(new CustomEvent("open-register"));
-    } else if (path === "register-school") {
-      navigate("/contact");
-    } else if (path === "register-volunteer") {
-      navigate("/register-volunteer");
-    } else {
-      navigate(path);
-    }
+    navigate(path);
   };
 
   const isActiveLink = (path: string) => {
-    if (path === "/gco") return location.pathname.startsWith("/gco") || location.pathname.startsWith("/policy");
+    if (path === "/gco") return location.pathname === "/gco";
     if (path === "/playground") return location.pathname.startsWith("/playground");
-    return false;
+    if (path === "/gco/student") return location.pathname === "/gco/student" || location.pathname === "/gco/register-student";
+    if (path === "/gco/school") return location.pathname === "/gco/school" || location.pathname === "/gco/register-school";
+    if (path === "/gco/volunteer") return location.pathname === "/gco/volunteer" || location.pathname === "/gco/register-volunteer";
+    return location.pathname === path;
   };
 
   return (
@@ -380,10 +375,10 @@ export default function GCONavbar() {
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              onClick={() => navigate("/contact")}
+              onClick={() => navigate("/gco/login")}
               className="gco-pill-cta"
             >
-              <span className={navTextClass}>Get Connected</span>
+              <span className={navTextClass}>Sign In</span>
             </motion.button>
           )}
         </div>
