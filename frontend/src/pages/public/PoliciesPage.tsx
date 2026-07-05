@@ -4,24 +4,24 @@ import { motion, AnimatePresence, useDragControls } from "framer-motion";
 import { useNavigate } from "react-router";
 import { X, ExternalLink, Globe, ArrowRight } from "lucide-react";
 import { Helmet } from "react-helmet-async";
-import SharedNavbar from "../app/components/SharedNavbar";
-import NavbarSpacer from "../app/components/NavbarSpacer";
-import SharedFooter from "../app/components/SharedFooter";
-import { allPolicies, regions, PolicyEntry } from "../data/policies";
+import SharedNavbar from "../../app/components/SharedNavbar";
+import NavbarSpacer from "../../app/components/NavbarSpacer";
+import SharedFooter from "../../app/components/SharedFooter";
+import { allPolicies, regions, PolicyEntry } from "../../data/policies";
 
 // ─── All 12 policy images ─────────────────────────────────────────────────
-import singaporeImg from "../assets/policies/singapore.webp";
-import finlandImg from "../assets/policies/finland.webp";
-import japanImg from "../assets/policies/japan.webp";
-import indiaImg from "../assets/gco/education-ministry-logo.webp";
-import uaeImg from "../assets/gco/logo-education.webp";
-import germanyImg from "../assets/policies/germany.webp";
-import usaImg from "../assets/policies/usa.webp";
-import ukImg from "../assets/policies/uk.webp";
-import southkoreaImg from "../assets/policies/southkorea.webp";
-import euImg from "../assets/policies/eu.webp";
-import unescoImg from "../assets/policies/unesco.webp";
-import wefImg from "../assets/policies/wef.webp";
+import singaporeImg from "../../assets/policies/singapore.webp";
+import finlandImg from "../../assets/policies/finland.webp";
+import japanImg from "../../assets/policies/japan.webp";
+import indiaImg from "../../assets/gco/education-ministry-logo.webp";
+import uaeImg from "../../assets/gco/logo-education.webp";
+import germanyImg from "../../assets/policies/germany.webp";
+import usaImg from "../../assets/policies/usa.webp";
+import ukImg from "../../assets/policies/uk.webp";
+import southkoreaImg from "../../assets/policies/southkorea.webp";
+import euImg from "../../assets/policies/eu.webp";
+import unescoImg from "../../assets/policies/unesco.webp";
+import wefImg from "../../assets/policies/wef.webp";
 
 const policyImages: Record<string, string> = {
   singapore: singaporeImg,

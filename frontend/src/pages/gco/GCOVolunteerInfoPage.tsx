@@ -3,18 +3,38 @@ import { useNavigate } from "react-router";
 import { Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight } from "lucide-react";
-import GCONavbar from "../app/components/GCONavbar";
-import SharedFooter from "../app/components/SharedFooter";
-import "../styles/gco/index.css";
-import "../styles/gco/fonts.css";
-import "../styles/gco/theme.css";
-import "../styles/gco/pill-navbar.css";
-import "../styles/gco/VolunteerRegistration.css";
+import GCONavbar from "../../app/components/GCONavbar";
+import SharedFooter from "../../app/components/SharedFooter";
+import "../../styles/gco/index.css";
+import "../../styles/gco/fonts.css";
+import "../../styles/gco/theme.css";
+import "../../styles/gco/pill-navbar.css";
+import "../../styles/gco/VolunteerRegistration.css";
 
+/* ── Colour theme ──────────────────────────────────────── */
+const THEME = {
+  primary:   "#F43F5E",          // rose
+  secondary: "#F59E0B",          // amber
+  gradient:  "linear-gradient(135deg, #F43F5E 0%, #F59E0B 100%)",
+  shadow:    "rgba(244,63,94,0.3)",
+};
+
+/* ── What You'll Gain data ─────────────────────────────── */
+const BENEFITS = [
+  { emoji: "⭐", name: "Premium Playground", value: "Worth ₹35k" },
+  { emoji: "🎓", name: "Internship Certificate", value: null },
+  { emoji: "💌", name: "Founder Recommendation", value: null },
+  { emoji: "🏆", name: "Awards", value: null },
+  { emoji: "👨‍🏫", name: "Mentorship", value: null },
+  { emoji: "🏅", name: "Achievement Badge", value: null },
+  { emoji: "🚀", name: "Future Opportunities", value: null },
+];
+
+/* ── Categories / Roles data ───────────────────────────── */
 const roles = [
   {
     title: "1. Outreach & Institutional Relations",
-    description: `Connect schools, colleges and institutions to GCO across the country.`,
+    description: "Connect schools, colleges and institutions to GCO across the country.",
     content: `
       <h4>Department Objective</h4>
       <p>Expand GCO's reach by building meaningful relationships with schools, colleges and educational institutions across India while representing the organisation professionally.</p>
@@ -56,7 +76,7 @@ const roles = [
         <h4>Don't Meet Every Qualification? Apply Anyway.</h4>
         <p>At Ateion, we believe capability extends beyond resumes. If you're passionate, eager to learn and believe you can contribute meaningfully, we encourage you to apply.</p>
         <p>Selection is based on your skills, initiative, mindset and potential, not solely on previous experience.</p>
-         <a class="role-apply-btn" href="https://docs.google.com/forms/d/e/1FAIpQLScz1rB6V7y_IA9S72189TrDzV-h8oXIxWyI-yW7FBt4k_2Yig/viewform" target="_blank" rel="noopener noreferrer">Apply Now</a>
+        <a class="role-apply-btn" href="mailto:volunteer@ateion.com?subject=Volunteer Application: Outreach &amp; Institutional Relations">Apply Now</a>
       </div>
     `,
   },
@@ -103,7 +123,7 @@ const roles = [
         <h4>Don't Meet Every Qualification? Apply Anyway.</h4>
         <p>Many successful partnerships begin with determination rather than experience. If you enjoy communicating, negotiating and building relationships, we'd love to hear from you.</p>
         <p>We recruit based on capability, professionalism and potential.</p>
-         <a class="role-apply-btn" href="https://docs.google.com/forms/d/e/1FAIpQLScz1rB6V7y_IA9S72189TrDzV-h8oXIxWyI-yW7FBt4k_2Yig/viewform" target="_blank" rel="noopener noreferrer">Apply Now</a>
+        <a class="role-apply-btn" href="mailto:volunteer@ateion.com?subject=Volunteer Application: Sponsorship Squad">Apply Now</a>
       </div>
     `,
   },
@@ -153,7 +173,7 @@ const roles = [
         <h4>Don't Meet Every Qualification? Apply Anyway.</h4>
         <p>Great marketers are built through experimentation and creativity. If you've created, designed or built something you're proud of, we'd like to see it.</p>
         <p>Your portfolio matters more than your job title.</p>
-         <a class="role-apply-btn" href="https://docs.google.com/forms/d/e/1FAIpQLScz1rB6V7y_IA9S72189TrDzV-h8oXIxWyI-yW7FBt4k_2Yig/viewform" target="_blank" rel="noopener noreferrer">Apply Now</a>
+        <a class="role-apply-btn" href="mailto:volunteer@ateion.com?subject=Volunteer Application: Marketing Team">Apply Now</a>
       </div>
     `,
   },
@@ -203,7 +223,7 @@ const roles = [
         <h4>Don't Meet Every Qualification? Apply Anyway.</h4>
         <p>You don't need to be an expert to think analytically. If you enjoy solving problems, asking questions and making decisions using evidence, we encourage you to apply.</p>
         <p>Potential is just as important as experience.</p>
-         <a class="role-apply-btn" href="https://docs.google.com/forms/d/e/1FAIpQLScz1rB6V7y_IA9S72189TrDzV-h8oXIxWyI-yW7FBt4k_2Yig/viewform" target="_blank" rel="noopener noreferrer">Apply Now</a>
+        <a class="role-apply-btn" href="mailto:volunteer@ateion.com?subject=Volunteer Application: Business Analysts">Apply Now</a>
       </div>
     `,
   },
@@ -252,7 +272,7 @@ const roles = [
         <h4>Don't Meet Every Qualification? Apply Anyway.</h4>
         <p>Leadership is demonstrated through ownership—not titles. If you're organised, dependable and enjoy helping teams succeed, we'd like to hear from you.</p>
         <p>We look for leaders with the willingness to learn and grow.</p>
-         <a class="role-apply-btn" href="https://docs.google.com/forms/d/e/1FAIpQLScz1rB6V7y_IA9S72189TrDzV-h8oXIxWyI-yW7FBt4k_2Yig/viewform" target="_blank" rel="noopener noreferrer">Apply Now</a>
+        <a class="role-apply-btn" href="mailto:volunteer@ateion.com?subject=Volunteer Application: Project Managers">Apply Now</a>
       </div>
     `,
   },
@@ -301,7 +321,7 @@ const roles = [
         <h4>Don't Meet Every Qualification? Apply Anyway.</h4>
         <p>Some of the best assessment designers are simply curious people who love asking better questions. If improving education excites you, we encourage you to apply.</p>
         <p>Capability begins with curiosity.</p>
-         <a class="role-apply-btn" href="https://docs.google.com/forms/d/e/1FAIpQLScz1rB6V7y_IA9S72189TrDzV-h8oXIxWyI-yW7FBt4k_2Yig/viewform" target="_blank" rel="noopener noreferrer">Apply Now</a>
+        <a class="role-apply-btn" href="mailto:volunteer@ateion.com?subject=Volunteer Application: Assessment Design Team">Apply Now</a>
       </div>
     `,
   },
@@ -352,29 +372,36 @@ const roles = [
         <h4>Don't Meet Every Qualification? Apply Anyway.</h4>
         <p>Some of the world's best developers are self-taught. If you enjoy building products, solving problems and continuously learning, don't hesitate to apply.</p>
         <p>We're looking for builders—not perfect resumes.</p>
-         <a class="role-apply-btn" href="https://docs.google.com/forms/d/e/1FAIpQLScz1rB6V7y_IA9S72189TrDzV-h8oXIxWyI-yW7FBt4k_2Yig/viewform" target="_blank" rel="noopener noreferrer">Apply Now</a>
+        <a class="role-apply-btn" href="mailto:volunteer@ateion.com?subject=Volunteer Application: Web Developers">Apply Now</a>
       </div>
     `,
   },
 ];
 
-function RoleCard({ title, description, content, isOpen, toggle }: { title: string; description: string; content: string; isOpen: boolean; toggle: () => void }) {
-  const answerId = `role-answer-${title.slice(0, 20).replace(/\s+/g, '-').toLowerCase()}`;
-  const buttonId = `role-button-${title.slice(0, 20).replace(/\s+/g, '-').toLowerCase()}`;
+/* ── Role accordion card ───────────────────────────────── */
+function RoleCard({
+  title,
+  description,
+  content,
+  isOpen,
+  toggle,
+}: {
+  title: string;
+  description: string;
+  content: string;
+  isOpen: boolean;
+  toggle: () => void;
+}) {
+  const answerId = `role-answer-${title.slice(0, 20).replace(/\s+/g, "-").toLowerCase()}`;
+  const buttonId = `role-button-${title.slice(0, 20).replace(/\s+/g, "-").toLowerCase()}`;
 
   return (
-    <motion.div
-      layout
-      className={`volunteer-role-card ${isOpen ? "volunteer-role-card-open" : ""}`}
-    >
+    <motion.div layout className={`volunteer-role-card ${isOpen ? "volunteer-role-card-open" : ""}`}>
       <motion.div
         className="volunteer-role-accent"
-        animate={{
-          background: isOpen ? "var(--color-accent)" : "var(--color-border-light)",
-        }}
+        animate={{ background: isOpen ? THEME.primary : "var(--color-border-light)" }}
         transition={{ duration: 0.3 }}
       />
-
       <button
         type="button"
         id={buttonId}
@@ -386,12 +413,14 @@ function RoleCard({ title, description, content, isOpen, toggle }: { title: stri
         <span className="volunteer-role-title">{title}</span>
         <motion.div
           className={`volunteer-role-arrow ${isOpen ? "volunteer-role-arrow-open" : ""}`}
-          animate={{
-            rotate: isOpen ? 90 : 0,
-          }}
+          animate={{ rotate: isOpen ? 90 : 0, background: isOpen ? THEME.primary : undefined }}
           transition={{ duration: 0.4, ease: [0.23, 1, 0.32, 1] }}
         >
-          <ChevronRight size={20} className={isOpen ? "text-white" : "text-[var(--color-text-primary)]"} strokeWidth={1.7} />
+          <ChevronRight
+            size={20}
+            className={isOpen ? "text-white" : "text-[var(--color-text-primary)]"}
+            strokeWidth={1.7}
+          />
         </motion.div>
       </button>
       <AnimatePresence initial={false}>
@@ -419,7 +448,8 @@ function RoleCard({ title, description, content, isOpen, toggle }: { title: stri
   );
 }
 
-const VolunteerRegistrationPage = () => {
+/* ── Page ──────────────────────────────────────────────── */
+export default function GCOVolunteerInfoPage() {
   const navigate = useNavigate();
   const [openStates, setOpenStates] = useState<boolean[]>(roles.map(() => false));
 
@@ -438,13 +468,18 @@ const VolunteerRegistrationPage = () => {
   return (
     <>
       <Helmet>
-        <title>Register as Volunteer | GCO - Ateion</title>
-        <meta name="description" content="Join the Global Capability Olympiad as a volunteer. Choose your role and contribute to India's first capability Olympiad." />
+        <title>Register as Volunteer | GCO – Ateion</title>
+        <meta
+          name="description"
+          content="Join the Global Capability Olympiad as a volunteer. Choose your role and contribute to India's first capability Olympiad."
+        />
       </Helmet>
       <GCONavbar />
+
       <div id="gco-root" className="ateion-metallic-bg min-h-screen w-full relative">
         <div id="gco-background-pattern" />
 
+        {/* ── Hero ── */}
         <section className="volunteer-hero">
           <div className="volunteer-hero-overlay">
             <motion.h1
@@ -452,29 +487,22 @@ const VolunteerRegistrationPage = () => {
               initial={{ opacity: 0, y: 50 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              style={{
-                fontFamily: "var(--font-display)",
-                background: "linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-accent) 100%)",
+            >
+              <span style={{ WebkitTextFillColor: "var(--color-text-primary)" }}>Register as </span>
+              <span style={{
+                background: THEME.gradient,
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
-              }}
-            >
-              Register as Volunteer
+              }}>Volunteer</span>
             </motion.h1>
 
             <motion.div
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
               transition={{ duration: 0.8, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-              style={{
-                width: 80,
-                height: 4,
-                borderRadius: 4,
-                background: "var(--color-accent)",
-                margin: "0 auto 24px",
-                transformOrigin: "center",
-              }}
+              style={{ width: 80, height: 4, borderRadius: 4, background: THEME.primary,
+                margin: "0 auto 24px", transformOrigin: "center" }}
             />
 
             <motion.p
@@ -483,63 +511,73 @@ const VolunteerRegistrationPage = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.15, ease: [0.23, 1, 0.32, 1] }}
             >
-              The Global Capability Olympiad (GCO) is assembling a multidisciplinary Founding Team to help build one of India's most ambitious education initiatives. Whether your strengths lie in strategy, technology, marketing, partnerships or operations, every department plays a vital role in bringing GCO to life.
+              The Global Capability Olympiad (GCO) is assembling a multidisciplinary Founding Team
+              to help build one of India's most ambitious education initiatives. Whether your
+              strengths lie in strategy, technology, marketing, partnerships or operations, every
+              department plays a vital role in bringing GCO to life.
             </motion.p>
-
-            <motion.div
-              className="volunteer-benefits"
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.35, ease: [0.23, 1, 0.32, 1] }}
-            >
-              <div className="volunteer-benefits-header">
-                <div className="volunteer-benefits-title" style={{
-                  background: "linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-accent) 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}>What You'll Gain</div>
-                <div className="volunteer-benefits-bar">
-                  <div className="volunteer-benefits-bar-line" />
-                  <div className="volunteer-benefits-bar-dot" />
-                  <div className="volunteer-benefits-bar-line" />
-                </div>
-              </div>
-              <div className="volunteer-benefits-grid">
-                <div className="volunteer-benefit-card">
-                  <span className="volunteer-benefit-emoji">⭐</span>
-                  <span className="volunteer-benefit-name">Premium Playground</span>
-                  <span className="volunteer-benefit-value">Worth ₹35k</span>
-                </div>
-                <div className="volunteer-benefit-card">
-                  <span className="volunteer-benefit-emoji">🎓</span>
-                  <span className="volunteer-benefit-name">Internship Certificate</span>
-                </div>
-                <div className="volunteer-benefit-card">
-                  <span className="volunteer-benefit-emoji">💌</span>
-                  <span className="volunteer-benefit-name">Founder Recommendation</span>
-                </div>
-                <div className="volunteer-benefit-card">
-                  <span className="volunteer-benefit-emoji">🏆</span>
-                  <span className="volunteer-benefit-name">Awards</span>
-                </div>
-                <div className="volunteer-benefit-card">
-                  <span className="volunteer-benefit-emoji">👨‍🏫</span>
-                  <span className="volunteer-benefit-name">Mentorship</span>
-                </div>
-                <div className="volunteer-benefit-card">
-                  <span className="volunteer-benefit-emoji">🥇</span>
-                  <span className="volunteer-benefit-name">Achievement Badge</span>
-                </div>
-                <div className="volunteer-benefit-card">
-                  <span className="volunteer-benefit-emoji">🚀</span>
-                  <span className="volunteer-benefit-name">Future Opportunities</span>
-                </div>
-              </div>
-            </motion.div>
           </div>
         </section>
 
+        {/* ── What You'll Gain ── */}
+        <section style={{ padding: "0 5% 20px", position: "relative", zIndex: 10 }}>
+          <div className="volunteer-benefits">
+            <div className="volunteer-benefits-header">
+              {/* CTA Button — above the title */}
+              <motion.button type="button"
+                initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }} transition={{ duration: 0.5, ease: "easeOut" }}
+                whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.97 }}
+                onClick={() => navigate("/gco/register-volunteer")}
+                style={{
+                  display: "inline-flex", alignItems: "center", gap: 8,
+                  padding: "13px 30px", borderRadius: 100, border: "none",
+                  background: THEME.gradient, color: "#fff",
+                  fontFamily: "var(--font-body)", fontSize: "0.95rem", fontWeight: 700,
+                  cursor: "pointer", boxShadow: `0 4px 24px ${THEME.shadow}`,
+                  marginBottom: 28,
+                }}>
+                Register as Volunteer
+                <ChevronRight size={17} />
+              </motion.button>
+
+              <motion.h2 className="volunteer-benefits-title"
+                initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }} transition={{ duration: 0.6, ease: "easeOut" }}>
+                What You'll{" "}
+                <span style={{ color: THEME.secondary }}>Gain</span>
+              </motion.h2>
+              <motion.div className="volunteer-benefits-bar"
+                initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}>
+                <div className="volunteer-benefits-bar-line" style={{ background: THEME.primary }} />
+                <div className="volunteer-benefits-bar-dot" style={{ background: THEME.secondary }} />
+                <div className="volunteer-benefits-bar-line" style={{ background: THEME.primary }} />
+              </motion.div>
+            </div>
+
+            <div className="volunteer-benefits-grid">
+              {BENEFITS.map((b, i) => (
+                <motion.div
+                  key={b.name}
+                  className="volunteer-benefit-card"
+                  initial={{ opacity: 0, y: 24 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.15 }}
+                  transition={{ duration: 0.5, delay: i * 0.07, ease: "easeOut" }}
+                >
+                  <div className="volunteer-benefit-emoji">{b.emoji}</div>
+                  <p className="volunteer-benefit-name">{b.name}</p>
+                  {b.value && (
+                    <span className="volunteer-benefit-value">{b.value}</span>
+                  )}
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── Categories ── */}
         <section className="volunteer-roles-section">
           <div className="volunteer-roles-header">
             <motion.h2
@@ -548,27 +586,18 @@ const VolunteerRegistrationPage = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, ease: "easeOut" }}
-              style={{
-                background: "linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-accent) 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}
             >
               Categories
             </motion.h2>
-            <motion.div
-              className="volunteer-roles-header-bar"
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-            >
-              <div className="volunteer-roles-header-bar-line" />
-              <div className="volunteer-roles-header-bar-dot" />
-              <div className="volunteer-roles-header-bar-line" />
+            <motion.div className="volunteer-roles-header-bar"
+              initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}>
+              <div className="volunteer-roles-header-bar-line" style={{ background: THEME.primary }} />
+              <div className="volunteer-roles-header-bar-dot" style={{ background: THEME.secondary }} />
+              <div className="volunteer-roles-header-bar-line" style={{ background: THEME.primary }} />
             </motion.div>
           </div>
+
           <div className="volunteer-roles-list">
             {roles.map((role, index) => (
               <motion.div
@@ -578,15 +607,20 @@ const VolunteerRegistrationPage = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.08, ease: "easeOut" }}
               >
-                <RoleCard title={role.title} description={role.description} content={role.content} isOpen={openStates[index]} toggle={() => toggle(index)} />
+                <RoleCard
+                  title={role.title}
+                  description={role.description}
+                  content={role.content}
+                  isOpen={openStates[index]}
+                  toggle={() => toggle(index)}
+                />
               </motion.div>
             ))}
           </div>
         </section>
       </div>
+
       <SharedFooter />
     </>
   );
-};
-
-export default VolunteerRegistrationPage;
+}

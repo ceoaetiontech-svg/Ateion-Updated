@@ -1,10 +1,10 @@
 import { Helmet } from "react-helmet-async";
-import SharedNavbar from "../app/components/SharedNavbar";
-import NavbarSpacer from "../app/components/NavbarSpacer";
-import SharedFooter from "../app/components/SharedFooter";
+import SharedNavbar from "../../app/components/SharedNavbar";
+import NavbarSpacer from "../../app/components/NavbarSpacer";
+import SharedFooter from "../../app/components/SharedFooter";
 
-import imgImage9 from "../assets/3aab4451afd875f66a83eb26e0ca2d6f58abce98.webp";
-import imgImage7 from "../assets/e985b07ea1f916546c05a06ca93558ef62ecc870.webp";
+import imgImage9 from "../../assets/3aab4451afd875f66a83eb26e0ca2d6f58abce98.webp";
+import imgImage7 from "../../assets/e985b07ea1f916546c05a06ca93558ef62ecc870.webp";
 
 export default function CertificatePage() {
   return (

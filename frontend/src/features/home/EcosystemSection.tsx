@@ -1,7 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
-import svgPaths from "../../pages/svg-paths";
+import svgPaths from "../../data/svg-paths";
 import bunnyPointing from "../../assets/bunny_pointing.png";
 
 function Tag({ text, className = "" }: { text: string; className?: string }) {

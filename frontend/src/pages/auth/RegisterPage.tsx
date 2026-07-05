@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../styles/register.css";
+import "../../styles/register.css";
 
 export default function RegisterPage({ closeRegister }: any) {
   // 1. Unified Form State

@@ -2,8 +2,8 @@ import { Helmet } from "react-helmet-async";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, Clock, Target, Sun, Moon } from "lucide-react";
-import { useTheme } from "../app/components/ThemeProvider";
-import SharedFooter from "../app/components/SharedFooter";
+import { useTheme } from "../../app/components/ThemeProvider";
+import SharedFooter from "../../app/components/SharedFooter";
 
 const questions = [
   {

@@ -6,13 +6,13 @@ import {
   User, Mail, Phone, Lock, Eye, EyeOff, Calendar, School, Globe,
   ChevronRight,
 } from "lucide-react";
-import GCONavbar from "../app/components/GCONavbar";
-import SharedFooter from "../app/components/SharedFooter";
-import "../styles/gco/index.css";
-import "../styles/gco/fonts.css";
-import "../styles/gco/theme.css";
-import "../styles/gco/pill-navbar.css";
-import "../styles/gco/gco-registration.css";
+import GCONavbar from "../../app/components/GCONavbar";
+import SharedFooter from "../../app/components/SharedFooter";
+import "../../styles/gco/index.css";
+import "../../styles/gco/fonts.css";
+import "../../styles/gco/theme.css";
+import "../../styles/gco/pill-navbar.css";
+import "../../styles/gco/gco-registration.css";
 
 const SUBJECTS = ["Mathematics", "Science", "AI & Technology", "Coding", "English", "Social Studies", "Commerce", "Arts"];
 const BOARDS = ["CBSE", "ICSE", "State Board", "IB", "IGCSE", "Other"];

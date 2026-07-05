@@ -3,13 +3,13 @@ import { useNavigate } from "react-router";
 import { Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mail, Lock, Eye, EyeOff, ArrowLeft } from "lucide-react";
-import GCONavbar from "../app/components/GCONavbar";
-import { getApiBaseUrl } from "../lib/apiClient";
-import "../styles/gco/index.css";
-import "../styles/gco/fonts.css";
-import "../styles/gco/theme.css";
-import "../styles/gco/pill-navbar.css";
-import "../styles/gco/gco-registration.css";
+import GCONavbar from "../../app/components/GCONavbar";
+import { getApiBaseUrl } from "../../lib/apiClient";
+import "../../styles/gco/index.css";
+import "../../styles/gco/fonts.css";
+import "../../styles/gco/theme.css";
+import "../../styles/gco/pill-navbar.css";
+import "../../styles/gco/gco-registration.css";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },

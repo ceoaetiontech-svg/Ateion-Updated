@@ -34,9 +34,9 @@ import {
   Moon,
 } from "lucide-react";
 
-import SharedNavbar from "../app/components/SharedNavbar";
-import NavbarSpacer from "../app/components/NavbarSpacer";
-import { useTheme } from "../app/components/ThemeProvider";
+import SharedNavbar from "../../app/components/SharedNavbar";
+import NavbarSpacer from "../../app/components/NavbarSpacer";
+import { useTheme } from "../../app/components/ThemeProvider";
 
 // Animation configs
 const containerVariants = {

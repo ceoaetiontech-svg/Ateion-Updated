@@ -6,13 +6,13 @@ import {
   Building2, Mail, Phone, Lock, Eye, EyeOff, Globe, MapPin,
   User, ChevronRight, Hash,
 } from "lucide-react";
-import GCONavbar from "../app/components/GCONavbar";
-import SharedFooter from "../app/components/SharedFooter";
-import "../styles/gco/index.css";
-import "../styles/gco/fonts.css";
-import "../styles/gco/theme.css";
-import "../styles/gco/pill-navbar.css";
-import "../styles/gco/gco-registration.css";
+import GCONavbar from "../../app/components/GCONavbar";
+import SharedFooter from "../../app/components/SharedFooter";
+import "../../styles/gco/index.css";
+import "../../styles/gco/fonts.css";
+import "../../styles/gco/theme.css";
+import "../../styles/gco/pill-navbar.css";
+import "../../styles/gco/gco-registration.css";
 
 const SCHOOL_TYPES = ["Government", "Private", "International", "Aided", "Central Government"];
 const SCHOOL_BOARDS = ["CBSE", "ICSE", "State Board", "IB", "IGCSE", "Cambridge", "Other"];

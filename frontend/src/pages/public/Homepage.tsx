@@ -16,16 +16,16 @@ import React, { useState, useEffect, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import { motion, animate, useInView, AnimatePresence } from "framer-motion";
 import { ChevronRight } from "lucide-react";
-import { useInterval } from "../app/components/hooks/use-interval";
-import HeroSliderHeader from "../app/components/HeroSliderHeader";
-import DotMap from "../components/DotMap";
-import SharedFooter from "../app/components/SharedFooter";
-import SharedNavbar from "../app/components/SharedNavbar";
+import { useInterval } from "../../app/components/hooks/use-interval";
+import HeroSliderHeader from "../../app/components/HeroSliderHeader";
+import DotMap from "../../components/DotMap";
+import SharedFooter from "../../app/components/SharedFooter";
+import SharedNavbar from "../../app/components/SharedNavbar";
 
 
-import HomePolicySection from "../features/home/HomePolicySection";
-import EcosystemSection from "../features/home/EcosystemSection";
-import bunnyMascot from "../assets/IMG_0989.png";
+import HomePolicySection from "../../features/home/HomePolicySection";
+import EcosystemSection from "../../features/home/EcosystemSection";
+import bunnyMascot from "../../assets/IMG_0989.png";
 
 /* ─────────────────────────────────────────────
    UTILITY COMPONENTS

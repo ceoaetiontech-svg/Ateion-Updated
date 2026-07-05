@@ -3,7 +3,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import jsPDF from "jspdf";
 import { Brain, ArrowRight, Download, CheckCircle2, ShieldCheck, Zap, Target, Lightbulb, Sun, Moon } from "lucide-react";
-import { useTheme } from "../app/components/ThemeProvider";
+import { useTheme } from "../../app/components/ThemeProvider";
 
 const scenarios = [
   "You are inside a spaceship and suddenly lose communication with Earth. What do you do?",

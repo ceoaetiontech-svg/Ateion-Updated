@@ -19,10 +19,10 @@ import {
   Trophy,
   Brain
 } from "lucide-react";
-import SharedNavbar from "../app/components/SharedNavbar";
-import NavbarSpacer from "../app/components/NavbarSpacer";
-import SharedFooter from "../app/components/SharedFooter";
-import { allPolicies, PolicyFramework } from "../data/policies";
+import SharedNavbar from "../../app/components/SharedNavbar";
+import NavbarSpacer from "../../app/components/NavbarSpacer";
+import SharedFooter from "../../app/components/SharedFooter";
+import { allPolicies, PolicyFramework } from "../../data/policies";
 
 // Helper to match icons based on framework tags
 const getFrameworkIcon = (tags: string[]) => {

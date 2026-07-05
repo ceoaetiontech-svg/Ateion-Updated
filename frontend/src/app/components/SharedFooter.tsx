@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import { motion } from "framer-motion";
-import svgPaths from "../../pages/svg-paths";
+import svgPaths from "../../data/svg-paths";
 import { Link } from "react-router";
 import logo from "../../assets/logo.webp";
 

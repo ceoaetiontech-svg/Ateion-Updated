@@ -4,12 +4,12 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Helmet } from "react-helmet-async";
 import { z } from "zod";
-import SharedNavbar from "../app/components/SharedNavbar";
-import NavbarSpacer from "../app/components/NavbarSpacer";
-import SharedFooter from "../app/components/SharedFooter";
-import { contactSchema } from "../lib/schemas";
+import SharedNavbar from "../../app/components/SharedNavbar";
+import NavbarSpacer from "../../app/components/NavbarSpacer";
+import SharedFooter from "../../app/components/SharedFooter";
+import { contactSchema } from "../../lib/schemas";
 import { Send, CheckCircle2, ArrowRight, MapPin, Quote } from "lucide-react";
-import "../styles/contact-styles.css";
+import "../../styles/contact-styles.css";
 import { useRef, useEffect } from "react";
 
 const extendedContactSchema = contactSchema.extend({

@@ -2,8 +2,8 @@ import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { RefreshCw, ChevronLeft, Play, ListVideo, Lock, Sparkles, Monitor, BookOpen } from "lucide-react";
-import VideoPlayer from "./playground/components/VideoPlayer";
-import { fetchPublicVideosByModule, type BackendVideo } from "../lib/videoApi";
+import VideoPlayer from "../playground/components/VideoPlayer";
+import { fetchPublicVideosByModule, type BackendVideo } from "../../lib/videoApi";
 
 export default function CoursePreviewPage() {
     const { moduleId } = useParams<{ moduleId: string }>();

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { getApiBaseUrl } from "../lib/apiClient";
-import "../styles/login.css";
+import { getApiBaseUrl } from "../../lib/apiClient";
+import "../../styles/login.css";
 
 export default function LoginPage({ closeLogin, initialTab }: any) {
   const [tab, setTab] = useState<"signin" | "signup">(initialTab || "signin");

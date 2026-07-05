@@ -34,9 +34,9 @@ import {
   Home,
 } from "lucide-react";
 
-import { useTheme } from "../app/components/ThemeProvider";
-import SharedNavbar from "../app/components/SharedNavbar";
-import NavbarSpacer from "../app/components/NavbarSpacer";
+import { useTheme } from "../../app/components/ThemeProvider";
+import SharedNavbar from "../../app/components/SharedNavbar";
+import NavbarSpacer from "../../app/components/NavbarSpacer";
 
 // Animation configs
 const containerVariants = {

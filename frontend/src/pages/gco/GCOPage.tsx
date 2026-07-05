@@ -2,20 +2,20 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
-import GCONavbar from "../app/components/GCONavbar";
-import SharedFooter from "../app/components/SharedFooter";
+import GCONavbar from "../../app/components/GCONavbar";
+import SharedFooter from "../../app/components/SharedFooter";
 
-import Slide from "../features/gco/Slide";
-import GCOComparison from "../features/gco/GCOComparison";
-import TimelineSection from "../features/gco/TimelineSection";
-import GCOQuestionSection from "../features/gco/GCOQuestionSection";
+import Slide from "../../features/gco/Slide";
+import GCOComparison from "../../features/gco/GCOComparison";
+import TimelineSection from "../../features/gco/TimelineSection";
+import GCOQuestionSection from "../../features/gco/GCOQuestionSection";
 
-import PolicyAlignmentSection from "../features/gco/PolicyAlignmentSection";
+import PolicyAlignmentSection from "../../features/gco/PolicyAlignmentSection";
 
-import "../styles/gco/index.css";
-import "../styles/gco/fonts.css";
-import "../styles/gco/theme.css";
-import "../styles/gco/pill-navbar.css";
+import "../../styles/gco/index.css";
+import "../../styles/gco/fonts.css";
+import "../../styles/gco/theme.css";
+import "../../styles/gco/pill-navbar.css";
 
 const GCOPage = () => {
   const navigate = useNavigate();

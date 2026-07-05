@@ -1,9 +1,9 @@
 import { Helmet } from "react-helmet-async";
 import React from "react";
 import { useNavigate } from "react-router";
-import SharedNavbar from "../app/components/SharedNavbar";
-import NavbarSpacer from "../app/components/NavbarSpacer";
-import SharedFooter from "../app/components/SharedFooter";
+import SharedNavbar from "../../app/components/SharedNavbar";
+import NavbarSpacer from "../../app/components/NavbarSpacer";
+import SharedFooter from "../../app/components/SharedFooter";
 
 export default function NotFoundPage() {
   const navigate = useNavigate();

@@ -3,13 +3,13 @@ import { useNavigate } from "react-router";
 import { Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight } from "lucide-react";
-import GCONavbar from "../app/components/GCONavbar";
-import SharedFooter from "../app/components/SharedFooter";
-import "../styles/gco/index.css";
-import "../styles/gco/fonts.css";
-import "../styles/gco/theme.css";
-import "../styles/gco/pill-navbar.css";
-import "../styles/gco/VolunteerRegistration.css";
+import GCONavbar from "../../app/components/GCONavbar";
+import SharedFooter from "../../app/components/SharedFooter";
+import "../../styles/gco/index.css";
+import "../../styles/gco/fonts.css";
+import "../../styles/gco/theme.css";
+import "../../styles/gco/pill-navbar.css";
+import "../../styles/gco/VolunteerRegistration.css";
 
 /* ── Colour theme ──────────────────────────────────────── */
 const THEME = {
