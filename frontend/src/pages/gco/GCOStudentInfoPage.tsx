@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, BookOpen, Award, Trophy, Lightbulb, UserCheck, Rocket, Globe, Gift } from "lucide-react";
 import GCONavbar from "../../app/components/GCONavbar";
 import SharedFooter from "../../app/components/SharedFooter";
 import "../../styles/gco/index.css";
@@ -23,14 +23,14 @@ const THEME = {
 
 /* ── What You'll Gain ──────────────────────────────────── */
 const BENEFITS = [
-  { emoji: "📚", name: "Hands-on Learning",               desc: "Real-world challenges & practical skills" },
-  { emoji: "🏅", name: "Official Participation Certificate", desc: "Recognized proof of your achievement" },
-  { emoji: "🏆", name: "Olympiad Achievement Badge",      desc: "Showcase your accomplishments" },
-  { emoji: "💡", name: "Skill Assessment Report",         desc: "Understand your strengths and growth areas" },
-  { emoji: "👨‍🏫", name: "Expert Mentorship",              desc: "Learn from industry professionals" },
-  { emoji: "🚀", name: "Internship & Career Opportunities", desc: "Access future learning and career pathways" },
-  { emoji: "🌍", name: "National Recognition",            desc: "Compete with students from across India" },
-  { emoji: "🎁", name: "Exclusive Student Resources",     desc: "Premium learning materials, workshops & community access" },
+  { icon: BookOpen,      name: "Hands-on Learning",               desc: "Real-world challenges & practical skills" },
+  { icon: Award,         name: "Official Participation Certificate", desc: "Recognized proof of your achievement" },
+  { icon: Trophy,        name: "Olympiad Achievement Badge",      desc: "Showcase your accomplishments" },
+  { icon: Lightbulb,     name: "Skill Assessment Report",         desc: "Understand your strengths and growth areas" },
+  { icon: UserCheck,     name: "Expert Mentorship",              desc: "Learn from industry professionals" },
+  { icon: Rocket,        name: "Internship & Career Opportunities", desc: "Access future learning and career pathways" },
+  { icon: Globe,         name: "National Recognition",            desc: "Compete with students from across India" },
+  { icon: Gift,          name: "Exclusive Student Resources",     desc: "Premium learning materials, workshops & community access" },
 ];
 
 /* ── FAQ data ───────────────────────────────────────────── */
@@ -193,7 +193,7 @@ export default function GCOStudentInfoPage() {
                   initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.15 }}
                   transition={{ duration: 0.5, delay: i * 0.07, ease: "easeOut" }}>
-                  <div className="volunteer-benefit-emoji">{b.emoji}</div>
+                  <div className="volunteer-benefit-emoji"><b.icon size={22} /></div>
                   <p className="volunteer-benefit-name">{b.name}</p>
                   <p style={{ fontSize:"0.72rem", color:"var(--color-text-muted)", textAlign:"center",
                     lineHeight:1.45, margin:0, fontFamily:"var(--font-alt)" }}>{b.desc}</p>

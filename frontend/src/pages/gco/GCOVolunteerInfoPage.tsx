@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Star, GraduationCap, Heart, Trophy, UserCheck, Award, Rocket } from "lucide-react";
 import GCONavbar from "../../app/components/GCONavbar";
 import SharedFooter from "../../app/components/SharedFooter";
 import "../../styles/gco/index.css";
@@ -21,13 +21,13 @@ const THEME = {
 
 /* ── What You'll Gain data ─────────────────────────────── */
 const BENEFITS = [
-  { emoji: "⭐", name: "Premium Playground", value: "Worth ₹35k" },
-  { emoji: "🎓", name: "Internship Certificate", value: null },
-  { emoji: "💌", name: "Founder Recommendation", value: null },
-  { emoji: "🏆", name: "Awards", value: null },
-  { emoji: "👨‍🏫", name: "Mentorship", value: null },
-  { emoji: "🏅", name: "Achievement Badge", value: null },
-  { emoji: "🚀", name: "Future Opportunities", value: null },
+  { icon: Star,          name: "Premium Playground", value: "Worth ₹35k" },
+  { icon: GraduationCap, name: "Internship Certificate", value: null },
+  { icon: Heart,         name: "Founder Recommendation", value: null },
+  { icon: Trophy,        name: "Awards", value: null },
+  { icon: UserCheck,     name: "Mentorship", value: null },
+  { icon: Award,         name: "Achievement Badge", value: null },
+  { icon: Rocket,        name: "Future Opportunities", value: null },
 ];
 
 /* ── Categories / Roles data ───────────────────────────── */
@@ -566,7 +566,7 @@ export default function GCOVolunteerInfoPage() {
                   viewport={{ once: true, amount: 0.15 }}
                   transition={{ duration: 0.5, delay: i * 0.07, ease: "easeOut" }}
                 >
-                  <div className="volunteer-benefit-emoji">{b.emoji}</div>
+                  <div className="volunteer-benefit-emoji"><b.icon size={22} /></div>
                   <p className="volunteer-benefit-name">{b.name}</p>
                   {b.value && (
                     <span className="volunteer-benefit-value">{b.value}</span>

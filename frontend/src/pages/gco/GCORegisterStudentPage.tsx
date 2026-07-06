@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   User, Mail, Phone, Lock, Eye, EyeOff, Calendar, School, Globe,
-  ChevronRight,
+  ChevronRight, GraduationCap, Trophy, CheckCircle, Rocket, Heart,
 } from "lucide-react";
 import GCONavbar from "../../app/components/GCONavbar";
 import SharedFooter from "../../app/components/SharedFooter";
@@ -80,7 +80,7 @@ export default function GCORegisterStudentPage() {
               <motion.div key="success" variants={fadeUp} initial="hidden" animate="show">
                 <div className="gco-reg-card">
                   <div className="gco-reg-success">
-                    <div className="gco-reg-success-icon">🎓</div>
+                    <div className="gco-reg-success-icon"><GraduationCap size={28} /></div>
                     <h2>Registration Submitted!</h2>
                     <p>Welcome aboard, {form.fullName}! Your student registration for the Global Capability Olympiad has been received. Check your email for confirmation.</p>
                     <button className="gco-reg-submit" style={{ maxWidth: 260, margin: "0 auto" }} onClick={() => navigate("/gco")}>
@@ -135,7 +135,7 @@ export default function GCORegisterStudentPage() {
                       {currentStep === 0 && (
                         <motion.div key="step0" variants={fadeUp} initial="hidden" animate="show" exit={{ opacity: 0, y: -16 }}>
                           <div className="gco-reg-section-header">
-                            <div className="gco-reg-section-icon">👤</div>
+                            <div className="gco-reg-section-icon"><User size={18} /></div>
                             <div>
                               <p className="gco-reg-section-title">Personal Details</p>
                               <p className="gco-reg-section-desc">Basic information about you</p>
@@ -234,7 +234,7 @@ export default function GCORegisterStudentPage() {
                       {currentStep === 1 && (
                         <motion.div key="step1" variants={fadeUp} initial="hidden" animate="show" exit={{ opacity: 0, y: -16 }}>
                           <div className="gco-reg-section-header">
-                            <div className="gco-reg-section-icon">🎓</div>
+                            <div className="gco-reg-section-icon"><GraduationCap size={18} /></div>
                             <div>
                               <p className="gco-reg-section-title">Academic Details</p>
                               <p className="gco-reg-section-desc">Tell us about your educational background</p>
@@ -314,7 +314,7 @@ export default function GCORegisterStudentPage() {
                       {currentStep === 2 && (
                         <motion.div key="step2" variants={fadeUp} initial="hidden" animate="show" exit={{ opacity: 0, y: -16 }}>
                           <div className="gco-reg-section-header">
-                            <div className="gco-reg-section-icon">🏆</div>
+                            <div className="gco-reg-section-icon"><Trophy size={18} /></div>
                             <div>
                               <p className="gco-reg-section-title">Olympiad Preferences</p>
                               <p className="gco-reg-section-desc">Choose your subjects and experience level</p>
@@ -363,9 +363,9 @@ export default function GCORegisterStudentPage() {
                       {currentStep === 3 && (
                         <motion.div key="step3" variants={fadeUp} initial="hidden" animate="show" exit={{ opacity: 0, y: -16 }}>
                           <div className="gco-reg-section-header">
-                            <div className="gco-reg-section-icon">✅</div>
+                            <div className="gco-reg-section-icon"><CheckCircle size={18} /></div>
                             <div>
-                              <p className="gco-reg-section-title">Review & Confirm</p>
+                              <p className="gco-reg-section-title">Review &amp; Confirm</p>
                               <p className="gco-reg-section-desc">Review your information before submitting</p>
                             </div>
                           </div>
@@ -421,7 +421,7 @@ export default function GCORegisterStudentPage() {
                           <div className="gco-reg-btn-row">
                             <button type="button" className="gco-reg-back-btn" onClick={handleBack}>← Back</button>
                             <button type="submit" className="gco-reg-submit">
-                              🚀 Submit Registration
+                              <Rocket size={16} /> Submit Registration
                             </button>
                           </div>
 

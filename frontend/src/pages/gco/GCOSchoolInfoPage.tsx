@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Building2, Trophy, ScrollText, UserCheck, BarChart3, Rocket, Globe, Gift } from "lucide-react";
 import GCONavbar from "../../app/components/GCONavbar";
 import SharedFooter from "../../app/components/SharedFooter";
 import "../../styles/gco/index.css";
@@ -23,14 +23,14 @@ const THEME = {
 
 /* ── What You'll Gain ──────────────────────────────────── */
 const BENEFITS = [
-  { emoji: "🏫", name: "Official School Partner",          desc: "Become a recognized GCO Partner School" },
-  { emoji: "🏆", name: "School Excellence Recognition",   desc: "Awards for outstanding participation and performance" },
-  { emoji: "📜", name: "Partnership Certificate",          desc: "Official recognition for your institution" },
-  { emoji: "👨‍🏫", name: "Teacher Development",            desc: "Access to workshops, training, and mentorship" },
-  { emoji: "📊", name: "Student Performance Insights",    desc: "Comprehensive reports to track student capabilities" },
-  { emoji: "🚀", name: "Future Collaboration Opportunities", desc: "Priority access to upcoming GCO initiatives and programs" },
-  { emoji: "🌍", name: "National Visibility",              desc: "Showcase your school's achievements on a national platform" },
-  { emoji: "🎁", name: "Exclusive Resources",              desc: "Access to educational toolkits, event materials, and premium resources" },
+  { icon: Building2,     name: "Official School Partner",          desc: "Become a recognized GCO Partner School" },
+  { icon: Trophy,        name: "School Excellence Recognition",   desc: "Awards for outstanding participation and performance" },
+  { icon: ScrollText,    name: "Partnership Certificate",          desc: "Official recognition for your institution" },
+  { icon: UserCheck,     name: "Teacher Development",            desc: "Access to workshops, training, and mentorship" },
+  { icon: BarChart3,     name: "Student Performance Insights",    desc: "Comprehensive reports to track student capabilities" },
+  { icon: Rocket,        name: "Future Collaboration Opportunities", desc: "Priority access to upcoming GCO initiatives and programs" },
+  { icon: Globe,         name: "National Visibility",              desc: "Showcase your school's achievements on a national platform" },
+  { icon: Gift,          name: "Exclusive Resources",              desc: "Access to educational toolkits, event materials, and premium resources" },
 ];
 
 /* ── FAQ data ───────────────────────────────────────────── */
@@ -193,7 +193,7 @@ export default function GCOSchoolInfoPage() {
                   initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.15 }}
                   transition={{ duration: 0.5, delay: i * 0.07, ease: "easeOut" }}>
-                  <div className="volunteer-benefit-emoji">{b.emoji}</div>
+                  <div className="volunteer-benefit-emoji"><b.icon size={22} /></div>
                   <p className="volunteer-benefit-name">{b.name}</p>
                   <p style={{ fontSize:"0.72rem", color:"var(--color-text-muted)", textAlign:"center",
                     lineHeight:1.45, margin:0, fontFamily:"var(--font-alt)" }}>{b.desc}</p>

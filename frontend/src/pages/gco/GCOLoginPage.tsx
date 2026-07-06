@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "framer-motion";
-import { Mail, Lock, Eye, EyeOff, ArrowLeft } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, ArrowLeft, GraduationCap, Building2, Heart, KeyRound, Trophy, CheckCircle } from "lucide-react";
 import GCONavbar from "../../app/components/GCONavbar";
 import { getApiBaseUrl } from "../../lib/apiClient";
 import "../../styles/gco/index.css";
@@ -101,7 +101,7 @@ export default function GCOLoginPage() {
               <motion.div key="signin" variants={fadeUp} initial="hidden" animate="show" exit={{ opacity: 0, y: -20 }}>
                 {/* Logo area */}
                 <div className="gco-login-logo-area">
-                  <div className="gco-login-logo-icon">🏆</div>
+                  <div className="gco-login-logo-icon"><Trophy size={24} /></div>
                   <h1 className="gco-login-logo-title">Welcome Back</h1>
                   <p className="gco-login-logo-sub">Sign in to your GCO account</p>
                 </div>
@@ -113,14 +113,14 @@ export default function GCOLoginPage() {
                     background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)",
                     borderRadius: 14, padding: 5,
                   }}>
-                    {[
-                      { icon: "🎓", label: "Student" },
-                      { icon: "🏫", label: "School" },
-                      { icon: "❤️", label: "Volunteer" },
-                    ].map(role => (
+                    {([
+                      { icon: GraduationCap, label: "Student" },
+                      { icon: Building2, label: "School" },
+                      { icon: Heart, label: "Volunteer" },
+                    ] as const).map(role => (
                       <button key={role.label} type="button" className="gco-login-tab"
                         style={{ borderRadius: 10, padding: "10px 0", gap: 6, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                        <span>{role.icon}</span>
+                        <role.icon size={16} />
                         <span>{role.label}</span>
                       </button>
                     ))}
@@ -226,7 +226,7 @@ export default function GCOLoginPage() {
             {tab === "forgot" && !forgotSent && (
               <motion.div key="forgot" variants={fadeUp} initial="hidden" animate="show" exit={{ opacity: 0, y: -20 }}>
                 <div className="gco-login-logo-area">
-                  <div className="gco-login-logo-icon">🔑</div>
+                  <div className="gco-login-logo-icon"><KeyRound size={24} /></div>
                   <h1 className="gco-login-logo-title">Reset Password</h1>
                   <p className="gco-login-logo-sub">Enter your email to receive a reset link</p>
                 </div>
@@ -257,7 +257,7 @@ export default function GCOLoginPage() {
             {forgotSent && (
               <motion.div key="forgot-success" variants={fadeUp} initial="hidden" animate="show">
                 <div className="gco-login-logo-area">
-                  <div className="gco-login-logo-icon">✉️</div>
+                  <div className="gco-login-logo-icon"><Mail size={24} /></div>
                   <h1 className="gco-login-logo-title">Check Your Email</h1>
                   <p className="gco-login-logo-sub">A reset link has been sent to <strong style={{ color: "#e8856a" }}>{forgotEmail}</strong></p>
                 </div>
@@ -267,8 +267,8 @@ export default function GCOLoginPage() {
                       width: 64, height: 64, borderRadius: 20,
                       background: "rgba(232,133,106,0.1)", border: "1px solid rgba(232,133,106,0.2)",
                       display: "flex", alignItems: "center", justifyContent: "center",
-                      fontSize: 28, margin: "0 auto 16px",
-                    }}>✅</div>
+                      margin: "0 auto 16px",
+                    }}><CheckCircle size={28} /></div>
                     <p style={{ color: "rgba(241,240,250,0.55)", fontSize: 14, lineHeight: 1.6, margin: "0 0 24px" }}>
                       If an account exists for <strong style={{ color: "#f1f0fa" }}>{forgotEmail}</strong>, you'll receive a password reset link within a few minutes. Check your spam folder if you don't see it.
                     </p>

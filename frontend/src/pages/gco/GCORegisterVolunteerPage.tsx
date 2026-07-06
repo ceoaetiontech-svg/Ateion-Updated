@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   User, Mail, Phone, Lock, Eye, EyeOff, Calendar,
   GraduationCap, ChevronRight, LinkedinIcon as Linkedin2, Upload, MessageSquare,
+  Globe, Code2, Megaphone, Feather, Share2, Flag, Heart, Sparkles, CheckCircle, Rocket,
 } from "lucide-react";
 import GCONavbar from "../../app/components/GCONavbar";
 import SharedFooter from "../../app/components/SharedFooter";
@@ -15,13 +16,13 @@ import "../../styles/gco/pill-navbar.css";
 import "../../styles/gco/gco-registration.css";
 
 const VOLUNTEER_TYPES = [
-  { value: "event",     label: "Event Volunteer",    icon: "🎪" },
-  { value: "campus",    label: "Campus Ambassador",  icon: "🏫" },
-  { value: "tech",      label: "Technical Volunteer", icon: "💻" },
-  { value: "marketing", label: "Marketing Volunteer", icon: "📣" },
-  { value: "content",   label: "Content Creator",    icon: "✍️" },
-  { value: "social",    label: "Social Media Volunteer", icon: "📱" },
-  { value: "mentor",    label: "Mentor",             icon: "🎓" },
+  { value: "event",     label: "Event Volunteer",    icon: Calendar },
+  { value: "campus",    label: "Campus Ambassador",  icon: Flag },
+  { value: "tech",      label: "Technical Volunteer", icon: Code2 },
+  { value: "marketing", label: "Marketing Volunteer", icon: Megaphone },
+  { value: "content",   label: "Content Creator",    icon: Feather },
+  { value: "social",    label: "Social Media Volunteer", icon: Share2 },
+  { value: "mentor",    label: "Mentor",             icon: GraduationCap },
 ];
 
 const SKILLS = [
@@ -93,7 +94,7 @@ export default function GCORegisterVolunteerPage() {
     if (currentStep === 0) return (
       <motion.div {...stepProps}>
         <div className="gco-reg-section-header">
-          <div className="gco-reg-section-icon">❤️</div>
+          <div className="gco-reg-section-icon"><Heart size={18} /></div>
           <div>
             <p className="gco-reg-section-title">Personal Information</p>
             <p className="gco-reg-section-desc">Your basic details to get started</p>
@@ -187,7 +188,7 @@ export default function GCORegisterVolunteerPage() {
     if (currentStep === 1) return (
       <motion.div {...stepProps}>
         <div className="gco-reg-section-header">
-          <div className="gco-reg-section-icon">🎓</div>
+          <div className="gco-reg-section-icon"><GraduationCap size={18} /></div>
           <div>
             <p className="gco-reg-section-title">Education Details</p>
             <p className="gco-reg-section-desc">Tell us about your educational background</p>
@@ -245,7 +246,7 @@ export default function GCORegisterVolunteerPage() {
     if (currentStep === 2) return (
       <motion.div {...stepProps}>
         <div className="gco-reg-section-header">
-          <div className="gco-reg-section-icon">🌟</div>
+          <div className="gco-reg-section-icon"><Sparkles size={18} /></div>
           <div>
             <p className="gco-reg-section-title">Volunteer Details</p>
             <p className="gco-reg-section-desc">Your role preferences, skills &amp; availability</p>
@@ -261,7 +262,7 @@ export default function GCORegisterVolunteerPage() {
               <div key={v.value}
                 className={`gco-reg-check-item ${volunteerType === v.value ? "selected" : ""}`}
                 onClick={() => setVolunteerType(v.value)}>
-                <span style={{ fontSize: 18, flexShrink: 0 }}>{v.icon}</span>
+                <v.icon size={18} style={{ flexShrink: 0 }} />
                 <span className="gco-reg-check-label">{v.label}</span>
               </div>
             ))}
@@ -354,7 +355,7 @@ export default function GCORegisterVolunteerPage() {
     return (
       <motion.div {...stepProps}>
         <div className="gco-reg-section-header">
-          <div className="gco-reg-section-icon">✅</div>
+          <div className="gco-reg-section-icon"><CheckCircle size={18} /></div>
           <div>
             <p className="gco-reg-section-title">Review &amp; Confirm</p>
             <p className="gco-reg-section-desc">Almost there! Review and submit your application.</p>
@@ -407,7 +408,7 @@ export default function GCORegisterVolunteerPage() {
 
         <div className="gco-reg-btn-row">
           <button type="button" className="gco-reg-back-btn" onClick={handleBack}>← Back</button>
-          <button type="submit" className="gco-reg-submit">❤️ Submit Application</button>
+          <button type="submit" className="gco-reg-submit"><Heart size={16} /> Submit Application</button>
         </div>
         <p className="gco-reg-login-link">
           Already have an account?{" "}
@@ -436,7 +437,7 @@ export default function GCORegisterVolunteerPage() {
               <motion.div key="success" variants={fadeUp} initial="hidden" animate="show">
                 <div className="gco-reg-card">
                   <div className="gco-reg-success">
-                    <div className="gco-reg-success-icon">❤️</div>
+                    <div className="gco-reg-success-icon"><Heart size={28} /></div>
                     <h2>Thank You for Volunteering!</h2>
                     <p>
                       {form.fullName}, your volunteer application has been received. Our team will review

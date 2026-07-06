@@ -4,7 +4,7 @@ import { Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Building2, Mail, Phone, Lock, Eye, EyeOff, Globe, MapPin,
-  User, ChevronRight, Hash,
+  User, ChevronRight, Hash, Trophy, CheckCircle, Rocket, Heart,
 } from "lucide-react";
 import GCONavbar from "../../app/components/GCONavbar";
 import SharedFooter from "../../app/components/SharedFooter";
@@ -76,7 +76,7 @@ export default function GCORegisterSchoolPage() {
               <motion.div key="success" variants={fadeUp} initial="hidden" animate="show">
                 <div className="gco-reg-card">
                   <div className="gco-reg-success">
-                    <div className="gco-reg-success-icon">🏫</div>
+                    <div className="gco-reg-success-icon"><Building2 size={28} /></div>
                     <h2>School Registered!</h2>
                     <p>
                       Thank you for registering <strong style={{ color: "#e8856a" }}>{form.schoolName}</strong> for GCO!
@@ -133,7 +133,7 @@ export default function GCORegisterSchoolPage() {
                       {currentStep === 0 && (
                         <motion.div key="step0" variants={fadeUp} initial="hidden" animate="show" exit={{ opacity: 0, y: -16 }}>
                           <div className="gco-reg-section-header">
-                            <div className="gco-reg-section-icon">🏫</div>
+                            <div className="gco-reg-section-icon"><Building2 size={18} /></div>
                             <div>
                               <p className="gco-reg-section-title">School Information</p>
                               <p className="gco-reg-section-desc">Tell us about your institution</p>
@@ -228,7 +228,7 @@ export default function GCORegisterSchoolPage() {
                       {currentStep === 1 && (
                         <motion.div key="step1" variants={fadeUp} initial="hidden" animate="show" exit={{ opacity: 0, y: -16 }}>
                           <div className="gco-reg-section-header">
-                            <div className="gco-reg-section-icon">👤</div>
+                            <div className="gco-reg-section-icon"><User size={18} /></div>
                             <div>
                               <p className="gco-reg-section-title">Coordinator Details</p>
                               <p className="gco-reg-section-desc">Primary contact person for GCO coordination</p>
@@ -321,7 +321,7 @@ export default function GCORegisterSchoolPage() {
                       {currentStep === 2 && (
                         <motion.div key="step2" variants={fadeUp} initial="hidden" animate="show" exit={{ opacity: 0, y: -16 }}>
                           <div className="gco-reg-section-header">
-                            <div className="gco-reg-section-icon">🏆</div>
+                            <div className="gco-reg-section-icon"><Trophy size={18} /></div>
                             <div>
                               <p className="gco-reg-section-title">Student & Olympiad Info</p>
                               <p className="gco-reg-section-desc">Help us understand your school's participation</p>
@@ -375,9 +375,9 @@ export default function GCORegisterSchoolPage() {
                       {currentStep === 3 && (
                         <motion.div key="step3" variants={fadeUp} initial="hidden" animate="show" exit={{ opacity: 0, y: -16 }}>
                           <div className="gco-reg-section-header">
-                            <div className="gco-reg-section-icon">✅</div>
+                            <div className="gco-reg-section-icon"><CheckCircle size={18} /></div>
                             <div>
-                              <p className="gco-reg-section-title">Review & Confirm</p>
+                              <p className="gco-reg-section-title">Review &amp; Confirm</p>
                               <p className="gco-reg-section-desc">Review your school's registration details</p>
                             </div>
                           </div>
@@ -424,7 +424,7 @@ export default function GCORegisterSchoolPage() {
 
                           <div className="gco-reg-btn-row">
                             <button type="button" className="gco-reg-back-btn" onClick={handleBack}>← Back</button>
-                            <button type="submit" className="gco-reg-submit">🚀 Submit Registration</button>
+                            <button type="submit" className="gco-reg-submit"><Rocket size={16} /> Submit Registration</button>
                           </div>
                           <p className="gco-reg-login-link">
                             Already registered?{" "}
