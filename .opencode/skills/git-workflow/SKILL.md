@@ -39,23 +39,32 @@ This skill handles git mechanics — inspecting diffs, staging, drafting commit 
 
 ## 1. Before committing or pushing: check branch is up to date
 
-Always run this check before staging a commit or pushing, so stale local state doesn't cause surprises later:
+Always run this check before staging a commit or pushing, so stale local state — and a stale view of what teammates have done — doesn't cause surprises later.
 
-1. `git fetch origin` — get latest remote refs without merging anything
-2. Compare local branch against its remote counterpart using explicit ref comparison (do NOT rely solely on `git status`, which can report stale "up to date"):
-   - Run `LOCAL=$(git rev-parse HEAD)` and `REMOTE=$(git rev-parse @{upstream} 2>/dev/null || echo "")`
-   - If `$REMOTE` is empty (no upstream), compare against the base branch instead: `git log origin/main..HEAD` and `git log HEAD..origin/main`
-   - If `$LOCAL == $REMOTE`, the branch is truly up to date
-   - If they differ, show how many commits behind/ahead with `git log --oneline HEAD..@{upstream}` and `git log --oneline @{upstream}..HEAD`
-3. **Stash safety net**: if `git status` shows uncommitted changes (staged or unstaged) and the branch is behind, do NOT pull/rebase on top of dirty state.
+On a shared project, there are **two independent things that can be behind**, and having one doesn't mean you can skip checking the other:
+- Your own branch's remote (a teammate pushed more commits to the *same* branch you're both working on)
+- The base branch (`main`/`master`) has moved on since you branched off or last synced, from PRs merged by anyone else on the team
+
+Checking only one of these isn't enough — a feature branch that's perfectly in sync with its own `origin/<branch>` can still be dangerously far behind `main`.
+
+1. `git fetch origin` — get latest remote refs for everything (your branch and `main`) without merging anything
+2. Identify the base branch once: `git remote show origin | grep 'HEAD branch'` (or ask the user if ambiguous — some repos use `master`, some have a release branch as the real integration target). If a GitHub/GitLab CLI is available and a PR already exists for this branch, prefer its actual configured base (`gh pr view --json baseRefName`) over guessing.
+3. **Check against your own remote** (only meaningful if this branch has an upstream, i.e. it's already been pushed):
+   - `LOCAL=$(git rev-parse HEAD)` and `REMOTE=$(git rev-parse @{upstream} 2>/dev/null || echo "")`
+   - If `$REMOTE` is non-empty and `$LOCAL != $REMOTE`, teammates may have pushed to this same branch — show the divergence: `git log --oneline HEAD..@{upstream}` (their commits you don't have) and `git log --oneline @{upstream}..HEAD` (yours they don't have)
+4. **Check against the base branch** — do this regardless of whether step 3 found anything, and regardless of whether the current branch has its own upstream at all:
+   - If on the base branch itself (`main`/`master`), this step is a no-op — skip to step 6.
+   - Otherwise: `git log --oneline HEAD..origin/<base>` shows what's landed on `main` since this branch diverged. Non-empty output means the feature branch is behind the team's mainline, independent of anything found in step 3.
+5. **Stash safety net**: if `git status` shows uncommitted changes (staged or unstaged) and either check above found the branch behind, do NOT pull/rebase/merge on top of dirty state.
    - `git stash push -u -m "pre-sync stash"` first (`-u` includes untracked files)
-   - Pull/rebase as needed (step 4)
+   - Sync as needed (step 6)
    - `git stash pop` afterward, and explicitly flag if the pop produced conflicts — don't assume it applied cleanly
-4. If behind the base branch (`main`/default) or its own remote:
-   - Behind own remote tracking branch → `git pull` (or `git pull --rebase` if following rebase-first convention) before continuing
-   - Behind `main` but not yet diverged in a conflicting way → offer to rebase onto latest `main` (or merge it in) before committing further work, per the rebase/merge rules below
-5. Only proceed to staging/committing/pushing once the branch is confirmed up to date or the user has explicitly chosen to proceed anyway (e.g. mid-feature, not ready to sync yet)
-6. Never silently stash/pull/rebase/merge without telling the user what was found and what action is being taken — surface the divergence (how many commits behind/ahead) before acting
+6. Bring the branch up to date, handling each dimension independently since a fix for one doesn't address the other:
+   - Behind your own branch's remote (step 3) → `git pull` (or `git pull --rebase` if following rebase-first convention) — this is just syncing with a collaborator, no branch-strategy decision needed
+   - Behind the base branch (step 4) → this is where rebase-vs-merge actually matters (Section 6): rebase onto latest `main` if this branch is local-only or not yet relied on by others, merge `main` in if the branch is already shared/pushed and others may have built on top of it
+   - If both are true, resolve step 3 first (get in sync with your own branch's collaborators) before bringing in `main`, so you're not reconciling two sources of drift in the same operation
+7. Only proceed to staging/committing/pushing once both checks are clean or the user has explicitly chosen to proceed anyway (e.g. mid-feature, not ready to sync yet)
+8. Never silently stash/pull/rebase/merge without telling the user what was found on **each** dimension and what action is being taken — surface both divergences (how many commits behind/ahead, on the branch and against base) before acting
 
 ## 2. Sanity checks before any commit (hard gates)
 
