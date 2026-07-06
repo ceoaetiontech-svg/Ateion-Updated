@@ -88,23 +88,7 @@ const GCOPage = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.3, ease: [0.23, 1, 0.32, 1] }}
                 >
-                  <button
-                    type="button"
-                    className="clay-button"
-                    style={{
-                      fontFamily: "var(--font-body)", fontSize: "1rem", fontWeight: 700,
-                      color: "var(--color-text-primary)", background: "var(--color-background-secondary)",
-                      border: "1.5px solid var(--color-border-light)", borderRadius: 100,
-                      padding: "14px 32px", cursor: "pointer",
-                      boxShadow: "0 0 0 rgba(232,133,106,0)",
-                      transition: "box-shadow 0.4s ease, transform 0.3s ease",
-                    }}
-                    onClick={() => navigate("/contact")}
-                    onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 8px 30px rgba(232,133,106,0.25)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 0 0 rgba(232,133,106,0)"; e.currentTarget.style.transform = "translateY(0)"; }}
-                  >
-                    Contact us
-                  </button>
+
                   <button
                     type="button"
                     className="clay-button"

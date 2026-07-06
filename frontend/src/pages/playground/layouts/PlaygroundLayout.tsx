@@ -430,8 +430,6 @@ function PlaygroundInner() {
                         <Home size={16} />
                       </button>
 
-
-
                       <NotificationDropdown />
 
                       <div className="hidden xl:flex items-center gap-2 bg-[var(--color-accent)] text-[var(--color-text-inverse)] px-4 py-1.5 rounded-full text-xs font-bold shadow-[0_2px_10px_var(--color-accent-light)] hover:shadow-[0_4px_15px_var(--color-accent)] hover:-translate-y-0.5 transition-all duration-300 cursor-default group">
@@ -439,17 +437,7 @@ function PlaygroundInner() {
                         <span>{userProfile.segmentText}</span>
                       </div>
 
-                      <div className="flex items-center gap-3 cursor-pointer group hover:opacity-100">
-                        <div className="text-right hidden xl:block">
-                          <p className="text-sm font-bold text-[var(--color-text-primary)] group-hover:text-[var(--color-accent)] transition-colors">
-                            {userProfile.fullName}
-                          </p>
-                          <p className="text-xs text-[var(--color-text-tertiary)]">
-                            {userProfile.isPremium ? "Premium Member" : "Free Member"}
-                          </p>
-                        </div>
-                        <UserAvatar name={userProfile.firstName} className="group-hover:scale-110 group-hover:shadow-md transition-all duration-300 group-hover:border-[var(--color-accent)]/50" />
-                      </div>
+
                     </div>
                   </header>
               )}

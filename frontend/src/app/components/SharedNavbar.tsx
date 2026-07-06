@@ -263,7 +263,7 @@ function GlobalOlympiadBtn({ onClick }: { onClick?: () => void }) {
       }}
     >
       <span className={`${navTextClass}`}>
-        Global Olympiad
+        Global Capability Olympiad
       </span>
     </NavButton>
   );
@@ -362,7 +362,7 @@ const NAV_BUTTONS = [
 const MOBILE_NAV_LINKS = [
   { label: "Home", path: "/", icon: Home },
   { label: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
-  { label: "Global Olympiad", path: "/gco", icon: Trophy },
+  { label: "Global Capability Olympiad", path: "/gco", icon: Trophy },
   { label: "Psychometric Test", path: "/psychometric-assessment", icon: ClipboardCheck },
   { label: "PlayGround", path: "/playground", icon: Gamepad2 },
 ] as const;
