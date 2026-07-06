@@ -257,6 +257,11 @@ function GlobalOlympiadBtn({ onClick }: { onClick?: () => void }) {
     <NavButton
       variant="default"
       isActive={isActive}
+      style={{
+        background: "linear-gradient(135deg, #4a3040 0%, #8b5e6c 50%, #c48a9a 100%)",
+        border: "none",
+        color: "#fff",
+      }}
       onClick={() => {
         if (onClick) onClick();
         navigate("/gco");
