@@ -55,7 +55,7 @@ function LogoDropdown() {
   const menuItems = [
     { label: "Home", icon: Home, path: "/" },
     { label: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
-    { label: "Global Olympiad", icon: Trophy, path: "/gco" },
+    { label: "Global Capability Olympiad", icon: Trophy, path: "/gco" },
     { label: "Playground", icon: Gamepad2, path: "/playground" },
   ];
 

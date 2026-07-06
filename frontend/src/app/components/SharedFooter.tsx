@@ -48,7 +48,7 @@ const MailIcon = memo(function MailIcon({ href }: { href: string }) {
 const navLinks = [
   { label: "Home", to: "/" },
   { label: "Dashboard", to: "/dashboard" },
-  { label: "Global Olympiad", to: "/gco" },
+  { label: "Global Capability Olympiad", to: "/gco" },
   { label: "PlayGround", to: "/playground" },
   { label: "Get Connected", to: "/contact" },
 ];
