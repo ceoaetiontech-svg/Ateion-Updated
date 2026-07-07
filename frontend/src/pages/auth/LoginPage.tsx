@@ -128,12 +128,7 @@ const handleGoogleSignUp = () => {
     window.location.href = `${backendUrl}/oauth2/authorization/google`;
 };
 const handleGoogleSignIn = () => {
-  console.log("MODE:", import.meta.env.MODE);
-  console.log("DEV:", import.meta.env.DEV);
-  console.log("PROD:", import.meta.env.PROD);
-  console.log("VITE_API_BASE_URL:", import.meta.env.VITE_API_BASE_URL);
-  console.log("VITE_BACKEND_URL:", import.meta.env.VITE_BACKEND_URL);
-  console.log("Final backendUrl:", backendUrl);
+
 
   window.location.href = `${backendUrl}/oauth2/authorization/google`;
 };
