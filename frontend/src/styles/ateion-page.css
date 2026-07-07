@@ -1,0 +1,179 @@
+/* Ateion Page Custom Premium Styles */
+
+.glass-bento-card {
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(26, 24, 51, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(26, 24, 51, 0.04);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+[data-theme="dark"] .glass-bento-card {
+  background: rgba(30, 41, 59, 0.4);
+  border: 1px solid rgba(226, 232, 240, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+.glass-bento-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(232, 133, 106, 0.12);
+  border-color: rgba(232, 133, 106, 0.3);
+}
+
+[data-theme="dark"] .glass-bento-card:hover {
+  box-shadow: 0 16px 48px rgba(232, 133, 106, 0.2);
+  border-color: rgba(232, 133, 106, 0.4);
+}
+
+/* Card Glow Effect */
+.glass-bento-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(800px circle at var(--x, 0) var(--y, 0), rgba(232, 133, 106, 0.06), transparent 40%);
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.glass-bento-card:hover::before {
+  opacity: 1;
+}
+
+/* Tech Radar Radar Scan Animation */
+@keyframes radar-scan {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.radar-scanner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 0deg at 50% 50%, rgba(232, 133, 106, 0.15) 0deg, rgba(232, 133, 106, 0.03) 90deg, transparent 180deg);
+  transform-origin: center;
+  transform: translate(-50%, -50%);
+  animation: radar-scan 6s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+[data-theme="dark"] .radar-scanner {
+  background: conic-gradient(from 0deg at 50% 50%, rgba(232, 133, 106, 0.25) 0deg, rgba(232, 133, 106, 0.05) 120deg, transparent 240deg);
+}
+
+/* Radar Rings */
+.radar-ring {
+  border: 1px dashed rgba(26, 24, 51, 0.1);
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+[data-theme="dark"] .radar-ring {
+  border-color: rgba(226, 232, 240, 0.08);
+}
+
+/* Blob Animation */
+@keyframes blob-bounce {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-20px) scale(1.05);
+  }
+}
+
+.animate-blob {
+  animation: blob-bounce 10s infinite ease-in-out;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+/* Timeline glow line path */
+.timeline-path {
+  position: absolute;
+  top: 24px;
+  bottom: 24px;
+  left: 32px;
+  width: 4px;
+  background: linear-gradient(180deg, var(--color-accent) 0%, rgba(232, 133, 106, 0.2) 100%);
+  border-radius: 2px;
+  z-index: 0;
+}
+
+@media (min-width: 1024px) {
+  .timeline-path-horizontal {
+    position: absolute;
+    left: 48px;
+    right: 48px;
+    top: 50%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--color-accent) 0%, rgba(232, 133, 106, 0.2) 100%);
+    border-radius: 2px;
+    z-index: 0;
+    transform: translateY(-50%);
+  }
+}
+
+/* Glowing text and nodes */
+.glow-accent {
+  text-shadow: 0 0 12px rgba(232, 133, 106, 0.4);
+}
+
+/* Glass inputs/cards for contact sections */
+.glass-contact-badge {
+  background: rgba(232, 133, 106, 0.06);
+  border: 1px solid rgba(232, 133, 106, 0.15);
+  backdrop-filter: blur(8px);
+}
+
+[data-theme="dark"] .glass-contact-badge {
+  background: rgba(232, 133, 106, 0.1);
+  border: 1px solid rgba(232, 133, 106, 0.25);
+}
+
+/* Ecosystem Flow Lines */
+@keyframes flow-particles {
+  0% {
+    stroke-dashoffset: 40;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.flowing-line {
+  stroke-dasharray: 8 16;
+  animation: flow-particles 1.5s linear infinite;
+}
+
+.ecosystem-center-glow {
+  filter: drop-shadow(0 0 12px rgba(232, 133, 106, 0.3));
+}
+
+[data-theme="dark"] .ecosystem-center-glow {
+  filter: drop-shadow(0 0 20px rgba(232, 133, 106, 0.55));
+}

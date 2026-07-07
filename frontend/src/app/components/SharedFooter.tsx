@@ -50,6 +50,7 @@ const navLinks = [
   { label: "Dashboard", to: "/dashboard" },
   { label: "Global Capability Olympiad", to: "/gco" },
   { label: "PlayGround", to: "/playground" },
+  { label: "Ateion", to: "/ateion" },
   { label: "Get Connected", to: "/contact" },
 ];
 

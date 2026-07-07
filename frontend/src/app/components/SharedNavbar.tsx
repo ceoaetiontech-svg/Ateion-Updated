@@ -370,6 +370,7 @@ const MOBILE_NAV_LINKS = [
   { label: "Global Capability Olympiad", path: "/gco", icon: Trophy },
   { label: "Psychometric Test", path: "/psychometric-assessment", icon: ClipboardCheck },
   { label: "PlayGround", path: "/playground", icon: Gamepad2 },
+  { label: "Ateion", path: "/ateion", icon: Users },
 ] as const;
 
 function NavLinks({ onCloseMobile }: { onCloseMobile?: () => void }) {

@@ -50,6 +50,7 @@ const TeacherStudentsPage = lazy(() => import("../pages/teacher/pages/TeacherStu
 const TeacherSettingsPage = lazy(() => import("../pages/teacher/pages/TeacherSettingsPage"));
 const ProfilePage = lazy(() => import("../pages/user/ProfilePage"));
 const ResetPasswordPage = lazy(() => import("../pages/auth/ResetPasswordPage"));
+const AteionPage = lazy(() => import("../pages/public/AteionPage"));
 
 function AnimatedRoutes() {
     const location = useLocation();
@@ -61,6 +62,7 @@ function AnimatedRoutes() {
                 <Route path="/" element={<PageTransition><Homepage /></PageTransition>} />
                 <Route path="/gco" element={<PageTransition><GCOPage /></PageTransition>} />
                 <Route path="/contact" element={<PageTransition><ContactPage /></PageTransition>} />
+                <Route path="/ateion" element={<PageTransition><AteionPage /></PageTransition>} />
                 <Route path="/register-volunteer" element={<PageTransition><VolunteerRegistrationPage /></PageTransition>} />
                 <Route path="/gco/login" element={<PageTransition><GCOLoginPage /></PageTransition>} />
                 <Route path="/gco/register-student" element={<PageTransition><GCORegisterStudentPage /></PageTransition>} />
