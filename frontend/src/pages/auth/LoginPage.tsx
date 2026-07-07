@@ -92,7 +92,11 @@ export default function LoginPage({ closeLogin, initialTab }: any) {
     }
   };
   const backendUrl =
-  import.meta.env.VITE_BACKEND_URL || "http://localhost:8080";
+      import.meta.env.VITE_BACKEND_URL ||
+      import.meta.env.VITE_API_BASE_URL?.replace(/\/api$/, "") ||
+      (import.meta.env.DEV
+          ? "http://localhost:8080"
+          : "https://ateion-updated-1.onrender.com");
 
 const handleSocialLogin = (provider: string) => {
   if (!formData.ageSegment) {
