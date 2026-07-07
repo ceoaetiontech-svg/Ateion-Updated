@@ -225,44 +225,6 @@ const techCategories = [
   },
 ];
 
-const ecosystemNodes = [
-  {
-    id: "gco",
-    name: "Global Capability Olympiad (GCO)",
-    icon: Trophy,
-    color: "#6366f1",
-    path: "/gco",
-    desc: "Syllabus-free capability evaluations measuring advanced thinking, logic, and reasoning in students globally.",
-    benefits: ["Syllabus-Free Design", "Pressure-Tested Scoring", "Global Benchmark Rankings"],
-  },
-  {
-    id: "psychometric",
-    name: "Psychometric Assessment",
-    icon: ClipboardCheck,
-    color: "#f59e0b",
-    path: "/psychometric-assessment",
-    desc: "Scientific evaluation pathways defining cognitive styles, intelligence types, and problem-solving readiness.",
-    benefits: ["Adaptive Leveling", "Cognitive Style Identification", "Institutional Reports"],
-  },
-  {
-    id: "playground",
-    name: "Ateion PlayGround",
-    icon: Gamepad2,
-    color: "#06b6d4",
-    path: "/playground",
-    desc: "Gamified simulation modules and coding playgrounds where students apply skills in high-energy interactive labs.",
-    benefits: ["Real-world Scenarios", "Coding & Design Sandboxes", "Instant Code Sandbox Outputs"],
-  },
-  {
-    id: "dashboard",
-    name: "Learner Dashboard",
-    icon: LayoutDashboard,
-    color: "#E8856A",
-    path: "/dashboard",
-    desc: "Comprehensive analytics portal showing real-time growth indicators, capability index history, and verified digital certificates.",
-    benefits: ["Verified Capabilities", "Telemetry Tracking", "Automated Certification Logs"],
-  },
-];
 
 const containerVariants = {
   hidden: {},
@@ -278,7 +240,6 @@ export default function AteionPage() {
   const [activeStep, setActiveStep] = useState(0);
   const [activeTab, setActiveTab] = useState("frontend");
   const [hoveredTech, setHoveredTech] = useState<any>(null);
-  const [selectedEcosystemNode, setSelectedEcosystemNode] = useState(0);
 
   // Setup initial hovered tech
   useEffect(() => {
@@ -395,151 +356,6 @@ export default function AteionPage() {
               <div className="text-xs md:text-sm font-bold uppercase tracking-widest text-[var(--color-text-secondary)]">AI Solutions Deployed</div>
             </div>
           </motion.div>
-        </section>
-
-        {/* INTERACTIVE ECOSYSTEM MAP SECTION */}
-        <section className="relative z-10 px-4 max-w-[var(--max-width)] mx-auto mb-16">
-          <div className="text-center mb-16">
-            <h2
-              className="text-4xl md:text-5xl font-black tracking-tight"
-              style={{ fontFamily: "var(--font-display)" }}
-            >
-              The Ateion <span className="text-[var(--color-accent)]">Ecosystem</span>
-            </h2>
-            <div className="h-[2px] w-20 bg-[var(--color-accent)] mx-auto mt-4 mb-2" />
-            <p className="text-[var(--color-text-secondary)] max-w-xl mx-auto text-base">
-              A fully integrated capability-first education model connecting Olympiads, scientific assessments, simulation playgrounds, and growth telemetry.
-            </p>
-          </div>
-
-          <div className="grid lg:grid-cols-12 gap-8 items-stretch">
-            {/* Desktop Center Visualization Map (Left/Center - 7 cols) */}
-            <div className="lg:col-span-7 flex flex-col justify-center items-center">
-              <div
-                onMouseMove={handleMouseMove}
-                className="glass-bento-card p-6 rounded-3xl w-full flex items-center justify-center relative min-h-[440px] overflow-hidden bg-gradient-to-br from-transparent to-[var(--color-accent-light)]/5"
-              >
-                {/* SVG Connections with animated dashoffset flows */}
-                <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 400" fill="none">
-                  {/* Lines from center (200, 200) to quadrant nodes */}
-                  <path d="M 200 200 L 80 80" stroke="var(--color-border-medium)" strokeWidth="2" opacity="0.3" />
-                  <path d="M 200 200 L 320 80" stroke="var(--color-border-medium)" strokeWidth="2" opacity="0.3" />
-                  <path d="M 200 200 L 80 320" stroke="var(--color-border-medium)" strokeWidth="2" opacity="0.3" />
-                  <path d="M 200 200 L 320 320" stroke="var(--color-border-medium)" strokeWidth="2" opacity="0.3" />
-
-                  {/* Flowing animated glow dashes */}
-                  <path d="M 200 200 L 80 80" stroke="#6366f1" strokeWidth="2" className="flowing-line" strokeLinecap="round" />
-                  <path d="M 200 200 L 320 80" stroke="#f59e0b" strokeWidth="2" className="flowing-line" strokeLinecap="round" />
-                  <path d="M 200 200 L 80 320" stroke="#06b6d4" strokeWidth="2" className="flowing-line" strokeLinecap="round" />
-                  <path d="M 200 200 L 320 320" stroke="#E8856A" strokeWidth="2" className="flowing-line" strokeLinecap="round" />
-                </svg>
-
-                {/* Central Core Hub (Ateion Core) */}
-                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10 text-center">
-                  <div className="w-20 h-20 rounded-full bg-[var(--color-primary)] text-white dark:bg-white dark:text-[var(--color-primary)] flex items-center justify-center shadow-2xl border-4 border-[var(--color-background-primary)] ecosystem-center-glow">
-                    <Building2 className="w-10 h-10 text-[var(--color-accent)] animate-pulse" />
-                  </div>
-                  <span className="block mt-2.5 text-xs font-black uppercase tracking-widest text-[var(--color-text-primary)] bg-[var(--color-background-secondary)]/80 px-2 py-0.5 rounded-full backdrop-blur-sm">Ateion Core</span>
-                </div>
-
-                {/* surrounding Nodes */}
-                {ecosystemNodes.map((node, idx) => {
-                  const NodeIcon = node.icon;
-                  const isSelected = idx === selectedEcosystemNode;
-
-                  // Define positions (quadrant coordinates on a 400x400 grid)
-                  const positions = [
-                    { top: "12%", left: "12%", x: 80, y: 80 },    // Top-Left (GCO)
-                    { top: "12%", right: "12%", x: 320, y: 80 },  // Top-Right (Psychometric)
-                    { bottom: "12%", left: "12%", x: 80, y: 320 }, // Bottom-Left (Playground)
-                    { bottom: "12%", right: "12%", x: 320, y: 320 },// Bottom-Right (Dashboard)
-                  ];
-
-                  return (
-                    <div
-                      key={node.id}
-                      className="absolute transition-all duration-300 z-20"
-                      style={{
-                        top: positions[idx].top,
-                        left: positions[idx].left,
-                        right: positions[idx].right,
-                        bottom: positions[idx].bottom,
-                      }}
-                    >
-                      <button
-                        type="button"
-                        onClick={() => setSelectedEcosystemNode(idx)}
-                        className={`w-14 h-14 rounded-full flex items-center justify-center transition-all ${
-                          isSelected
-                            ? "scale-110 shadow-lg border-4 border-white dark:border-[var(--color-primary)]"
-                            : "bg-[var(--color-background-secondary)] text-[var(--color-text-secondary)] border border-[var(--color-border-light)] hover:scale-105 animate-pulse"
-                        }`}
-                        style={isSelected ? { backgroundColor: node.color, color: "#fff" } : {}}
-                      >
-                        <NodeIcon className="w-6 h-6" />
-                      </button>
-                      <span className={`block text-center text-[10px] font-black uppercase mt-1.5 tracking-wider px-2 py-0.5 rounded-full backdrop-blur-sm bg-[var(--color-background-secondary)]/80 ${
-                        isSelected ? "text-[var(--color-text-primary)]" : "text-[var(--color-text-secondary)]"
-                      }`}>
-                        {node.id.toUpperCase()}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Node Detail Card (Right - 5 cols) */}
-            <div className="lg:col-span-5 flex flex-col">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={selectedEcosystemNode}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -20 }}
-                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                  onMouseMove={handleMouseMove}
-                  className="glass-bento-card p-6 md:p-8 rounded-3xl flex-1 flex flex-col justify-between"
-                  style={{ borderLeft: `4px solid ${ecosystemNodes[selectedEcosystemNode].color}` }}
-                >
-                  <div>
-                    <span
-                      className="text-xs font-black uppercase tracking-widest px-3 py-1 rounded-full bg-[var(--color-accent-light)] text-[var(--color-accent)] inline-block mb-4"
-                      style={{ color: ecosystemNodes[selectedEcosystemNode].color, backgroundColor: `${ecosystemNodes[selectedEcosystemNode].color}15` }}
-                    >
-                      Ecosystem Node
-                    </span>
-                    <h3 className="text-2xl font-black text-[var(--color-text-primary)] mb-4">{ecosystemNodes[selectedEcosystemNode].name}</h3>
-                    <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mb-6">
-                      {ecosystemNodes[selectedEcosystemNode].desc}
-                    </p>
-
-                    <div className="border-t border-[var(--color-border-light)] pt-6">
-                      <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-tertiary)] mb-3">Capabilities & Features</h4>
-                      <ul className="space-y-2.5">
-                        {ecosystemNodes[selectedEcosystemNode].benefits.map((b) => (
-                          <li key={b} className="flex items-center gap-2.5 text-xs text-[var(--color-text-secondary)]">
-                            <CheckCircle2 className="w-4 h-4 shrink-0" style={{ color: ecosystemNodes[selectedEcosystemNode].color }} />
-                            <span>{b}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-
-                  <div className="mt-8 pt-4 border-t border-[var(--color-border-light)]">
-                    <a
-                      href={ecosystemNodes[selectedEcosystemNode].path}
-                      className="btn-primary inline-flex items-center gap-2 px-6 py-3 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm transition-all"
-                      style={{ backgroundColor: ecosystemNodes[selectedEcosystemNode].color, color: "#fff" }}
-                    >
-                      Explore Hub <ArrowRight className="w-4 h-4" />
-                    </a>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-            </div>
-          </div>
         </section>
 
         {/* SERVICES SECTION */}

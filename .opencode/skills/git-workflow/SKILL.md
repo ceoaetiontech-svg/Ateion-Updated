@@ -29,6 +29,8 @@ description: |-
 
 # Git Workflow Assistant
 
+> **Read this entire file before running any command from it.** This file is long by design — every section exists because of a real failure mode, including one where a partial read of this exact file (a 50-line truncation that cut off mid–Section 1) caused a commit to go out without fetching first. If the tool reading this file applies a default line or token limit, re-read with that limit raised or removed before acting. Do not treat a partial read as sufficient just because it reached a numbered step that looked like an instruction to act on — Sections 2, 6, 9, 10, and 11 contain hard gates that a truncated read will never see.
+
 ## Scope and ground rules
 
 This skill handles git mechanics — inspecting diffs, staging, drafting commit messages, pushing, and resolving conflicts. It does **not** rewrite or "clean up" the substantive content of the file(s) being committed as a side effect of a git task. If something about a file's content looks off while running this workflow (a false-positive scan hit, a stray line, anything), say so and ask the user — an unrequested edit is itself the kind of mistake this skill exists to prevent, not a fix for one.
@@ -40,6 +42,8 @@ This skill handles git mechanics — inspecting diffs, staging, drafting commit 
 ## 1. Before committing or pushing: check branch is up to date
 
 Always run this check before staging a commit or pushing, so stale local state — and a stale view of what teammates have done — doesn't cause surprises later.
+
+**Never treat `git status`'s "up to date with origin/..." message as sufficient by itself.** That message reflects state as of the last fetch — which could be minutes or days old — not the live remote. Seeing it say "up to date" is not evidence of anything current; only a `git fetch origin` run immediately beforehand actually is. Skipping the fetch because status already looked fine is the single most common way this entire check gets accidentally bypassed — treat "fetch first, every time" as non-negotiable, not conditional on how confident the cached status looks, and not skippable just because the push is likely to be small or the user seems in a hurry.
 
 On a shared project, there are **two independent things that can be behind**, and having one doesn't mean you can skip checking the other:
 - Your own branch's remote (a teammate pushed more commits to the *same* branch you're both working on)
