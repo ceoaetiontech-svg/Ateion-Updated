@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   User, Mail, Phone, Lock, Eye, EyeOff, Calendar, School, Globe,
   ChevronRight, GraduationCap, Trophy, CheckCircle, Rocket, Heart,
+  Building2, Upload, Wifi, Hash, Users, Monitor, FileCheck, ClipboardCheck,
 } from "lucide-react";
 import GCONavbar from "../../app/components/GCONavbar";
 import SharedFooter from "../../app/components/SharedFooter";
@@ -37,7 +38,13 @@ export default function GCORegisterStudentPage() {
   const [form, setForm] = useState({
     fullName: "", email: "", mobile: "", password: "", confirmPassword: "",
     dob: "", gender: "",
+    udiseNumber: "", studentStrength: "", numberOfComputers: "", wifiAvailable: "",
+    previousOlympiadExp: "",
+    udiseProof: null as File | null, boardAffiliation: null as File | null,
+    schoolAddressProof: null as File | null, infrastructureProof: null as File | null,
     ageGroup: "", schoolName: "", classGrade: "", board: "", city: "", state: "", country: "India",
+    agreementPartnership: false, agreementNDA: false, agreementFinancial: false, agreementDataProtection: false,
+    qcChecklist: [] as string[],
     subjects: [] as string[], previousExperience: "",
   });
 
@@ -47,6 +54,13 @@ export default function GCORegisterStudentPage() {
     setForm(f => ({
       ...f,
       subjects: f.subjects.includes(s) ? f.subjects.filter(x => x !== s) : [...f.subjects, s],
+    }));
+  };
+
+  const toggleQcItem = (s: string) => {
+    setForm(f => ({
+      ...f,
+      qcChecklist: f.qcChecklist.includes(s) ? f.qcChecklist.filter(x => x !== s) : [...f.qcChecklist, s],
     }));
   };
 
@@ -221,6 +235,79 @@ export default function GCORegisterStudentPage() {
                                   {GENDERS.map(g => <option key={g} value={g}>{g}</option>)}
                                 </select>
                               </div>
+
+                              {/* UDISE Number */}
+                              <div className="gco-reg-field">
+                                <label className="gco-reg-label">UDISE Number <span className="required">*</span></label>
+                                <div className="gco-reg-input-wrap">
+                                  <span className="gco-reg-input-icon"><Hash size={15} /></span>
+                                  <input className="gco-reg-input" type="text" placeholder="e.g. 21070300101" required
+                                    value={form.udiseNumber} onChange={e => setField("udiseNumber", e.target.value)} />
+                                </div>
+                              </div>
+
+                              {/* Student Strength */}
+                              <div className="gco-reg-field">
+                                <label className="gco-reg-label">Student Strength <span className="required">*</span></label>
+                                <div className="gco-reg-input-wrap">
+                                  <span className="gco-reg-input-icon"><Users size={15} /></span>
+                                  <input className="gco-reg-input" type="number" placeholder="e.g. 1200" required min="1"
+                                    value={form.studentStrength} onChange={e => setField("studentStrength", e.target.value)} />
+                                </div>
+                              </div>
+
+                              {/* No. of Computers */}
+                              <div className="gco-reg-field">
+                                <label className="gco-reg-label">No. of Computers <span className="required">*</span></label>
+                                <div className="gco-reg-input-wrap">
+                                  <span className="gco-reg-input-icon"><Monitor size={15} /></span>
+                                  <input className="gco-reg-input" type="number" placeholder="e.g. 30" required min="0"
+                                    value={form.numberOfComputers} onChange={e => setField("numberOfComputers", e.target.value)} />
+                                </div>
+                              </div>
+
+                              {/* WiFi Available */}
+                              <div className="gco-reg-field">
+                                <label className="gco-reg-label">WiFi Available <span className="required">*</span></label>
+                                <div className="gco-reg-radio-group">
+                                  {["Yes", "No"].map(opt => (
+                                    <div key={opt}
+                                      className={`gco-reg-radio-pill ${form.wifiAvailable === opt ? "selected" : ""}`}
+                                      onClick={() => setField("wifiAvailable", opt)}>
+                                      <Wifi size={14} style={{ marginRight: 4 }} /> {opt}
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+
+                              {/* Previous Olympiad Experience */}
+                              <div className="gco-reg-field gco-reg-full">
+                                <label className="gco-reg-label">Previous Olympiad Experience <span style={{ fontSize: 11, opacity: 0.5 }}>(optional)</span></label>
+                                <input className="gco-reg-input" type="text" placeholder="e.g. NSO Level 2 – 2024"
+                                  value={form.previousOlympiadExp} onChange={e => setField("previousOlympiadExp", e.target.value)} />
+                              </div>
+                            </div>
+
+                            {/* Upload Documents */}
+                            <div className="gco-reg-form-section-label" style={{ marginTop: 28 }}>Upload Documents <span className="required">*</span></div>
+                            <div className="gco-reg-grid">
+                              {[
+                                { key: "udiseProof" as const, label: "UDISE Proof" },
+                                { key: "boardAffiliation" as const, label: "Board Affiliation" },
+                                { key: "schoolAddressProof" as const, label: "School Address Proof" },
+                                { key: "infrastructureProof" as const, label: "Infrastructure Proof" },
+                              ].map(doc => (
+                                <div key={doc.key} className="gco-reg-field">
+                                  <label className="gco-reg-label">{doc.label}</label>
+                                  <label className="gco-reg-upload" style={{ cursor: "pointer" }}>
+                                    <input type="file" accept=".pdf,.jpg,.jpeg,.png" style={{ display: "none" }}
+                                      onChange={e => setField(doc.key, e.target.files?.[0] ?? null)} />
+                                    <div className="gco-reg-upload-icon"><Upload size={24} /></div>
+                                    <p>{form[doc.key] ? (form[doc.key] as File).name : "Click to upload"}</p>
+                                    <span>PDF, JPG or PNG</span>
+                                  </label>
+                                </div>
+                              ))}
                             </div>
                           </div>
 
@@ -301,7 +388,63 @@ export default function GCORegisterStudentPage() {
                             </div>
                           </div>
 
-                          <div className="gco-reg-btn-row">
+                          {/* Agreement Section */}
+                          <div className="gco-reg-form-section">
+                            <div className="gco-reg-section-header">
+                              <div className="gco-reg-section-icon"><FileCheck size={18} /></div>
+                              <div>
+                                <p className="gco-reg-section-title">Agreements</p>
+                                <p className="gco-reg-section-desc">Please review and accept the following</p>
+                              </div>
+                            </div>
+                            <div style={{ display: "grid", gap: 12, marginTop: 16 }}>
+                              {[
+                                { key: "agreementPartnership" as const, label: "Partnership Agreement" },
+                                { key: "agreementNDA" as const, label: "Non-Disclosure Agreement (NDA)" },
+                                { key: "agreementFinancial" as const, label: "Financial Agreement" },
+                                { key: "agreementDataProtection" as const, label: "Data Protection Agreement" },
+                              ].map(item => (
+                                <div key={item.key}
+                                  className={`gco-reg-check-item ${form[item.key] ? "selected" : ""}`}
+                                  onClick={() => setField(item.key, !form[item.key])}
+                                  style={{ padding: "12px 16px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.07)", background: "rgba(255,255,255,0.03)", cursor: "pointer" }}>
+                                  <div className="gco-reg-check-box">
+                                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                                      <path d="M1.5 5L3.8 7.5L8.5 2.5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                  </div>
+                                  <span className="gco-reg-check-label">{item.label}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* QC Checklist */}
+                          <div className="gco-reg-form-section" style={{ marginTop: 24 }}>
+                            <div className="gco-reg-section-header">
+                              <div className="gco-reg-section-icon"><ClipboardCheck size={18} /></div>
+                              <div>
+                                <p className="gco-reg-section-title">QC Checklist</p>
+                                <p className="gco-reg-section-desc">Quality checks completed</p>
+                              </div>
+                            </div>
+                            <div className="gco-reg-check-grid" style={{ marginTop: 16 }}>
+                              {["Document Verification", "School Registration Valid", "Infrastructure Verified", "Student Eligibility Confirmed", "Board Affiliation Verified"].map(item => (
+                                <div key={item}
+                                  className={`gco-reg-check-item ${form.qcChecklist.includes(item) ? "selected" : ""}`}
+                                  onClick={() => toggleQcItem(item)}>
+                                  <div className="gco-reg-check-box">
+                                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                                      <path d="M1.5 5L3.8 7.5L8.5 2.5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                  </div>
+                                  <span className="gco-reg-check-label">{item}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          <div className="gco-reg-btn-row" style={{ marginTop: 24 }}>
                             <button type="button" className="gco-reg-back-btn" onClick={handleBack}>← Back</button>
                             <button type="button" className="gco-reg-submit" onClick={handleNext}>
                               Continue to Olympiad Details <ChevronRight size={16} style={{ marginLeft: 6, display: "inline" }} />
@@ -378,11 +521,25 @@ export default function GCORegisterStudentPage() {
                               { label: "Mobile", value: form.mobile },
                               { label: "Date of Birth", value: form.dob },
                               { label: "Gender", value: form.gender },
+                              { label: "UDISE Number", value: form.udiseNumber },
+                              { label: "Student Strength", value: form.studentStrength },
+                              { label: "No. of Computers", value: form.numberOfComputers },
+                              { label: "WiFi Available", value: form.wifiAvailable },
+                              { label: "Previous Olympiad Experience", value: form.previousOlympiadExp || "—" },
+                              { label: "UDISE Proof", value: form.udiseProof ? form.udiseProof.name : "—" },
+                              { label: "Board Affiliation", value: form.boardAffiliation ? form.boardAffiliation.name : "—" },
+                              { label: "School Address Proof", value: form.schoolAddressProof ? form.schoolAddressProof.name : "—" },
+                              { label: "Infrastructure Proof", value: form.infrastructureProof ? form.infrastructureProof.name : "—" },
                               { label: "Age Group", value: form.ageGroup },
                               { label: "School / College", value: form.schoolName },
                               { label: "Class / Grade", value: form.classGrade },
                               { label: "Board", value: form.board },
                               { label: "Location", value: `${form.city}, ${form.state}, ${form.country}` },
+                              { label: "Partnership Agreement", value: form.agreementPartnership ? "Accepted" : "Not accepted" },
+                              { label: "NDA", value: form.agreementNDA ? "Accepted" : "Not accepted" },
+                              { label: "Financial Agreement", value: form.agreementFinancial ? "Accepted" : "Not accepted" },
+                              { label: "Data Protection Agreement", value: form.agreementDataProtection ? "Accepted" : "Not accepted" },
+                              { label: "QC Checklist", value: form.qcChecklist.join(", ") || "—" },
                               { label: "Subjects", value: form.subjects.join(", ") || "—" },
                               { label: "Experience", value: form.previousExperience || "—" },
                             ].map(row => (
