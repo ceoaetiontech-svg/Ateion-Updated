@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   User, Mail, Phone, Lock, Eye, EyeOff, Calendar, School, Globe,
   ChevronRight, GraduationCap, Trophy, CheckCircle, Rocket, Heart,
-  Building2, Upload, Wifi, Hash, Users, Monitor, FileCheck, ClipboardCheck,
+  Building2, Upload, Wifi, Hash, Users, Monitor, FileCheck, ClipboardCheck, FileText, X,
 } from "lucide-react";
 import GCONavbar from "../../app/components/GCONavbar";
 import SharedFooter from "../../app/components/SharedFooter";
@@ -34,6 +34,7 @@ export default function GCORegisterStudentPage() {
   const [showPw, setShowPw] = useState(false);
   const [showConfirmPw, setShowConfirmPw] = useState(false);
   const [termsChecked, setTermsChecked] = useState(false);
+  const [previews, setPreviews] = useState<Record<string, string>>({});
 
   const [form, setForm] = useState({
     fullName: "", email: "", mobile: "", password: "", confirmPassword: "",
@@ -49,6 +50,17 @@ export default function GCORegisterStudentPage() {
   });
 
   const setField = (key: keyof typeof form, val: any) => setForm(f => ({ ...f, [key]: val }));
+
+  const handleFileUpload = (key: keyof typeof form, file: File | null) => {
+    if (previews[key]) URL.revokeObjectURL(previews[key]);
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setPreviews(p => ({ ...p, [key]: url }));
+    } else {
+      setPreviews(p => { const n = { ...p }; delete n[key]; return n; });
+    }
+    setField(key, file);
+  };
 
   const toggleSubject = (s: string) => {
     setForm(f => ({
@@ -242,6 +254,7 @@ export default function GCORegisterStudentPage() {
                                 <div className="gco-reg-input-wrap">
                                   <span className="gco-reg-input-icon"><Hash size={15} /></span>
                                   <input className="gco-reg-input" type="text" placeholder="e.g. 21070300101" required
+                                    maxLength={11} pattern="\d{11}" title="UDISE Number must be exactly 11 digits"
                                     value={form.udiseNumber} onChange={e => setField("udiseNumber", e.target.value)} />
                                 </div>
                               </div>
@@ -261,7 +274,7 @@ export default function GCORegisterStudentPage() {
                                 <label className="gco-reg-label">No. of Computers <span className="required">*</span></label>
                                 <div className="gco-reg-input-wrap">
                                   <span className="gco-reg-input-icon"><Monitor size={15} /></span>
-                                  <input className="gco-reg-input" type="number" placeholder="e.g. 30" required min="0"
+                                  <input className="gco-reg-input" type="number" placeholder="e.g. 30" required min="0" max="5000" title="Maximum 5000 computers"
                                     value={form.numberOfComputers} onChange={e => setField("numberOfComputers", e.target.value)} />
                                 </div>
                               </div>
@@ -296,18 +309,52 @@ export default function GCORegisterStudentPage() {
                                 { key: "boardAffiliation" as const, label: "Board Affiliation" },
                                 { key: "schoolAddressProof" as const, label: "School Address Proof" },
                                 { key: "infrastructureProof" as const, label: "Infrastructure Proof" },
-                              ].map(doc => (
-                                <div key={doc.key} className="gco-reg-field">
-                                  <label className="gco-reg-label">{doc.label}</label>
-                                  <label className="gco-reg-upload" style={{ cursor: "pointer" }}>
-                                    <input type="file" accept=".pdf,.jpg,.jpeg,.png" style={{ display: "none" }}
-                                      onChange={e => setField(doc.key, e.target.files?.[0] ?? null)} />
-                                    <div className="gco-reg-upload-icon"><Upload size={24} /></div>
-                                    <p>{form[doc.key] ? (form[doc.key] as File).name : "Click to upload"}</p>
-                                    <span>PDF, JPG or PNG</span>
-                                  </label>
-                                </div>
-                              ))}
+                              ].map(doc => {
+                                const file = form[doc.key] as File | null;
+                                const previewUrl = previews[doc.key];
+                                const isImage = file?.type.startsWith("image/");
+                                return (
+                                  <div key={doc.key} className="gco-reg-field">
+                                    <label className="gco-reg-label">{doc.label}</label>
+                                    {file && previewUrl ? (
+                                      <div style={{
+                                        border: "1px solid rgba(255,255,255,0.10)", borderRadius: 10,
+                                        overflow: "hidden", position: "relative", background: "rgba(255,255,255,0.03)",
+                                      }}>
+                                        {isImage ? (
+                                          <img src={previewUrl} alt={doc.label}
+                                            style={{ width: "100%", height: 140, objectFit: "cover", display: "block" }} />
+                                        ) : (
+                                          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: 140, flexDirection: "column", gap: 6 }}>
+                                            <FileText size={32} style={{ color: "#e8856a" }} />
+                                            <span style={{ fontSize: 12, color: "rgba(241,240,250,0.6)" }}>{file.name}</span>
+                                          </div>
+                                        )}
+                                        <button type="button" onClick={() => handleFileUpload(doc.key, null)}
+                                          style={{
+                                            position: "absolute", top: 6, right: 6, background: "rgba(0,0,0,0.6)",
+                                            border: "none", borderRadius: "50%", width: 24, height: 24,
+                                            display: "flex", alignItems: "center", justifyContent: "center",
+                                            cursor: "pointer", color: "white",
+                                          }}>
+                                          <X size={14} />
+                                        </button>
+                                        <div style={{ padding: "8px 12px", fontSize: 12, color: "rgba(241,240,250,0.5)", borderTop: "1px solid rgba(255,255,255,0.07)" }}>
+                                          {file.name}
+                                        </div>
+                                      </div>
+                                    ) : (
+                                      <label className="gco-reg-upload" style={{ cursor: "pointer" }}>
+                                        <input type="file" accept=".pdf,.jpg,.jpeg,.png" style={{ display: "none" }}
+                                          onChange={e => handleFileUpload(doc.key, e.target.files?.[0] ?? null)} />
+                                        <div className="gco-reg-upload-icon"><Upload size={24} /></div>
+                                        <p>Click to upload</p>
+                                        <span>PDF, JPG or PNG</span>
+                                      </label>
+                                    )}
+                                  </div>
+                                );
+                              })}
                             </div>
                           </div>
 
