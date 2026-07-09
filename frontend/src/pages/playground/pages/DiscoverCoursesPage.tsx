@@ -173,8 +173,10 @@ export default function DiscoverCoursesPage() {
 
   const hasFilters = selectedLevels.length > 0 || selectedDurations.length > 0 || selectedRatings.length > 0 || selectedTopics.length > 0 || priceFilter !== "all";
 
-  const openProtectedCourse = useCallback((courseId: number) => {
-    if (!localStorage.getItem("token")) {
+  const openProtectedCourse = useCallback((courseId: number, isFree?: boolean) => {
+    // Only gate paid courses behind login. Free courses should open directly
+    // for guests as well.
+    if (!isFree && !localStorage.getItem("token")) {
       window.dispatchEvent(new CustomEvent("open-login"));
       return;
     }
@@ -380,18 +382,18 @@ export default function DiscoverCoursesPage() {
                     >
                       <CoursePreviewPopover
                           course={course}
-                          onReadMore={() => openProtectedCourse(course.id)}
+                          onReadMore={() => openProtectedCourse(course.id, course.isFree)}
                           onPreview={() => openPublicPreview(course.previewModuleId)}
                           onSave={() => toggleSave(course.id)}
                           isSaved={savedIds.includes(course.id)}
                       >
                         <div
-                            onClick={() => openProtectedCourse(course.id)}
+                            onClick={() => openProtectedCourse(course.id, course.isFree)}
                             className={`w-full cursor-pointer h-full transition-transform hover:-translate-y-1 flex flex-col group ${activeTheme.cardClass}`}
                         >
                           <CoursePreviewCard
                               course={course}
-                              onReadMore={() => openProtectedCourse(course.id)}
+                              onReadMore={() => openProtectedCourse(course.id, course.isFree)}
                               onPreview={() => openPublicPreview(course.previewModuleId)}
                               accentColor={activeTheme.accent}
                               tourId={index === 0 ? "discover-preview-course" : undefined}
