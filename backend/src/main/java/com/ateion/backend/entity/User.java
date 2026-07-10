@@ -43,6 +43,13 @@ public class User {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+   @Builder.Default
+    @Column(name = "failed_login_attempts")
+    private int failedLoginAttempts = 0;
+
+    @Column(name = "lock_time")
+    private LocalDateTime lockTime;
+
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role));
     }
