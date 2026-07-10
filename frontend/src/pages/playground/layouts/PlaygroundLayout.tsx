@@ -432,11 +432,6 @@ function PlaygroundInner() {
 
                       <NotificationDropdown />
 
-                      <div className="hidden xl:flex items-center gap-2 bg-[var(--color-accent)] text-[var(--color-text-inverse)] px-4 py-1.5 rounded-full text-xs font-bold shadow-[0_2px_10px_var(--color-accent-light)] hover:shadow-[0_4px_15px_var(--color-accent)] hover:-translate-y-0.5 transition-all duration-300 cursor-default group">
-                        <User size={14} className="group-hover:animate-bounce" />
-                        <span>{userProfile.segmentText}</span>
-                      </div>
-
 
                     </div>
                   </header>
