@@ -60,15 +60,12 @@ function GcoFeatureBadge({
               <span className="text-[12px] font-bold uppercase tracking-[0.2em] text-[var(--color-accent)]">
                 Featured Module
               </span>
-              <div className="flex items-center gap-3 w-full">
-                <div className="w-[3px] h-[28px] rounded-full shrink-0" style={{ background: accentColor }} />
-                <p
-                  className="font-bold leading-[1.15] tracking-[-0.03em] not-italic text-[26px] sm:text-[30px] text-[var(--color-text-primary)] w-full"
-                  style={{ fontFamily: "var(--font-display)" }}
-                >
-                  {activeData.title}
-                </p>
-              </div>
+              <p
+                className="font-bold leading-[1.15] tracking-[-0.03em] not-italic text-[26px] sm:text-[30px] text-[var(--color-text-primary)] w-full"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                {activeData.title}
+              </p>
               <p className="font-['Manrope',sans-serif] text-[15px] sm:text-[16px] text-[var(--color-text-muted)] leading-relaxed pr-2">
                 {activeData.description}
               </p>

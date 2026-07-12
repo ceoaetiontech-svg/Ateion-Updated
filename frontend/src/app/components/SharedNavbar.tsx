@@ -287,18 +287,13 @@ function ResourcesBtn({ onClick }: { onClick?: () => void }) {
       variant="default"
       isActive={isActive}
       tourId="main-playground-nav"
-      style={{
-        background: "linear-gradient(135deg, #2b244f 0%, #d66f55 58%, #ff9b82 100%)",
-        border: "none",
-        color: "#fff",
-      }}
       onClick={() => {
         if (onClick) onClick();
-        navigate("/playground");
+        navigate("/dashboard");
       }}
     >
       <span className={`${navTextClass}`}>
-        PlayGround
+        Dashboard
       </span>
     </NavButton>
   );
@@ -338,19 +333,24 @@ function DashboardBtn({
 }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const isActive = location.pathname.startsWith("/dashboard");
+  const isActive = location.pathname.startsWith("/playground");
 
   return (
     <NavButton
       variant="default"
       isActive={isActive}
+      style={{
+        background: "linear-gradient(135deg, #2b244f 0%, #d66f55 58%, #ff9b82 100%)",
+        border: "none",
+        color: "#fff",
+      }}
       onClick={() => {
         if (onClick) onClick();
-        navigate("/dashboard");
+        navigate("/playground");
       }}
     >
       <span className={`${navTextClass}`}>
-        Dashboard
+        PlayGround
       </span>
     </NavButton>
   );
@@ -366,10 +366,10 @@ const NAV_BUTTONS = [
 
 const MOBILE_NAV_LINKS = [
   { label: "Home", path: "/", icon: Home },
-  { label: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
+  { label: "PlayGround", path: "/dashboard", icon: LayoutDashboard },
   { label: "Global Capability Olympiad", path: "/gco", icon: Trophy },
   { label: "Psychometric Test", path: "/psychometric-assessment", icon: ClipboardCheck },
-  { label: "PlayGround", path: "/playground", icon: Gamepad2 },
+  { label: "Dashboard", path: "/playground", icon: Gamepad2 },
   { label: "Ateion", path: "/ateion", icon: Users },
 ] as const;
 
@@ -394,12 +394,6 @@ function NavLinks({ onCloseMobile }: { onCloseMobile?: () => void }) {
 
   return (
     <div ref={containerRef} className="flex gap-[4px] xl:gap-[16px] items-center shrink-0 relative">
-      <motion.div
-        className="absolute bottom-[-2px] h-[3px] bg-[var(--color-accent)] rounded-full z-10"
-        animate={{ left: underlinePos.left, width: underlinePos.width, opacity: underlinePos.width > 0 ? 1 : 0 }}
-        transition={{ type: "spring", stiffness: 400, damping: 30 }}
-        style={{ pointerEvents: "none" }}
-      />
       {NAV_BUTTONS.map((Btn, i) => (
         <Btn key={i} onClick={onCloseMobile} />
       ))}
