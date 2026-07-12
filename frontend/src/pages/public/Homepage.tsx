@@ -684,19 +684,6 @@ export function EducationStatusWrapper() {
         onMouseEnter={(e) => e.currentTarget.style.boxShadow = "0 20px 48px rgba(26,24,51,0.06), 0 2px 8px rgba(26,24,51,0.03)"}
         onMouseLeave={(e) => e.currentTarget.style.boxShadow = "0 10px 30px rgba(26,24,51,0.03), 0 1px 4px rgba(26,24,51,0.015)"}
       >
-        {/* Coral accent bar */}
-        <div
-          style={{
-            position: "absolute",
-            left: 0,
-            top: 0,
-            bottom: 0,
-            width: 5,
-            background: "linear-gradient(180deg, var(--color-accent), rgba(232,133,106,0.3))",
-            borderRadius: "0 3px 3px 0",
-          }}
-        />
-
         {/* Subtle corner glow */}
         <div
           style={{
@@ -796,12 +783,9 @@ export function EducationStatusWrapper() {
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full mt-[32px] sm:mt-[48px] gap-[20px] sm:gap-[64px] pb-[24px] sm:pb-[32px]">
-          <div className="flex items-start gap-4 flex-1">
-            <div className="w-1 h-12 rounded-full shrink-0 mt-1" style={{ backgroundColor: "var(--color-accent)" }} />
-            <p className="font-bold leading-[0.95] tracking-[-0.04em] text-[clamp(28px,5vw,48px)]" style={{ fontFamily: "var(--font-display)", color: "var(--color-text-primary)" }}>
-              Education is not broken.
-            </p>
-          </div>
+          <p className="font-bold leading-[0.95] tracking-[-0.04em] text-[clamp(28px,5vw,48px)] flex-1" style={{ fontFamily: "var(--font-display)", color: "var(--color-text-primary)" }}>
+            Education is not broken.
+          </p>
           <p className="leading-relaxed text-[15px] sm:text-[17px] text-[var(--color-text-muted)] flex-1" style={{ fontFamily: "var(--font-body)" }}>
             <span>{`Its measurement system is `}</span>
             <span className="font-bold" style={{ color: "var(--color-accent)" }}>outdated.</span>
@@ -875,15 +859,6 @@ function FAQItem({ question, answer, isOpen, toggle }: { question: string; answe
         boxShadow: isOpen ? "0 12px 28px -4px rgba(26,24,51,0.06)" : "0 2px 8px -2px rgba(26,24,51,0.03)",
       }}
     >
-      {/* Accent left bar */}
-      <motion.div
-        className="absolute left-0 top-0 bottom-0 w-[4px] rounded-r-full"
-        animate={{
-          background: isOpen ? "var(--color-accent)" : "var(--color-border-light)",
-        }}
-        transition={{ duration: 0.3 }}
-      />
-
       <button
         type="button"
         id={buttonId}
@@ -1005,7 +980,7 @@ export default function Homepage() {
   return (
     <div className="ateion-metallic-bg w-full min-h-screen flex flex-col" data-name="Homepage">
       <Helmet>
-        <title>Ateion — Reimagining Education with Capability-Based Learning</title>
+        <title>Ateion Reimagining Education with Capability-Based Learning</title>
         <meta name="description" content="Ateion is a capability-based education ecosystem that replaces memory-based assessment with real-world measurable skills." />
         <script type="application/ld+json">
           {`
