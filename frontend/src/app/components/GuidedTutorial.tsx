@@ -24,7 +24,7 @@ type TargetRect = {
 const steps: TourStep[] = [
   {
     route: "/",
-    selectors: ['[data-tour="main-playground-nav"]', '[data-tour="main-mobile-menu"]'],
+    selectors: ['[data-tour="main-playground-nav"]', '[data-tour="mobile-playground-nav"]', '[data-tour="main-mobile-menu"]'],
     title: "PlayGround",
     primaryLabel: "Next",
     nextRoute: "/playground",

@@ -168,7 +168,7 @@ const NavButton = memo(function NavButton({
       data-active={isActive}
       data-tour={tourId}
       style={style}
-      className={`clay-button nav-btn ${VARIANT_CLASSES[variant]} rounded-full flex h-[36px] items-center justify-center px-[12px] xl:px-[24px] shrink-0 cursor-pointer transition-colors relative`}
+      className={`clay-button nav-btn ${VARIANT_CLASSES[variant]} rounded-full flex h-[36px] items-center justify-center px-[10px] xl:px-[18px] shrink-0 cursor-pointer transition-colors relative`}
     >
       {children}
     </motion.div>
@@ -280,13 +280,12 @@ function GlobalOlympiadBtn({ onClick }: { onClick?: () => void }) {
 function ResourcesBtn({ onClick }: { onClick?: () => void }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const isActive = location.pathname.startsWith("/playground") || location.pathname.startsWith("/resources");
+  const isActive = location.pathname.startsWith("/dashboard");
 
   return (
     <NavButton
       variant="default"
       isActive={isActive}
-      tourId="main-playground-nav"
       onClick={() => {
         if (onClick) onClick();
         navigate("/dashboard");
@@ -339,6 +338,7 @@ function DashboardBtn({
     <NavButton
       variant="default"
       isActive={isActive}
+      tourId="main-playground-nav"
       style={{
         background: "linear-gradient(135deg, #2b244f 0%, #d66f55 58%, #ff9b82 100%)",
         border: "none",
@@ -366,10 +366,10 @@ const NAV_BUTTONS = [
 
 const MOBILE_NAV_LINKS = [
   { label: "Home", path: "/", icon: Home },
-  { label: "PlayGround", path: "/dashboard", icon: LayoutDashboard },
+  { label: "PlayGround", path: "/playground", icon: Gamepad2 },
   { label: "Global Capability Olympiad", path: "/gco", icon: Trophy },
   { label: "Psychometric Test", path: "/psychometric-assessment", icon: ClipboardCheck },
-  { label: "Dashboard", path: "/playground", icon: Gamepad2 },
+  { label: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
   { label: "Ateion", path: "/ateion", icon: Users },
 ] as const;
 
@@ -393,7 +393,7 @@ function NavLinks({ onCloseMobile }: { onCloseMobile?: () => void }) {
   }, [location]);
 
   return (
-    <div ref={containerRef} className="flex gap-[4px] xl:gap-[16px] items-center shrink-0 relative">
+    <div ref={containerRef} className="flex gap-[4px] xl:gap-[10px] items-center relative">
       {NAV_BUTTONS.map((Btn, i) => (
         <Btn key={i} onClick={onCloseMobile} />
       ))}
@@ -755,10 +755,10 @@ export default function SharedNavbar() {
       }`}>
 
         {/* LEFT SIDE */}
-        <div className="flex items-center justify-start">
+        <div className="flex items-center justify-start min-w-0 flex-1">
           <LogoContainer />
 
-          <div className="hidden lg:flex items-center ml-[8px] xl:ml-[32px] gap-[8px]">
+          <div className="hidden lg:flex items-center ml-[8px] xl:ml-[32px] gap-[8px] min-w-0">
             <NavLinks />
           </div>
         </div>
