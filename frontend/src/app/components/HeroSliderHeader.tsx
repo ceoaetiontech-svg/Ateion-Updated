@@ -178,48 +178,33 @@ export default function HeroSliderHeader({
       <NavbarSpacer />
 
       {/* ─── HERO SECTION: Text left + Mascot centered ─── */}
-      <div className="w-full relative min-h-[480px] lg:min-h-[580px] px-[16px] sm:px-[24px] md:px-[48px] xl:px-[64px] pb-[20px] md:pb-[40px]">
+      <div className="w-full relative min-h-[480px] lg:min-h-[540px] px-[16px] sm:px-[24px] md:px-[48px] xl:px-[64px] pb-[20px] md:pb-[40px]">
 
         {/* Floating decorative elements */}
         <FloatingDecorations />
 
-        {/* CENTER — Mascot (positioned as background layer) */}
-        <motion.div
-          className="absolute inset-0 flex justify-center items-end pointer-events-none z-[1]"
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.3, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <img
-            src={mascot}
-            alt="Ateion Mascot"
-            className="w-[320px] h-[320px] sm:w-[400px] sm:h-[400px] md:w-[480px] md:h-[480px] lg:w-[540px] lg:h-[540px] xl:w-[600px] xl:h-[600px] translate-x-20 md:translate-x-40 lg:translate-x-52 xl:translate-x-64"
-            style={{
-              objectPosition: "center bottom",
-              objectFit: "contain",
-            }}
-          />
-        </motion.div>
+        {/* Mobile: column layout with mascot on top. Desktop: side by side */}
+        <div className="flex flex-col lg:flex-row items-center lg:items-center">
 
-        {/* LEFT — Hero text (overlays above mascot) */}
-        <motion.div
-          className="flex flex-col items-start justify-center gap-5 sm:gap-6 relative z-10 w-full lg:w-[46%] xl:w-[42%] py-8 lg:py-12"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        >
+          {/* Hero text - below on mobile, left on desktop */}
+          <motion.div
+            className="order-2 lg:order-1 flex flex-col items-start justify-center gap-4 sm:gap-5 lg:gap-6 relative z-10 w-full lg:w-[46%] xl:w-[42%] py-4 lg:py-12"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          >
           {/* Main headline */}
           <img
             src="/logo_ateion.png"
             alt="Ateion"
-            className={`h-[80px] sm:h-[110px] md:h-[140px] w-auto object-contain transition-all duration-300 ${
+            className={`h-[60px] sm:h-[90px] md:h-[120px] lg:h-[140px] w-auto object-contain transition-all duration-300 ${
               theme === "dark" ? "brightness-0 invert" : ""
             }`}
           />
 
           {/* Subtitle */}
           <p
-            className="text-[15px] sm:text-[17px] leading-[1.6] max-w-[440px]"
+            className="text-[14px] sm:text-[16px] md:text-[17px] leading-[1.6] max-w-[440px]"
             style={{
               fontFamily: "var(--font-body)",
               color: "var(--color-text-secondary)",
@@ -265,11 +250,11 @@ export default function HeroSliderHeader({
           </div>
 
           {/* Trusted by — small image circles */}
-          <div className="flex flex-col gap-2 mt-3">
-            <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-[var(--color-text-muted)]" style={{ fontFamily: "var(--font-body)" }}>
+          <div className="flex flex-col gap-2 mt-2 sm:mt-3">
+            <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.12em] text-[var(--color-text-muted)]" style={{ fontFamily: "var(--font-body)" }}>
               Trusted by Educators Worldwide
             </span>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               {TRUST_ORGS.map((org, i) => (
                 <TrustImageCard key={org.id} org={org} index={i} />
               ))}
@@ -290,6 +275,24 @@ export default function HeroSliderHeader({
           </div>
         </motion.div>
 
+          {/* Mascot - on top on mobile, right on desktop */}
+          <motion.div
+            className="order-1 lg:order-2 relative flex justify-center items-end pointer-events-none z-[1] w-full lg:w-[54%] mb-6 lg:mb-0"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <img
+              src={mascot}
+              alt="Ateion Mascot"
+              className="w-[240px] h-[240px] sm:w-[300px] sm:h-[300px] md:w-[380px] md:h-[380px] lg:w-[460px] lg:h-[460px] xl:w-[540px] xl:h-[540px] object-contain"
+              style={{
+                objectPosition: "center bottom",
+              }}
+            />
+          </motion.div>
+
+        </div>
       </div>
 
       {/* Optional children content */}
