@@ -1,8 +1,9 @@
 /**
  * ============================================================================
- * ATEION SHARED NAVBAR
+ * ATEION SHARED NAVBAR — Redesigned
  * ============================================================================
- * Primary navbar used across all pages (Homepage, GCO, Contact)
+ * Clean, modern navbar with text nav links, "GET STARTED" CTA,
+ * and a small icon button on the far right.
  * ============================================================================
  */
 
@@ -18,6 +19,7 @@ import {
   LayoutDashboard,
   LogIn,
   LogOut,
+  MessageSquare,
   Moon,
   Settings,
   Sun,
@@ -29,10 +31,7 @@ import {
 import { useTheme } from "./ThemeProvider";
 
 import logo from "../../assets/logo.webp";
-import logoBunny from "../../assets/logo_bunny.png";
 import "../../styles/shared-nav.css";
-
-const navTextClass = "font-bold text-[13px] whitespace-nowrap font-manrope m-0 leading-none";
 
 /**
  * USER PROFILE DROPDOWN
@@ -119,62 +118,6 @@ function UserProfileDropdown({ user, onLogout }: { user: any; onLogout: () => vo
   );
 }
 
-const VARIANT_CLASSES = {
-  default:
-    "bg-[var(--color-background-secondary)] border border-[var(--color-accent)] text-[var(--color-accent)] hover:bg-[var(--color-accent-light)]",
-  primary:
-    "bg-[var(--color-primary)] border border-transparent text-white hover:bg-[var(--color-primary-hover)]",
-  accent:
-    "bg-[var(--color-accent)] border border-transparent text-[var(--color-background-secondary)] hover:bg-[var(--color-accent-hover)]",
-  white:
-    "bg-[var(--color-background-secondary)] border border-[var(--color-border-medium)] text-[var(--color-text-primary)] hover:bg-[var(--color-background-tertiary)]",
-  "outline-dark":
-    "bg-[var(--color-background-secondary)] border border-[var(--color-text-primary)] text-[var(--color-text-primary)] hover:bg-[var(--color-background-tertiary)]",
-};
-
-/**
- * Unified NavButton component with 3 variants
- */
-const NavButton = memo(function NavButton({
-  children,
-  variant = "default" as "default" | "muted" | "primary" | "accent" | "white" | "outline-dark",
-  onClick,
-  href,
-  isActive = false,
-  style,
-  tourId,
-}: {
-  children: React.ReactNode;
-  variant?: "default" | "muted" | "primary" | "accent" | "white" | "outline-dark";
-  onClick?: () => void;
-  href?: string;
-  isActive?: boolean;
-  style?: React.CSSProperties;
-  tourId?: string;
-}) {
-  const navigate = useNavigate();
-
-  const handleClick = useCallback(() => {
-    if (onClick) onClick();
-    if (href) navigate(href);
-  }, [onClick, href, navigate]);
-
-  return (
-    <motion.div
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-      transition={{ type: "spring", stiffness: 400, damping: 17 }}
-      onClick={handleClick}
-      data-active={isActive}
-      data-tour={tourId}
-      style={style}
-      className={`clay-button nav-btn ${VARIANT_CLASSES[variant]} rounded-full flex h-[36px] items-center justify-center px-[10px] xl:px-[18px] shrink-0 cursor-pointer transition-colors relative`}
-    >
-      {children}
-    </motion.div>
-  );
-});
-
 function useNavbarOnDark() {
   const [isOnDarkSection, setIsOnDarkSection] = useState(false);
 
@@ -205,312 +148,268 @@ const LogoContainer = memo(function LogoContainer() {
 
   return (
     <div className="flex items-center relative shrink-0">
-      <Link to="/" className="flex items-center gap-2.5 sm:gap-3">
+      <Link to="/" className="flex items-center gap-2">
         <img
           src={logo}
           alt="Ateion Logo"
-          className={`h-[52px] sm:h-[76px] object-contain w-auto transition-all duration-300 ${
-            shouldInvert ? "brightness-0 invert" : ""
+          className={`h-[70px] sm:h-[85px] object-contain w-auto transition-all duration-300 ${
+            shouldInvert ? "brightness-0 invert" : "brightness-0 sepia-[1] hue-rotate-[250deg] saturate-[5] brightness-[0.8]"
           }`}
-        />
-        <img
-          src={logoBunny}
-          alt="Ateion Mascot"
-          className="h-[38px] w-auto sm:h-[54px] object-contain transition-all duration-300"
         />
       </Link>
     </div>
   );
 });
 
-/**
- * HOME BUTTON
- */
-function HomeBtn({ onClick }: { onClick?: () => void }) {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const isActive = location.pathname === "/";
+/* ─────────────────────────────────────────────
+   NAV LINK ITEMS (text links, not pill buttons)
+───────────────────────────────────────────── */
 
-  return (
-    <NavButton
-      variant="default"
-      isActive={isActive}
-      onClick={() => {
-        if (onClick) onClick();
-        navigate("/");
-      }}
-    >
-      <span className={navTextClass}>Home</span>
-    </NavButton>
-  );
+interface NavLinkItem {
+  label: string;
+  path: string;
+  matchPaths?: string[];
+  hasDropdown?: boolean;
+  dropdownItems?: { label: string; path: string }[];
 }
 
-/**
- * GLOBAL OLYMPIAD BUTTON
- */
-function GlobalOlympiadBtn({ onClick }: { onClick?: () => void }) {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const isActive = location.pathname.startsWith("/gco") || location.pathname.startsWith("/policy") || location.pathname.startsWith("/policies");
+const NAV_LINK_ITEMS: NavLinkItem[] = [
+  { label: "Global Capability Olympiad", path: "/gco", matchPaths: ["/gco", "/policy", "/policies"] },
+  { label: "Playground", path: "/playground" },
+  { label: "Psychometric Test", path: "/psychometric-assessment" },
+  { label: "Dashboard", path: "/dashboard" },
+];
 
-  return (
-    <NavButton
-      variant="default"
-      isActive={isActive}
-      style={{
-        background: "linear-gradient(135deg, #4a3040 0%, #8b5e6c 50%, #c48a9a 100%)",
-        border: "none",
-        color: "#fff",
-      }}
-      onClick={() => {
-        if (onClick) onClick();
-        navigate("/gco");
-      }}
-    >
-      <span className={`${navTextClass}`}>
-        Global Capability Olympiad
-      </span>
-    </NavButton>
-  );
-}
-
-/**
- * PLAYGROUND BUTTON
- */
-function ResourcesBtn({ onClick }: { onClick?: () => void }) {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const isActive = location.pathname.startsWith("/dashboard");
-
-  return (
-    <NavButton
-      variant="default"
-      isActive={isActive}
-      onClick={() => {
-        if (onClick) onClick();
-        navigate("/dashboard");
-      }}
-    >
-      <span className={`${navTextClass}`}>
-        Dashboard
-      </span>
-    </NavButton>
-  );
-}
-
-/**
- * PSYCHOMETRIC TEST BUTTON
- */
-function PsychometricTestBtn({ onClick }: { onClick?: () => void }) {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const isActive = location.pathname.startsWith("/psychometric-assessment");
-
-  return (
-    <NavButton
-      variant="default"
-      isActive={isActive}
-      onClick={() => {
-        if (onClick) onClick();
-        navigate("/psychometric-assessment");
-      }}
-    >
-      <span className={`${navTextClass}`}>
-        Psychometric Test
-      </span>
-    </NavButton>
-  );
-}
-
-/**
- * DASHBOARD BUTTON
- */
-function DashboardBtn({
-  onClick,
+function NavTextLink({
+  item,
+  onCloseMobile,
 }: {
-  onClick?: () => void;
+  item: NavLinkItem;
+  onCloseMobile?: () => void;
 }) {
   const navigate = useNavigate();
   const location = useLocation();
-  const isActive = location.pathname.startsWith("/playground");
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const isActive = item.matchPaths
+    ? item.matchPaths.some((p) => location.pathname.startsWith(p))
+    : item.path !== "#" && (
+        item.path === "/"
+          ? location.pathname === "/"
+          : location.pathname.startsWith(item.path)
+      );
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  if (item.hasDropdown) {
+    return (
+      <div className="relative" ref={dropdownRef}>
+        <button
+          type="button"
+          onClick={() => setDropdownOpen(!dropdownOpen)}
+          className={`new-nav-link flex items-center gap-1 px-1 py-2 text-[14px] font-medium transition-colors duration-200 cursor-pointer ${
+            isActive
+              ? "text-[var(--color-text-primary)]"
+              : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
+          }`}
+          style={{ fontFamily: "var(--font-body)" }}
+        >
+          {item.label}
+          <ChevronDown
+            size={14}
+            className={`transition-transform duration-200 ${dropdownOpen ? "rotate-180" : ""}`}
+          />
+        </button>
+
+        <AnimatePresence>
+          {dropdownOpen && (
+            <motion.div
+              initial={{ opacity: 0, y: 8, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 8, scale: 0.96 }}
+              transition={{ duration: 0.18 }}
+              className="absolute left-0 top-full mt-1 w-52 rounded-xl bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] shadow-xl overflow-hidden z-[120]"
+            >
+              <div className="p-1">
+                {item.dropdownItems?.map((sub) => {
+                  const subActive = location.pathname.startsWith(sub.path);
+                  return (
+                    <button
+                      key={sub.path}
+                      type="button"
+                      onClick={() => {
+                        setDropdownOpen(false);
+                        if (onCloseMobile) onCloseMobile();
+                        navigate(sub.path);
+                      }}
+                      className={`w-full text-left px-3 py-2.5 rounded-lg text-[13px] font-medium transition-colors ${
+                        subActive
+                          ? "bg-[var(--color-accent-light)] text-[var(--color-accent)]"
+                          : "text-[var(--color-text-primary)] hover:bg-[var(--color-background-tertiary)]"
+                      }`}
+                    >
+                      {sub.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    );
+  }
 
   return (
-    <NavButton
-      variant="default"
-      isActive={isActive}
-      tourId="main-playground-nav"
-      style={{
-        background: "linear-gradient(135deg, #2b244f 0%, #d66f55 58%, #ff9b82 100%)",
-        border: "none",
-        color: "#fff",
-      }}
+    <button
+      type="button"
       onClick={() => {
-        if (onClick) onClick();
-        navigate("/playground");
+        if (onCloseMobile) onCloseMobile();
+        navigate(item.path);
       }}
+      className={`new-nav-link px-1 py-2 text-[14px] font-medium transition-colors duration-200 cursor-pointer relative ${
+        isActive
+          ? "text-[var(--color-text-primary)]"
+          : "text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]"
+      }`}
+      style={{ fontFamily: "var(--font-body)" }}
     >
-      <span className={`${navTextClass}`}>
-        PlayGround
-      </span>
-    </NavButton>
+      {item.label}
+      {isActive && (
+        <motion.div
+          layoutId="nav-active-dot"
+          className="absolute -bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-[var(--color-accent)]"
+          transition={{ type: "spring", stiffness: 380, damping: 30 }}
+        />
+      )}
+    </button>
   );
 }
 
-const NAV_BUTTONS = [
-  HomeBtn,
-  DashboardBtn,
-  GlobalOlympiadBtn,
-  PsychometricTestBtn,
-  ResourcesBtn,
-] as const;
-
-const MOBILE_NAV_LINKS = [
-  { label: "Home", path: "/", icon: Home },
-  { label: "PlayGround", path: "/playground", icon: Gamepad2 },
-  { label: "Global Capability Olympiad", path: "/gco", icon: Trophy },
-  { label: "Psychometric Test", path: "/psychometric-assessment", icon: ClipboardCheck },
-  { label: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
-  { label: "Ateion", path: "/ateion", icon: Users },
-] as const;
-
-function NavLinks({ onCloseMobile }: { onCloseMobile?: () => void }) {
-  const location = useLocation();
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [underlinePos, setUnderlinePos] = useState({ left: 0, width: 0 });
-
-  useEffect(() => {
-    const activeEl = containerRef.current?.querySelector<HTMLElement>('[data-active="true"]');
-    if (activeEl && containerRef.current) {
-      const parentRect = containerRef.current.getBoundingClientRect();
-      const rect = activeEl.getBoundingClientRect();
-      setUnderlinePos({
-        left: rect.left - parentRect.left + 16,
-        width: rect.width - 32,
-      });
-    } else {
-      setUnderlinePos({ left: 0, width: 0 });
-    }
-  }, [location]);
-
+function DesktopNavLinks({ onCloseMobile }: { onCloseMobile?: () => void }) {
   return (
-    <div ref={containerRef} className="flex gap-[4px] xl:gap-[10px] items-center relative">
-      {NAV_BUTTONS.map((Btn, i) => (
-        <Btn key={i} onClick={onCloseMobile} />
+    <div className="flex items-center gap-6 xl:gap-8">
+      {NAV_LINK_ITEMS.map((item) => (
+        <NavTextLink key={item.label} item={item} onCloseMobile={onCloseMobile} />
       ))}
     </div>
   );
 }
 
-/**
- * GET CONNECTED BUTTON
- */
-function GetConnectedBtn({ onClick }: { onClick?: () => void }) {
+/* ─────────────────────────────────────────────
+   GET STARTED CTA BUTTON (lime-green)
+───────────────────────────────────────────── */
+function GetStartedBtn({ onClick }: { onClick?: () => void }) {
   const navigate = useNavigate();
-  const location = useLocation();
-  const isActive = location.pathname.startsWith("/contact");
 
   return (
-    <NavButton
-      variant="primary"
-      onClick={() => {
-        if (onClick) onClick();
-        navigate("/contact");
-      }}
-    >
-      <div className="flex items-center gap-2">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-        <span className={`${navTextClass}`}>
-          Get Connected
-        </span>
-      </div>
-    </NavButton>
-  );
-}
-
-/**
- * SIGN IN BUTTON
- */
-function SignInBtn({ onClick }: { onClick?: () => void }) {
-  const [isActive, setIsActive] = useState(false);
-
-  useEffect(() => {
-    const ac = new AbortController();
-    window.addEventListener("open-login", () => setIsActive(true), { signal: ac.signal });
-    window.addEventListener("close-login", () => setIsActive(false), { signal: ac.signal });
-    return () => ac.abort();
-  }, []);
-
-  return (
-    <NavButton
-      variant="outline-dark"
-      onClick={() => {
-        if (onClick) onClick();
-        window.dispatchEvent(new CustomEvent("open-login"));
-      }}
-    >
-      <div className="flex items-center gap-2 group">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:text-[var(--color-background-primary)]"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-        <span className={`${navTextClass}`}>
-          Sign In
-        </span>
-      </div>
-    </NavButton>
-  );
-}
-
-/**
- * SIGN UP BUTTON
- */
-function SignUpBtn({ onClick }: { onClick?: () => void }) {
-  const [isActive, setIsActive] = useState(false);
-
-  useEffect(() => {
-    const ac = new AbortController();
-    window.addEventListener("open-register", () => setIsActive(true), { signal: ac.signal });
-    window.addEventListener("close-register", () => setIsActive(false), { signal: ac.signal });
-    return () => ac.abort();
-  }, []);
-
-  return (
-    <NavButton
-      variant="primary"
+    <motion.button
+      type="button"
+      whileHover={{ scale: 1.04 }}
+      whileTap={{ scale: 0.96 }}
       onClick={() => {
         if (onClick) onClick();
         window.dispatchEvent(new CustomEvent("open-register"));
       }}
+      className="get-started-btn flex items-center gap-2 px-5 py-2.5 rounded-full text-[13px] font-bold uppercase tracking-[0.06em] cursor-pointer transition-all duration-200"
+      style={{
+        background: "#7c3aed",
+        color: "#ffffff",
+        border: "none",
+        fontFamily: "var(--font-body)",
+      }}
     >
-      <div className="flex items-center gap-2">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
-        <span className={`${navTextClass}`}>
-          Sign Up
-        </span>
-      </div>
-    </NavButton>
+      GET STARTED
+      <ArrowRight size={15} strokeWidth={2.5} />
+    </motion.button>
+  );
+}
+
+/* ─────────────────────────────────────────────
+   SMALL ICON BUTTON (chat / menu icon on far right)
+───────────────────────────────────────────── */
+function SmallIconBtn() {
+  const navigate = useNavigate();
+
+  return (
+    <motion.button
+      type="button"
+      whileHover={{ scale: 1.08 }}
+      whileTap={{ scale: 0.92 }}
+      onClick={() => navigate("/contact")}
+      className="flex items-center justify-center w-[40px] h-[40px] rounded-xl border border-[var(--color-border-medium)] bg-[var(--color-background-secondary)] text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] hover:border-[var(--color-text-tertiary)] cursor-pointer transition-all duration-200"
+      aria-label="Contact"
+    >
+      <MessageSquare size={18} />
+    </motion.button>
   );
 }
 
 /**
- * LOGOUT BUTTON
+ * THEME TOGGLE BUTTON (Sun/Moon)
  */
-function LogoutBtn({ onClick }: { onClick?: () => void }) {
+const ThemeToggleBtn = memo(function ThemeToggleBtn() {
+  const { theme, toggleTheme } = useTheme();
+
   return (
-    <NavButton
-      variant="outline-dark"
-      onClick={() => {
-        localStorage.removeItem("token");
-        window.location.reload(); // Refresh to wipe state completely
-        if (onClick) onClick();
-      }}
+    <motion.button
+      type="button"
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 0.9 }}
+      onClick={toggleTheme}
+      className="flex h-[36px] w-[36px] items-center justify-center rounded-full bg-[var(--color-background-secondary)] border border-[var(--color-border-medium)] text-[var(--color-text-primary)] cursor-pointer transition-colors"
+      aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+      title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
     >
-      <div className="flex items-center gap-2 group">
-        <LogOut size={16} className="group-hover:text-[var(--color-background-primary)]" />
-        <span className={`${navTextClass}`}>
-          Logout
-        </span>
-      </div>
-    </NavButton>
+      <AnimatePresence mode="wait" initial={false}>
+        {theme === "dark" ? (
+          <motion.div
+            key="sun"
+            initial={{ rotate: -90, opacity: 0 }}
+            animate={{ rotate: 0, opacity: 1 }}
+            exit={{ rotate: 90, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Sun size={18} className="text-[var(--color-text-secondary)]" />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="moon"
+            initial={{ rotate: 90, opacity: 0 }}
+            animate={{ rotate: 0, opacity: 1 }}
+            exit={{ rotate: -90, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <Moon size={18} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.button>
   );
-}
+});
+
+/* ─────────────────────────────────────────────
+   MOBILE MENU
+───────────────────────────────────────────── */
+
+const MOBILE_NAV_LINKS = [
+  { label: "Home", path: "/", icon: Home },
+  { label: "About", path: "/ateion", icon: Users },
+  { label: "PlayGround", path: "/playground", icon: Gamepad2 },
+  { label: "GCO", path: "/gco", icon: Trophy },
+  { label: "Partners", path: "/contact", icon: Users },
+  { label: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
+  { label: "Psychometric Test", path: "/psychometric-assessment", icon: ClipboardCheck },
+] as const;
 
 function MobileMenuIcon({
   isOpen,
@@ -569,48 +468,9 @@ function MobileMenuIcon({
   );
 }
 
-/**
- * THEME TOGGLE BUTTON (Sun/Moon)
- */
-const ThemeToggleBtn = memo(function ThemeToggleBtn() {
-  const { theme, toggleTheme } = useTheme();
-
-  return (
-    <motion.button
-      type="button"
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.9 }}
-      onClick={toggleTheme}
-      className="clay-button flex h-[36px] w-[36px] items-center justify-center rounded-full bg-[var(--color-background-secondary)] border border-[var(--color-border-medium)] text-[var(--color-text-primary)] cursor-pointer transition-colors"
-      aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-      title={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-    >
-      <AnimatePresence mode="wait" initial={false}>
-        {theme === "dark" ? (
-          <motion.div
-            key="sun"
-            initial={{ rotate: -90, opacity: 0 }}
-            animate={{ rotate: 0, opacity: 1 }}
-            exit={{ rotate: 90, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            <Sun size={18} className="text-[var(--color-text-secondary)]" />
-          </motion.div>
-        ) : (
-          <motion.div
-            key="moon"
-            initial={{ rotate: 90, opacity: 0 }}
-            animate={{ rotate: 0, opacity: 1 }}
-            exit={{ rotate: -90, opacity: 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            <Moon size={18} />
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.button>
-  );
-});
+/* ─────────────────────────────────────────────
+   MAIN NAVBAR EXPORT
+───────────────────────────────────────────── */
 
 export default function SharedNavbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -754,27 +614,24 @@ export default function SharedNavbar() {
         scrolled ? "py-[8px] lg:py-[12px]" : "py-[12px] lg:py-[20px]"
       }`}>
 
-        {/* LEFT SIDE */}
-        <div className="flex items-center justify-start min-w-0 flex-1">
+        {/* LEFT SIDE — Logo */}
+        <div className="flex items-center shrink-0">
           <LogoContainer />
-
-          <div className="hidden lg:flex items-center ml-[8px] xl:ml-[32px] gap-[8px] min-w-0">
-            <NavLinks />
-          </div>
         </div>
 
-        {/* RIGHT SIDE */}
-        <div className="hidden lg:flex items-center justify-end ml-auto gap-[4px] xl:gap-[12px]">
-          <ThemeToggleBtn />
-
+        {/* RIGHT SIDE — Nav links + CTA (desktop only) */}
+        <div className="hidden lg:flex items-center justify-end gap-8">
+          <DesktopNavLinks />
           {isAuthenticated && user ? (
-            <UserProfileDropdown user={user} onLogout={handleLogout} />
-          ) : (
             <>
-              <GetConnectedBtn />
-              <SignInBtn />
-              <SignUpBtn />
+              <ThemeToggleBtn />
+              <UserProfileDropdown user={user} onLogout={handleLogout} />
             </>
+          ) : (
+            <div className="flex items-center gap-3">
+              <ThemeToggleBtn />
+              <GetStartedBtn />
+            </div>
           )}
         </div>
 
@@ -887,13 +744,18 @@ export default function SharedNavbar() {
                 </div>
               ) : (
                 <div className="grid gap-2">
+                  {/* GET STARTED — mobile */}
                   <button
                     type="button"
-                    onClick={() => handleNavClick("/contact")}
-                    className="flex min-h-[50px] w-full items-center justify-center gap-2 rounded-2xl bg-[var(--color-primary)] px-4 text-sm font-bold text-white shadow-[0_10px_28px_rgba(26,24,51,0.22)] transition-transform active:scale-[0.98]"
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      window.dispatchEvent(new CustomEvent("open-register"));
+                    }}
+                    className="flex min-h-[50px] w-full items-center justify-center gap-2 rounded-2xl px-4 text-sm font-bold uppercase tracking-wider transition-transform active:scale-[0.98]"
+                    style={{ background: "#7c3aed", color: "#ffffff" }}
                   >
-                    <Users size={17} />
-                    Get Connected
+                    GET STARTED
+                    <ArrowRight size={16} />
                   </button>
 
                   <div className="grid grid-cols-2 gap-2">
