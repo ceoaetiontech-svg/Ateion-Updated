@@ -19,6 +19,48 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
+/* ─── NEW NAV LINK STYLES ─── */
+.new-nav-link {
+  position: relative;
+  letter-spacing: 0.01em;
+}
+
+.new-nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 80%;
+  height: 1.5px;
+  border-radius: 999px;
+  background: var(--color-text-primary);
+  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: center;
+}
+
+.new-nav-link:hover::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
+/* ─── GET STARTED BUTTON ─── */
+.get-started-btn {
+  box-shadow: 0 2px 8px rgba(200, 245, 66, 0.2);
+  transition: box-shadow 0.25s ease, transform 0.15s ease;
+}
+
+.get-started-btn:hover {
+  box-shadow: 0 4px 20px rgba(200, 245, 66, 0.35);
+}
+
+[data-theme="dark"] .get-started-btn {
+  box-shadow: 0 2px 12px rgba(200, 245, 66, 0.15);
+}
+
+[data-theme="dark"] .get-started-btn:hover {
+  box-shadow: 0 6px 24px rgba(200, 245, 66, 0.3);
+}
+
 /* Active nav item indicator — animated underline handled by NavLinks component */
 /* Mobile navbar menu surfaces */
 .mobile-nav-panel {
