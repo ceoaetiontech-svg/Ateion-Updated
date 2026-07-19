@@ -24,11 +24,10 @@ export default function HeroSliderHeader({
         <img
           src={mascot}
           alt="Ateion Mascot"
-          className="w-[400px] h-[400px] md:w-[580px] md:h-[580px]"
+          className="w-[400px] h-[400px] md:w-[580px] md:h-[580px] translate-x-0 md:translate-x-[80px] -translate-y-[10px]"
           style={{
             objectPosition: "center bottom",
             objectFit: "contain",
-            transform: "translateX(80px) translateY(-10px)",
           }}
         />
       </div>
