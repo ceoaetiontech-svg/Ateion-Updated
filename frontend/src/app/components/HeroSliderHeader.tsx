@@ -257,8 +257,8 @@ export default function HeroSliderHeader({
 
   // Hat Y position: starts hidden above, moves down to mascot head
   // Scroll 0-25% maps to hat position -300px (hidden) to 15px (on head)
-  const hatY = useTransform(scrollYProgress, [0, 0.25], [-300, 15]);
-  const springHatY = useSpring(hatY, { stiffness: 50, damping: 15 });
+  const hatY = useTransform(scrollYProgress, [0, 0.20], [-300, 15]);
+  const springHatY = useSpring(hatY, { stiffness: 100, damping: 25 });
 
   // Check if hat has landed on head
   useEffect(() => {
