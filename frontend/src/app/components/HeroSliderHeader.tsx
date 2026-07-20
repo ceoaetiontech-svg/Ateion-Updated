@@ -9,7 +9,8 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Brain, Target, Globe, Lightbulb } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useTheme } from "./ThemeProvider";
 
@@ -26,15 +27,14 @@ interface FeatureCard {
   id: number;
   title: string;
   description: string;
-  icon: string;
-  color: string;
+  icon: LucideIcon;
 }
 
 const featureCards: FeatureCard[] = [
-  { id: 1, title: "AI Literacy", description: "Master artificial intelligence from day one", icon: "🤖", color: "#7c3aed" },
-  { id: 2, title: "Capability First", description: "Real skills over memorized answers", icon: "🎯", color: "#e8586a" },
-  { id: 3, title: "Global Ready", description: "Prepared for tomorrow's challenges", icon: "🌍", color: "#2563eb" },
-  { id: 4, title: "Innovation Hub", description: "Build, create, and innovate daily", icon: "💡", color: "#059669" },
+  { id: 1, title: "AI Literacy", description: "Master artificial intelligence from day one", icon: Brain },
+  { id: 2, title: "Capability First", description: "Real skills over memorized answers", icon: Target },
+  { id: 3, title: "Global Ready", description: "Prepared for tomorrow's challenges", icon: Globe },
+  { id: 4, title: "Innovation Hub", description: "Build, create, and innovate daily", icon: Lightbulb },
 ];
 
 /* ─── Trusted-by image cards ─── */
@@ -80,8 +80,6 @@ function FloatingDecorations() {
       <motion.div className="absolute top-[15%] left-[42%] w-2 h-2 rounded-full bg-[#7c5cbf] opacity-60" animate={{ y: [0, -8, 0], scale: [1, 1.2, 1] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} />
       <motion.div className="absolute top-[25%] right-[30%] w-1.5 h-1.5 rounded-full bg-[#7c5cbf] opacity-40" animate={{ y: [0, 6, 0] }} transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }} />
       <motion.div className="absolute bottom-[30%] right-[25%] w-2 h-2 rounded-full bg-[#7c5cbf] opacity-50" animate={{ y: [0, -6, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }} />
-      <motion.div className="absolute top-[20%] left-[38%] text-[#7c5cbf] opacity-40 text-xs font-bold select-none" animate={{ rotate: [0, 90, 0] }} transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}>✕</motion.div>
-      <motion.div className="absolute bottom-[25%] right-[22%] text-[#7c5cbf] opacity-30 text-sm font-bold select-none" animate={{ rotate: [0, -90, 0] }} transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}>✕</motion.div>
       <motion.div className="absolute top-[30%] left-[46%] text-[var(--color-accent)] opacity-70 text-lg select-none" animate={{ scale: [1, 1.3, 1], opacity: [0.7, 1, 0.7] }} transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}>✦</motion.div>
     </>
   );
@@ -187,10 +185,10 @@ function FeatureCardItem({ card, index, visible, windowWidth }: { card: FeatureC
   const getPositions = () => {
     if (windowWidth < 640) {
       return [
-        { endX: -160, endY: -30 },
-        { endX: 90, endY: -30 },
-        { endX: -135, endY: 55 },
-        { endX: 65, endY: 55 },
+        { endX: -125, endY: -35 },
+        { endX: 125, endY: -35 },
+        { endX: -125, endY: 55 },
+        { endX: 125, endY: 55 },
       ];
     }
     if (windowWidth < 1024) {
@@ -202,14 +200,15 @@ function FeatureCardItem({ card, index, visible, windowWidth }: { card: FeatureC
       ];
     }
     return [
-      { endX: -320, endY: -110 },
-      { endX: 280, endY: -110 },
-      { endX: -320, endY: 110 },
-      { endX: 280, endY: 110 },
+      { endX: -300, endY: -110 },
+      { endX: 300, endY: -110 },
+      { endX: -300, endY: 110 },
+      { endX: 300, endY: 110 },
     ];
   };
   const positions = getPositions();
   const pos = positions[index] || positions[0];
+  const Icon = card.icon;
 
   return (
     <motion.div
@@ -220,9 +219,12 @@ function FeatureCardItem({ card, index, visible, windowWidth }: { card: FeatureC
       style={{ left: "50%", top: "50%", transform: "translate(-50%, -50%)" }}
     >
       <div className="w-[80px] sm:w-[130px] md:w-[150px] p-1.5 sm:p-3 rounded-2xl backdrop-blur-md border"
-        style={{ background: "rgba(255, 255, 255, 0.95)", borderColor: `${card.color}30`, boxShadow: `0 6px 20px ${card.color}18` }}>
-        <div className="text-sm sm:text-xl md:text-2xl mb-0.5 sm:mb-1">{card.icon}</div>
-        <h4 className="text-[8px] sm:text-[11px] md:text-[13px] font-bold mb-0.5 sm:mb-1 leading-tight" style={{ color: card.color, fontFamily: "var(--font-display)" }}>{card.title}</h4>
+        style={{ background: "rgba(255, 255, 255, 0.95)", borderColor: "#E2DECF", boxShadow: "0 8px 20px rgba(28,27,41,0.08)" }}>
+        <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center mb-1 sm:mb-2"
+          style={{ background: "#EDE7FA" }}>
+          <Icon size={14} strokeWidth={1.8} color="#7c3aed" />
+        </div>
+        <h4 className="text-[8px] sm:text-[11px] md:text-[13px] font-bold mb-0.5 sm:mb-1 leading-tight" style={{ color: "#1C1B29", fontFamily: "var(--font-display)" }}>{card.title}</h4>
         <p className="text-[7px] sm:text-[10px] leading-tight hidden sm:block" style={{ color: "#666" }}>{card.description}</p>
       </div>
     </motion.div>
