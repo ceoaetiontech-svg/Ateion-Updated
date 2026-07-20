@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from "react";
+import { toast } from "sonner";
 import { UserProfile, Task, NewTask, CalendarEvent, Note } from "./types";
 
 interface PlaygroundContextValue {
@@ -30,6 +31,7 @@ interface PlaygroundContextValue {
   notes: Note[];
   addNote: (note: Omit<Note, "id" | "createdAt">) => void;
   deleteNote: (id: number) => void;
+  updateNote: (id: number, text: string) => void;
   events: CalendarEvent[];
   addEvent: (e: CalendarEvent) => void;
   removeEvent: (id: number) => void;
@@ -114,7 +116,10 @@ export function PlaygroundProvider({ children }: { children: ReactNode }) {
   const [xp, setXp] = useState(() => {
     try { return JSON.parse(localStorage.getItem("ateion_xp") || "2840"); } catch { return 2840; }
   });
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const setToastMessage = useCallback((val: string | null) => {
+    if (val) toast(val);
+  }, []);
+  const toastMessage = null;
   const [events, setEvents] = useState<CalendarEvent[]>(() => {
     const saved = localStorage.getItem("ateion_events");
     if (saved) try { return JSON.parse(saved); } catch {}
@@ -188,6 +193,10 @@ export function PlaygroundProvider({ children }: { children: ReactNode }) {
     setNotes(prev => prev.filter(n => n.id !== id));
   }, []);
 
+  const updateNote = useCallback((id: number, text: string) => {
+    setNotes(prev => prev.map(n => n.id === id ? { ...n, text } : n));
+  }, []);
+
   const addEvent = useCallback((e: CalendarEvent) => {
     setEvents(prev => [...prev, e]);
   }, []);
@@ -250,7 +259,7 @@ export function PlaygroundProvider({ children }: { children: ReactNode }) {
             enrolledIds, enrollCourse,
             toastMessage, setToastMessage,
             streak, incrementStreak, xp, addXp,
-            notes, addNote, deleteNote,
+            notes, addNote, deleteNote, updateNote,
             events, addEvent, removeEvent,
             selectedDate, setSelectedDate,
             courseAccess, touchCourse,

@@ -1,7 +1,8 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router";
-import svgPaths from "../../pages/svg-paths";
+import svgPaths from "../../data/svg-paths";
+import bunnyPointing from "../../assets/bunny_pointing.png";
 
 function Tag({ text, className = "" }: { text: string; className?: string }) {
   return (
@@ -59,15 +60,12 @@ function GcoFeatureBadge({
               <span className="text-[12px] font-bold uppercase tracking-[0.2em] text-[var(--color-accent)]">
                 Featured Module
               </span>
-              <div className="flex items-center gap-3 w-full">
-                <div className="w-[3px] h-[28px] rounded-full shrink-0" style={{ background: accentColor }} />
-                <p
-                  className="font-bold leading-[1.15] tracking-[-0.03em] not-italic text-[26px] sm:text-[30px] text-[var(--color-text-primary)] w-full"
-                  style={{ fontFamily: "var(--font-display)" }}
-                >
-                  {activeData.title}
-                </p>
-              </div>
+              <p
+                className="font-bold leading-[1.15] tracking-[-0.03em] not-italic text-[26px] sm:text-[30px] text-[var(--color-text-primary)] w-full"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                {activeData.title}
+              </p>
               <p className="font-['Manrope',sans-serif] text-[15px] sm:text-[16px] text-[var(--color-text-muted)] leading-relaxed pr-2">
                 {activeData.description}
               </p>
@@ -176,6 +174,10 @@ const CONNECTIONS = [
   ["playground", "psychometric"],
   ["psychometric", "gco"],
   ["ateion", "psychometric"],
+  ["gco", "mascot"],
+  ["ateion", "mascot"],
+  ["playground", "mascot"],
+  ["psychometric", "mascot"],
 ];
 
 const CANVAS_WIDTH = 935;
@@ -282,6 +284,27 @@ function EcosystemCluster({
       dragStartX: 0,
       dragStartY: 0,
       ref: null,
+    },
+    {
+      id: "mascot",
+      title: "Mascot",
+      description: "",
+      x: -60,
+      y: 320,
+      vx: 0,
+      vy: 0,
+      size: 480,
+      r: 240,
+      mass: 400,
+      hoverColor: "transparent",
+      isDark: false,
+      titleSize: "0px",
+      descSize: "0px",
+      url: "",
+      isDragging: false,
+      dragStartX: 0,
+      dragStartY: 0,
+      ref: null,
     }
   ]);
 
@@ -290,6 +313,7 @@ function EcosystemCluster({
   const dragStartPosRef = useRef({ x: 0, y: 0, time: 0, hasMoved: false });
 
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>, b: PhysicsBubble) => {
+    if (b.id === "mascot") return; // Keep mascot static and non-draggable
     e.preventDefault();
     e.currentTarget.setPointerCapture(e.pointerId);
     activeDragRef.current = b;
@@ -331,6 +355,15 @@ function EcosystemCluster({
     }
   };
 
+  const getBubbleConnectionPoint = (b: PhysicsBubble) => {
+    if (b.id === "mascot") {
+      const handDx = b.r * 0.6;
+      const handDy = b.r * 0.14;
+      return { x: b.x + handDx, y: b.y + handDy };
+    }
+    return { x: b.x, y: b.y };
+  };
+
   const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
     const b = activeDragRef.current;
     if (!b) return;
@@ -340,11 +373,13 @@ function EcosystemCluster({
     activeDragRef.current = null;
     const dt = Date.now() - dragStartPosRef.current.time;
     if (!dragStartPosRef.current.hasMoved && dt < 250) {
-      onBubbleClick(b.id);
-      if (b.id === "gco") navigate("/gco");
-      else if (b.id === "playground") navigate("/playground");
-      else if (b.id === "psychometric") window.location.assign("https://www.ateion.com/psychometric-assessment");
-      else navigate("/contact");
+      if (b.id !== "mascot") {
+        onBubbleClick(b.id);
+        if (b.id === "gco") navigate("/gco");
+        else if (b.id === "playground") navigate("/playground");
+        else if (b.id === "psychometric") window.location.assign("https://www.ateion.com/psychometric-assessment");
+        else navigate("/contact");
+      }
     }
   };
 
@@ -356,7 +391,7 @@ function EcosystemCluster({
       
       for (let i = 0; i < numBubbles; i++) {
         const b = bubbles[i];
-        if (!b.isDragging) {
+        if (!b.isDragging && b.id !== "mascot") {
           b.vx += (Math.random() - 0.5) * 0.05;
           b.vy += (Math.random() - 0.5) * 0.05;
           b.vx *= 0.992;
@@ -387,10 +422,18 @@ function EcosystemCluster({
               b1.x -= nx * overlap;
               b1.y -= ny * overlap;
             } else if (!b1.isDragging && !b2.isDragging) {
-              b1.x -= nx * overlap * 0.5;
-              b1.y -= ny * overlap * 0.5;
-              b2.x += nx * overlap * 0.5;
-              b2.y += ny * overlap * 0.5;
+              if (b1.id === "mascot") {
+                b2.x += nx * overlap;
+                b2.y += ny * overlap;
+              } else if (b2.id === "mascot") {
+                b1.x -= nx * overlap;
+                b1.y -= ny * overlap;
+              } else {
+                b1.x -= nx * overlap * 0.5;
+                b1.y -= ny * overlap * 0.5;
+                b2.x += nx * overlap * 0.5;
+                b2.y += ny * overlap * 0.5;
+              }
             }
             
             const rvx = b2.vx - b1.vx;
@@ -401,11 +444,11 @@ function EcosystemCluster({
               const restitution = 0.85;
               let impulse = -(1 + restitution) * velAlongNormal;
               impulse /= (1 / b1.mass + 1 / b2.mass);
-              if (!b1.isDragging) {
+              if (!b1.isDragging && b1.id !== "mascot") {
                 b1.vx -= (impulse / b1.mass) * nx;
                 b1.vy -= (impulse / b1.mass) * ny;
               }
-              if (!b2.isDragging) {
+              if (!b2.isDragging && b2.id !== "mascot") {
                 b2.vx += (impulse / b2.mass) * nx;
                 b2.vy += (impulse / b2.mass) * ny;
               }
@@ -416,7 +459,7 @@ function EcosystemCluster({
       
       for (let i = 0; i < numBubbles; i++) {
         const b = bubbles[i];
-        if (!b.isDragging) {
+        if (!b.isDragging && b.id !== "mascot") {
           const bounce = -0.7;
           if (b.x - b.r < 0) {
             b.x = b.r;
@@ -450,7 +493,9 @@ function EcosystemCluster({
           const key = `${id1}-${id2}`;
           const pathEl = connectionPaths[key];
           if (pathEl) {
-            pathEl.setAttribute("d", `M ${b1.x} ${b1.y} L ${b2.x} ${b2.y}`);
+            const p1 = getBubbleConnectionPoint(b1);
+            const p2 = getBubbleConnectionPoint(b2);
+            pathEl.setAttribute("d", `M ${p1.x} ${p1.y} L ${p2.x} ${p2.y}`);
           }
         }
       });
@@ -513,7 +558,9 @@ function EcosystemCluster({
           <div
             key={b.id}
             ref={(el) => (b.ref = el)}
-            className="absolute flex items-center justify-center cursor-grab active:cursor-grabbing pointer-events-auto select-none"
+            className={`absolute flex items-center justify-center pointer-events-auto select-none ${
+              b.id === "mascot" ? "cursor-default" : "cursor-grab active:cursor-grabbing"
+            }`}
             style={{
               width: b.size,
               height: b.size,
@@ -525,51 +572,69 @@ function EcosystemCluster({
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
             onMouseEnter={() => {
-              setHoveredId(b.id);
-              if (!draggedId) {
-                onBubbleHover?.(b.id);
+              if (b.id !== "mascot") {
+                setHoveredId(b.id);
+                if (!draggedId) {
+                  onBubbleHover?.(b.id);
+                }
               }
             }}
-            onMouseLeave={() => setHoveredId(null)}
+            onMouseLeave={() => {
+              if (b.id !== "mascot") {
+                setHoveredId(null);
+              }
+            }}
           >
-            <motion.div
-              className={`ecosystem-bubble-bg ${isHovered ? "is-hovered" : ""} ${isDragged ? "is-dragged" : ""}`}
-              animate={{
-                scale: isDragged ? 1.08 : isHovered ? 1.04 : 1,
-              }}
-              transition={{
-                type: "spring",
-                stiffness: 400,
-                damping: 25,
-              }}
-            />
+            {b.id === "mascot" ? (
+              <div className="w-full h-full relative">
+                <img
+                  src={bunnyPointing}
+                  alt="Ateion Mascot"
+                  className="w-full h-full object-contain pointer-events-none"
+                />
+              </div>
+            ) : (
+              <>
+                <motion.div
+                  className={`ecosystem-bubble-bg bubble-${b.id} ${isHovered ? "is-hovered" : ""} ${isDragged ? "is-dragged" : ""}`}
+                  animate={{
+                    scale: isDragged ? 1.08 : 1,
+                  }}
+                  transition={{
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 25,
+                  }}
+                />
 
-            <div className="relative z-10 flex flex-col items-center justify-center p-6 text-center pointer-events-none gap-2">
-              <motion.p
-                className={`transition-all duration-300 not-italic ${b.titleClass || "font-['Outfit',sans-serif]"} leading-tight font-bold`}
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontSize: b.titleSize,
-                  color: "var(--color-text-primary)",
-                }}
-              >
-                {b.title}
-              </motion.p>
+                <div className="relative z-10 flex flex-col items-center justify-center p-6 text-center pointer-events-none gap-2">
+                  <motion.p
+                    className={`transition-all duration-300 not-italic ${b.titleClass || "font-['Outfit',sans-serif]"} leading-tight font-bold`}
+                    style={{
+                      fontFamily: "var(--font-display)",
+                      fontSize: b.titleSize,
+                      color: `var(--color-bubble-${b.id})`,
+                    }}
+                  >
+                    {b.title}
+                  </motion.p>
 
-              <motion.p
-                className="font-['Manrope',sans-serif] leading-snug not-italic"
-                style={{
-                  fontSize: b.descSize,
-                  maxWidth: "92%",
-                  color: "var(--color-text-muted)",
-                }}
-                animate={{
-                  opacity: isHovered || isDragged ? 1 : 0.65,
-                }}
-              >
-                {b.description}
-              </motion.p>
-            </div>
+                  <motion.p
+                    className="font-['Manrope',sans-serif] leading-snug not-italic"
+                    style={{
+                      fontSize: b.descSize,
+                      maxWidth: "92%",
+                      color: "var(--color-text-muted)",
+                    }}
+                    animate={{
+                      opacity: 1,
+                    }}
+                  >
+                    {b.description}
+                  </motion.p>
+                </div>
+              </>
+            )}
           </div>
         );
       })}
@@ -641,7 +706,7 @@ function MobileEcosystemCluster({
             style={{
               width: 76,
               height: 76,
-              background: b.circleColor,
+              background: `linear-gradient(135deg, var(--color-bubble-${b.id}) 0%, var(--color-accent) 100%)`,
               color: b.textColor,
               fontFamily: "var(--font-display)",
               fontSize: 18,
@@ -675,7 +740,7 @@ function MobileEcosystemCluster({
 
 export default function EcosystemSection() {
   const DESKTOP_BADGE_WIDTH = 392;
-  const DESKTOP_GAP = 64;
+  const DESKTOP_GAP = 200;
   const DESKTOP_CONTENT_WIDTH = DESKTOP_BADGE_WIDTH + DESKTOP_GAP + CANVAS_WIDTH;
   const DESKTOP_SAFE_PADDING = 28;
   const DESKTOP_MAX_SCALE = 0.88;
@@ -798,7 +863,7 @@ export default function EcosystemSection() {
       {/* Desktop: side-by-side, scaled visually and sized physically so it never clips. */}
       <div
         ref={desktopFrameRef}
-        className="relative z-10 hidden lg:flex w-full justify-center overflow-hidden px-6 xl:px-8"
+        className="relative z-10 hidden lg:flex w-full justify-start overflow-hidden px-0"
       >
         <div
           className="relative"
@@ -808,7 +873,7 @@ export default function EcosystemSection() {
           }}
         >
           <div
-            className="absolute flex flex-row items-center gap-[64px]"
+            className="absolute flex flex-row items-center"
             style={{
               left: DESKTOP_SAFE_PADDING,
               top: DESKTOP_SAFE_PADDING,
@@ -816,6 +881,7 @@ export default function EcosystemSection() {
               height: CANVAS_HEIGHT,
               transform: `scale(${desktopScale})`,
               transformOrigin: "top left",
+              gap: `${DESKTOP_GAP}px`,
             }}
           >
             <GcoFeatureBadge activeData={activeData} />

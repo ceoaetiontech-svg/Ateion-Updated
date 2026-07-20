@@ -11,6 +11,7 @@ interface VideoPlayerProps {
     loading?: boolean;
     onComplete?: () => void;
     duration?: number;
+    playerRef?: React.MutableRefObject<any>;
 }
 
 const PLYR_OPTIONS: PlyrOptions = {
@@ -43,6 +44,7 @@ const VideoPlayer = memo(function VideoPlayer({
                                                   error,
                                                   loading = false,
                                                   onComplete,
+                                                  playerRef,
                                               }: VideoPlayerProps) {
     const plyrRef = useRef<any>(null);
     const [isPaused, setIsPaused] = useState(true);
@@ -129,6 +131,9 @@ const VideoPlayer = memo(function VideoPlayer({
 
             if (plyrInstance && typeof plyrInstance.on === "function") {
                 player = plyrInstance;
+                if (playerRef) {
+                    playerRef.current = plyrInstance;
+                }
                 player.on("play", handlePlay);
                 player.on("playing", handlePlaying);
                 player.on("pause", handlePause);
@@ -147,6 +152,9 @@ const VideoPlayer = memo(function VideoPlayer({
         return () => {
             clearTimeout(timeoutId);
             window.removeEventListener("keydown", handleKeyDown);
+            if (playerRef) {
+                playerRef.current = null;
+            }
             if (player && typeof player.off === "function") {
                 player.off("play", handlePlay);
                 player.off("playing", handlePlaying);
@@ -154,7 +162,7 @@ const VideoPlayer = memo(function VideoPlayer({
                 player.off("ended", handleEnded);
             }
         };
-    }, [videoId, onComplete]);
+    }, [videoId, onComplete, playerRef]);
 
     const source = useMemo<PlyrSource | null>(
         () =>
@@ -178,6 +186,7 @@ const VideoPlayer = memo(function VideoPlayer({
         if (playerInstance && typeof playerInstance.play === "function") {
             playerInstance.play();
         }
+        setIsPaused(false);
     };
 
     return (

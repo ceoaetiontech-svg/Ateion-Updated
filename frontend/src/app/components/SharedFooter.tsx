@@ -1,6 +1,6 @@
 import React, { memo } from "react";
 import { motion } from "framer-motion";
-import svgPaths from "../../pages/svg-paths";
+import svgPaths from "../../data/svg-paths";
 import { Link } from "react-router";
 import logo from "../../assets/logo.webp";
 
@@ -48,8 +48,9 @@ const MailIcon = memo(function MailIcon({ href }: { href: string }) {
 const navLinks = [
   { label: "Home", to: "/" },
   { label: "Dashboard", to: "/dashboard" },
-  { label: "Global Olympiad", to: "/gco" },
+  { label: "Global Capability Olympiad", to: "/gco" },
   { label: "PlayGround", to: "/playground" },
+  { label: "Ateion", to: "/ateion" },
   { label: "Get Connected", to: "/contact" },
 ];
 

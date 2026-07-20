@@ -1,8 +1,12 @@
 package com.ateion.backend.util;
 
 import com.ateion.backend.entity.User;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -13,10 +17,25 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
+    private static final Logger log = LoggerFactory.getLogger(JwtUtil.class);
     private static final long EXPIRATION_TIME_MILLIS = 86_400_000L;
 
     @Value("${app.jwt.secret}")
     private String secretString;
+
+    @PostConstruct
+    public void init() {
+        if (secretString == null || secretString.isBlank()) {
+            throw new IllegalStateException(
+                    "JWT_SECRET environment variable is not set. " +
+                            "The application requires a strong JWT secret to run securely."
+            );
+        }
+        if (secretString.length() < 32) {
+            log.warn("JWT secret is shorter than 32 characters. " +
+                    "Use a strong, randomly-generated secret of at least 256 bits for production.");
+        }
+    }
 
     public String generateToken(User user) {
         return Jwts.builder()
@@ -28,36 +47,28 @@ public class JwtUtil {
                 .compact();
     }
 
-    public String extractUsername(String token) {
+    public Claims parseClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+                .getBody();
     }
 
     public String extractEmail(String token) {
-        return extractUsername(token);
+        return parseClaims(token).getSubject();
     }
 
     public String extractRole(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .get("role", String.class);
+        return parseClaims(token).get("role", String.class);
     }
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parserBuilder()
-                    .setSigningKey(getSigningKey())
-                    .build()
-                    .parseClaimsJws(token);
+            parseClaims(token);
             return true;
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            log.debug("JWT validation failed: {}", e.getMessage());
             return false;
         }
     }

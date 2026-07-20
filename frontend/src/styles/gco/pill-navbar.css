@@ -1,0 +1,261 @@
+/* ============================================================================
+ * GCO FLOATING PILL NAVBAR — FIXED COHESIVE
+ * ============================================================================
+ * Single unified pill. All items properly contained inside.
+ * ============================================================================ */
+
+.gco-pill-navbar {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  width: auto;
+  transition: all 0.3s ease;
+}
+
+.gco-pill-navbar--scrolled {
+  top: 12px;
+}
+
+/* ── Pill Body ── */
+.gco-pill-navbar__inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px 7px 8px;
+  border-radius: 9999px;
+  background: var(--color-background-secondary);
+  box-shadow:
+    0 4px 24px rgba(26, 24, 51, 0.08),
+    0 1px 4px rgba(26, 24, 51, 0.04);
+  border: 1.5px solid var(--color-border-light);
+  overflow: visible;
+}
+
+.gco-pill-navbar--scrolled .gco-pill-navbar__inner {
+  box-shadow:
+    0 8px 32px rgba(26, 24, 51, 0.1),
+    0 2px 8px rgba(26, 24, 51, 0.05);
+}
+
+/* ── Logo Circle ── */
+.gco-pill-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--color-background-primary);
+  border: 1.5px solid var(--color-border-light);
+  overflow: hidden;
+  flex-shrink: 0;
+  transition: all 0.25s ease;
+}
+
+.gco-pill-logo:hover {
+  border-color: var(--color-accent);
+}
+
+/* ── Divider ── */
+.gco-pill-divider {
+  width: 1px;
+  height: 26px;
+  background: var(--color-border-light);
+  flex-shrink: 0;
+}
+
+/* ── Nav Links ── */
+.gco-pill-nav-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 9999px;
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-family: var(--font-family-body);
+}
+
+.gco-pill-nav-link:hover {
+  background: var(--color-accent-light);
+  color: var(--color-accent);
+}
+
+.gco-pill-nav-link--active {
+  background: var(--color-primary);
+  color: #ffffff;
+}
+
+.gco-pill-nav-link--active:hover {
+  background: var(--color-primary-hover);
+  color: #ffffff;
+}
+
+/* ── Highlighted Link — Lavender accent ── */
+.gco-pill-nav-link--highlight {
+  background: #CFD0FF;
+  color: #2D3361;
+}
+
+.gco-pill-nav-link--highlight:hover {
+  background: #B8B9FF;
+  color: #2D3361;
+}
+
+/* ── CTA Button ── */
+.gco-pill-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  padding: 0 20px;
+  border-radius: 9999px;
+  background: var(--color-accent);
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  font-family: var(--font-family-body);
+}
+
+.gco-pill-cta:hover {
+  background: var(--color-accent-hover);
+}
+
+/* ── User Pill ── */
+.gco-pill-user-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 9999px;
+  background: var(--color-background-primary);
+  border: 1.5px solid var(--color-border-light);
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  font-family: var(--font-family-body);
+}
+
+.gco-pill-user-pill:hover {
+  border-color: var(--color-accent);
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .gco-pill-navbar {
+    top: 10px;
+  }
+
+  .gco-pill-navbar__inner {
+    padding: 5px 8px 5px 6px;
+    gap: 4px;
+  }
+
+  .gco-pill-logo {
+    width: 36px;
+    height: 36px;
+  }
+
+  .gco-pill-nav-link {
+    height: 32px;
+    padding: 0 10px;
+    gap: 4px;
+  }
+
+  .gco-pill-nav-link .font-semibold {
+    font-size: 11px;
+  }
+
+  .gco-pill-cta {
+    height: 32px;
+    padding: 0 14px;
+  }
+
+  .gco-pill-cta .font-semibold {
+    font-size: 11px;
+  }
+
+  .gco-pill-user-pill {
+    height: 32px;
+    padding: 0 10px;
+  }
+
+  .gco-pill-user-pill span {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .gco-pill-nav-link .font-semibold {
+    display: none;
+  }
+
+  .gco-pill-nav-link {
+    padding: 0 10px;
+  }
+}
+
+/* ── Dark Mode ── */
+[data-theme="dark"] .gco-pill-navbar__inner {
+  background: #1E293B;
+  border-color: rgba(226, 232, 240, 0.1);
+}
+
+[data-theme="dark"] .gco-pill-logo {
+  background: rgba(15, 23, 42, 0.6);
+  border-color: rgba(226, 232, 240, 0.1);
+}
+
+[data-theme="dark"] .gco-pill-divider {
+  background: rgba(226, 232, 240, 0.1);
+}
+
+[data-theme="dark"] .gco-pill-nav-link {
+  color: rgba(226, 232, 240, 0.6);
+}
+
+[data-theme="dark"] .gco-pill-nav-link:hover {
+  background: rgba(232, 133, 106, 0.12);
+  color: var(--color-accent);
+}
+
+[data-theme="dark"] .gco-pill-nav-link--active {
+  background: var(--color-primary);
+  color: #0F172A;
+}
+
+[data-theme="dark"] .gco-pill-nav-link--highlight {
+  background: #CFD0FF;
+  color: #2D3361;
+}
+
+[data-theme="dark"] .gco-pill-nav-link--highlight:hover {
+  background: #B8B9FF;
+  color: #2D3361;
+}
+
+[data-theme="dark"] .gco-pill-user-pill {
+  background: rgba(15, 23, 42, 0.6);
+  border-color: rgba(226, 232, 240, 0.1);
+}
+
+[data-theme="dark"] .gco-pill-cta {
+  background: var(--color-accent);
+}
+
+[data-theme="dark"] .gco-pill-cta:hover {
+  background: var(--color-accent-hover);
+}

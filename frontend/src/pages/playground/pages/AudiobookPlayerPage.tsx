@@ -1,372 +1,316 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useParams, useNavigate } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { Helmet } from "react-helmet-async";
-import { 
-  ArrowLeft, Headphones, Play, Pause, RotateCcw, RotateCw, 
-  Volume2, Volume1, VolumeX, Clock, List, FileText, Plus, BookMarked, Settings, 
-  Sparkles, Check, Hourglass, Trash2, Edit2, Download, Loader2 
+import {
+  ArrowLeft, Headphones, Play, Pause, List, FileText,
+  Plus, BookMarked, Loader2, Download, Trash2, Edit2,
+  SkipBack, SkipForward, Volume2, VolumeX, Music2
 } from "lucide-react";
-import { mockAudiobooks } from "../shared/audiobooksData";
 import { fadeUpItem, staggerContainer } from "../shared/types";
 import { useToast } from "../../admin/utils/toast";
+import bunnyListeningMusic from "../../../assets/bunny_listening_music.png";
+
+interface ApiChapter {
+  id: number;
+  title: string;
+  youtubeVideoId: string;
+  durationSeconds: number;
+  sortOrder: number;
+}
+
+interface ApiAudiobook {
+  id: number;
+  title: string;
+  author: string;
+  description: string;
+  category: string;
+  coverUrl: string;
+  chapters: ApiChapter[];
+}
+
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
+
+const COVER_GRADIENTS = [
+  "linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%)",
+  "linear-gradient(135deg, #d97706 0%, #dc2626 100%)",
+  "linear-gradient(135deg, #7c3aed 0%, #db2777 100%)",
+  "linear-gradient(135deg, #059669 0%, #0284c7 100%)",
+];
+
+function formatTime(s: number) {
+  const m = Math.floor(s / 60);
+  const sec = Math.floor(s % 60);
+  return `${m}:${sec.toString().padStart(2, "0")}`;
+}
+
+function formatDuration(s: number) {
+  const h = Math.floor(s / 3600);
+  const m = Math.round((s % 3600) / 60);
+  return h > 0 ? `${h}h ${m}m` : `${m}m`;
+}
+
+// ── YouTube IFrame API types ─────────────────────────────────────────────────
+declare global {
+  interface Window {
+    YT: any;
+    onYouTubeIframeAPIReady: () => void;
+  }
+}
 
 export default function AudiobookPlayerPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const ab = mockAudiobooks.find((book) => book.id === id);
-
-  if (!ab) {
-    return (
-      <div className="py-20 flex flex-col items-center justify-center text-center">
-        <Headphones size={48} className="text-red-500 mb-4" />
-        <h3 className="text-xl font-bold">Audiobook Not Found</h3>
-        <button onClick={() => navigate("/playground/audiobooks")} className="mt-4 px-5 py-2 bg-[var(--color-accent)] text-white rounded-xl">
-          Back to Library
-        </button>
-      </div>
-    );
-  }
-
-  // Audio References & State
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { showToast } = useToast();
 
+  // ── Data ──────────────────────────────────────────────────────────────────
+  const [ab, setAb] = useState<ApiAudiobook | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
+
+  // ── Player state ──────────────────────────────────────────────────────────
   const [currentChapterIdx, setCurrentChapterIdx] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [trackDuration, setTrackDuration] = useState(0);
-  const [playbackSpeed, setPlaybackSpeed] = useState(1);
-  const [sleepTimer, setSleepTimer] = useState<number | null>(null); // in seconds
-  const [activeTab, setActiveTab] = useState<"chapters" | "notes">("chapters");
-  
-  // Volume state
-  const [volume, setVolume] = useState(() => {
-    const saved = localStorage.getItem("ateion-ab-volume");
-    return saved ? parseFloat(saved) : 0.8;
-  });
   const [isMuted, setIsMuted] = useState(false);
-  const [prevVolume, setPrevVolume] = useState(0.8);
+  const [volume, setVolume] = useState(80);
+  const [speed, setSpeed] = useState(1);          // playback rate
+  const [progress, setProgress] = useState(0);        // 0-100
+  const [currentTime, setCurrentTime] = useState(0);  // seconds
+  const [duration, setDuration] = useState(0);        // seconds
+  const [activeTab, setActiveTab] = useState<"chapters" | "notes">("chapters");
+  const [ytReady, setYtReady] = useState(false);
 
-  // Buffering & Error tracking
-  const [isBuffering, setIsBuffering] = useState(false);
-  const [hasError, setHasError] = useState(false);
+  const SPEEDS = [0.5, 0.75, 1, 1.25, 1.5, 2];
+  const nextSpeed = () => {
+    setSpeed((s) => {
+      const idx = SPEEDS.indexOf(s);
+      const next = SPEEDS[(idx + 1) % SPEEDS.length];
+      try { ytPlayerRef.current?.setPlaybackRate(next); } catch { /* ignore */ }
+      return next;
+    });
+  };
 
-  // Bookmarks/Notes State
-  const [notes, setNotes] = useState<{ id: string; timestamp: number; text: string }[]>(() => {
-    const saved = localStorage.getItem(`ateion-ab-notes-${ab.id}`);
-    return saved ? JSON.parse(saved) : [];
-  });
+  // ── Notes state ───────────────────────────────────────────────────────────
+  const [notes, setNotes] = useState<{ id: string; timestamp: number; text: string }[]>([]);
   const [noteInput, setNoteInput] = useState("");
-  const [autoPauseOnType, setAutoPauseOnType] = useState(() => {
-    const saved = localStorage.getItem("ateion-ab-autopause");
-    return saved ? JSON.parse(saved) : true;
-  });
-  const [wasPlayingBeforeFocus, setWasPlayingBeforeFocus] = useState(false);
   const [editingNoteId, setEditingNoteId] = useState<string | null>(null);
   const [editingNoteText, setEditingNoteText] = useState("");
 
-  const [showSpeedMenu, setShowSpeedMenu] = useState(false);
-  const [showSleepMenu, setShowSleepMenu] = useState(false);
-  
-  // Resume State Prompt
-  const [hasResumeState, setHasResumeState] = useState(false);
-  const [resumeData, setResumeData] = useState<{ chapterIdx: number; time: number } | null>(null);
+  // ── YouTube Player ref ────────────────────────────────────────────────────
+  const ytPlayerRef = useRef<any>(null);
+  const ytContainerRef = useRef<HTMLDivElement>(null);
+  const progressTimerRef = useRef<number | null>(null);
 
-  const currentChapter = ab.chapters[currentChapterIdx];
-
-  // 1. Initial Load & LocalStorage Check
+  // ── Load audiobook ────────────────────────────────────────────────────────
   useEffect(() => {
-    const savedProgress = localStorage.getItem(`ateion-ab-progress-${ab.id}`);
-    if (savedProgress) {
-      const data = JSON.parse(savedProgress);
-      setResumeData(data);
-      setHasResumeState(true);
-    }
-  }, [ab.id]);
-
-  // 2. Playback speed adjustment
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.playbackRate = playbackSpeed;
-    }
-  }, [playbackSpeed, currentChapterIdx]);
-
-  // 3. Sleep Timer Countdown
-  useEffect(() => {
-    if (sleepTimer !== null) {
-      if (sleepTimer <= 0) {
-        handlePause();
-        setSleepTimer(null);
-        return;
-      }
-      const interval = setInterval(() => {
-        setSleepTimer((prev) => (prev !== null ? prev - 1 : null));
-      }, 1000);
-      return () => clearInterval(interval);
-    }
-  }, [sleepTimer]);
-
-  // 4. Save Notes to LocalStorage
-  useEffect(() => {
-    localStorage.setItem(`ateion-ab-notes-${ab.id}`, JSON.stringify(notes));
-  }, [notes, ab.id]);
-
-  // 5. Periodic Playback Position Saving
-  useEffect(() => {
-    if (isPlaying) {
-      const interval = setInterval(() => {
-        if (audioRef.current) {
-          localStorage.setItem(
-            `ateion-ab-progress-${ab.id}`,
-            JSON.stringify({ chapterIdx: currentChapterIdx, time: audioRef.current.currentTime })
-          );
+    const fetchAb = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/content/audiobooks/${id}`);
+        if (!res.ok) {
+          const res2 = await fetch(`${API_BASE}/content/audiobooks`);
+          if (!res2.ok) throw new Error();
+          const list: ApiAudiobook[] = await res2.json();
+          const found = list.find((a) => String(a.id) === String(id));
+          if (!found) { setNotFound(true); return; }
+          setAb(found);
+          const saved = localStorage.getItem(`ateion-ab-notes-${found.id}`);
+          if (saved) setNotes(JSON.parse(saved));
+        } else {
+          const found: ApiAudiobook = await res.json();
+          setAb(found);
+          const saved = localStorage.getItem(`ateion-ab-notes-${found.id}`);
+          if (saved) setNotes(JSON.parse(saved));
         }
-      }, 3000);
-      return () => clearInterval(interval);
-    }
-  }, [isPlaying, currentChapterIdx, ab.id]);
-
-  // 6. Volume Control Effect
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = isMuted ? 0 : volume;
-    }
-  }, [volume, isMuted]);
-
-  // 7. Save Volume settings
-  useEffect(() => {
-    localStorage.setItem("ateion-ab-volume", volume.toString());
-  }, [volume]);
-
-  // 8. Save AutoPause Settings
-  useEffect(() => {
-    localStorage.setItem("ateion-ab-autopause", JSON.stringify(autoPauseOnType));
-  }, [autoPauseOnType]);
-
-  // 9. Keyboard Shortcuts
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      const activeEl = document.activeElement as HTMLElement | null;
-      if (
-        activeEl && 
-        (activeEl.tagName === "INPUT" || 
-         activeEl.tagName === "TEXTAREA" || 
-         activeEl.isContentEditable)
-      ) {
-        return;
-      }
-
-      if (e.code === "Space") {
-        e.preventDefault();
-        handleTogglePlay();
-      } else if (e.code === "ArrowLeft") {
-        e.preventDefault();
-        handleSkip(-15);
-      } else if (e.code === "ArrowRight") {
-        e.preventDefault();
-        handleSkip(15);
+      } catch {
+        setNotFound(true);
+      } finally {
+        setLoading(false);
       }
     };
+    fetchAb();
+  }, [id]);
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isPlaying, currentChapterIdx, trackDuration, currentTime, autoPauseOnType]);
+  // ── Save notes ────────────────────────────────────────────────────────────
+  useEffect(() => {
+    if (ab) localStorage.setItem(`ateion-ab-notes-${ab.id}`, JSON.stringify(notes));
+  }, [notes, ab]);
 
-  const onWaiting = () => setIsBuffering(true);
-  const onPlaying = () => setIsBuffering(false);
-  const onCanPlay = () => {
-    setIsBuffering(false);
-    setHasError(false);
-  };
-  const onError = () => {
-    setIsBuffering(false);
-    setHasError(true);
-    showToast("Failed to load audio track. Please check your internet connection.", "error");
-  };
+  // ── Load YouTube IFrame API once ──────────────────────────────────────────
+  useEffect(() => {
+    if (window.YT && window.YT.Player) { setYtReady(true); return; }
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(tag);
+    window.onYouTubeIframeAPIReady = () => setYtReady(true);
+    return () => { /* intentionally kept */ };
+  }, []);
 
-  // Playback Control Handlers
-  const handlePlay = () => {
-    if (audioRef.current) {
-      audioRef.current.play().then(() => {
-        setIsPlaying(true);
-      }).catch((e) => console.log("Playback error:", e));
+  // ── Create / recreate player when chapter changes ─────────────────────────
+  const createPlayer = useCallback((videoId: string, autoplay: boolean) => {
+    if (!ytContainerRef.current || !window.YT) return;
+    if (ytPlayerRef.current) {
+      try { ytPlayerRef.current.destroy(); } catch { /* ignore */ }
+      ytPlayerRef.current = null;
     }
-  };
+    // Re-create a fresh <div> for the player
+    const div = document.createElement("div");
+    div.id = "yt-audio-player-inner";
+    ytContainerRef.current.innerHTML = "";
+    ytContainerRef.current.appendChild(div);
 
-  const handlePause = () => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      setIsPlaying(false);
+    ytPlayerRef.current = new window.YT.Player("yt-audio-player-inner", {
+      videoId,
+      playerVars: {
+        autoplay: autoplay ? 1 : 0,
+        controls: 0,
+        rel: 0,
+        modestbranding: 1,
+        iv_load_policy: 3,
+        disablekb: 1,
+      },
+      events: {
+        onReady: (e: any) => {
+          e.target.setVolume(volume);
+          e.target.setPlaybackRate(speed);
+          if (isMuted) e.target.mute();
+          const dur = e.target.getDuration();
+          if (dur) setDuration(dur);
+          if (autoplay) e.target.playVideo();
+        },
+        onStateChange: (e: any) => {
+          // 1 = playing, 2 = paused, 0 = ended
+          if (e.data === 1) {
+            setIsPlaying(true);
+            const dur = e.target.getDuration();
+            if (dur) setDuration(dur);
+          } else if (e.data === 2) {
+            setIsPlaying(false);
+          } else if (e.data === 0) {
+            // Auto-advance to next chapter
+            setIsPlaying(false);
+            setAb((prev) => {
+              if (!prev) return prev;
+              setCurrentChapterIdx((ci) => {
+                const next = ci + 1 < prev.chapters.length ? ci + 1 : ci;
+                return next;
+              });
+              return prev;
+            });
+          }
+        },
+      },
+    });
+  }, [volume, isMuted]);
+
+  useEffect(() => {
+    if (!ytReady || !ab) return;
+    const chapter = ab.chapters[currentChapterIdx];
+    if (!chapter?.youtubeVideoId) return;
+    createPlayer(chapter.youtubeVideoId, isPlaying);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ytReady, ab, currentChapterIdx]);
+
+  // ── Progress polling ──────────────────────────────────────────────────────
+  useEffect(() => {
+    if (progressTimerRef.current) clearInterval(progressTimerRef.current);
+    if (isPlaying) {
+      progressTimerRef.current = window.setInterval(() => {
+        try {
+          const player = ytPlayerRef.current;
+          if (!player) return;
+          const ct: number = player.getCurrentTime?.() ?? 0;
+          const dur: number = player.getDuration?.() ?? 0;
+          setCurrentTime(ct);
+          if (dur > 0) { setDuration(dur); setProgress((ct / dur) * 100); }
+        } catch { /* ignore */ }
+      }, 500);
     }
+    return () => { if (progressTimerRef.current) clearInterval(progressTimerRef.current); };
+  }, [isPlaying]);
+
+  // ── Controls ──────────────────────────────────────────────────────────────
+  const handlePlayPause = () => {
+    const player = ytPlayerRef.current;
+    if (!player) return;
+    if (isPlaying) { player.pauseVideo(); setIsPlaying(false); }
+    else { player.playVideo(); setIsPlaying(true); }
   };
 
-  const handleTogglePlay = () => {
-    if (isPlaying) handlePause();
-    else handlePlay();
-  };
-
-  const handleTimeUpdate = () => {
-    if (audioRef.current) {
-      setCurrentTime(audioRef.current.currentTime);
-    }
-  };
-
-  const handleLoadedMetadata = () => {
-    if (audioRef.current) {
-      setTrackDuration(audioRef.current.duration);
-    }
-  };
-
-  const handleSeekChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const time = parseFloat(e.target.value);
-    setCurrentTime(time);
-    if (audioRef.current) {
-      audioRef.current.currentTime = time;
-    }
-  };
-
-  const handleSkip = (seconds: number) => {
-    if (audioRef.current) {
-      let nextTime = audioRef.current.currentTime + seconds;
-      if (nextTime < 0) nextTime = 0;
-      if (nextTime > trackDuration) nextTime = trackDuration;
-      audioRef.current.currentTime = nextTime;
-      setCurrentTime(nextTime);
-    }
-  };
-
-  const handleSelectChapter = (idx: number, seekToTime = 0) => {
+  const handleSelectChapter = (idx: number) => {
     setCurrentChapterIdx(idx);
-    setCurrentTime(seekToTime);
-    setIsPlaying(false);
-    
-    // Quick load audio chapter
-    setTimeout(() => {
-      if (audioRef.current) {
-        audioRef.current.currentTime = seekToTime;
-        handlePlay();
-      }
-    }, 100);
-  };
-
-  const handleAudioEnded = () => {
-    if (currentChapterIdx < ab.chapters.length - 1) {
-      handleSelectChapter(currentChapterIdx + 1);
-    } else {
-      setIsPlaying(false);
-      setCurrentTime(0);
-      localStorage.removeItem(`ateion-ab-progress-${ab.id}`);
+    setProgress(0); setCurrentTime(0); setDuration(0);
+    setIsPlaying(true);
+    if (ytReady && ab) {
+      setTimeout(() => createPlayer(ab.chapters[idx].youtubeVideoId, true), 100);
     }
   };
 
-  const handleResume = () => {
-    if (resumeData) {
-      handleSelectChapter(resumeData.chapterIdx, resumeData.time);
-    }
-    setHasResumeState(false);
+  const handleSeek = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const pct = (e.clientX - rect.left) / rect.width;
+    const seekTo = pct * duration;
+    try { ytPlayerRef.current?.seekTo(seekTo, true); } catch { /* ignore */ }
+    setProgress(pct * 100); setCurrentTime(seekTo);
   };
 
-  // Sleep Timer Selection
-  const selectSleepTimer = (minutes: number | "chapter") => {
-    if (minutes === "chapter") {
-      const remainingChapterTime = trackDuration - currentTime;
-      setSleepTimer(Math.round(remainingChapterTime));
-    } else {
-      setSleepTimer(minutes * 60);
-    }
-    setShowSleepMenu(false);
+  const handleVolumeChange = (val: number) => {
+    setVolume(val);
+    try { ytPlayerRef.current?.setVolume(val); } catch { /* ignore */ }
+    if (val > 0 && isMuted) { setIsMuted(false); ytPlayerRef.current?.unMute(); }
   };
 
-  // Bookmarks/Notes Handlers
+  const handleMuteToggle = () => {
+    const muted = !isMuted;
+    setIsMuted(muted);
+    try {
+      if (muted) ytPlayerRef.current?.mute();
+      else ytPlayerRef.current?.unMute();
+    } catch { /* ignore */ }
+  };
+
+  const handleSkipBack = () => {
+    const to = Math.max(0, currentTime - 5);
+    try { ytPlayerRef.current?.seekTo(to, true); } catch { /* ignore */ }
+    setCurrentTime(to); setProgress(duration > 0 ? (to / duration) * 100 : 0);
+  };
+
+  const handleSkipForward = () => {
+    const to = Math.min(duration, currentTime + 5);
+    try { ytPlayerRef.current?.seekTo(to, true); } catch { /* ignore */ }
+    setCurrentTime(to); setProgress(duration > 0 ? (to / duration) * 100 : 0);
+  };
+
+  // ── Notes ─────────────────────────────────────────────────────────────────
   const handleAddNote = (e: React.FormEvent) => {
     e.preventDefault();
     if (!noteInput.trim()) return;
-
-    const newNote = {
-      id: `note-${Date.now()}`,
-      timestamp: currentTime,
-      text: noteInput.trim(),
-    };
-
+    const newNote = { id: `note-${Date.now()}`, timestamp: currentTime, text: noteInput.trim() };
     setNotes((prev) => [...prev, newNote].sort((a, b) => a.timestamp - b.timestamp));
     setNoteInput("");
-
-    if (autoPauseOnType && wasPlayingBeforeFocus) {
-      handlePlay();
-      setWasPlayingBeforeFocus(false);
-    }
-  };
-
-  const handleNoteInputFocus = () => {
-    if (autoPauseOnType && isPlaying) {
-      handlePause();
-      setWasPlayingBeforeFocus(true);
-    }
-  };
-
-  const handleStartEditNote = (noteId: string, currentText: string, e: React.MouseEvent) => {
-    e.stopPropagation();
-    setEditingNoteId(noteId);
-    setEditingNoteText(currentText);
-  };
-
-  const handleSaveEditNote = (noteId: string, e: React.FormEvent) => {
-    e.preventDefault();
-    if (!editingNoteText.trim()) return;
-
-    setNotes((prev) =>
-      prev.map((n) => (n.id === noteId ? { ...n, text: editingNoteText.trim() } : n))
-    );
-    setEditingNoteId(null);
-  };
-
-  const handleCancelEditNote = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setEditingNoteId(null);
   };
 
   const handleDeleteNote = (noteId: string, e: React.MouseEvent) => {
     e.stopPropagation();
     setNotes((prev) => prev.filter((n) => n.id !== noteId));
-    if (editingNoteId === noteId) {
-      setEditingNoteId(null);
-    }
+    if (editingNoteId === noteId) setEditingNoteId(null);
   };
 
-  const handleJumpToNote = (timestamp: number) => {
-    if (audioRef.current) {
-      audioRef.current.currentTime = timestamp;
-      setCurrentTime(timestamp);
-      handlePlay();
-    }
+  const handleStartEditNote = (noteId: string, text: string, e: React.MouseEvent) => {
+    e.stopPropagation(); setEditingNoteId(noteId); setEditingNoteText(text);
   };
 
-  const handleVolumeToggleMute = () => {
-    if (isMuted) {
-      setIsMuted(false);
-    } else {
-      setPrevVolume(volume);
-      setIsMuted(true);
-    }
-  };
-
-  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newVol = parseFloat(e.target.value);
-    setVolume(newVol);
-    if (newVol > 0) {
-      setIsMuted(false);
-    }
+  const handleSaveEditNote = (noteId: string, e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingNoteText.trim()) return;
+    setNotes((prev) => prev.map((n) => n.id === noteId ? { ...n, text: editingNoteText.trim() } : n));
+    setEditingNoteId(null);
   };
 
   const handleExportNotes = () => {
-    if (notes.length === 0) return;
-
-    const markdownContent = `# Study Notes: ${ab.title}\nBy ${ab.author}\n\n` + 
-      notes.map(note => `- **[${formatTime(note.timestamp)}]** ${note.text}`).join("\n");
-
-    const blob = new Blob([markdownContent], { type: "text/markdown;charset=utf-8;" });
+    if (!ab || notes.length === 0) return;
+    const md = `# Study Notes: ${ab.title}\nBy ${ab.author}\n\n` +
+      notes.map((n) => `- **[${formatTime(n.timestamp)}]** ${n.text}`).join("\n");
+    const blob = new Blob([md], { type: "text/markdown;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
@@ -375,34 +319,60 @@ export default function AudiobookPlayerPage() {
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
-    showToast("Notes exported successfully!", "success");
+    showToast("Notes exported!", "success");
   };
 
-  // Formatting Helpers
-  const formatTime = (timeInSecs: number) => {
-    const mins = Math.floor(timeInSecs / 60);
-    const secs = Math.floor(timeInSecs % 60);
-    return `${mins}:${secs.toString().padStart(2, "0")}`;
+  // ── Cover style ───────────────────────────────────────────────────────────
+  const coverStyle = (url: string): React.CSSProperties => {
+    if (url && url.startsWith("http"))
+      return { backgroundImage: `url(${url})`, backgroundSize: "cover", backgroundPosition: "center" };
+    return { background: COVER_GRADIENTS[0] };
   };
 
-  const formatSleepTimer = (secs: number) => {
-    const mins = Math.floor(secs / 60);
-    const s = Math.floor(secs % 60);
-    return `${mins}m ${s}s`;
-  };
+  // ── Guards ────────────────────────────────────────────────────────────────
+  if (loading) {
+    return (
+      <div className="py-32 flex flex-col items-center justify-center text-[var(--color-text-tertiary)]">
+        <Loader2 size={36} className="animate-spin mb-3 text-[var(--color-accent)]" />
+        <p className="text-sm">Loading audiobook...</p>
+      </div>
+    );
+  }
+
+  if (notFound || !ab || ab.chapters.length === 0) {
+    return (
+      <div className="py-20 flex flex-col items-center justify-center text-center">
+        <Headphones size={48} className="text-red-500 mb-4" />
+        <h3 className="text-xl font-bold">Audiobook Not Found</h3>
+        <button
+          onClick={() => navigate("/playground/audiobooks")}
+          className="mt-4 px-5 py-2 bg-[var(--color-accent)] text-white rounded-xl cursor-pointer"
+        >
+          Back to Library
+        </button>
+      </div>
+    );
+  }
+
+  const currentChapter = ab.chapters[currentChapterIdx];
 
   return (
     <motion.div
-      className="space-y-6 max-w-5xl mx-auto pb-10"
+      className="space-y-6 max-w-5xl mx-auto pb-12"
       variants={staggerContainer}
       initial="hidden"
       animate="show"
     >
-      <Helmet>
-        <title>{ab.title} | Audio Player</title>
-      </Helmet>
+      <Helmet><title>{ab.title} | Audio Player</title></Helmet>
 
-      {/* Back Button */}
+      {/* ── Hidden YouTube player (audio only) ─────────────────────────────── */}
+      <div
+        ref={ytContainerRef}
+        aria-hidden="true"
+        style={{ position: "fixed", left: "-9999px", top: "-9999px", width: "1px", height: "1px", overflow: "hidden", pointerEvents: "none" }}
+      />
+
+      {/* Back */}
       <motion.div variants={fadeUpItem}>
         <button
           onClick={() => navigate("/playground/audiobooks")}
@@ -412,507 +382,356 @@ export default function AudiobookPlayerPage() {
         </button>
       </motion.div>
 
-      {/* Resume Progress Dialog */}
-      <AnimatePresence>
-        {hasResumeState && resumeData && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="p-5 rounded-2xl bg-[var(--color-background-secondary)] border border-[var(--color-accent)]/30 flex flex-col sm:flex-row justify-between items-center gap-4 shadow-lg"
-          >
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[var(--color-accent)]/15 flex items-center justify-center text-[var(--color-accent)] shrink-0">
-                <BookMarked size={18} />
-              </div>
-              <div>
-                <p className="text-sm font-bold">Resume Listening?</p>
-                <p className="text-xs text-[var(--color-text-secondary)]">
-                  We saved your progress at {ab.chapters[resumeData.chapterIdx]?.title.split(":")[0]} ({formatTime(resumeData.time)}).
-                </p>
-              </div>
-            </div>
-            <div className="flex gap-2 w-full sm:w-auto shrink-0 justify-end">
-              <button
-                onClick={() => setHasResumeState(false)}
-                className="px-4 py-2 text-xs font-semibold text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] cursor-pointer"
-              >
-                Start Over
-              </button>
-              <button
-                onClick={handleResume}
-                className="px-4 py-2 text-xs font-bold bg-[var(--color-accent)] text-white rounded-xl shadow-md cursor-pointer"
-              >
-                Resume
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* HTML Audio element */}
-      <audio
-        ref={audioRef}
-        src={currentChapter.audioUrl}
-        onTimeUpdate={handleTimeUpdate}
-        onLoadedMetadata={handleLoadedMetadata}
-        onEnded={handleAudioEnded}
-        onWaiting={onWaiting}
-        onPlaying={onPlaying}
-        onCanPlay={onCanPlay}
-        onError={onError}
-      />
-
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-        {/* Left Side: Immersive Player Controls */}
+
+        {/* ══════════════════════════════════════════════════════════════════
+            LEFT — Album art + Audio Player card
+        ══════════════════════════════════════════════════════════════════ */}
         <motion.div
           variants={fadeUpItem}
-          className="lg:col-span-1 rounded-3xl border border-[var(--color-border-light)] bg-[var(--color-background-secondary)]/60 backdrop-blur-xl p-6 shadow-[var(--shadow-lg)] relative overflow-hidden flex flex-col items-center"
+          className="lg:col-span-1 rounded-3xl border border-[var(--color-border-light)] bg-[var(--color-background-secondary)]/80 backdrop-blur-xl p-6 shadow-[var(--shadow-lg)] relative overflow-hidden flex flex-col items-center gap-5"
         >
-          <style>{`
-            @keyframes wave-flow-1 {
-              0% { transform: translateX(0); }
-              100% { transform: translateX(-50%); }
-            }
-            @keyframes wave-flow-2 {
-              0% { transform: translateX(-50%); }
-              100% { transform: translateX(0); }
-            }
-            .animate-wave-1 {
-              animation: wave-flow-1 6s linear infinite;
-            }
-            .animate-wave-2 {
-              animation: wave-flow-2 4s linear infinite;
-            }
-          `}</style>
-
-          {/* Cover Art Glowing Aura */}
+          {/* Animated glow behind cover */}
           <div
-            className="absolute -top-20 w-44 h-44 rounded-full blur-[80px] opacity-40 transition-all"
-            style={{ background: ab.coverUrl.startsWith("http") || ab.coverUrl.startsWith("data:") ? `url(${ab.coverUrl}) center/cover` : ab.coverUrl }}
+            className="absolute -top-16 left-1/2 -translate-x-1/2 w-52 h-52 rounded-full blur-[90px] opacity-30 pointer-events-none"
+            style={coverStyle(ab.coverUrl)}
           />
 
-          {/* Cover Art Container */}
-          <div 
-            className="w-48 h-48 rounded-2xl flex items-center justify-center shadow-lg relative z-10 transition-transform duration-300 hover:scale-[1.03] overflow-hidden"
-            style={{ background: ab.coverUrl.startsWith("http") || ab.coverUrl.startsWith("data:") ? `url(${ab.coverUrl}) center/cover` : ab.coverUrl }}
+          {/* Cover Art */}
+          <div
+            className="w-44 h-44 rounded-2xl shadow-xl relative z-10 overflow-hidden flex items-center justify-center"
+            style={coverStyle(ab.coverUrl)}
           >
-            {!ab.coverUrl.startsWith("http") && !ab.coverUrl.startsWith("data:") && <Headphones size={64} className="text-white/25" />}
+            {!ab.coverUrl.startsWith("http") && !ab.coverUrl.startsWith("data:") ? (
+              <motion.img
+                src={bunnyListeningMusic}
+                alt="Listening Bunny"
+                className="w-full h-full object-contain p-2.5 relative z-20"
+                animate={isPlaying ? {
+                  y: [0, -8, 0],
+                  scale: [1, 1.03, 1],
+                  rotate: [0, -1.5, 1.5, 0],
+                } : {}}
+                transition={{
+                  repeat: Infinity,
+                  duration: 0.9,
+                  ease: "easeInOut"
+                }}
+              />
+            ) : (
+              <Headphones size={64} className="text-white/25" />
+            )}
             
             {/* Play overlay */}
             <div className="absolute inset-0 rounded-2xl border-4 border-white/20 flex items-center justify-center bg-black/10">
-              <div className={`w-8 h-8 rounded-full border border-dashed border-white/30 ${isPlaying && !isBuffering ? "animate-spin" : ""}`} style={{ animationDuration: "12s" }} />
+              <div className={`w-8 h-8 rounded-full border border-dashed border-white/30 ${isPlaying ? "animate-spin" : ""}`} style={{ animationDuration: "12s" }} />
             </div>
           </div>
 
-          {/* Title and Author */}
-          <div className="text-center mt-6 w-full relative z-10">
-            <h3 className="text-xl font-bold font-display line-clamp-1 text-[var(--color-text-primary)] leading-tight">{ab.title}</h3>
+          {/* Title & author */}
+          <div className="text-center w-full relative z-10">
+            <h3 className="text-lg font-extrabold line-clamp-2 text-[var(--color-text-primary)] leading-tight">{ab.title}</h3>
             <p className="text-xs text-[var(--color-text-tertiary)] font-medium mt-1">By {ab.author}</p>
-            <p className="text-xs text-[var(--color-accent)] font-semibold mt-3 bg-[var(--color-accent)]/10 px-3 py-1 rounded-md inline-block max-w-full truncate">
+            <span className="inline-block mt-2 text-[10px] font-bold uppercase tracking-widest bg-[var(--color-accent)]/10 text-[var(--color-accent)] px-3 py-1 rounded-full max-w-full truncate">
               {currentChapter.title}
-            </p>
-          </div>
-
-          {/* Wave Visualizer Box */}
-          <div className="w-full h-12 relative overflow-hidden mt-4 rounded-xl bg-black/5 dark:bg-white/5 flex items-center justify-center z-10 border border-[var(--color-border-light)]/40">
-            <div className="absolute inset-0 flex items-end">
-              <svg className="w-[200%] h-10 text-[var(--color-accent)] pointer-events-none" viewBox="0 0 200 20" preserveAspectRatio="none" style={{ minWidth: '200%' }}>
-                <path
-                  d="M0 10 C 30 2, 70 18, 100 10 C 130 2, 170 18, 200 10 L 200 20 L 0 20 Z"
-                  fill="currentColor"
-                  className={`opacity-25 ${isPlaying && !isBuffering ? "animate-wave-1" : "transition-transform duration-1000"}`}
-                  style={{ transform: isPlaying && !isBuffering ? undefined : 'translateY(4px)' }}
-                />
-                <path
-                  d="M0 12 C 40 18, 60 2, 100 12 C 140 18, 160 2, 200 12 L 200 20 L 0 20 Z"
-                  fill="currentColor"
-                  className={`opacity-40 ${isPlaying && !isBuffering ? "animate-wave-2" : "transition-transform duration-1000"}`}
-                  style={{ transform: isPlaying && !isBuffering ? undefined : 'translateY(4px)' }}
-                />
-              </svg>
-            </div>
-            <span className="text-[9px] font-extrabold tracking-widest uppercase opacity-60 relative z-10 select-none text-[var(--color-text-primary)]">
-              {hasError ? "Load Error" : isBuffering ? "Buffering..." : isPlaying ? "Audio Live" : "Playback Paused"}
             </span>
           </div>
 
-          {/* Seek progress Slider */}
-          <div className="w-full mt-6 relative z-10">
-            <input
-              type="range"
-              min={0}
-              max={trackDuration || 100}
-              value={currentTime}
-              onChange={handleSeekChange}
-              className="w-full accent-[var(--color-accent)] h-1.5 rounded-lg bg-[var(--color-background-tertiary)] cursor-pointer outline-none focus:outline-none"
+          {/* Waveform visualiser */}
+          <div className="w-full h-10 relative overflow-hidden rounded-xl bg-black/5 border border-[var(--color-border-light)]/40 z-10 flex items-center justify-center">
+            <svg
+              className="absolute inset-0 w-full h-full text-[var(--color-accent)] pointer-events-none"
+              viewBox="0 0 400 40"
+              preserveAspectRatio="none"
+            >
+              <path
+                d="M0 20 C 50 6, 100 34, 150 20 C 200 6, 250 34, 300 20 C 350 6, 400 34, 450 20 L 450 40 L 0 40 Z"
+                fill="currentColor"
+                className={`opacity-20 ${isPlaying ? "origin-center" : ""}`}
+                style={isPlaying ? { animation: "waveScroll 4s linear infinite" } : {}}
+              />
+              <path
+                d="M0 22 C 60 34, 120 8, 180 22 C 240 36, 300 8, 360 22 C 400 32, 430 14, 450 22 L 450 40 L 0 40 Z"
+                fill="currentColor"
+                className="opacity-30"
+                style={isPlaying ? { animation: "waveScroll 2.5s linear infinite reverse" } : {}}
+              />
+            </svg>
+            <Music2
+              size={13}
+              className="relative z-10 text-[var(--color-accent)] mr-1.5 shrink-0"
             />
-            <div className="flex justify-between text-[10px] text-[var(--color-text-tertiary)] font-semibold mt-2">
+            <span className="text-[9px] font-extrabold tracking-widest uppercase relative z-10 text-[var(--color-text-secondary)]">
+              {isPlaying ? "Now Playing" : "Paused"}
+            </span>
+          </div>
+
+          {/* Progress bar */}
+          <div className="w-full relative z-10 space-y-1">
+            <div
+              className="w-full h-2 rounded-full bg-[var(--color-background-tertiary)] cursor-pointer group relative overflow-hidden"
+              onClick={handleSeek}
+            >
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-[var(--color-accent)] to-[var(--color-accent)]/70 transition-all"
+                style={{ width: `${progress}%` }}
+              />
+              {/* Thumb dot */}
+              <div
+                className="absolute top-1/2 -translate-y-1/2 w-3.5 h-3.5 rounded-full bg-white shadow-md border-2 border-[var(--color-accent)] transition-all"
+                style={{ left: `calc(${progress}% - 7px)` }}
+              />
+            </div>
+            <div className="flex justify-between text-[10px] text-[var(--color-text-tertiary)] font-medium">
               <span>{formatTime(currentTime)}</span>
-              <span>{formatTime(trackDuration)}</span>
+              <span>{duration > 0 ? formatTime(duration) : formatDuration(currentChapter.durationSeconds)}</span>
             </div>
           </div>
 
-          {/* Audio controls row */}
-          <div className="flex items-center gap-6 mt-3 relative z-10">
+          {/* Controls */}
+          <div className="flex items-center gap-5 z-10">
             <button
-              onClick={() => handleSkip(-15)}
-              className="p-2 rounded-full text-[var(--color-text-secondary)] hover:bg-[var(--color-background-tertiary)]/50 hover:text-[var(--color-text-primary)] transition-all cursor-pointer"
-              title="Rewind 15s"
+              onClick={handleSkipBack}
+              title="-5s"
+              className="w-9 h-9 flex flex-col items-center justify-center rounded-full text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] hover:bg-[var(--color-accent)]/10 transition-all cursor-pointer"
             >
-              <RotateCcw size={20} />
+              <SkipBack size={18} />
+              <span className="text-[8px] font-bold -mt-0.5 opacity-70">5s</span>
             </button>
 
             <button
-              onClick={handleTogglePlay}
-              className="w-14 h-14 rounded-full bg-[var(--color-accent)] hover:bg-[var(--color-accent)]/95 hover:scale-[1.05] active:scale-[0.95] text-white flex items-center justify-center shadow-md shadow-[var(--color-accent_light)] transition-all cursor-pointer disabled:opacity-50"
-              disabled={hasError}
+              onClick={handlePlayPause}
+              className="w-16 h-16 rounded-full bg-[var(--color-accent)] hover:bg-[var(--color-accent)]/90 hover:scale-105 active:scale-95 text-white flex items-center justify-center shadow-lg transition-all cursor-pointer"
             >
-              {isBuffering ? (
-                <Loader2 size={24} className="animate-spin" />
-              ) : isPlaying ? (
-                <Pause size={24} fill="currentColor" />
-              ) : (
-                <Play size={24} fill="currentColor" className="ml-1" />
-              )}
+              {isPlaying
+                ? <Pause size={26} fill="currentColor" />
+                : <Play size={26} fill="currentColor" className="ml-1" />}
             </button>
 
             <button
-              onClick={() => handleSkip(15)}
-              className="p-2 rounded-full text-[var(--color-text-secondary)] hover:bg-[var(--color-background-tertiary)]/50 hover:text-[var(--color-text-primary)] transition-all cursor-pointer"
-              title="Fast Forward 15s"
+              onClick={handleSkipForward}
+              title="+5s"
+              className="w-9 h-9 flex flex-col items-center justify-center rounded-full text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] hover:bg-[var(--color-accent)]/10 transition-all cursor-pointer"
             >
-              <RotateCw size={20} />
+              <SkipForward size={18} />
+              <span className="text-[8px] font-bold -mt-0.5 opacity-70">5s</span>
             </button>
           </div>
 
-          {/* Volume Control slider */}
-          <div className="flex items-center gap-2.5 w-full mt-4 border-t border-[var(--color-border-light)]/40 pt-4 relative z-10 justify-center">
+          {/* Volume */}
+          <div className="flex items-center gap-2 w-full z-10">
             <button
-              onClick={handleVolumeToggleMute}
-              className="p-1 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors cursor-pointer"
-              title={isMuted ? "Unmute" : "Mute"}
+              onClick={handleMuteToggle}
+              className="text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] transition-colors cursor-pointer shrink-0"
             >
-              {isMuted || volume === 0 ? (
-                <VolumeX size={16} />
-              ) : volume < 0.5 ? (
-                <Volume1 size={16} />
-              ) : (
-                <Volume2 size={16} />
-              )}
+              {isMuted || volume === 0 ? <VolumeX size={16} /> : <Volume2 size={16} />}
             </button>
             <input
               type="range"
               min={0}
-              max={1}
-              step={0.05}
+              max={100}
               value={isMuted ? 0 : volume}
-              onChange={handleVolumeChange}
-              className="w-32 accent-[var(--color-accent)] h-1 rounded-lg bg-[var(--color-background-tertiary)] cursor-pointer outline-none"
+              onChange={(e) => handleVolumeChange(Number(e.target.value))}
+              className="flex-1 h-1.5 rounded-full accent-[var(--color-accent)] cursor-pointer"
             />
           </div>
 
-          {/* Secondary Control Panels */}
-          <div className="grid grid-cols-2 gap-3 w-full mt-8 border-t border-[var(--color-border-light)]/60 pt-6 relative z-10">
-            
-            {/* Speed Controller */}
-            <div className="relative">
-              <button
-                onClick={() => { setShowSpeedMenu(!showSpeedMenu); setShowSleepMenu(false); }}
-                className="w-full py-2.5 px-3 rounded-xl bg-[var(--color-background-tertiary)]/40 hover:bg-[var(--color-background-tertiary)]/80 text-xs font-semibold flex items-center justify-between text-[var(--color-text-secondary)] border border-[var(--color-border-light)]/60 transition-all cursor-pointer"
-              >
-                <span className="flex items-center gap-1.5">
-                  <Volume2 size={14} />
-                  {playbackSpeed}x
-                </span>
-                <Settings size={12} className="opacity-60" />
-              </button>
-
-              <AnimatePresence>
-                {showSpeedMenu && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    className="absolute bottom-full left-0 mb-2 w-full bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] rounded-xl shadow-lg z-20 overflow-hidden"
-                  >
-                    {[0.5, 1, 1.25, 1.5, 2].map((s) => (
-                      <button
-                        key={s}
-                        onClick={() => { setPlaybackSpeed(s); setShowSpeedMenu(false); }}
-                        className={`w-full py-2 text-center text-xs font-semibold hover:bg-[var(--color-background-tertiary)] block cursor-pointer ${
-                          playbackSpeed === s ? "text-[var(--color-accent)] bg-[var(--color-accent)]/5 font-bold" : "text-[var(--color-text-secondary)]"
-                        }`}
-                      >
-                        {s}x
-                      </button>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
-            {/* Sleep Timer */}
-            <div className="relative">
-              <button
-                onClick={() => { setShowSleepMenu(!showSleepMenu); setShowSpeedMenu(false); }}
-                className={`w-full py-2.5 px-3 rounded-xl text-xs font-semibold flex items-center justify-between border transition-all cursor-pointer ${
-                  sleepTimer !== null 
-                    ? "bg-[var(--color-accent)]/10 text-[var(--color-accent)] border-[var(--color-accent)]/30" 
-                    : "bg-[var(--color-background-tertiary)]/40 hover:bg-[var(--color-background-tertiary)]/80 text-[var(--color-text-secondary)] border-[var(--color-border-light)]/60"
-                }`}
-              >
-                <span className="flex items-center gap-1.5 truncate">
-                  <Clock size={14} />
-                  {sleepTimer !== null ? formatSleepTimer(sleepTimer) : "Sleep"}
-                </span>
-                <Hourglass size={12} className="opacity-60" />
-              </button>
-
-              <AnimatePresence>
-                {showSleepMenu && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    className="absolute bottom-full right-0 mb-2 w-36 bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] rounded-xl shadow-lg z-20 overflow-hidden"
-                  >
-                    {sleepTimer !== null && (
-                      <button
-                        onClick={() => { setSleepTimer(null); setShowSleepMenu(false); }}
-                        className="w-full py-2 px-3 text-left text-xs font-bold text-red-500 hover:bg-red-500/5 cursor-pointer border-b border-[var(--color-border-light)]"
-                      >
-                        Cancel Timer
-                      </button>
-                    )}
-                    {[15, 30, 45, 60].map((t) => (
-                      <button
-                        key={t}
-                        onClick={() => selectSleepTimer(t)}
-                        className="w-full py-2 px-3 text-left text-xs font-semibold hover:bg-[var(--color-background-tertiary)] text-[var(--color-text-secondary)] cursor-pointer"
-                      >
-                        {t} Minutes
-                      </button>
-                    ))}
-                    <button
-                      onClick={() => selectSleepTimer("chapter")}
-                      className="w-full py-2 px-3 text-left text-xs font-semibold hover:bg-[var(--color-background-tertiary)] text-[var(--color-text-secondary)] cursor-pointer"
-                    >
-                      End of Chapter
-                    </button>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
+          {/* Speed control */}
+          <div className="flex items-center justify-between w-full z-10">
+            <button
+              onClick={nextSpeed}
+              className="px-3 py-1.5 rounded-xl bg-[var(--color-background-tertiary)] border border-[var(--color-border-light)] text-xs font-bold text-[var(--color-text-primary)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] transition-all cursor-pointer"
+              title="Click to change speed"
+            >
+              {speed === 1 ? "1x" : `${speed}x`} Speed
+            </button>
+            <span className="text-[10px] text-[var(--color-text-tertiary)]">
+              {SPEEDS.map((s) => (
+                <button
+                  key={s}
+                  onClick={() => { setSpeed(s); try { ytPlayerRef.current?.setPlaybackRate(s); } catch { /* ignore */ } }}
+                  className={`px-1.5 py-0.5 rounded cursor-pointer transition-all text-[10px] font-semibold ${
+                    speed === s ? "text-[var(--color-accent)] font-bold" : "text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)]"
+                  }`}
+                >
+                  {s}x
+                </button>
+              ))}
+            </span>
           </div>
+
+          {/* Chapter info */}
+          <p className="text-[10px] text-[var(--color-text-tertiary)] text-center z-10 leading-relaxed">
+            Chapter {currentChapterIdx + 1} of {ab.chapters.length}
+          </p>
+
+          <style>{`
+            @keyframes waveScroll { from { transform: translateX(0); } to { transform: translateX(-40%); } }
+            .scrollbar-thin::-webkit-scrollbar { width: 4px; }
+            .scrollbar-thin::-webkit-scrollbar-track { background: transparent; }
+            .scrollbar-thin::-webkit-scrollbar-thumb { background: var(--color-border-light); border-radius: 4px; }
+            .scrollbar-thin::-webkit-scrollbar-thumb:hover { background: var(--color-text-tertiary); }
+          `}</style>
         </motion.div>
 
-        {/* Right Side: Chapter Selection & Bookmarks Tab Panels */}
-        <div className="lg:col-span-2 space-y-6">
-          
-          {/* Tab Switcher Headers */}
-          <div className="flex border-b border-[var(--color-border-light)] pb-px justify-between items-center">
-            <div className="flex">
-              <button
-                onClick={() => setActiveTab("chapters")}
-                className={`pb-3 px-4 font-bold text-sm border-b-2 transition-all cursor-pointer flex items-center gap-1.5 ${
-                  activeTab === "chapters"
-                    ? "border-[var(--color-accent)] text-[var(--color-text-primary)]"
-                    : "border-transparent text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)]"
-                }`}
-              >
-                <List size={16} />
-                Chapters ({ab.chapters.length})
-              </button>
-              <button
-                onClick={() => setActiveTab("notes")}
-                className={`pb-3 px-4 font-bold text-sm border-b-2 transition-all cursor-pointer flex items-center gap-1.5 ${
-                  activeTab === "notes"
-                    ? "border-[var(--color-accent)] text-[var(--color-text-primary)]"
-                    : "border-transparent text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)]"
-                }`}
-              >
-                <FileText size={16} />
-                Notes & Bookmarks ({notes.length})
-              </button>
-            </div>
-            {activeTab === "notes" && notes.length > 0 && (
-              <button
-                onClick={handleExportNotes}
-                className="pb-3 px-3 text-xs font-bold text-[var(--color-accent)] flex items-center gap-1 hover:opacity-85 transition-opacity cursor-pointer"
-                title="Export notes to Markdown"
-              >
-                <Download size={14} /> Export (.md)
-              </button>
-            )}
-          </div>
+        {/* ══════════════════════════════════════════════════════════════════
+            RIGHT — Chapters / Notes tabs
+        ══════════════════════════════════════════════════════════════════ */}
+        <div className="lg:col-span-2 space-y-5">
 
-          {/* Tab Contents */}
-          <div>
+          {/* Tabs header */}
+          <motion.div variants={fadeUpItem}>
+            <div className="flex border-b border-[var(--color-border-light)] pb-px justify-between items-center">
+              <div className="flex">
+                <button
+                  onClick={() => setActiveTab("chapters")}
+                  className={`pb-3 px-4 font-bold text-sm border-b-2 transition-all cursor-pointer flex items-center gap-1.5 ${
+                    activeTab === "chapters"
+                      ? "border-[var(--color-accent)] text-[var(--color-text-primary)]"
+                      : "border-transparent text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)]"
+                  }`}
+                >
+                  <List size={16} /> Chapters ({ab.chapters.length})
+                </button>
+                <button
+                  onClick={() => setActiveTab("notes")}
+                  className={`pb-3 px-4 font-bold text-sm border-b-2 transition-all cursor-pointer flex items-center gap-1.5 ${
+                    activeTab === "notes"
+                      ? "border-[var(--color-accent)] text-[var(--color-text-primary)]"
+                      : "border-transparent text-[var(--color-text-tertiary)] hover:text-[var(--color-text-secondary)]"
+                  }`}
+                >
+                  <FileText size={16} /> Notes ({notes.length})
+                </button>
+              </div>
+              {activeTab === "notes" && notes.length > 0 && (
+                <button
+                  onClick={handleExportNotes}
+                  className="pb-3 px-3 text-xs font-bold text-[var(--color-accent)] flex items-center gap-1 hover:opacity-80 cursor-pointer"
+                >
+                  <Download size={14} /> Export (.md)
+                </button>
+              )}
+            </div>
+          </motion.div>
+
+          {/* Tab content */}
+          <AnimatePresence mode="wait">
             {activeTab === "chapters" ? (
-              <div className="space-y-3">
+              <motion.div
+                key="chapters"
+                variants={staggerContainer}
+                initial="hidden"
+                animate="show"
+                exit={{ opacity: 0 }}
+                className="space-y-3 overflow-y-auto pr-1 scrollbar-thin"
+                style={{ maxHeight: "calc(100vh - 300px)" }}
+              >
                 {ab.chapters.map((chap, idx) => {
                   const isCurrent = currentChapterIdx === idx;
                   return (
-                    <div
+                    <motion.div
                       key={chap.id}
+                      variants={fadeUpItem}
                       onClick={() => handleSelectChapter(idx)}
-                      className={`p-4.5 rounded-2xl border transition-all duration-200 cursor-pointer flex items-center justify-between ${
+                      className={`p-4 rounded-2xl border transition-all duration-200 cursor-pointer flex items-center justify-between ${
                         isCurrent
-                          ? "bg-[var(--color-accent)]/5 border-[var(--color-accent)]/40 shadow-sm"
+                          ? "bg-[var(--color-accent)]/6 border-[var(--color-accent)]/40 shadow-sm"
                           : "bg-[var(--color-background-secondary)] hover:bg-[var(--color-background-tertiary)]/50 border-[var(--color-border-light)]"
                       }`}
                     >
-                      <div className="flex items-center gap-3">
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
-                          isCurrent 
-                            ? "bg-[var(--color-accent)] text-white" 
-                            : "bg-[var(--color-background-tertiary)] text-[var(--color-text-secondary)]"
+                      <div className="flex items-center gap-3 flex-1 min-w-0">
+                        <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold shrink-0 ${
+                          isCurrent ? "bg-[var(--color-accent)] text-white" : "bg-[var(--color-background-tertiary)] text-[var(--color-text-secondary)]"
                         }`}>
-                          {idx + 1}
-                        </div>
-                        <div>
-                          <p className={`text-sm font-bold leading-snug ${isCurrent ? "text-[var(--color-accent)]" : "text-[var(--color-text-primary)]"}`}>
-                            {chap.title.split(":").slice(1).join(":").trim() || chap.title}
-                          </p>
-                          <p className="text-xs text-[var(--color-text-tertiary)] mt-0.5">
-                            {formatTime(chap.duration)}
-                          </p>
-                        </div>
-                      </div>
-
-                      {isCurrent && (
-                        <div className="flex items-center gap-1 shrink-0">
-                          {isPlaying && !isBuffering ? (
-                            <span className="flex items-end gap-0.5 h-3">
-                              <span className="w-0.75 bg-[var(--color-accent)] rounded-full animate-[equalizer_0.8s_ease-in-out_infinite_alternate]" style={{ height: "100%" }} />
-                              <span className="w-0.75 bg-[var(--color-accent)] rounded-full animate-[equalizer_0.8s_ease-in-out_infinite_alternate_0.15s]" style={{ height: "40%" }} />
-                              <span className="w-0.75 bg-[var(--color-accent)] rounded-full animate-[equalizer_0.8s_ease-in-out_infinite_alternate_0.3s]" style={{ height: "70%" }} />
+                          {isCurrent && isPlaying ? (
+                            <span className="flex items-end gap-0.5 h-4">
+                              <span className="w-0.5 bg-white rounded-full animate-[equalizer_0.7s_ease-in-out_infinite_alternate]" style={{ height: "100%" }} />
+                              <span className="w-0.5 bg-white rounded-full animate-[equalizer_0.7s_ease-in-out_infinite_alternate_0.15s]" style={{ height: "50%" }} />
+                              <span className="w-0.5 bg-white rounded-full animate-[equalizer_0.7s_ease-in-out_infinite_alternate_0.3s]" style={{ height: "80%" }} />
                             </span>
                           ) : (
-                            <Headphones size={14} className="text-[var(--color-accent)]" />
+                            idx + 1
                           )}
                         </div>
+                        <div className="min-w-0">
+                          <p className={`text-sm font-bold leading-snug truncate ${isCurrent ? "text-[var(--color-accent)]" : "text-[var(--color-text-primary)]"}`}>
+                            {chap.title}
+                          </p>
+                          <p className="text-xs text-[var(--color-text-tertiary)] mt-0.5">{formatDuration(chap.durationSeconds)}</p>
+                        </div>
+                      </div>
+                      {isCurrent && !isPlaying && (
+                        <Headphones size={16} className="text-[var(--color-accent)] shrink-0 ml-2" />
                       )}
-                    </div>
+                    </motion.div>
                   );
                 })}
-              </div>
+              </motion.div>
             ) : (
-              <div className="space-y-6">
-                
-                {/* Notes Creator Form */}
-                <div className="space-y-3">
-                  <form onSubmit={handleAddNote} className="flex gap-2">
-                    <input
-                      type="text"
-                      placeholder={`Save a note at ${formatTime(currentTime)}...`}
-                      className="flex-1 px-4 py-2.5 rounded-xl bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] text-[var(--color-text-primary)] outline-none text-sm focus:border-[var(--color-accent)]"
-                      value={noteInput}
-                      onChange={(e) => setNoteInput(e.target.value)}
-                      onFocus={handleNoteInputFocus}
-                    />
-                    <button
-                      type="submit"
-                      className="px-4.5 bg-[var(--color-accent)] text-white font-bold rounded-xl text-sm flex items-center gap-1 cursor-pointer shrink-0 shadow-md shadow-[var(--color-accent_light)]"
-                    >
-                      <Plus size={16} /> Add
-                    </button>
-                  </form>
-                  
-                  {/* Auto-pause toggle option */}
-                  <label className="flex items-center gap-2 text-xs text-[var(--color-text-secondary)] cursor-pointer select-none">
-                    <input
-                      type="checkbox"
-                      checked={autoPauseOnType}
-                      onChange={(e) => setAutoPauseOnType(e.target.checked)}
-                      className="rounded border-[var(--color-border-light)] text-[var(--color-accent)] focus:ring-[var(--color-accent)] w-3.5 h-3.5 accent-[var(--color-accent)]"
-                    />
-                    Auto-pause playback while writing note
-                  </label>
-                </div>
+              <motion.div
+                key="notes"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                className="space-y-4"
+              >
+                <form onSubmit={handleAddNote} className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder={`Add a note at ${formatTime(currentTime)}...`}
+                    className="flex-1 px-4 py-2.5 rounded-xl bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] text-[var(--color-text-primary)] outline-none text-sm focus:border-[var(--color-accent)]"
+                    value={noteInput}
+                    onChange={(e) => setNoteInput(e.target.value)}
+                  />
+                  <button
+                    type="submit"
+                    className="px-4 bg-[var(--color-accent)] text-white font-bold rounded-xl text-sm flex items-center gap-1 cursor-pointer shrink-0 shadow-md"
+                  >
+                    <Plus size={16} /> Add
+                  </button>
+                </form>
 
-                {/* Saved Bookmarks Timeline */}
-                <div className="space-y-3">
-                  {notes.length > 0 ? (
-                    notes.map((note) => (
-                      <div
-                        key={note.id}
-                        onClick={() => handleJumpToNote(note.timestamp)}
-                        className="group p-4 rounded-2xl bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] hover:border-[var(--color-accent)]/30 hover:bg-[var(--color-background-tertiary)]/20 transition-all cursor-pointer flex items-start justify-between gap-4"
-                      >
-                        {editingNoteId === note.id ? (
-                          <form
-                            onSubmit={(e) => handleSaveEditNote(note.id, e)}
-                            className="flex-1 flex gap-2 items-center"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <span className="text-[10px] font-bold tracking-wide text-white bg-[var(--color-accent)] px-2 py-0.75 rounded-md shrink-0">
-                              {formatTime(note.timestamp)}
-                            </span>
-                            <input
-                              type="text"
-                              value={editingNoteText}
-                              onChange={(e) => setEditingNoteText(e.target.value)}
-                              className="flex-1 px-3 py-1.5 text-xs bg-[var(--color-background-primary)] border border-[var(--color-accent)] rounded-lg text-[var(--color-text-primary)] outline-none"
-                              autoFocus
-                            />
-                            <button
-                              type="submit"
-                              className="px-2.5 py-1.5 bg-[var(--color-accent)] text-white text-[10px] font-bold rounded-lg cursor-pointer"
-                            >
-                              Save
-                            </button>
-                            <button
-                              type="button"
-                              onClick={handleCancelEditNote}
-                              className="px-2.5 py-1.5 bg-[var(--color-background-tertiary)] text-[var(--color-text-secondary)] text-[10px] font-bold rounded-lg cursor-pointer border border-[var(--color-border-light)]"
-                            >
-                              Cancel
-                            </button>
-                          </form>
-                        ) : (
-                          <>
-                            <div className="flex gap-3 items-start">
-                              <span className="text-[10px] font-bold tracking-wide text-white bg-[var(--color-accent)] px-2 py-0.75 rounded-md mt-0.5 shrink-0">
-                                {formatTime(note.timestamp)}
-                              </span>
-                              <p className="text-sm text-[var(--color-text-primary)] font-medium leading-relaxed">
-                                {note.text}
-                              </p>
-                            </div>
-                            <div className="flex gap-1 shrink-0 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
-                              <button
-                                onClick={(e) => handleStartEditNote(note.id, note.text, e)}
-                                className="text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] p-1.5 hover:bg-[var(--color-accent)]/10 rounded-lg transition-colors cursor-pointer"
-                                title="Edit Note"
-                              >
-                                <Edit2 size={14} />
-                              </button>
-                              <button
-                                onClick={(e) => handleDeleteNote(note.id, e)}
-                                className="text-[var(--color-text-tertiary)] hover:text-red-500 p-1.5 hover:bg-red-500/10 rounded-lg transition-colors cursor-pointer"
-                                title="Delete Note"
-                              >
-                                <Trash2 size={14} />
-                              </button>
-                            </div>
-                          </>
-                        )}
-                      </div>
-                    ))
-                  ) : (
-                    <div className="py-12 flex flex-col items-center justify-center text-center text-[var(--color-text-tertiary)] bg-[var(--color-background-secondary)]/30 rounded-3xl border border-dashed border-[var(--color-border-light)]">
-                      <BookMarked size={24} className="opacity-50 mb-2" />
-                      <p className="text-sm font-semibold">No notes yet</p>
-                      <p className="text-xs max-w-xs mt-0.5 leading-relaxed">Type a note above to bookmark key highlights. Clicking a note jumps audio playback back to that timestamp.</p>
+                {notes.length > 0 ? (
+                  notes.map((note) => (
+                    <div key={note.id} className="group p-4 rounded-2xl bg-[var(--color-background-secondary)] border border-[var(--color-border-light)] hover:border-[var(--color-accent)]/30 transition-all flex items-start justify-between gap-4">
+                      {editingNoteId === note.id ? (
+                        <form onSubmit={(e) => handleSaveEditNote(note.id, e)} className="flex-1 flex gap-2 items-center" onClick={(e) => e.stopPropagation()}>
+                          <span className="text-[10px] font-bold text-white bg-[var(--color-accent)] px-2 py-0.5 rounded-md shrink-0">{formatTime(note.timestamp)}</span>
+                          <input
+                            type="text"
+                            value={editingNoteText}
+                            onChange={(e) => setEditingNoteText(e.target.value)}
+                            className="flex-1 px-3 py-1.5 text-xs bg-[var(--color-background-primary)] border border-[var(--color-accent)] rounded-lg text-[var(--color-text-primary)] outline-none"
+                            autoFocus
+                          />
+                          <button type="submit" className="px-2.5 py-1.5 bg-[var(--color-accent)] text-white text-[10px] font-bold rounded-lg cursor-pointer">Save</button>
+                          <button type="button" onClick={() => setEditingNoteId(null)} className="px-2.5 py-1.5 bg-[var(--color-background-tertiary)] text-[var(--color-text-secondary)] text-[10px] font-bold rounded-lg cursor-pointer">Cancel</button>
+                        </form>
+                      ) : (
+                        <>
+                          <div className="flex gap-3 items-start">
+                            <span className="text-[10px] font-bold text-white bg-[var(--color-accent)] px-2 py-0.5 rounded-md mt-0.5 shrink-0">{formatTime(note.timestamp)}</span>
+                            <p className="text-sm text-[var(--color-text-primary)] font-medium leading-relaxed">{note.text}</p>
+                          </div>
+                          <div className="flex gap-1 shrink-0 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
+                            <button onClick={(e) => handleStartEditNote(note.id, note.text, e)} className="text-[var(--color-text-tertiary)] hover:text-[var(--color-accent)] p-1.5 hover:bg-[var(--color-accent)]/10 rounded-lg cursor-pointer"><Edit2 size={14} /></button>
+                            <button onClick={(e) => handleDeleteNote(note.id, e)} className="text-[var(--color-text-tertiary)] hover:text-red-500 p-1.5 hover:bg-red-500/10 rounded-lg cursor-pointer"><Trash2 size={14} /></button>
+                          </div>
+                        </>
+                      )}
                     </div>
-                  )}
-                </div>
-              </div>
+                  ))
+                ) : (
+                  <div className="py-14 flex flex-col items-center text-center text-[var(--color-text-tertiary)] bg-[var(--color-background-secondary)]/30 rounded-3xl border border-dashed border-[var(--color-border-light)]">
+                    <BookMarked size={24} className="opacity-50 mb-2" />
+                    <p className="text-sm font-semibold">No notes yet</p>
+                    <p className="text-xs mt-0.5 max-w-xs leading-relaxed">Add notes while listening to keep track of key ideas.</p>
+                  </div>
+                )}
+              </motion.div>
             )}
-          </div>
+          </AnimatePresence>
         </div>
       </div>
     </motion.div>

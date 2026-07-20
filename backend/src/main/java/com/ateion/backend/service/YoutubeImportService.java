@@ -1,9 +1,12 @@
 package com.ateion.backend.service;
 
 import com.ateion.backend.dto.YoutubeImportDTOs.*;
+import com.ateion.backend.entity.Audiobook;
+import com.ateion.backend.entity.AudiobookChapter;
 import com.ateion.backend.entity.Course;
 import com.ateion.backend.entity.Module;
 import com.ateion.backend.entity.Videos;
+import com.ateion.backend.repository.AudiobookRepository;
 import com.ateion.backend.repository.CourseRepository;
 import com.ateion.backend.repository.ModuleRepository;
 import com.ateion.backend.repository.VideoRepository;
@@ -33,6 +36,7 @@ public class YoutubeImportService {
     private final CourseRepository courseRepository;
     private final ModuleRepository moduleRepository;
     private final VideoRepository videoRepository;
+    private final AudiobookRepository audiobookRepository;
     private final RestTemplate restTemplate = new RestTemplate();
 
     public PreviewResponse previewPlaylist(String playlistUrl) {
@@ -78,7 +82,6 @@ public class YoutubeImportService {
                     String vidId = vNode.path("id").asText();
                     String isoDuration = vNode.path("contentDetails").path("duration").asText();
                     long seconds = Duration.parse(isoDuration).getSeconds();
-
                     videoItems.stream().filter(v -> v.getVideoId().equals(vidId))
                             .findFirst().ifPresent(v -> v.setDurationSeconds((int) seconds));
                 }
@@ -97,7 +100,6 @@ public class YoutubeImportService {
 
     @Transactional
     public Course publishCourse(PublishRequest request) {
-        // Anti-Duplicate Protection
         if (request.getPreviewData() != null && !request.getPreviewData().getVideos().isEmpty()) {
             String firstVidId = request.getPreviewData().getVideos().get(0).getVideoId();
             if (videoRepository.existsByVideoId(firstVidId)) {
@@ -129,7 +131,6 @@ public class YoutubeImportService {
             video.setTitle(v.getTitle());
             video.setVideoId(v.getVideoId());
             video.setThumbnailUrl(v.getThumbnailUrl());
-            // Map strictly to Long
             video.setDurationSeconds(v.getDurationSeconds() != null ? v.getDurationSeconds().longValue() : 0L);
             video.setVideoOrder(v.getPlaylistOrder());
             video.setModule(savedModule);
@@ -138,6 +139,42 @@ public class YoutubeImportService {
 
         videoRepository.saveAll(videosToSave);
         return savedCourse;
+    }
+
+    // ── Audiobook publish — saves playlist as audiobook, each video = chapter ──
+    @Transactional
+    public Audiobook publishAsAudiobook(PublishAsAudiobookRequest request) {
+        String cover = (request.getCoverUrl() != null && !request.getCoverUrl().isBlank())
+                ? request.getCoverUrl()
+                : (request.getPreviewData() != null ? request.getPreviewData().getThumbnailUrl() : "");
+
+        Audiobook book = Audiobook.builder()
+                .title(request.getTitle())
+                .author(request.getAuthor() != null ? request.getAuthor() : "Ateion")
+                .description(request.getDescription() != null ? request.getDescription() : "")
+                .category(request.getCategory() != null ? request.getCategory() : "Technology")
+                .coverUrl(cover != null ? cover : "")
+                .build();
+
+        Audiobook saved = audiobookRepository.save(book);
+
+        if (request.getPreviewData() != null && request.getPreviewData().getVideos() != null) {
+            List<AudiobookChapter> chapters = new ArrayList<>();
+            for (VideoItem v : request.getPreviewData().getVideos()) {
+                AudiobookChapter ch = AudiobookChapter.builder()
+                        .audiobook(saved)
+                        .title(v.getTitle())
+                        .youtubeVideoId(v.getVideoId())
+                        .durationSeconds(v.getDurationSeconds() != null ? v.getDurationSeconds() : 0)
+                        .sortOrder(v.getPlaylistOrder())
+                        .build();
+                chapters.add(ch);
+            }
+            saved.setChapters(chapters);
+            audiobookRepository.save(saved);
+        }
+
+        return saved;
     }
 
     private String extractPlaylistId(String url) {

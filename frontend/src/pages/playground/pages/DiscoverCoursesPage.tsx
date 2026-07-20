@@ -130,10 +130,12 @@ export default function DiscoverCoursesPage() {
   const allTopics = useMemo(() => [...new Set(allCourses.flatMap(c => c.topics))], [allCourses]);
 
   const getCategoryCount = useCallback((catName: string) => {
-    return allCourses.filter(c => 
-      c.topics.some(t => t.toLowerCase() === catName.toLowerCase())
+    const lc = catName.toLowerCase();
+    return allCourses.filter(c =>
+      courseMatchesAgeGroup(c, activeAgeGroup) &&
+      c.topics.some(t => t.toLowerCase() === lc)
     ).length;
-  }, [allCourses]);
+  }, [allCourses, activeAgeGroup]);
 
   const displayCourses = useMemo(() => {
     return discoverCourses.filter(c => {
@@ -152,7 +154,9 @@ export default function DiscoverCoursesPage() {
       });
 
       const ratingMatch = !selectedRatings.length || selectedRatings.some(r => c.rating >= parseFloat(r));
-      const topicMatch = !selectedTopics.length || c.topics.some(t => selectedTopics.includes(t));
+      // Case-insensitive topic match so "Coding" matches "coding" etc.
+      const selectedLower = selectedTopics.map(t => t.toLowerCase());
+      const topicMatch = !selectedTopics.length || c.topics.some(t => selectedLower.includes(t.toLowerCase()));
       const freeMatch = priceFilter === "all" || (priceFilter === "free" ? c.isFree : !c.isFree);
 
       return queryMatch && ageMatch && levelMatch && durationMatch && ratingMatch && topicMatch && freeMatch;
@@ -169,8 +173,10 @@ export default function DiscoverCoursesPage() {
 
   const hasFilters = selectedLevels.length > 0 || selectedDurations.length > 0 || selectedRatings.length > 0 || selectedTopics.length > 0 || priceFilter !== "all";
 
-  const openProtectedCourse = useCallback((courseId: number) => {
-    if (!localStorage.getItem("token")) {
+  const openProtectedCourse = useCallback((courseId: number, isFree?: boolean) => {
+    // Only gate paid courses behind login. Free courses should open directly
+    // for guests as well.
+    if (!isFree && !localStorage.getItem("token")) {
       window.dispatchEvent(new CustomEvent("open-login"));
       return;
     }
@@ -338,11 +344,11 @@ export default function DiscoverCoursesPage() {
             <motion.div variants={fadeUpItem} className="rounded-3xl border border-[var(--color-border-light)] bg-[var(--color-background-secondary)] px-6 py-16 text-center shadow-sm">
               <div className="mx-auto mb-4 h-10 w-10 animate-spin rounded-full border-4 border-[var(--color-accent)] border-t-transparent" />
               <p className="font-bold text-[var(--color-text-primary)] text-lg">
-                {isWaking ? "The course server is waking up…" : "Loading courses…"}
+                {isWaking ? "Connecting to an encrypted server..." : "Loading courses…"}
               </p>
               <p className="mt-1 text-sm text-[var(--color-text-secondary)]">
                 {isWaking
-                    ? "The first request can take longer on Render's free tier."
+                    ? "This might take a moment on the first connection."
                     : "Fetching the latest courses from the database."}
               </p>
             </motion.div>
@@ -376,18 +382,18 @@ export default function DiscoverCoursesPage() {
                     >
                       <CoursePreviewPopover
                           course={course}
-                          onReadMore={() => openProtectedCourse(course.id)}
+                          onReadMore={() => openProtectedCourse(course.id, course.isFree)}
                           onPreview={() => openPublicPreview(course.previewModuleId)}
                           onSave={() => toggleSave(course.id)}
                           isSaved={savedIds.includes(course.id)}
                       >
                         <div
-                            onClick={() => openProtectedCourse(course.id)}
+                            onClick={() => openProtectedCourse(course.id, course.isFree)}
                             className={`w-full cursor-pointer h-full transition-transform hover:-translate-y-1 flex flex-col group ${activeTheme.cardClass}`}
                         >
                           <CoursePreviewCard
                               course={course}
-                              onReadMore={() => openProtectedCourse(course.id)}
+                              onReadMore={() => openProtectedCourse(course.id, course.isFree)}
                               onPreview={() => openPublicPreview(course.previewModuleId)}
                               accentColor={activeTheme.accent}
                               tourId={index === 0 ? "discover-preview-course" : undefined}

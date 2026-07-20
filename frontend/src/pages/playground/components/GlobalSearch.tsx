@@ -33,7 +33,8 @@ export default function GlobalSearch({ open, onOpenChange }: GlobalSearchProps) 
   const openCourse = (course: Course) => {
     onOpenChange(false);
 
-    if (localStorage.getItem("token")) {
+    // Free courses are open to everyone; only paid courses require login.
+    if (course.isFree || localStorage.getItem("token")) {
       navigate(`/playground/course/${course.id}`);
       return;
     }

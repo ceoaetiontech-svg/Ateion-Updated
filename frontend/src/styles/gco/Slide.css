@@ -1,8 +1,78 @@
 .slide {
   width: 100%;
-  background-color: var(--color-background-primary);
+  background-color: transparent;
   display: flex;
   flex-direction: column;
-  padding: 2rem 5%;
+  padding: 4rem 5%;
   overflow: hidden;
+  align-items: center;
 }
+
+.slide-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 32px;
+  padding: 36px 40px;
+  border-radius: 24px;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: var(--max-width);
+  box-sizing: border-box;
+  
+  background: #ffffff;
+  border: 1.5px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.03), 0 0 20px rgba(232, 133, 106, 0.1);
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Slide Card in Dark Mode */
+html[data-theme="dark"] .slide-card {
+  background: var(--color-background-secondary);
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 24px rgba(232, 133, 106, 0.12);
+}
+
+.slide-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+  color: var(--color-text-primary);
+  margin: 0;
+  flex: 1;
+  min-width: 240px;
+  text-align: left;
+}
+
+.slide-description {
+  font-family: var(--font-body);
+  font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+  font-weight: 400;
+  color: var(--color-text-secondary);
+  line-height: 1.7;
+  max-width: 420px;
+  margin: 0;
+  margin-top: 6px;
+  text-align: left;
+}
+
+.slide-accent {
+  font-weight: 800;
+  color: var(--color-accent);
+  font-size: 1.15em;
+}
+
+@media (max-width: 768px) {
+  .slide {
+    padding: 3rem 1.5rem;
+  }
+  
+  .slide-card {
+    padding: 24px 28px;
+    gap: 20px;
+  }
+}
+

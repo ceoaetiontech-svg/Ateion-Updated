@@ -6,13 +6,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
+import java.util.List;
 
 @Repository
 public interface UserProgressRepository extends JpaRepository<UserProgress, Long> {
-    // Counts how many free videos the user has consumed
     long countByUserId(Long userId);
 
-    // Checks if they are just re-watching a video they already unlocked
     boolean existsByUserIdAndVideoId(Long userId, Long videoId);
+
+    List<UserProgress> findByUserIdAndVideoIdIn(Long userId, Collection<Long> videoIds);
+
     long deleteByVideoIdIn(Collection<Long> videoIds);
 }

@@ -215,7 +215,41 @@ export default function TimelineSection() {
           />
         </div>
 
+        {/* Mascot Illustration */}
+        <div className="timeline-mascot-container-centered">
+          <motion.div 
+            className="timeline-mascot-card-centered"
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <img 
+              src="/gco-mascot-globe.png?v=2" 
+              alt="Ateion Mascot pointing at globe" 
+              className="timeline-mascot-img-centered"
+            />
+          </motion.div>
+        </div>
+
         <div className="timeline-relative">
+          {/* Mascot on the left side (desktop only) */}
+          <div className="timeline-mascot-side-left">
+            <motion.div 
+              className="timeline-mascot-card-side"
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <img 
+                src="/gco-mascot-globe.png?v=2" 
+                alt="Ateion Mascot pointing at globe" 
+                className="timeline-mascot-img-side"
+              />
+            </motion.div>
+          </div>
+
           <div
             ref={lineRef}
             className="timeline-line-bg"

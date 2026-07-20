@@ -1,7 +1,7 @@
 .timeline-section {
   min-height: auto;
   background-color: var(--color-background-primary);
-  padding: 2rem 0;
+  padding: 2rem 0 120px;
   font-family: "SF Pro Display", sans-serif;
 }
 
@@ -28,11 +28,13 @@
 }
 
 .timeline-title {
-  font-size: clamp(1.5rem, 3.5vw, 2.5rem);
-  font-weight: 500;
-  letter-spacing: -0.02em;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  font-weight: 700;
   color: var(--color-text-primary);
-  font-family: var(--font-family-heading);
+  margin: 0 0 18px;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
   text-align: center;
 }
 
@@ -66,7 +68,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 160px;
+  margin-bottom: 200px;
 }
 
 .timeline-step-mobile {
@@ -430,3 +432,131 @@
     6px 6px 16px rgba(0, 0, 0, 0.4);
   border-color: rgba(255, 255, 255, 0.08);
 }
+
+/* Centered Mascot Image Styles */
+.timeline-mascot-container-centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 96px;
+  width: 100%;
+}
+
+.timeline-mascot-card-centered {
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 480px;
+  width: 100%;
+  transition: transform 0.4s ease;
+}
+
+.timeline-mascot-card-centered:hover {
+  transform: translateY(-4px);
+}
+
+.timeline-mascot-img-centered {
+  width: 100%;
+  height: auto;
+  max-height: 450px;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
+[data-theme="dark"] .timeline-mascot-img-centered {
+  mix-blend-mode: normal;
+  opacity: 0.9;
+}
+
+@media (max-width: 600px) {
+  .timeline-mascot-container-centered {
+    margin-bottom: 48px;
+  }
+  
+  .timeline-mascot-card-centered {
+    max-width: 320px;
+  }
+}
+
+/* Left-side Mascot Styling (Desktop only) */
+.timeline-mascot-side-left {
+  display: none;
+}
+
+@media (min-width: 1200px) {
+  /* Hide top centered mascot on large screens */
+  .timeline-mascot-container-centered {
+    display: none !important;
+  }
+
+  /* Show mascot on the left side, make it bigger */
+  .timeline-mascot-side-left {
+    display: flex !important;
+    position: absolute;
+    left: -10%;
+    top: 0px;
+    width: 52%;
+    max-width: 880px;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+  }
+
+  .timeline-mascot-card-side {
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    box-shadow: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    transition: transform 0.4s ease;
+  }
+
+  .timeline-mascot-card-side:hover {
+    transform: translateY(-4px);
+  }
+
+  .timeline-mascot-img-side {
+    width: 100%;
+    height: auto;
+    max-height: 900px;
+    object-fit: contain;
+    mix-blend-mode: multiply;
+  }
+
+  [data-theme="dark"] .timeline-mascot-img-side {
+    mix-blend-mode: normal;
+    opacity: 0.9;
+  }
+
+  /* Shift the staggered timeline center line and elements to 72% of container width */
+  .timeline-line-bg,
+  .timeline-line-fill {
+    left: 72% !important;
+  }
+
+  .timeline-circle {
+    position: absolute !important;
+    left: 72% !important;
+    transform: translateX(-50%) !important;
+  }
+
+  .timeline-left {
+    right: 28% !important;
+  }
+
+  .timeline-right {
+    left: 72% !important;
+  }
+}
+
+
+

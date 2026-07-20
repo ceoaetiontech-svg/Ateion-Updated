@@ -2,6 +2,8 @@
 services:
   frontend:
     image: node:20-alpine
+    # ponytail: run as host user 1000:1000 to prevent root-owned files
+    user: "1000:1000"
     working_dir: /app
     volumes:
       - .:/app

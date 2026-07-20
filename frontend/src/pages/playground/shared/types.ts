@@ -54,6 +54,8 @@ export interface Course {
   createdAt: number;
   previewModuleId: number | null;
   isEnrolled?: boolean;
+  // ── Course Highlights ────────────────────────────────────────────────────
+  highlights?: string[]; // up to 3 bullet points for the preview popover
 }
 
 
@@ -63,7 +65,9 @@ export interface Note {
   lessonId: number;
   text: string;
   createdAt: string;
+  timestamp?: number;
 }
+
 
 export interface CalendarEvent {
   id: number;

@@ -2,25 +2,33 @@ import { BrowserRouter, Routes, Route, useLocation, useNavigate } from "react-ro
 import { useState, useEffect, Suspense, lazy } from "react";
 import LoadingSpinner from "./components/LoadingSpinner";
 import { AnimatePresence } from "framer-motion";
+import { Toaster } from "sonner";
 import { ToastProvider } from "../pages/admin/utils/toast";
-import ToastContainer from "../pages/admin/components/ui/Toast";
 import { AdminAuthProvider } from "../pages/admin/context/AdminAuthContext";
 
 const AIChatBot = lazy(() => import("./components/AIChatbot"));
-
-const Homepage = lazy(() => import("../pages/Homepage"));
-const GCOPage = lazy(() => import("../pages/GCOPage"));
-const ContactPage = lazy(() => import("../pages/ContactPage"));
+const OAuth2RedirectHandler = lazy(() => import("../pages/auth/OAuth2RedirectHandler"));
+const Homepage = lazy(() => import("../pages/public/Homepage"));
+const GCOPage = lazy(() => import("../pages/gco/GCOPage"));
+const ContactPage = lazy(() => import("../pages/public/ContactPage"));
 const ResourcesPage = lazy(() => import("../pages/playground/PlaygroundPage"));
-const CertificatePage = lazy(() => import("../pages/CertificatePage"));
-const AssessmentDemoPage = lazy(() => import("../pages/AssessmentDemoPage"));
-const DashboardPage = lazy(() => import("../pages/DashboardPage"));
-const PsychometricAssessmentPage = lazy(() => import("../pages/PsychometricAssessmentPage"));
-const NotFoundPage = lazy(() => import("../pages/NotFoundPage"));
-const RegisterPage = lazy(() => import("../pages/RegisterPage"));
-const LoginPage = lazy(() => import("../pages/LoginPage"));
-const PoliciesPage = lazy(() => import("../pages/PoliciesPage"));
-const PolicyDetailPage = lazy(() => import("../pages/PolicyDetailPage"));
+const CertificatePage = lazy(() => import("../pages/user/CertificatePage"));
+const AssessmentDemoPage = lazy(() => import("../pages/courses/AssessmentDemoPage"));
+const DashboardPage = lazy(() => import("../pages/user/DashboardPage"));
+const PsychometricAssessmentPage = lazy(() => import("../pages/courses/PsychometricAssessmentPage"));
+const NotFoundPage = lazy(() => import("../pages/public/NotFoundPage"));
+const RegisterPage = lazy(() => import("../pages/auth/RegisterPage"));
+const VolunteerRegistrationPage = lazy(() => import("../pages/volunteer/VolunteerRegistrationPage"));
+const GCOLoginPage = lazy(() => import("../pages/gco/GCOLoginPage"));
+const GCORegisterStudentPage = lazy(() => import("../pages/gco/GCORegisterStudentPage"));
+const GCORegisterSchoolPage = lazy(() => import("../pages/gco/GCORegisterSchoolPage"));
+const GCORegisterVolunteerPage = lazy(() => import("../pages/gco/GCORegisterVolunteerPage"));
+const GCOVolunteerInfoPage = lazy(() => import("../pages/gco/GCOVolunteerInfoPage"));
+const GCOStudentInfoPage = lazy(() => import("../pages/gco/GCOStudentInfoPage"));
+const GCOSchoolInfoPage = lazy(() => import("../pages/gco/GCOSchoolInfoPage"));
+const LoginPage = lazy(() => import("../pages/auth/LoginPage"));
+const PoliciesPage = lazy(() => import("../pages/public/PoliciesPage"));
+const PolicyDetailPage = lazy(() => import("../pages/public/PolicyDetailPage"));
 const AdminDashboardPage = lazy(() => import("../pages/admin/pages/AdminDashboardPage"));
 const AdminLayout = lazy(() => import("../pages/admin/layouts/AdminLayout"));
 const CourseListView = lazy(() => import("../pages/admin/components/CourseListView"));
@@ -28,7 +36,8 @@ const AdminUploadPage = lazy(() => import("../pages/admin/pages/AdminUploadPage"
 const CourseUploadView = lazy(() => import("../pages/admin/components/CourseUploadView"));
 const UsersPage = lazy(() => import("../pages/admin/pages/UsersPage"));
 const SettingsPage = lazy(() => import("../pages/admin/pages/SettingsPage"));
-const CoursePreviewPage = lazy(() => import("../pages/CoursePreviewPage"));
+const AudiobookManageView = lazy(() => import("../pages/admin/components/AudiobookManageView"));
+const CoursePreviewPage = lazy(() => import("../pages/courses/CoursePreviewPage"));
 import ThemeProvider from "./components/ThemeProvider";
 import PageTransition from "./components/PageTransition";
 import GuidedTutorial from "./components/GuidedTutorial";
@@ -39,8 +48,9 @@ const TeacherLayout = lazy(() => import("../pages/teacher/layouts/TeacherLayout"
 const TeacherDashboardPage = lazy(() => import("../pages/teacher/pages/TeacherDashboardPage"));
 const TeacherStudentsPage = lazy(() => import("../pages/teacher/pages/TeacherStudentsPage"));
 const TeacherSettingsPage = lazy(() => import("../pages/teacher/pages/TeacherSettingsPage"));
-const ProfilePage = lazy(() => import("../pages/ProfilePage"));
-const ResetPasswordPage = lazy(() => import("../pages/ResetPasswordPage"));
+const ProfilePage = lazy(() => import("../pages/user/ProfilePage"));
+const ResetPasswordPage = lazy(() => import("../pages/auth/ResetPasswordPage"));
+const AteionPage = lazy(() => import("../pages/public/AteionPage"));
 
 function AnimatedRoutes() {
     const location = useLocation();
@@ -52,6 +62,15 @@ function AnimatedRoutes() {
                 <Route path="/" element={<PageTransition><Homepage /></PageTransition>} />
                 <Route path="/gco" element={<PageTransition><GCOPage /></PageTransition>} />
                 <Route path="/contact" element={<PageTransition><ContactPage /></PageTransition>} />
+                <Route path="/ateion" element={<PageTransition><AteionPage /></PageTransition>} />
+                <Route path="/register-volunteer" element={<PageTransition><VolunteerRegistrationPage /></PageTransition>} />
+                <Route path="/gco/login" element={<PageTransition><GCOLoginPage /></PageTransition>} />
+                <Route path="/gco/register-student" element={<PageTransition><GCORegisterStudentPage /></PageTransition>} />
+                <Route path="/gco/register-school" element={<PageTransition><GCORegisterSchoolPage /></PageTransition>} />
+                <Route path="/gco/register-volunteer" element={<PageTransition><GCORegisterVolunteerPage /></PageTransition>} />
+                <Route path="/gco/volunteer" element={<PageTransition><GCOVolunteerInfoPage /></PageTransition>} />
+                <Route path="/gco/student" element={<PageTransition><GCOStudentInfoPage /></PageTransition>} />
+                <Route path="/gco/school" element={<PageTransition><GCOSchoolInfoPage /></PageTransition>} />
                 <Route path="/course-preview/:moduleId" element={<PageTransition><CoursePreviewPage /></PageTransition>} />
                 <Route path="/playground/*" element={<PageTransition><ResourcesPage /></PageTransition>} />
                 <Route path="/certificate" element={<PageTransition><CertificatePage /></PageTransition>} />
@@ -65,6 +84,7 @@ function AnimatedRoutes() {
                     <Route path="/admin/dashboard" element={<PageTransition><AdminDashboardPage /></PageTransition>} />
                     <Route path="/admin/courses" element={<PageTransition><CourseListView /></PageTransition>} />
                     <Route path="/admin/upload" element={<PageTransition><AdminUploadPage /></PageTransition>} />
+                    <Route path="/admin/audiobooks" element={<PageTransition><AudiobookManageView /></PageTransition>} />
                     <Route path="/admin/users" element={<PageTransition><UsersPage /></PageTransition>} />
                     <Route path="/admin/settings" element={<PageTransition><SettingsPage /></PageTransition>} />
                 </Route>
@@ -79,6 +99,7 @@ function AnimatedRoutes() {
                 <Route path="/profile" element={<PageTransition><ProfilePage /></PageTransition>} />
                 <Route path="/reset-password" element={<PageTransition><ResetPasswordPage /></PageTransition>} />
                 <Route path="*" element={<PageTransition><NotFoundPage /></PageTransition>} />
+                <Route path="/oauth2/redirect" element={<OAuth2RedirectHandler />} />
             </Routes>
         </AnimatePresence>
     );
@@ -98,21 +119,10 @@ export default function App() {
     function ChatBotWrapper() {
         const location = useLocation();
         const hiddenPaths = ["/admin", "/teacher", "/reset-password"];
-        const shouldHide = hiddenPaths.some((p) => location.pathname.startsWith(p));
+        const shouldHide = hiddenPaths.some((p) => location.pathname.startsWith(p)) || showLogin;
         if (shouldHide) return null;
 
-        const handleSendMessage = async (message: string, history: { role: string; content: string }[]) => {
-            const res = await fetch("/api/chat", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ message, history }),
-            });
-            if (!res.ok) throw new Error(`Chat API error: ${res.status}`);
-            const data = await res.json();
-            return data.reply;
-        };
-
-        return <AIChatBot greeting="Hello! 👋" onSendMessage={handleSendMessage} />;
+        return <AIChatBot greeting="Hello! 👋" />;
     }
 
     return (
@@ -122,7 +132,7 @@ export default function App() {
                     <AdminAuthProvider>
                         <ToastProvider>
                             <AnimatedRoutes />
-                            <ToastContainer />
+                            <Toaster richColors closeButton position="bottom-right" />
                             <GuidedTutorial />
                         </ToastProvider>
                     </AdminAuthProvider>

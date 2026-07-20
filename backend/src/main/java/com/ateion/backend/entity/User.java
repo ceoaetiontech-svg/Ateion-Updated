@@ -1,9 +1,15 @@
 package com.ateion.backend.entity;
 
+import com.ateion.backend.constant.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 
 @Getter @Setter @Builder @NoArgsConstructor @AllArgsConstructor
 @Entity
@@ -25,18 +31,26 @@ public class User {
 
     @Column(name = "age_segment", nullable = false)
     private String ageSegment;
-    
-    @Builder.Default
-   @Column(nullable = false)
-    private String role = "ROLE_STUDENT";
 
-    // ADDED: required for freemium gate in ProgressService
+    @Builder.Default
+    @Column(nullable = false)
+    private String role = Role.ROLE_STUDENT;
+
     @Builder.Default
     @Column(name = "is_premium", nullable = false)
     private Boolean isPremium = false;
-    
-     
 
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+   @Builder.Default
+    @Column(name = "failed_login_attempts")
+    private int failedLoginAttempts = 0;
+
+    @Column(name = "lock_time")
+    private LocalDateTime lockTime;
+
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role));
+    }
 }
