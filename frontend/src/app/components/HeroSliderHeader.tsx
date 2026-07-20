@@ -227,25 +227,25 @@ function FeatureCardItem({ card, index, visible, windowWidth }: { card: FeatureC
   const getPositions = () => {
     if (windowWidth < 640) {
       return [
-        { endX: -125, endY: -35 },
-        { endX: 125, endY: -35 },
-        { endX: -125, endY: 58 },
-        { endX: 125, endY: 58 },
+        { endX: -125, endY: -40 },
+        { endX: 125, endY: -40 },
+        { endX: -90, endY: 55 },
+        { endX: 90, endY: 55 },
       ];
     }
     if (windowWidth < 1024) {
       return [
-        { endX: -190, endY: -92 },
-        { endX: 190, endY: -92 },
-        { endX: -190, endY: 92 },
-        { endX: 190, endY: 92 },
+        { endX: -200, endY: -80 },
+        { endX: 200, endY: -80 },
+        { endX: -150, endY: 90 },
+        { endX: 150, endY: 90 },
       ];
     }
     return [
-      { endX: -300, endY: -112 },
-      { endX: 300, endY: -112 },
-      { endX: -300, endY: 112 },
-      { endX: 300, endY: 112 },
+      { endX: -370, endY: -110 },
+      { endX: 250, endY: -110 },
+      { endX: -290, endY: 115 },
+      { endX: 160, endY: 115 },
     ];
   };
   const positions = getPositions();
