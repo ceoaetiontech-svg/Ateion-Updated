@@ -227,10 +227,10 @@ function FeatureCardItem({ card, index, visible, windowWidth }: { card: FeatureC
   const getPositions = () => {
     if (windowWidth < 640) {
       return [
-        { endX: -125, endY: -40 },
-        { endX: 125, endY: -40 },
-        { endX: -90, endY: 55 },
-        { endX: 90, endY: 55 },
+        { endX: -175, endY: -55 },
+        { endX: 100, endY: -55 },
+        { endX: -145, endY: 48 },
+        { endX: 70, endY: 48 },
       ];
     }
     if (windowWidth < 1024) {
