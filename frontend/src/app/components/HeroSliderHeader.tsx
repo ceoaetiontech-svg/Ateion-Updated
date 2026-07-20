@@ -91,8 +91,8 @@ function FloatingDecorations() {
 function GraduationCap({ isLanded }: { isLanded: boolean }) {
   return (
     <motion.div animate={{ scale: isLanded ? 1.05 : 1 }} transition={{ duration: 0.3, ease: "easeOut" }}>
-      <svg width="180" height="150" viewBox="0 0 180 150" fill="none" xmlns="http://www.w3.org/2000/svg"
-        style={{ filter: isLanded ? "drop-shadow(0 8px 24px rgba(124, 58, 237, 0.45))" : "drop-shadow(0 4px 12px rgba(0,0,0,0.2))", transition: "filter 0.4s ease" }}>
+      <svg viewBox="0 0 180 150" fill="none" xmlns="http://www.w3.org/2000/svg"
+        style={{ width: "100%", height: "auto", filter: isLanded ? "drop-shadow(0 8px 24px rgba(124, 58, 237, 0.45))" : "drop-shadow(0 4px 12px rgba(0,0,0,0.2))", transition: "filter 0.4s ease" }}>
         <defs>
           <linearGradient id="capGrad" x1="10" y1="50" x2="170" y2="90" gradientUnits="userSpaceOnUse">
             <stop offset="0%" stopColor="#1e1e3a"/>
@@ -186,16 +186,11 @@ function GraduationCap({ isLanded }: { isLanded: boolean }) {
 function FeatureCardItem({ card, index, visible, windowWidth }: { card: FeatureCard; index: number; visible: boolean; windowWidth: number }) {
   const getPositions = () => {
     if (windowWidth < 640) {
-      const w = windowWidth - 32;
-      const halfW = w / 2;
-      const cardW = 120;
-      const gap = 8;
-      const x = Math.min(halfW - cardW / 2 - gap, 140);
       return [
-        { endX: -x, endY: -80 },
-        { endX: x, endY: -80 },
-        { endX: -x, endY: 80 },
-        { endX: x, endY: 80 },
+        { endX: -160, endY: -30 },
+        { endX: 90, endY: -30 },
+        { endX: -135, endY: 55 },
+        { endX: 65, endY: 55 },
       ];
     }
     if (windowWidth < 1024) {
@@ -218,17 +213,17 @@ function FeatureCardItem({ card, index, visible, windowWidth }: { card: FeatureC
 
   return (
     <motion.div
-      className="absolute z-[5]"
+      className="absolute z-[15]"
       initial={{ opacity: 0, x: 0, y: 0, scale: 0.3 }}
       animate={visible ? { opacity: 1, x: pos.endX, y: pos.endY, scale: 1 } : { opacity: 0, x: 0, y: 0, scale: 0.3 }}
       transition={{ duration: 0.5, delay: visible ? index * 0.1 : 0, ease: [0.16, 1, 0.3, 1] }}
       style={{ left: "50%", top: "50%", transform: "translate(-50%, -50%)" }}
     >
-      <div className="w-[110px] sm:w-[130px] md:w-[150px] p-2.5 sm:p-3 rounded-2xl backdrop-blur-md border"
+      <div className="w-[80px] sm:w-[130px] md:w-[150px] p-1.5 sm:p-3 rounded-2xl backdrop-blur-md border"
         style={{ background: "rgba(255, 255, 255, 0.95)", borderColor: `${card.color}30`, boxShadow: `0 6px 20px ${card.color}18` }}>
-        <div className="text-lg sm:text-xl md:text-2xl mb-1">{card.icon}</div>
-        <h4 className="text-[10px] sm:text-[11px] md:text-[13px] font-bold mb-1" style={{ color: card.color, fontFamily: "var(--font-display)" }}>{card.title}</h4>
-        <p className="text-[9px] sm:text-[10px] leading-tight" style={{ color: "#666" }}>{card.description}</p>
+        <div className="text-sm sm:text-xl md:text-2xl mb-0.5 sm:mb-1">{card.icon}</div>
+        <h4 className="text-[8px] sm:text-[11px] md:text-[13px] font-bold mb-0.5 sm:mb-1 leading-tight" style={{ color: card.color, fontFamily: "var(--font-display)" }}>{card.title}</h4>
+        <p className="text-[7px] sm:text-[10px] leading-tight hidden sm:block" style={{ color: "#666" }}>{card.description}</p>
       </div>
     </motion.div>
   );
@@ -342,10 +337,10 @@ export default function HeroSliderHeader({
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.3, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             >
-              {/* Feature Cards */}
+              {/* Feature Cards - positioned relative to mascot area center */}
               <AnimatePresence>
                 {showCards && (
-                  <div className="absolute inset-0 flex items-center justify-center z-[5]">
+                  <div className="absolute inset-0 flex items-center justify-center z-[15] pointer-events-none">
                     {featureCards.map((card, index) => (
                       <FeatureCardItem key={card.id} card={card} index={index} visible={showCards} windowWidth={windowWidth} />
                     ))}
@@ -371,7 +366,7 @@ export default function HeroSliderHeader({
                 <motion.div className="relative z-10" animate={{ y: [0, -8, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}>
                   {/* Graduation Cap */}
                   <motion.div className="absolute z-20 pointer-events-none" style={{ top: springHatY, left: "50%", x: "-50%" }}>
-                    <div className="w-[100px] sm:w-[140px] md:w-[160px] lg:w-[180px]">
+                    <div className="w-[80px] sm:w-[140px] md:w-[160px] lg:w-[180px]">
                       <GraduationCap isLanded={isLanded} />
                     </div>
                   </motion.div>
