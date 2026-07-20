@@ -5,6 +5,13 @@
  * - Scroll 0-25%: Website stays fixed, hat moves down to mascot head
  * - Scroll 25-50%: Website stays fixed, cards appear from behind mascot
  * - Scroll 50%+: Website scrolls normally
+ *
+ * NOTE ON FONTS: this file uses 'Fraunces' for the badge titles (a warm,
+ * slightly old-style serif — reads like a certificate/medal label, distinct
+ * from the geometric sans used everywhere else on the page). Add this once
+ * to your root document (e.g. index.html <head>), not per-component:
+ *   <link rel="preconnect" href="https://fonts.googleapis.com">
+ *   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&display=swap" rel="stylesheet">
  */
 
 import React, { useState, useEffect, useRef } from "react";
@@ -21,6 +28,27 @@ import japanImg from "../../assets/policies/japan.webp";
 import indiaImg from "../../assets/policies/india.webp";
 import SharedNavbar from "./SharedNavbar";
 import NavbarSpacer from "./NavbarSpacer";
+
+/* ─── Design tokens for the badge system ───
+   Pulled directly from the graduation cap SVG already in this file:
+   navy = capGrad, gold = goldGrad/tasselString, red = tasselEnd.
+   Nothing invented — the cards are literally colored like the cap that "awards" them. */
+const BADGE = {
+  navyDark: "#0a0a1e",
+  navy: "#1c1b36",
+  gold: "#D4AF37",
+  goldBright: "#ffd700",
+  goldSoft: "#F3D889",
+  ribbon: "#e8586a",
+  ribbonDark: "#c03848",
+  paper: "#FFFDF8",
+  ink: "#14132B",
+  inkMuted: "#726F82",
+};
+
+// subtle paper-grain texture, inlined so no asset request is needed
+const GRAIN =
+  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")";
 
 /* ─── Feature Cards Data ─── */
 interface FeatureCard {
@@ -73,14 +101,24 @@ function TrustImageCard({ org, index }: { org: TrustOrg; index: number }) {
   );
 }
 
-/* ─── Decorative floating elements ─── */
+/* ─── Decorative ambient elements ───
+   Kept deliberately quiet — the badges below are the one bold idea on this
+   screen, so the background stays out of their way instead of competing. */
 function FloatingDecorations() {
   return (
     <>
-      <motion.div className="absolute top-[15%] left-[42%] w-2 h-2 rounded-full bg-[#7c5cbf] opacity-60" animate={{ y: [0, -8, 0], scale: [1, 1.2, 1] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} />
-      <motion.div className="absolute top-[25%] right-[30%] w-1.5 h-1.5 rounded-full bg-[#7c5cbf] opacity-40" animate={{ y: [0, 6, 0] }} transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }} />
-      <motion.div className="absolute bottom-[30%] right-[25%] w-2 h-2 rounded-full bg-[#7c5cbf] opacity-50" animate={{ y: [0, -6, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }} />
-      <motion.div className="absolute top-[30%] left-[46%] text-[var(--color-accent)] opacity-70 text-lg select-none" animate={{ scale: [1, 1.3, 1], opacity: [0.7, 1, 0.7] }} transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}>✦</motion.div>
+      <motion.div
+        className="absolute top-[15%] left-[42%] w-1.5 h-1.5 rounded-full"
+        style={{ background: BADGE.gold, opacity: 0.35 }}
+        animate={{ y: [0, -8, 0] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <motion.div
+        className="absolute bottom-[28%] right-[24%] w-1.5 h-1.5 rounded-full"
+        style={{ background: "#7c5cbf", opacity: 0.3 }}
+        animate={{ y: [0, 6, 0] }}
+        transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}
+      />
     </>
   );
 }
@@ -180,52 +218,114 @@ function GraduationCap({ isLanded }: { isLanded: boolean }) {
   );
 }
 
-/* ─── Feature Card Component ─── */
+/* ─── Feature "Medal" Card ───
+   Each card is styled as a small medal the cap hands out: navy medallion,
+   gold ring + button dot (echoing the cap's own gold button), a tiny
+   dangling ribbon in the same red/gold as the real tassel, a torn-ticket
+   perforation, and a serif label for a certificate feel. */
 function FeatureCardItem({ card, index, visible, windowWidth }: { card: FeatureCard; index: number; visible: boolean; windowWidth: number }) {
   const getPositions = () => {
     if (windowWidth < 640) {
       return [
         { endX: -125, endY: -35 },
         { endX: 125, endY: -35 },
-        { endX: -125, endY: 55 },
-        { endX: 125, endY: 55 },
+        { endX: -125, endY: 58 },
+        { endX: 125, endY: 58 },
       ];
     }
     if (windowWidth < 1024) {
       return [
-        { endX: -190, endY: -90 },
-        { endX: 190, endY: -90 },
-        { endX: -190, endY: 90 },
-        { endX: 190, endY: 90 },
+        { endX: -190, endY: -92 },
+        { endX: 190, endY: -92 },
+        { endX: -190, endY: 92 },
+        { endX: 190, endY: 92 },
       ];
     }
     return [
-      { endX: -300, endY: -110 },
-      { endX: 300, endY: -110 },
-      { endX: -300, endY: 110 },
-      { endX: 300, endY: 110 },
+      { endX: -300, endY: -112 },
+      { endX: 300, endY: -112 },
+      { endX: -300, endY: 112 },
+      { endX: 300, endY: 112 },
     ];
   };
   const positions = getPositions();
   const pos = positions[index] || positions[0];
   const Icon = card.icon;
 
+  // even cards tilt one way, odd the other — mirrored, not random
+  const restTilt = index % 2 === 0 ? -3 : 3;
+  const startTilt = index % 2 === 0 ? -16 : 16;
+
   return (
     <motion.div
       className="absolute z-[15]"
-      initial={{ opacity: 0, x: 0, y: 0, scale: 0.3 }}
-      animate={visible ? { opacity: 1, x: pos.endX, y: pos.endY, scale: 1 } : { opacity: 0, x: 0, y: 0, scale: 0.3 }}
-      transition={{ duration: 0.5, delay: visible ? index * 0.1 : 0, ease: [0.16, 1, 0.3, 1] }}
+      initial={{ opacity: 0, x: 0, y: 0, scale: 0.35, rotate: startTilt }}
+      animate={
+        visible
+          ? { opacity: 1, x: pos.endX, y: pos.endY, scale: 1, rotate: restTilt }
+          : { opacity: 0, x: 0, y: 0, scale: 0.35, rotate: startTilt }
+      }
+      transition={{ type: "spring", stiffness: 210, damping: 17, delay: visible ? index * 0.12 : 0 }}
       style={{ left: "50%", top: "50%", transform: "translate(-50%, -50%)" }}
     >
-      <div className="w-[80px] sm:w-[130px] md:w-[150px] p-1.5 sm:p-3 rounded-2xl backdrop-blur-md border"
-        style={{ background: "rgba(255, 255, 255, 0.95)", borderColor: "#E2DECF", boxShadow: "0 8px 20px rgba(28,27,41,0.08)" }}>
-        <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center mb-1 sm:mb-2"
-          style={{ background: "#EDE7FA" }}>
-          <Icon size={14} strokeWidth={1.8} color="#7c3aed" />
+      <div
+        className="relative w-[86px] sm:w-[136px] md:w-[156px] rounded-[14px] overflow-hidden"
+        style={{
+          background: BADGE.paper,
+          border: `1px solid ${BADGE.gold}59`,
+          boxShadow: "0 16px 30px -12px rgba(20,19,43,0.32), 0 0 0 1px rgba(255,255,255,0.5) inset",
+        }}
+      >
+        {/* paper grain */}
+        <div
+          aria-hidden
+          style={{ position: "absolute", inset: 0, opacity: 0.05, backgroundImage: GRAIN, mixBlendMode: "multiply", pointerEvents: "none" }}
+        />
+
+        <div className="relative px-2.5 pt-3 pb-2.5 sm:px-3.5 sm:pt-4 sm:pb-3">
+          {/* medallion */}
+          <div
+            className="relative w-7 h-7 sm:w-9 sm:h-9 rounded-full flex items-center justify-center mb-2 sm:mb-2.5"
+            style={{
+              background: `linear-gradient(160deg, ${BADGE.navy}, ${BADGE.navyDark})`,
+              border: `1.5px solid ${BADGE.gold}`,
+              boxShadow: "0 2px 6px rgba(0,0,0,0.35)",
+            }}
+          >
+            <Icon size={13} strokeWidth={1.8} color={BADGE.goldSoft} />
+            {/* gold button, echoing the cap's own top button */}
+            <span
+              aria-hidden
+              style={{ position: "absolute", top: -3, left: "50%", transform: "translateX(-50%)", width: 4, height: 4, borderRadius: "50%", background: BADGE.goldBright }}
+            />
+            {/* mini tassel thread, same colors as the real one */}
+            <span
+              aria-hidden
+              style={{ position: "absolute", bottom: -7, right: -1, width: 1.5, height: 9, borderRadius: 1, transform: "rotate(16deg)", background: `linear-gradient(${BADGE.goldBright}, ${BADGE.ribbonDark})` }}
+            />
+            <span
+              aria-hidden
+              style={{ position: "absolute", bottom: -10, right: -2.5, width: 3.5, height: 3.5, borderRadius: "50%", background: BADGE.ribbon, border: `0.5px solid ${BADGE.ribbonDark}` }}
+            />
+          </div>
+
+          {/* torn-ticket perforation */}
+          <div className="relative flex items-center my-1.5 sm:my-2" aria-hidden>
+            <span style={{ width: 3, height: 3, borderRadius: "50%", background: BADGE.gold, opacity: 0.55 }} />
+            <div style={{ flex: 1, borderTop: `1px dashed ${BADGE.gold}66`, margin: "0 4px" }} />
+            <span style={{ width: 3, height: 3, borderRadius: "50%", background: BADGE.gold, opacity: 0.55 }} />
+          </div>
+
+          <h4
+            className="text-[8px] sm:text-[11px] md:text-[12.5px] mb-0.5 sm:mb-1 leading-tight"
+            style={{ color: BADGE.ink, fontFamily: "'Fraunces', Georgia, serif", fontWeight: 600, letterSpacing: "0.005em" }}
+          >
+            {card.title}
+          </h4>
+          <p className="text-[7px] sm:text-[9.5px] leading-snug hidden sm:block" style={{ color: BADGE.inkMuted }}>
+            {card.description}
+          </p>
         </div>
-        <h4 className="text-[8px] sm:text-[11px] md:text-[13px] font-bold mb-0.5 sm:mb-1 leading-tight" style={{ color: "#1C1B29", fontFamily: "var(--font-display)" }}>{card.title}</h4>
-        <p className="text-[7px] sm:text-[10px] leading-tight hidden sm:block" style={{ color: "#666" }}>{card.description}</p>
       </div>
     </motion.div>
   );
