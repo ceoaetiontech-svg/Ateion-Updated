@@ -269,7 +269,7 @@ function FeatureCardItem({ card, index, visible, windowWidth }: { card: FeatureC
       style={{ left: "50%", top: "50%", transform: "translate(-50%, -50%)" }}
     >
       <div
-        className="relative w-[86px] sm:w-[136px] md:w-[156px] rounded-[14px] overflow-hidden"
+        className="relative w-[86px] sm:w-[136px] md:w-[156px] rounded-[4px] overflow-hidden"
         style={{
           background: BADGE.paper,
           border: `1px solid ${BADGE.gold}59`,
