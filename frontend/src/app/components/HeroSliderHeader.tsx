@@ -522,35 +522,42 @@ export default function HeroSliderHeader({
                       <motion.div
                         style={{
                           position: "absolute",
-                          left: "-120%",
+                          left: 0,
                           top: "28%",
-                          width: "720%",
+                          width: "max-content",
                           transform: "translateY(-50%)",
                           display: "flex",
                           alignItems: "center",
                           whiteSpace: "nowrap",
-                          animation: "heroMarquee 5s linear infinite",
+                          animation: "heroMarquee 25s linear infinite",
                           opacity: marqueeOpacity,
                         }}
                       >
-                        {Array.from({ length: 40 }).map((_, i) => (
-                          <span
-                            key={i}
+                        {[0, 1].map((group) => (
+                          <div
+                            key={group}
                             style={{
-                              fontSize: "clamp(90px,9vw,180px)",
-                              fontWeight: 900,
-                              letterSpacing: "-0.06em",
-                              paddingRight: "120px",
-                              color:
-                                theme === "dark"
-                                  ? "#ffffff"
-                                  : "$191919",
-                              fontFamily: "var(--font-display)",
-                              userSelect: "none",
+                              display: "flex",
+                              flexShrink: 0,
                             }}
                           >
-                            REIMAGINING EDUCATION
-                          </span>
+                            {Array.from({ length: 20 }).map((_, i) => (
+                              <span
+                                key={`${group}-${i}`}
+                                style={{
+                                  fontSize: "clamp(90px,9vw,180px)",
+                                  fontWeight: 900,
+                                  letterSpacing: "-0.06em",
+                                  paddingRight: "120px",
+                                  color: theme === "dark" ? "#ffffff" : "#191919",
+                                  fontFamily: "var(--font-display)",
+                                  userSelect: "none",
+                                }}
+                              >
+                                REIMAGINING EDUCATION
+                              </span>
+                            ))}
+                          </div>
                         ))}
                       </motion.div>
                     </motion.div>
