@@ -17,6 +17,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from "framer-motion";
 import { ArrowRight, Brain, Target, Globe, Lightbulb } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { LucideIcon } from "lucide-react";
 import { useNavigate } from "react-router";
 import { useTheme } from "./ThemeProvider";
@@ -344,6 +346,8 @@ export default function HeroSliderHeader({
   const [isLanded, setIsLanded] = useState(false);
   const [showCards, setShowCards] = useState(false);
   const [windowWidth, setWindowWidth] = useState(typeof window !== "undefined" ? window.innerWidth : 1024);
+  const compositionRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -378,6 +382,52 @@ export default function HeroSliderHeader({
     return () => unsubscribe();
   }, [springHatY, isLanded]);
 
+  // GSAP ScrollTrigger: scale entire composition after hat lands
+  useEffect(() => {
+    if (!containerRef.current || !compositionRef.current || !textRef.current) return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const comp = compositionRef.current;
+    const text = textRef.current;
+
+    // Calculate offset to center composition in viewport
+    const rect = comp.getBoundingClientRect();
+    const offsetX = window.innerWidth / 2 - (rect.left + rect.width / 2);
+    const offsetY = window.innerHeight / 2 - (rect.top + rect.height / 2);
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: containerRef.current,
+        start: "20% top",
+        end: "70% top",
+        scrub: 0.6,
+        invalidateOnRefresh: true,
+      },
+    });
+
+    // Scale composition to 35% and move to viewport center (full duration)
+    tl.to(comp, {
+      scale: 0.35,
+      x: offsetX,
+      y: offsetY,
+      transformOrigin: "center center",
+      ease: "none",
+    }, 0);
+
+    // Text fades out quickly — gone within ~2-3 scrolls after hat lands
+    tl.to(text, {
+      opacity: 0,
+      y: -30,
+      ease: "none",
+      duration: 0.2,
+    }, 0);
+
+    return () => {
+      ScrollTrigger.getAll().forEach((st) => st.kill());
+    };
+  }, []);
+
   return (
     <div ref={containerRef} className="relative" style={{ height: "200vh" }}>
       {/* Sticky hero container */}
@@ -390,8 +440,9 @@ export default function HeroSliderHeader({
 
           <div className="flex flex-col lg:flex-row items-center lg:items-center h-full">
             {/* Hero text */}
+            <div ref={textRef} className="order-2 lg:order-1 w-full lg:w-[46%] xl:w-[42%]">
             <motion.div
-              className="order-2 lg:order-1 flex flex-col items-start justify-center gap-4 sm:gap-5 lg:gap-6 relative z-10 w-full lg:w-[46%] xl:w-[42%] py-4 lg:py-12"
+              className="flex flex-col items-start justify-center gap-4 sm:gap-5 lg:gap-6 relative z-10 py-4 lg:py-12"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
@@ -431,6 +482,7 @@ export default function HeroSliderHeader({
                 </div>
               </div>
             </motion.div>
+            </div>
 
             {/* ─── MASCOT AREA ─── */}
             <motion.div
@@ -439,6 +491,7 @@ export default function HeroSliderHeader({
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.3, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             >
+              <div ref={compositionRef} className="relative w-full flex justify-center items-end overflow-visible">
               {/* Feature Cards - positioned relative to mascot area center */}
               <AnimatePresence>
                 {showCards && (
@@ -482,12 +535,13 @@ export default function HeroSliderHeader({
                     }} />
                 </motion.div>
               </div>
+              </div>
             </motion.div>
           </div>
         </div>
-
-        {showNavbar && <SharedNavbar />}
       </div>
+
+      {showNavbar && <SharedNavbar />}
     </div>
   );
 }
