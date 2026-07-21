@@ -52,6 +52,17 @@ const BADGE = {
 const GRAIN =
   "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")";
 
+const HERO_MARQUEE_CSS = `
+@keyframes heroMarquee {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+`;
+
 /* ─── Feature Cards Data ─── */
 interface FeatureCard {
   id: number;
@@ -268,7 +279,7 @@ function FeatureCardItem({ card, index, visible, windowWidth }: { card: FeatureC
           : { opacity: 0, x: 0, y: 0, scale: 0.35, rotate: startTilt }
       }
       transition={{ type: "spring", stiffness: 210, damping: 17, delay: visible ? index * 0.12 : 0 }}
-      style={{ left: "50%", top: "50%", transform: "translate(-50%, -50%)" }}
+      style={{ left: "50%", top: "36%", transform: "translate(-50%, -50%)" }}
     >
       <div
         className="relative w-[86px] sm:w-[136px] md:w-[156px] rounded-[4px] overflow-hidden"
@@ -365,6 +376,8 @@ export default function HeroSliderHeader({
   // Scroll 0-25% maps to hat position -300px (hidden) to 15px (on head)
   const hatY = useTransform(scrollYProgress, [0, 0.20], [-300, 15]);
   const springHatY = useSpring(hatY, { stiffness: 100, damping: 25 });
+  
+  const marqueeOpacity = useTransform(scrollYProgress, [0.22, 0.45], [0.10, 0.22]);
 
   // Check if hat has landed on head
   useEffect(() => {
@@ -430,6 +443,7 @@ export default function HeroSliderHeader({
 
   return (
     <div ref={containerRef} className="relative" style={{ height: "200vh" }}>
+      <style>{HERO_MARQUEE_CSS}</style>
       {/* Sticky hero container */}
       <div className="sticky top-0 h-screen w-full flex flex-col">
         <NavbarSpacer />
@@ -491,7 +505,57 @@ export default function HeroSliderHeader({
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.3, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             >
-              <div ref={compositionRef} className="relative w-full flex justify-center items-end overflow-visible">
+              <div ref={compositionRef} className="relative w-full flex justify-center items-end overflow-visible z-10">
+                {/* Composition Marquee */}
+                <AnimatePresence>
+                  {showCards && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.5 }}
+                      className="absolute z-[2] inset-0 overflow-visible pointer-events-none"
+                      style={{
+                        zIndex: 1,
+                      }}
+                    >
+                      <motion.div
+                        style={{
+                          position: "absolute",
+                          left: "-120%",
+                          top: "28%",
+                          width: "720%",
+                          transform: "translateY(-50%)",
+                          display: "flex",
+                          alignItems: "center",
+                          whiteSpace: "nowrap",
+                          animation: "heroMarquee 5s linear infinite",
+                          opacity: marqueeOpacity,
+                        }}
+                      >
+                        {Array.from({ length: 40 }).map((_, i) => (
+                          <span
+                            key={i}
+                            style={{
+                              fontSize: "clamp(90px,9vw,180px)",
+                              fontWeight: 900,
+                              letterSpacing: "-0.06em",
+                              paddingRight: "120px",
+                              color:
+                                theme === "dark"
+                                  ? "#ffffff"
+                                  : "$191919",
+                              fontFamily: "var(--font-display)",
+                              userSelect: "none",
+                            }}
+                          >
+                            REIMAGINING EDUCATION
+                          </span>
+                        ))}
+                      </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               {/* Feature Cards - positioned relative to mascot area center */}
               <AnimatePresence>
                 {showCards && (
@@ -504,7 +568,8 @@ export default function HeroSliderHeader({
               </AnimatePresence>
 
               {/* Mascot container */}
-              <div className="relative z-10 overflow-visible">
+              <div className="relative z-[5] overflow-visible">
+                
                 {/* Background circle */}
                 <motion.div
                   className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140px] h-[140px] sm:w-[220px] sm:h-[220px] md:w-[280px] md:h-[280px] lg:w-[340px] lg:h-[340px] xl:w-[400px] xl:h-[400px] rounded-full"
