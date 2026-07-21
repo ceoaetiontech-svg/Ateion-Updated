@@ -431,7 +431,7 @@ export default function HeroSliderHeader({
   return (
     <div ref={containerRef} className="relative" style={{ height: "200vh" }}>
       {/* Sticky hero container */}
-      <div className="sticky top-0 h-screen w-full flex flex-col bg-[var(--color-background-primary)]">
+      <div className="sticky top-0 h-screen w-full flex flex-col">
         <NavbarSpacer />
 
         {/* ─── HERO SECTION ─── */}

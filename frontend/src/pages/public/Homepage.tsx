@@ -57,7 +57,7 @@ function Counter({ value, suffix = "" }: { value: number; suffix?: string }) {
 
 function HeroHeaderSection() {
   return (
-    <div className="flex flex-col items-start w-full bg-[var(--color-background-primary)]">
+    <div className="flex flex-col items-start w-full">
       <HeroSliderHeader />
     <div className="w-full px-[16px] sm:px-[24px] md:px-[64px] pt-6 sm:pt-8">
         <HeroFeatureCardsRow />
