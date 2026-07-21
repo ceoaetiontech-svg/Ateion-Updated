@@ -524,6 +524,16 @@
     var(--color-background-primary);
 }
 
+/* Hero section fix: keep the hero's background a single flat opaque
+   color in dark mode so the page-level translucent radial-gradient
+   background (.ateion-metallic-bg) can't bleed through unevenly and
+   create a visible seam next to the mascot. Scoped only to .hero-opaque-bg
+   so no other component is affected. */
+html[data-theme="dark"] .hero-opaque-bg {
+  background: #0F172A !important;
+  background-image: none !important;
+}
+
 /* Glassmorphism Classes for Dark Mode */
 html[data-theme="dark"] .bg-\[var\(--color-background-secondary\)\] {
   backdrop-filter: blur(16px);
@@ -1111,4 +1121,3 @@ html[data-theme="dark"] .ecosystem-bubble-bg.bubble-playground.is-dragged {
   border-color: rgba(34, 211, 238, 1);
   box-shadow: 0 24px 70px rgba(34, 211, 238, 0.85);
 }
-

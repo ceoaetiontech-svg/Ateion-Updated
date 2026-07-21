@@ -257,10 +257,14 @@ export default function HeroSliderHeader({
     offset: ["start start", "end start"],
   });
 
-  // Hat Y position: starts hidden above, moves down to mascot head
-  // Scroll 0-25% maps to hat position -300px (hidden) to 15px (on head)
-  const hatY = useTransform(scrollYProgress, [0, 0.20], [-300, 15]);
+  // Hat Y position: starts just above the mascot's head, settles onto it.
+  // Scroll 0-20% maps to hat position -70px (just above head) to 15px (on head).
+  // Kept short and paired with a fade-in so the cap never travels far enough
+  // to visually escape the hero and overlap the navbar/logo above it.
+  const hatY = useTransform(scrollYProgress, [0, 0.20], [-70, 15]);
   const springHatY = useSpring(hatY, { stiffness: 100, damping: 25 });
+  const hatOpacity = useTransform(scrollYProgress, [0, 0.06, 0.2], [0, 1, 1]);
+  const springHatOpacity = useSpring(hatOpacity, { stiffness: 120, damping: 26 });
 
   // Check if hat has landed on head
   useEffect(() => {
@@ -281,7 +285,7 @@ export default function HeroSliderHeader({
   return (
     <div ref={containerRef} className="relative" style={{ height: "200vh" }}>
       {/* Sticky hero container */}
-      <div className="sticky top-0 h-screen w-full flex flex-col bg-[var(--color-background-primary)]">
+      <div className="hero-opaque-bg sticky top-0 h-screen w-full flex flex-col bg-[var(--color-background-primary)]">
         <NavbarSpacer />
 
         {/* ─── HERO SECTION ─── */}
@@ -367,7 +371,7 @@ export default function HeroSliderHeader({
                 {/* Mascot + Hat */}
                 <motion.div className="relative z-10" animate={{ y: [0, -8, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}>
                   {/* Graduation Cap */}
-                  <motion.div className="absolute z-20 pointer-events-none" style={{ top: springHatY, left: "50%", x: "-50%" }}>
+                  <motion.div className="absolute z-20 pointer-events-none" style={{ top: springHatY, left: "50%", x: "-50%", opacity: springHatOpacity }}>
                     <div className="w-[80px] sm:w-[140px] md:w-[160px] lg:w-[180px]">
                       <GraduationCap isLanded={isLanded} />
                     </div>
