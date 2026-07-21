@@ -372,17 +372,20 @@ export default function HeroSliderHeader({
     offset: ["start start", "end start"],
   });
 
-  // Hat Y position: starts hidden above, moves down to mascot head
-  // Scroll 0-25% maps to hat position -300px (hidden) to 15px (on head)
-  const hatY = useTransform(scrollYProgress, [0, 0.20], [-300, 15]);
+  // Hat Y position: starts near ears, drops down to mascot head on scroll
+  // Scroll 0-20% maps to hat position -50px (near ears) to 15px (on head)
+  const hatY = useTransform(scrollYProgress, [0, 0.20], [-50, 15]);
   const springHatY = useSpring(hatY, { stiffness: 100, damping: 25 });
+
+  // Hat opacity: invisible until first scroll, then fades in near ears
+  const hatOpacity = useTransform(scrollYProgress, [0, 0.02], [0, 1]);
   
   const marqueeOpacity = useTransform(scrollYProgress, [0.22, 0.45], [0.10, 0.22]);
 
   // Check if hat has landed on head
   useEffect(() => {
     const unsubscribe = springHatY.on("change", (latest) => {
-      const landed = latest >= 5 && latest <= 25;
+      const landed = latest >= 8 && latest <= 20;
       if (landed !== isLanded) {
         setIsLanded(landed);
         if (landed) {
@@ -592,7 +595,7 @@ export default function HeroSliderHeader({
                 {/* Mascot + Hat */}
                 <motion.div className="relative z-10" animate={{ y: [0, -8, 0] }} transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}>
                   {/* Graduation Cap */}
-                  <motion.div className="absolute z-20 pointer-events-none" style={{ top: springHatY, left: "50%", x: "-50%" }}>
+                  <motion.div className="absolute z-20 pointer-events-none" style={{ top: springHatY, opacity: hatOpacity, left: "50%", x: "-50%" }}>
                     <div className="w-[80px] sm:w-[140px] md:w-[160px] lg:w-[180px]">
                       <GraduationCap isLanded={isLanded} />
                     </div>
