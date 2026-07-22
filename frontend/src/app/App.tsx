@@ -41,6 +41,7 @@ const CoursePreviewPage = lazy(() => import("../pages/courses/CoursePreviewPage"
 import ThemeProvider from "./components/ThemeProvider";
 import PageTransition from "./components/PageTransition";
 import GuidedTutorial from "./components/GuidedTutorial";
+import SharedNavbar from "./components/SharedNavbar";
 
 const AdminLoginPage = lazy(() => import("../pages/admin/pages/AdminLoginPage"));
 const TeacherLoginPage = lazy(() => import("../pages/teacher/pages/TeacherLoginPage"));
@@ -129,6 +130,7 @@ export default function App() {
         <ThemeProvider>
             <BrowserRouter>
                 <Suspense fallback={<LoadingSpinner />}>
+                <SharedNavbar />
                     <AdminAuthProvider>
                         <ToastProvider>
                             <AnimatedRoutes />
