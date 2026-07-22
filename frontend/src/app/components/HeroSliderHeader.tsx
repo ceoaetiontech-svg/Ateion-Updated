@@ -445,6 +445,8 @@ export default function HeroSliderHeader({
   }, []);
 
   return (
+   
+  
     <div ref={containerRef} className="relative" style={{ height: "200vh" }}>
       <style>{HERO_MARQUEE_CSS}</style>
       {/* Sticky hero container */}
@@ -532,7 +534,7 @@ export default function HeroSliderHeader({
                           display: "flex",
                           alignItems: "center",
                           whiteSpace: "nowrap",
-                          animation: "heroMarquee 25s linear infinite",
+                          animation: "heroMarquee 45s linear infinite",
                           opacity: marqueeOpacity,
                         }}
                       >
@@ -616,7 +618,8 @@ export default function HeroSliderHeader({
         </div>
       </div>
 
-      {showNavbar && <SharedNavbar />}
+      
     </div>
+  
   );
 }
